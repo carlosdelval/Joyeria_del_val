@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1",
+    "titulo": "Anillo oro 18k con diamantes",
+    "descripcion": "Anillo artesanal con diamantes y oro blanco 18k.",
+    "precio": 1790,
+    "precioAnterior": 2290,
+    "imagenes": ["/img/anillo1.jpg"],
+    "categorias": ["anillos", "diamantes", "bodas"],
+    "etiquetas": ["oro", "18k", "hecho a mano"],
+    "slug": "anillo-oro-18k-diamantes"
+  },
+  {
+    "id": "2",
+    "titulo": "Pendientes infantiles mariquita",
+    "descripcion": "Perfectos para los más pequeños.",
+    "precio": 49,
+    "precioAnterior": null,
+    "imagenes": ["/img/pendiente1.jpg"],
+    "categorias": ["pendientes", "infantil"],
+    "etiquetas": ["niños", "alegría", "mariquita"],
+    "slug": "pendientes-infantiles-mariquita"
+  }
+]

@@ -1,15 +1,22 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Navbar from "./components/Navbar";
+import Catalogo from "./pages/catalogo";
 import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
-export default function App() {
+function App() {
   return (
-    <div className="flex flex-col w-full min-h-screen bg-white text-black">
-      <Navbar />
-      <main className="flex-grow">
-        <Home />
-      </main>
-      <Footer />
-    </div>
+    <Router>
+      <div className="min-h-screen text-black bg-white">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/catalogo" element={<Catalogo />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }
+
+export default App;
