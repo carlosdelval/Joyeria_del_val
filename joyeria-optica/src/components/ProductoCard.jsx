@@ -1,53 +1,88 @@
+import { motion } from "framer-motion";
 import React from "react";
 
 const ProductoCard = ({ producto }) => {
   const {
-    nombre,
-    imagen,
+    titulo: nombre, // Mapeamos titulo a nombre
+    imagenes,      // Cambiamos imagen por imagenes
     precio,
     precioAnterior,
-    descuento,
-    slug,
+    categorias,
+    slug
   } = producto;
 
+  // Calculamos descuento si hay precioAnterior
+  const descuento = precioAnterior 
+    ? Math.round(((precioAnterior - precio) / precioAnterior) * 100)
+    : null;
+
   return (
-    <a
+    <motion.a
       href={`/producto/${slug}`}
-      className="block overflow-hidden transition-shadow duration-300 bg-white shadow-sm group rounded-xl hover:shadow-md"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -5 }}
+      transition={{ type: "spring", stiffness: 300 }}
+      className="block overflow-hidden bg-white border border-gray-100 rounded-sm"
     >
-      <div className="relative">
+      <motion.div 
+        className="relative overflow-hidden aspect-square bg-gray-50"
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.3 }}
+      >
         <img
-          src={imagen}
+          src={imagenes[0]} // Tomamos la primera imagen del array
           alt={nombre}
-          className="object-cover w-full h-64 transition duration-300 group-hover:brightness-110"
+          className="object-cover w-full h-full transition-opacity duration-300 hover:opacity-90"
         />
+        
         {descuento && (
-          <div className="absolute px-2 py-1 text-sm font-bold text-white bg-red-600 rounded top-2 right-2">
+          <motion.div 
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            className="absolute px-2 py-1 text-xs font-light tracking-wider text-white bg-red-600 rounded top-2 right-2"
+          >
             -{descuento}%
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
 
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-800 group-hover:text-black">
+        <motion.h3 
+          className="text-sm font-light tracking-wide text-gray-700 line-clamp-2"
+          whileHover={{ color: "#000000" }}
+        >
           {nombre}
-        </h3>
-        <div className="mt-1 text-base font-bold text-gray-900">
-          {precio.toLocaleString("es-ES", {
-            style: "currency",
-            currency: "EUR",
-          })}
+        </motion.h3>
+        
+        <div className="flex items-center mt-3">
+          <motion.span 
+            className="text-sm font-medium text-black"
+            whileHover={{ scale: 1.05 }}
+          >
+            {precio.toLocaleString("es-ES", {
+              style: "currency",
+              currency: "EUR",
+              minimumFractionDigits: 0
+            })}
+          </motion.span>
+          
           {precioAnterior && (
-            <span className="ml-2 text-sm text-gray-500 line-through">
+            <motion.span 
+              className="ml-2 text-xs text-gray-400 line-through"
+              initial={{ opacity: 0.8 }}
+              whileHover={{ opacity: 1 }}
+            >
               {precioAnterior.toLocaleString("es-ES", {
                 style: "currency",
                 currency: "EUR",
+                minimumFractionDigits: 0
               })}
-            </span>
+            </motion.span>
           )}
         </div>
       </div>
-    </a>
+    </motion.a>
   );
 };
 

@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, User, ShoppingBag } from "lucide-react";
 import AnimatedHamburgerButton from "./HamburguerButton";
 import FlyoutLink from "./FlyoutLink";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/catalogo?search=${encodeURIComponent(searchTerm)}`);
+      setSearchTerm(""); // Limpiamos el input después de buscar
+    }
+  };
 
   const categorias = [
     {
@@ -181,14 +192,21 @@ export default function Navbar() {
             />
           </div>
           <div className="hidden lg:block w-64 relative">
-            <input
-              type="text"
-              placeholder="Búsqueda en catálogo"
-              className="w-full rounded-full px-4 py-2 pl-10 text-sm bg-white shadow-sm border border-gray-300"
-            />
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
-              <Search className="w-5 h-5" />
-            </div>
+            <form onSubmit={handleSearch}>
+              <input
+                type="text"
+                placeholder="Búsqueda en catálogo"
+                className="w-full rounded-full px-4 py-2 pl-10 text-sm bg-white shadow-sm border border-gray-300"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2"
+              >
+                <Search className="w-5 h-5" />
+              </button>
+            </form>
           </div>
         </div>
 
@@ -197,8 +215,8 @@ export default function Navbar() {
           <img
             src="/logo.jpg"
             alt="Logo"
-            className="h-10 md:h-20 object-contain mx-auto"
-            onClick={() => window.location.reload()}
+            className="h-10 md:h-20 object-contain mx-auto pointer-coarse:"
+            onClick={() => (window.location.href = "/")}
           />
         </div>
 
@@ -215,16 +233,21 @@ export default function Navbar() {
       </div>
       {/* Mobile search */}
       <div className="px-4 pb-3 md:hidden">
-        <div className="relative">
+        <form onSubmit={handleSearch} className="relative">
           <input
             type="text"
             placeholder="Búsqueda en catálogo"
             className="w-full rounded-full px-4 py-2 pl-10 text-sm bg-white shadow-sm border border-gray-300"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+          <button
+            type="submit"
+            className="absolute left-3 top-1/2 transform -translate-y-1/2"
+          >
             <Search className="w-5 h-5" />
-          </div>
-        </div>
+          </button>
+        </form>
       </div>
       {/* Desktop nav */}
       <nav className="hidden lg:flex justify-center space-x-8 py-2 border-t border-gray-200">
