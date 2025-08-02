@@ -1,8 +1,8 @@
 const ContactoOptica = () => {
   return (
     <section className="px-6 py-12 bg-white border-t lg:px-20">
-      <h2 className="mb-6 text-4xl font-semibold">
-        Visítanos en nuestra óptica
+      <h2 className="mb-6 text-4xl font-bold">
+        ¡Visítanos en nuestra óptica!
       </h2>
       <div className="grid gap-8 lg:grid-cols-2">
         <div className="flex flex-col justify-between">

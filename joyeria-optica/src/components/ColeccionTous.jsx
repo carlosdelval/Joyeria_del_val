@@ -110,10 +110,10 @@ export default function ColeccionTous() {
   }, [currentIndex, slidesToShow]);
 
   return (
-    <div className="flex flex-col md:flex-row w-full gap-6">
+    <div className="flex flex-col w-full gap-6 md:flex-row">
       {/* Sección de texto */}
       <div className="w-full md:w-1/5">
-        <h2 className="text-3xl font-bold text-gray-800 mb-3">
+        <h2 className="mb-3 text-3xl font-bold text-gray-800">
           Colección TOUS
         </h2>
         <p className="text-gray-600">
@@ -121,14 +121,14 @@ export default function ColeccionTous() {
           y la tradición se combinan en piezas únicas.
         </p>
         <div className="mt-4">
-          <button className="w-full border border-black px-3 py-4 text-lg hover:bg-black hover:text-white transition duration-300">
+          <button onClick={() => window.location.href="/catalogo?categoria=tous"} className="w-full px-3 py-4 text-lg transition duration-300 border border-black hover:bg-black hover:text-white">
             Ver colección
           </button>
         </div>
       </div>
 
       {/* Carrusel adaptativo */}
-      <div className="w-full md:w-4/5 relative overflow-hidden">
+      <div className="relative w-full overflow-hidden md:w-4/5">
         <div
           className="flex transition-transform duration-300 ease-in-out"
           style={{
@@ -144,22 +144,22 @@ export default function ColeccionTous() {
               className="flex-shrink-0 md:px-2"
               style={{ width: `${100 / slidesToShow}%` }}
             >
-              <div className="bg-white rounded-lg md:shadow-none shadow-md overflow-hidden h-full">
+              <div className="h-full overflow-hidden bg-white rounded-lg shadow-md md:shadow-none">
                 <div className="relative">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full aspect-square object-cover"
+                    className="object-cover w-full aspect-square"
                   />
                   {product.discount && (
-                    <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md">
+                    <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-md top-2 right-2">
                       {product.discount}
                     </div>
                   )}
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold">{product.name}</h3>
-                  <p className="text-gray-900 font-bold mt-2">
+                  <p className="mt-2 font-bold text-gray-900">
                     {product.price}
                   </p>
                 </div>
@@ -171,10 +171,10 @@ export default function ColeccionTous() {
         {/* Flechas de navegación */}
         <button
           onClick={prevSlide}
-          className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md z-10 ml-2"
+          className="absolute left-0 z-10 hidden p-2 ml-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
         >
           <svg
-            className="h-6 w-6"
+            className="w-6 h-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -189,10 +189,10 @@ export default function ColeccionTous() {
         </button>
         <button
           onClick={nextSlide}
-          className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-md z-10 mr-2"
+          className="absolute right-0 z-10 hidden p-2 mr-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
         >
           <svg
-            className="h-6 w-6"
+            className="w-6 h-6"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -207,7 +207,7 @@ export default function ColeccionTous() {
         </button>
 
         {/* Indicadores (puntos) - Mobile only */}
-        <div className="md:hidden flex justify-center mt-4 space-x-2">
+        <div className="flex justify-center mt-4 space-x-2 md:hidden">
           {products.map((_, index) => (
             <button
               key={index}

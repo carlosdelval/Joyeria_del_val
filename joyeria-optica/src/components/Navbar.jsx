@@ -1,8 +1,9 @@
+// eslint-disable-next-line no-unused-vars
 import { useState, useEffect } from "react";
 import { Search, User, ShoppingBag } from "lucide-react";
 import AnimatedHamburgerButton from "./HamburguerButton";
 import FlyoutLink from "./FlyoutLink";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -20,9 +21,10 @@ export default function Navbar() {
   const categorias = [
     {
       label: "REBAJAS ⚡",
+      href: "/catalogo?categoria=rebajas",
       content: () => (
         <div className="w-64 p-4 space-y-2">
-          <h3 className="text-red-600 font-bold text-xl">
+          <h3 className="text-xl font-bold text-red-600">
             Descuentos especiales
           </h3>
           <a href="#" className="block text-sm hover:underline">
@@ -39,9 +41,10 @@ export default function Navbar() {
     },
     {
       label: "TOUS",
+      href: "/catalogo?categoria=tous",
       content: () => (
         <div className="w-64 p-4 space-y-2">
-          <h3 className="font-bold text-xl">Colección TOUS</h3>
+          <h3 className="text-xl font-bold">Colección TOUS</h3>
           <a href="#" className="block text-sm hover:underline">
             Novedades
           </a>
@@ -56,9 +59,10 @@ export default function Navbar() {
     },
     {
       label: "Anillos",
+      href: "/catalogo?categoria=anillos",
       content: () => (
         <div className="w-64 p-4 space-y-2">
-          <h3 className="font-bold text-xl">Descubre nuestros anillos</h3>
+          <h3 className="text-xl font-bold">Descubre nuestros anillos</h3>
           <a href="#" className="block text-sm hover:underline">
             Compromiso
           </a>
@@ -73,9 +77,10 @@ export default function Navbar() {
     },
     {
       label: "Pendientes",
+      href: "/catalogo?categoria=pendientes",
       content: () => (
         <div className="w-64 p-4">
-          <h3 className="font-bold text-xl mb-2">Para cada ocasión</h3>
+          <h3 className="mb-2 text-xl font-bold">Para cada ocasión</h3>
           <ul className="space-y-1 text-sm">
             <li>
               <a href="#" className="hover:underline">
@@ -98,12 +103,13 @@ export default function Navbar() {
     },
     {
       label: "Pulseras",
+      href: "/catalogo?categoria=pulseras",
       content: () => (
         <div className="w-64 p-4 space-y-2">
           <p className="text-sm">
             Pulseras elegantes, casuales y personalizadas.
           </p>
-          <button className="w-full border border-black px-3 py-1 text-sm hover:bg-black hover:text-white transition duration-300">
+          <button className="w-full px-3 py-1 text-sm transition duration-300 border border-black hover:bg-black hover:text-white">
             Ver todas
           </button>
         </div>
@@ -111,9 +117,10 @@ export default function Navbar() {
     },
     {
       label: "Colgantes y collares",
+      href: "/catalogo?categoria=colgantes",
       content: () => (
         <div className="w-64 p-4">
-          <h3 className="font-bold text-xl mb-2">Estilos populares</h3>
+          <h3 className="mb-2 text-xl font-bold">Estilos populares</h3>
           <ul className="space-y-1 text-sm">
             <li>
               <a href="#" className="hover:underline">
@@ -136,10 +143,11 @@ export default function Navbar() {
     },
     {
       label: "Relojes",
+      href: "/catalogo?categoria=relojes",
       content: () => (
         <div className="w-64 p-4 text-sm">
           <p>Relojes de mujer y hombre para todos los estilos.</p>
-          <a href="#" className="hover:underline block mt-2">
+          <a href="#" className="block mt-2 hover:underline">
             Descubrir
           </a>
         </div>
@@ -147,6 +155,7 @@ export default function Navbar() {
     },
     {
       label: "Bebé",
+      href: "/catalogo?categoria=bebe",
       content: () => (
         <div className="w-64 p-4 text-sm">
           <p>Joyas delicadas y personalizadas para recién nacidos.</p>
@@ -155,6 +164,7 @@ export default function Navbar() {
     },
     {
       label: "Comunión",
+      href: "/catalogo?categoria=comunion",
       content: () => (
         <div className="w-64 p-4 text-sm">
           <p>Regalos inolvidables para un día especial.</p>
@@ -163,6 +173,7 @@ export default function Navbar() {
     },
     {
       label: "Alianzas",
+      href: "/catalogo?categoria=alianzas",
       content: () => (
         <div className="w-64 p-4 text-sm">
           <p>Encuentra las alianzas perfectas para tu boda.</p>
@@ -171,6 +182,7 @@ export default function Navbar() {
     },
     {
       label: "Gafas de sol",
+      href: "/catalogo?categoria=gafas",
       content: () => (
         <div className="w-64 p-4 text-sm">
           <p>Protección y estilo en cada mirada.</p>
@@ -182,7 +194,7 @@ export default function Navbar() {
   return (
     <header className="w-full">
       {/* Top bar */}
-      <div className="grid grid-cols-3 items-center px-4 py-3 md:py-4 md:px-8">
+      <div className="grid items-center grid-cols-3 px-4 py-3 md:py-4 md:px-8">
         {/* Izquierda */}
         <div className="flex items-center gap-4">
           <div className="lg:hidden">
@@ -191,18 +203,18 @@ export default function Navbar() {
               setActive={setMenuOpen}
             />
           </div>
-          <div className="hidden lg:block w-64 relative">
+          <div className="relative hidden w-64 lg:block">
             <form onSubmit={handleSearch}>
               <input
                 type="text"
                 placeholder="Búsqueda en catálogo"
-                className="w-full rounded-full px-4 py-2 pl-10 text-sm bg-white shadow-sm border border-gray-300"
+                className="w-full px-4 py-2 pl-10 text-sm bg-white border border-gray-300 rounded-full shadow-sm"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <button
                 type="submit"
-                className="absolute left-3 top-1/2 transform -translate-y-1/2"
+                className="absolute transform -translate-y-1/2 left-3 top-1/2"
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -212,12 +224,13 @@ export default function Navbar() {
 
         {/* Centro: logo */}
         <div className="flex justify-center">
-          <img
-            src="/logo.jpg"
-            alt="Logo"
-            className="h-10 md:h-20 object-contain mx-auto pointer-coarse:"
-            onClick={() => (window.location.href = "/")}
-          />
+          <a href="/" className="flex items-center">
+            <img
+              src="/logo.jpg"
+              alt="Logo"
+              className="object-contain h-10 mx-auto md:h-20 pointer-coarse:"
+            />
+          </a>
         </div>
 
         {/* Derecha: iconos */}
@@ -237,24 +250,24 @@ export default function Navbar() {
           <input
             type="text"
             placeholder="Búsqueda en catálogo"
-            className="w-full rounded-full px-4 py-2 pl-10 text-sm bg-white shadow-sm border border-gray-300"
+            className="w-full px-4 py-2 pl-10 text-sm bg-white border border-gray-300 rounded-full shadow-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button
             type="submit"
-            className="absolute left-3 top-1/2 transform -translate-y-1/2"
+            className="absolute transform -translate-y-1/2 left-3 top-1/2"
           >
             <Search className="w-5 h-5" />
           </button>
         </form>
       </div>
       {/* Desktop nav */}
-      <nav className="hidden lg:flex justify-center space-x-8 py-2 border-t border-gray-200">
-        {categorias.map(({ label, content: Content }, index) => (
+      <nav className="justify-center hidden py-2 space-x-8 border-t border-gray-200 lg:flex">
+        {categorias.map(({ label, href, content: Content }, index) => (
           <FlyoutLink
             key={label}
-            href="#"
+            href={href}
             FlyoutContent={Content}
             classes={`text-md ${
               index === 0
@@ -273,19 +286,19 @@ export default function Navbar() {
           menuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <nav className="px-4 py-4 grid gap-2 border-t border-gray-200">
-          {categorias.map(({ label }, index) => (
-            <a
-              key={`mobile-${label}`} // ✅ clave segura
-              href="#"
+        <nav className="grid gap-2 px-4 py-4 border-t border-gray-200">
+          {categorias.map(({ label, href }, index) => (
+            <Link
+              key={`mobile-${label}`}
+              to={href}
               className={`${
                 index === 0
                   ? "text-red-700 hover:text-red-500 font-semibold"
                   : "text-gray-800 hover:text-black"
               } text-sm border-b pb-1 no-underline transition-colors duration-400`}
             >
-              {label} {/* ✅ solo renderizamos el texto */}
-            </a>
+              {label}
+            </Link>
           ))}
         </nav>
       </div>

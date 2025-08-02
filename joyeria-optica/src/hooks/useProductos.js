@@ -1,8 +1,11 @@
-// src/hooks/useProductos.js
+// useProductos.js
 import { useEffect, useState } from "react";
 import { fetchProductos } from "../api/productos";
 
-export function useProductos({ categoria = [], busqueda = "" }) {
+export function useProductos(
+  { categoria = [], busqueda = "", ...filtros },
+  dependencia = ""
+) {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -10,7 +13,7 @@ export function useProductos({ categoria = [], busqueda = "" }) {
     const loadProductos = async () => {
       try {
         setLoading(true);
-        const data = await fetchProductos({ categoria, busqueda });
+        const data = await fetchProductos({ categoria, busqueda, ...filtros });
         setProductos(data);
       } catch (error) {
         console.error("Error loading productos:", error);
@@ -21,7 +24,7 @@ export function useProductos({ categoria = [], busqueda = "" }) {
     };
 
     loadProductos();
-  }, [categoria, busqueda]);
+  }, [JSON.stringify({ categoria, busqueda, ...filtros }), dependencia]);
 
   return { productos, loading };
 }

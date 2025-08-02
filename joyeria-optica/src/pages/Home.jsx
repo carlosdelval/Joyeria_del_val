@@ -16,15 +16,6 @@ export default function Home() {
         <ColeccionTous />
       </section>
       <section className="my-10 md:my-32">
-        <h2 className="mb-8 text-2xl font-bold text-center">
-          Tus marcas favoritas en óptica
-        </h2>
-        <GridMarcas />
-      </section>
-      <section className="my-10 md:my-32">
-        <ColeccionesDestacadas />
-      </section>
-      <section className="my-10 md:my-32">
         <div className="flex flex-col items-center justify-between px-6 py-8 text-white bg-black md:flex-row md:py-0 md:px-8 md:h-40">
           <div className="w-full space-y-4 text-center md:w-10/12 md:text-left md:space-y-3 md:pr-4">
             <h2 className="text-xl font-bold leading-tight md:text-3xl">
@@ -35,7 +26,15 @@ export default function Home() {
             </p>
           </div>
           <div className="flex-shrink-0 mt-6 md:mt-0 md:pl-4">
-            <button onClick={() => window.open("https://www.instagram.com/opticadelvaljoyeros?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", "_blank")} className="px-6 py-3 text-sm font-medium text-black transition-colors duration-300 bg-white md:py-2 md:text-base hover:bg-gray-200">
+            <button
+              onClick={() =>
+                window.open(
+                  "https://www.instagram.com/opticadelvaljoyeros?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+                  "_blank"
+                )
+              }
+              className="px-6 py-3 text-sm font-medium text-black transition-colors duration-300 bg-white md:py-2 md:text-base hover:bg-gray-200"
+            >
               Nuestro perfil
             </button>
           </div>
@@ -45,6 +44,15 @@ export default function Home() {
         <PromocionDiamantes />
       </section>
       <section className="my-10 md:my-32">
+        <h2 className="mb-8 text-2xl font-bold text-center">
+          Tus marcas favoritas en óptica
+        </h2>
+        <GridMarcas />
+      </section>
+      <section className="my-10 md:my-32">
+        <ColeccionesDestacadas />
+      </section>
+      <section className="mt-10 md:mt-32">
         <ContactoOptica />
       </section>
     </div>

@@ -5,8 +5,10 @@
     "descripcion": "Anillo artesanal con diamantes y oro blanco 18k.",
     "precio": 1790,
     "precioAnterior": 2290,
-    "imagenes": ["/img/anillo1.jpg"],
-    "categorias": ["anillos", "diamantes", "bodas"],
+    "imagenes": [
+      "https://image.made-in-china.com/318f0j00htBGRJpWILgY/eokbry3piqqs6m2nfnm-318774451451-mp4-264-sd-mp4.webp"
+    ],
+    "categorias": ["anillos", "diamantes", "bodas", "oro"],
     "etiquetas": ["oro", "18k", "hecho a mano"],
     "slug": "anillo-oro-18k-diamantes"
   },
@@ -16,7 +18,87 @@
     "descripcion": "Perfectos para los más pequeños.",
     "precio": 49,
     "precioAnterior": null,
-    "imagenes": ["/img/pendiente1.jpg"],
+    "imagenes": [
+      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
+    ],
+    "categorias": ["pendientes", "infantil"],
+    "etiquetas": ["niños", "alegría", "mariquita"],
+    "slug": "pendientes-infantiles-mariquita"
+  },
+  {
+    "id": "3",
+    "titulo": "Pendientes infantiles mariquita",
+    "descripcion": "Perfectos para los más pequeños.",
+    "precio": 49,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
+    ],
+    "categorias": ["pendientes", "infantil"],
+    "etiquetas": ["niños", "alegría", "mariquita"],
+    "slug": "pendientes-infantiles-mariquita"
+  },
+  {
+    "id": "4",
+    "titulo": "Pendientes infantiles mariquita",
+    "descripcion": "Perfectos para los más pequeños.",
+    "precio": 49,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
+    ],
+    "categorias": ["pendientes", "infantil"],
+    "etiquetas": ["niños", "alegría", "mariquita"],
+    "slug": "pendientes-infantiles-mariquita"
+  },
+  {
+    "id": "5",
+    "titulo": "Pendientes infantiles mariquita",
+    "descripcion": "Perfectos para los más pequeños.",
+    "precio": 49,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
+    ],
+    "categorias": ["pendientes", "infantil"],
+    "etiquetas": ["niños", "alegría", "mariquita"],
+    "slug": "pendientes-infantiles-mariquita"
+  },
+  {
+    "id": "6",
+    "titulo": "Pendientes infantiles mariquita",
+    "descripcion": "Perfectos para los más pequeños.",
+    "precio": 49,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
+    ],
+    "categorias": ["pendientes", "infantil"],
+    "etiquetas": ["niños", "alegría", "mariquita"],
+    "slug": "pendientes-infantiles-mariquita"
+  },
+  {
+    "id": "7",
+    "titulo": "Pendientes infantiles mariquita",
+    "descripcion": "Perfectos para los más pequeños.",
+    "precio": 49,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
+    ],
+    "categorias": ["pendientes", "infantil"],
+    "etiquetas": ["niños", "alegría", "mariquita"],
+    "slug": "pendientes-infantiles-mariquita"
+  },
+  {
+    "id": "8",
+    "titulo": "Pendientes infantiles mariquita",
+    "descripcion": "Perfectos para los más pequeños.",
+    "precio": 49,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
+    ],
     "categorias": ["pendientes", "infantil"],
     "etiquetas": ["niños", "alegría", "mariquita"],
     "slug": "pendientes-infantiles-mariquita"

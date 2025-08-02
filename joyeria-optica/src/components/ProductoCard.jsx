@@ -1,17 +1,17 @@
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 
 const ProductoCard = ({ producto }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
   const {
-    titulo: nombre, // Mapeamos titulo a nombre
-    imagenes,      // Cambiamos imagen por imagenes
+    titulo: nombre,
+    imagenes,
     precio,
     precioAnterior,
-    categorias,
     slug
   } = producto;
 
-  // Calculamos descuento si hay precioAnterior
   const descuento = precioAnterior 
     ? Math.round(((precioAnterior - precio) / precioAnterior) * 100)
     : null;
@@ -25,15 +25,23 @@ const ProductoCard = ({ producto }) => {
       transition={{ type: "spring", stiffness: 300 }}
       className="block overflow-hidden bg-white border border-gray-100 rounded-sm"
     >
+      {/* Contenedor de imagen con skeleton */}
       <motion.div 
         className="relative overflow-hidden aspect-square bg-gray-50"
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.3 }}
       >
-        <img
-          src={imagenes[0]} // Tomamos la primera imagen del array
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+        )}
+        <motion.img
+          src={imagenes[0]}
           alt={nombre}
-          className="object-cover w-full h-full transition-opacity duration-300 hover:opacity-90"
+          className="object-cover w-full h-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: imageLoaded ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          onLoad={() => setImageLoaded(true)}
         />
         
         {descuento && (
