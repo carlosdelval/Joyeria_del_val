@@ -245,7 +245,7 @@ export default function Navbar() {
         </div>
       </div>
       {/* Mobile search */}
-      <div className="px-4 pb-3 md:hidden">
+      <div className="px-4 md:hidden">
         <form onSubmit={handleSearch} className="relative">
           <input
             type="text"

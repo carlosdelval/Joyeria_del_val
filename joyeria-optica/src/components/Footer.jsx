@@ -20,22 +20,22 @@ export default function Footer() {
           <h3 className="mb-3 font-semibold text-md">Enlaces</h3>
           <ul className="space-y-2 text-sm">
             <li>
-              <a href="#" className="hover:underline">
+              <a href="terminos-legales" className="hover:underline">
                 Términos y Condiciones
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <a href="/privacidad" className="hover:underline">
                 Política de Privacidad
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <a href="/envios-devoluciones" className="hover:underline">
                 Política de Envíos y Devoluciones
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline">
+              <a href="/contacto" className="hover:underline">
                 Contacto
               </a>
             </li>

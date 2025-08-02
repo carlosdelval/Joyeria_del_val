@@ -4,6 +4,10 @@ import Catalogo from "./pages/catalogo";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import ProductoPage from "./pages/Producto";
+import TerminosLegales from "./pages/TerminosLegales";
+import Contacto from "./pages/Contacto";
+import Privacidad from "./pages/Privacidad";
+import PoliticaEnviosDevoluciones from "./pages/Devoluciones";
 
 function App() {
   return (
@@ -14,6 +18,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/producto/:slug" element={<ProductoPage />} />
+          <Route path="/terminos-legales" element={<TerminosLegales />} />
+          <Route path="/contacto" element={<Contacto />} />
+          <Route path="/privacidad" element={<Privacidad />} />
+          <Route path="/envios-devoluciones" element={<PoliticaEnviosDevoluciones />} />
         </Routes>
         <Footer />
       </div>

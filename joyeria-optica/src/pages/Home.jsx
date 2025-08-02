@@ -7,7 +7,7 @@ import PromocionDiamantes from "../components/Promoción";
 import ContactoOptica from "../components/ContactCard";
 export default function Home() {
   return (
-    <div className="container py-12 mx-auto">
+    <div className="container py-6 mx-auto">
       <VerticalAccordion />
       <section className="px-4 my-16 md:my-32">
         <GridArticulos />
