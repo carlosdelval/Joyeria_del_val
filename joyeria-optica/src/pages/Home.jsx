@@ -7,15 +7,15 @@ import PromocionDiamantes from "../components/Promoción";
 import ContactoOptica from "../components/ContactCard";
 export default function Home() {
   return (
-    <div className="container px-4 py-12 mx-auto">
+    <div className="container py-12 mx-auto">
       <VerticalAccordion />
-      <section className="my-10 md:my-32">
+      <section className="px-4 my-16 md:my-32">
         <GridArticulos />
       </section>
-      <section className="my-10 md:my-32">
+      <section className="px-4 my-16 md:my-32">
         <ColeccionTous />
       </section>
-      <section className="my-10 md:my-32">
+      <section className="my-16 md:my-32">
         <div className="flex flex-col items-center justify-between px-6 py-8 text-white bg-black md:flex-row md:py-0 md:px-8 md:h-40">
           <div className="w-full space-y-4 text-center md:w-10/12 md:text-left md:space-y-3 md:pr-4">
             <h2 className="text-xl font-bold leading-tight md:text-3xl">
@@ -40,19 +40,19 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="my-10 md:my-32">
+      <section className="px-4 my-16 md:my-32">
         <PromocionDiamantes />
       </section>
-      <section className="my-10 md:my-32">
+      <section className="px-4 my-16 md:my-32">
         <h2 className="mb-8 text-2xl font-bold text-center">
           Tus marcas favoritas en óptica
         </h2>
         <GridMarcas />
       </section>
-      <section className="my-10 md:my-32">
+      <section className="my-16 md:my-32">
         <ColeccionesDestacadas />
       </section>
-      <section className="mt-10 md:mt-32">
+      <section className="px-4 mt-16 md:mt-32">
         <ContactoOptica />
       </section>
     </div>

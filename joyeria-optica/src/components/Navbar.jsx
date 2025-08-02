@@ -14,7 +14,7 @@ export default function Navbar() {
     e.preventDefault();
     if (searchTerm.trim()) {
       navigate(`/catalogo?search=${encodeURIComponent(searchTerm)}`);
-      setSearchTerm(""); // Limpiamos el input después de buscar
+      setSearchTerm("");
     }
   };
 
@@ -291,6 +291,7 @@ export default function Navbar() {
             <Link
               key={`mobile-${label}`}
               to={href}
+              onClick={() => setMenuOpen(false)}
               className={`${
                 index === 0
                   ? "text-red-700 hover:text-red-500 font-semibold"
