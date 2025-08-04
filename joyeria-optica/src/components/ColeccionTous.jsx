@@ -1,81 +1,51 @@
-import DrawOutlineButton from "./DrawOutlineButton";
 import { useState, useEffect } from "react";
+import { fetchProductos } from "../api/productos";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 export default function ColeccionTous() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
-  const [slidesToShow, setSlidesToShow] = useState(1); // Por defecto 1 para móvil
+  const [slidesToShow, setSlidesToShow] = useState(1);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [isNavigating, setIsNavigating] = useState(false);
 
-  const products = [
-    {
-      id: 1,
-      name: "Collar Oso TOUS",
-      price: "139,00 €",
-      image:
-        "https://masqnuevo.net/44064-large_default/collar-tous-hilo-y-colgante-oso-de-plata-vermeil-coleccion-vitoria.jpg",
-      discount: "-15%",
-    },
-    {
-      id: 2,
-      name: "Pulsera de Oro TOUS",
-      price: "89,00 €",
-      image: "https://olaluxe.mx/cdn/shop/files/ELL5737_2048x.jpg?v=1729224745",
-    },
-    {
-      id: 3,
-      name: "Anillo TOUS",
-      price: "119,00 €",
-      image:
-        "https://ianor.es/cdn/shop/files/14219GM_anillo_tous_milosos_oro_18kt_1_copia.jpg?v=1743069887",
-      discount: "-20%",
-    },
-    {
-      id: 4,
-      name: "Pendientes Oro TOUS",
-      price: "159,00 €",
-      image:
-        "https://www.tasadoresjoyeros.com/10598-large_default/pendientes-tous-en-oro-18kt-h15641-3.jpg",
-    },
-    {
-      id: 5,
-      name: "Pendientes Piedras TOUS",
-      price: "159,00 €",
-      image:
-        "https://masqnuevo.net/42981-large_default/pendientes-tous-grace-en-plata-de-primera-ley-y-marcasita-de-segunda-mano.jpg",
-    },
-    {
-      id: 6,
-      name: "Pulsera osos TOUS",
-      price: "159,00 €",
-      image: "https://www.modacris.es/pulsera-tous_pic470005ni1t0.jpg",
-    },
-    {
-      id: 7,
-      name: "Pulsera TOUS",
-      price: "159,00 €",
-      image:
-        "https://olaluxe.mx/cdn/shop/files/ELL5786.jpg?crop=center&height=1764&v=1729225675&width=2646",
-    },
-  ];
-
-  // Ajustar slides según el tamaño de pantalla
+  // Cargar productos TOUS
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setSlidesToShow(4); // Desktop: 4 slides
-      } else if (window.innerWidth >= 768) {
-        setSlidesToShow(2); // Tablet: 2 slides
-      } else {
-        setSlidesToShow(1); // Móvil: 1 slide
+    const loadTousProducts = async () => {
+      try {
+        const tousProducts = await fetchProductos({ categoria: ["tous"] });
+        setProducts(tousProducts);
+      } catch (error) {
+        console.error("Error cargando productos TOUS:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    handleResize(); // Ejecutar al montar
+    loadTousProducts();
+  }, []);
+
+  // Ajustar slides según tamaño de pantalla
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSlidesToShow(4);
+      } else if (window.innerWidth >= 768) {
+        setSlidesToShow(2);
+      } else {
+        setSlidesToShow(1);
+      }
+    };
+
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Navegación entre slides
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
       prevIndex >= products.length - slidesToShow ? 0 : prevIndex + 1
@@ -88,6 +58,7 @@ export default function ColeccionTous() {
     );
   };
 
+  // Handlers para touch (móvil)
   const handleTouchStart = (e) => {
     setTouchStart(e.targetTouches[0].clientX);
   };
@@ -97,17 +68,39 @@ export default function ColeccionTous() {
   };
 
   const handleTouchEnd = () => {
-    if (touchStart - touchEnd > 50) nextSlide(); // Deslizar izquierda
-    if (touchStart - touchEnd < -50) prevSlide(); // Deslizar derecha
+    if (touchStart - touchEnd > 50) nextSlide();
+    if (touchStart - touchEnd < -50) prevSlide();
+  };
+
+  // Navegar a página de producto
+  const goToProduct = (slug) => {
+    setIsNavigating(true); // Bloquea interacciones
+    setTimeout(() => {
+      // Timeout para permitir el renderizado
+      navigate(`/producto/${slug}`, {
+        state: { fromCarousel: true }, // Estado opcional para la página destino
+      });
+    }, 50); // Tiempo mínimo para que React procese el estado
   };
 
   // Auto-rotación
   useEffect(() => {
+    if (products.length === 0) return;
+
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);
     return () => clearInterval(interval);
-  }, [currentIndex, slidesToShow]);
+  }, [currentIndex, slidesToShow, products]);
+
+  if (loading)
+    return <div className="py-12 text-center">Cargando colección...</div>;
+  if (products.length === 0)
+    return (
+      <div className="py-12 text-center">
+        No hay productos en esta colección
+      </div>
+    );
 
   return (
     <div className="flex flex-col w-full gap-6 md:flex-row">
@@ -117,22 +110,27 @@ export default function ColeccionTous() {
           Colección TOUS
         </h2>
         <p className="text-gray-600">
-          Descubre nuestra exclusiva selección de joyas TOUS, donde la elegancia
-          y la tradición se combinan en piezas únicas.
+          Descubre nuestra exclusiva selección de joyas TOUS.
         </p>
         <div className="mt-4">
-          <button onClick={() => window.location.href="/catalogo?categoria=tous"} className="w-full px-3 py-4 text-lg transition duration-300 border border-black hover:bg-black hover:text-white">
+          <button
+            onClick={() => navigate("/catalogo/tous")}
+            className="w-full px-3 py-4 text-lg transition duration-300 border border-black hover:bg-black hover:text-white"
+          >
             Ver colección
           </button>
         </div>
       </div>
 
-      {/* Carrusel adaptativo */}
+      {/* Carrusel */}
       <div className="relative w-full overflow-hidden md:w-4/5">
         <div
-          className="flex transition-transform duration-300 ease-in-out"
+          className={`flex transition-transform duration-300 ease-in-out ${
+            isNavigating ? "opacity-90" : ""
+          }`}
           style={{
             transform: `translateX(-${currentIndex * (100 / slidesToShow)}%)`,
+            pointerEvents: isNavigating ? "none" : "auto", // Deshabilita interacciones
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
@@ -144,24 +142,46 @@ export default function ColeccionTous() {
               className="flex-shrink-0 md:px-2"
               style={{ width: `${100 / slidesToShow}%` }}
             >
-              <div className="h-full overflow-hidden bg-white rounded-lg shadow-md md:shadow-none">
+              <div
+                className={`h-full overflow-hidden bg-white rounded-lg shadow-md cursor-pointer md:shadow-none hover:shadow-lg transition-opacity ${
+                  isNavigating ? "opacity-90" : ""
+                }`}
+                onClick={() => goToProduct(product.slug)}
+              >
                 <div className="relative">
                   <img
-                    src={product.image}
-                    alt={product.name}
+                    src={product.imagenes?.[0] || "/placeholder-product.jpg"}
+                    alt={product.titulo}
                     className="object-cover w-full aspect-square"
                   />
-                  {product.discount && (
+                  {product.precioAnterior && (
                     <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-md top-2 right-2">
-                      {product.discount}
+                      {`-${Math.round(
+                        ((product.precioAnterior - product.precio) /
+                          product.precioAnterior) *
+                          100
+                      )}%`}
                     </div>
                   )}
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold">{product.name}</h3>
-                  <p className="mt-2 font-bold text-gray-900">
-                    {product.price}
-                  </p>
+                  <h3 className="text-lg font-semibold">{product.titulo}</h3>
+                  <div className="mt-2">
+                    <span className="font-bold text-gray-900">
+                      {product.precio.toLocaleString("es-ES", {
+                        style: "currency",
+                        currency: "EUR",
+                      })}
+                    </span>
+                    {product.precioAnterior && (
+                      <span className="ml-2 text-sm text-gray-500 line-through">
+                        {product.precioAnterior.toLocaleString("es-ES", {
+                          style: "currency",
+                          currency: "EUR",
+                        })}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -169,44 +189,48 @@ export default function ColeccionTous() {
         </div>
 
         {/* Flechas de navegación */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-0 z-10 hidden p-2 ml-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-0 z-10 hidden p-2 mr-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
-        >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
+        {products.length > slidesToShow && (
+          <>
+            <button
+              onClick={prevSlide}
+              className="absolute left-0 z-10 hidden p-2 ml-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute right-0 z-10 hidden p-2 mr-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </>
+        )}
 
-        {/* Indicadores (puntos) - Mobile only */}
+        {/* Indicadores para móvil */}
         <div className="flex justify-center mt-4 space-x-2 md:hidden">
           {products.map((_, index) => (
             <button

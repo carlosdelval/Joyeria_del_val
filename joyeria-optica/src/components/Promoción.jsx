@@ -1,34 +1,39 @@
-const productos = [
-  {
-    nombre: "Anillo oro 18k y diamantes 0.66cts",
-    precioOriginal: "3.380,00 €",
-    precioDescuento: "1.690,00 €",
-    imagen: "https://media.istockphoto.com/id/1219309412/es/foto/anillo-de-diamantes-aislado-en-el-anillo-de-estilo-solitario-de-compromiso-blanco.jpg?s=612x612&w=0&k=20&c=wg4DSWOFKt0SgBObfJqXRSBqEyuugTqWc1KvzcyB9o4=",
-  },
-  {
-    nombre: "Anillo oro 18k, zafiro y diamantes 0.2cts",
-    precioOriginal: "1.990,00 €",
-    precioDescuento: "995,00 €",
-    imagen: "https://media.istockphoto.com/id/469421498/es/foto/anillo-de-diamante-aislado-sobre-fondo-blanco.jpg?s=612x612&w=0&k=20&c=yyB1FPgE3c5Quvyixi1T1AmgU2Ce-w0zBiYwiSQqeB8=",
-  },
-  {
-    nombre: "Anillo oro blanco diamantes 0.50cts",
-    precioOriginal: "3.066,00 €",
-    precioDescuento: "1.533,00 €",
-    imagen: "https://media.thejewellershop.com/images/products/500/DR0548-18KW_01.jpg",
-  },
-  {
-    nombre: "Anillo oro diamantes 0.51cts",
-    precioOriginal: "3.140,00 €",
-    precioDescuento: "1.570,00 €",
-    imagen: "https://www.baunat.com/es/122413_bau_9582_722x722/venta-exclusiva-de-stock-de-baunat-sin-30-dias-de-devolucion-0-77-quilates-anillo-de-compromiso-diamante-diseno-en-oro-blanco-disponible-en-talla-55.jpg",
-  },
-];
+import { useState, useEffect } from "react";
+import { fetchProductos } from "../api/productos";
+import { useNavigate } from "react-router-dom";
 
 const PromocionDiamantes = () => {
+  const [productos, setProductos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const data = await fetchProductos({ 
+          categoria: ["diamantes"],
+          precioMax: 2000 // Solo productos con descuento
+        });
+        setProductos(data.slice(0, 4)); // Mostrar solo 4 productos
+      } catch (error) {
+        console.error("Error loading products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
+
+  const goToProduct = (slug) => {
+    navigate(`/producto/${slug}`);
+  };
+
+  if (loading) return <div className="py-12 text-center">Cargando promoción...</div>;
+
   return (
-    <section className="">
-      <div className="grid lg:grid-cols-2 gap-8 items-center">
+    <section className="py-8">
+      <div className="grid items-center gap-8 lg:grid-cols-2">
         {/* Banner principal */}
         <div className="relative w-full h-full min-h-[400px]">
           <img
@@ -36,11 +41,14 @@ const PromocionDiamantes = () => {
             alt="Promo Diamantes"
             className="object-cover w-full h-full"
           />
-          <div className="absolute inset-0 flex flex-col justify-center items-center text-white text-center p-6 bg-black/30">
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white bg-black/30">
             <p className="text-xl tracking-widest">DIAMANTES HASTA</p>
             <h2 className="text-6xl font-bold">50% DTO</h2>
-            <p className="mt-2 tracking-widest text-sm">CALIDAD CERTIFICADA</p>
-            <button className="mt-4 px-6 py-2 bg-white text-black font-medium transition hover:bg-gray-200 duration-300 ease-in-out">
+            <p className="mt-2 text-sm tracking-widest">CALIDAD CERTIFICADA</p>
+            <button 
+              onClick={() => navigate('/catalogo/diamantes')}
+              className="px-6 py-2 mt-4 font-medium text-black transition duration-300 ease-in-out bg-white hover:bg-gray-200"
+            >
               VER MÁS
             </button>
           </div>
@@ -48,19 +56,37 @@ const PromocionDiamantes = () => {
 
         {/* Productos en oferta */}
         <div className="grid grid-cols-2 gap-4">
-          {productos.map((prod, idx) => (
-            <div key={idx} className="relative bg-white p-2 border rounded">
+          {productos.map((prod) => (
+            <div 
+              key={prod.id} 
+              className="relative p-2 transition-transform bg-white border rounded cursor-pointer hover:shadow-lg hover:scale-[1.02]"
+              onClick={() => goToProduct(prod.slug)}
+            >
               <img
-                src={prod.imagen}
-                alt={prod.nombre}
-                className="w-full object-contain mb-2"
+                src={prod.imagenes[0]}
+                alt={prod.titulo}
+                className="object-contain w-full mb-2 aspect-square"
               />
-              <span className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                -50%
+              <span className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded top-2 right-2">
+                {prod.precioAnterior ? 
+                  `-${Math.round(((prod.precioAnterior - prod.precio) / prod.precioAnterior * 100))}%` 
+                  : 'OFERTA'}
               </span>
-              <p className="text-sm font-medium">{prod.nombre}</p>
-              <p className="text-red-600 font-semibold">{prod.precioDescuento}</p>
-              <p className="text-gray-400 line-through text-sm">{prod.precioOriginal}</p>
+              <p className="text-sm font-medium line-clamp-2">{prod.titulo}</p>
+              <p className="font-semibold text-red-600">
+                {prod.precio.toLocaleString("es-ES", {
+                  style: "currency",
+                  currency: "EUR"
+                })}
+              </p>
+              {prod.precioAnterior && (
+                <p className="text-sm text-gray-400 line-through">
+                  {prod.precioAnterior.toLocaleString("es-ES", {
+                    style: "currency",
+                    currency: "EUR"
+                  })}
+                </p>
+              )}
             </div>
           ))}
         </div>

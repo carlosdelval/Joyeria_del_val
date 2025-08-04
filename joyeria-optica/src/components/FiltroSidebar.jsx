@@ -1,38 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 
 const FiltroSidebar = ({
+  filtrosIniciales,
+  filtrosPorCategoria,
   onAplicarFiltros,
   onClose,
-  filtrosIniciales = {},
-  filtrosPorCategoria = {},
 }) => {
   const [filtrosSeleccionados, setFiltrosSeleccionados] = useState({});
   const [rangoPrecio, setRangoPrecio] = useState([
     filtrosIniciales.precioMin || 0,
     filtrosIniciales.precioMax || 2000,
   ]);
+  const sliderTrackRef = useRef(null);
 
-  // ✅ Sincronizar filtros seleccionados al recibir nuevos filtrosIniciales
+  // Inicializa los filtros seleccionados al montar
   useEffect(() => {
-    setFiltrosSeleccionados((prev) => ({
-      ...prev,
-      ...filtrosIniciales,
-    }));
-    setRangoPrecio([
-      filtrosIniciales.precioMin || 0,
-      filtrosIniciales.precioMax || 2000,
-    ]);
-  }, [JSON.stringify(filtrosIniciales)]);
+    const nuevosFiltros = {};
+    for (const key in filtrosPorCategoria) {
+      const filtro = filtrosPorCategoria[key];
+      if (filtro.type === "checkbox") {
+        nuevosFiltros[key] = filtrosIniciales[key] || [];
+      } else if (filtro.type === "boolean") {
+        nuevosFiltros[key] = filtrosIniciales[key] || false;
+      }
+    }
+    setFiltrosSeleccionados(nuevosFiltros);
+  }, [filtrosIniciales, filtrosPorCategoria]);
 
   const toggleOpcionFiltro = (filtroKey, opcion) => {
     setFiltrosSeleccionados((prev) => {
-      const actuales = prev[filtroKey] || [];
-      const nuevasOpciones = actuales.includes(opcion)
-        ? actuales.filter((o) => o !== opcion)
-        : [...actuales, opcion];
-      return { ...prev, [filtroKey]: nuevasOpciones };
+      const opciones = prev[filtroKey] || [];
+      if (opciones.includes(opcion)) {
+        return { ...prev, [filtroKey]: opciones.filter((o) => o !== opcion) };
+      } else {
+        return { ...prev, [filtroKey]: [...opciones, opcion] };
+      }
     });
   };
 
@@ -44,33 +48,30 @@ const FiltroSidebar = ({
   };
 
   const handlePrecioChange = (index, value) => {
-    const newRango = [...rangoPrecio];
-    newRango[index] = Number(value);
-    setRangoPrecio(newRango);
+    const nuevoRango = [...rangoPrecio];
+    nuevoRango[index] = value;
+    setRangoPrecio(nuevoRango);
   };
 
   const aplicarFiltros = () => {
-    onAplicarFiltros({
+    const filtros = {
+      ...filtrosSeleccionados,
       precioMin: rangoPrecio[0],
       precioMax: rangoPrecio[1],
-      ...filtrosSeleccionados,
-    });
-    if (onClose) onClose();
+    };
+    onAplicarFiltros(filtros);
+    if (onClose) onClose(); // cerrar sidebar móvil si aplica
   };
 
   const limpiarFiltros = () => {
-    setRangoPrecio([0, 2000]);
-    setFiltrosSeleccionados({});
-    onAplicarFiltros({
-      categorias: [],
+    const filtrosReset = {
       precioMin: 0,
       precioMax: 2000,
-      ...Object.keys(filtrosPorCategoria).reduce((acc, key) => {
-        acc[key] = [];
-        return acc;
-      }, {}),
-    });
-    if (onClose) onClose();
+    };
+    setFiltrosSeleccionados({});
+    setRangoPrecio([0, 2000]);
+    onAplicarFiltros(filtrosReset);
+    if (onClose) onClose(); // cerrar sidebar móvil si aplica
   };
 
   return (
@@ -81,7 +82,6 @@ const FiltroSidebar = ({
       transition={{ type: "spring", damping: 25 }}
       className="flex flex-col h-full bg-white border-r border-gray-100 w-72"
     >
-      {/* Cabecera fija */}
       <div className="p-6 pb-4 border-b border-gray-100">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-light tracking-wider text-black">
@@ -110,9 +110,7 @@ const FiltroSidebar = ({
         </div>
       </div>
 
-      {/* Contenido principal con scroll solo si es necesario */}
       <div className="flex-1 p-6 space-y-6 overflow-y-auto">
-        {/* Sección Filtros */}
         {Object.entries(filtrosPorCategoria).map(([filtroKey, filtro]) => (
           <div key={filtroKey}>
             <h3 className="mb-3 text-xs font-medium tracking-wider text-gray-500 uppercase">
@@ -184,13 +182,15 @@ const FiltroSidebar = ({
           </div>
         ))}
 
-        {/* Sección Slider de precio */}
         <div>
           <h3 className="mb-3 text-xs font-medium tracking-wider text-gray-500 uppercase">
             Rango de Precio
           </h3>
           <div className="px-2">
-            <div className="relative h-2 mb-6 bg-gray-200 rounded-full">
+            <div
+              ref={sliderTrackRef}
+              className="relative h-2 mb-6 bg-gray-200 rounded-full"
+            >
               <div
                 className="absolute h-full bg-black rounded-full"
                 style={{
@@ -198,58 +198,34 @@ const FiltroSidebar = ({
                   width: `${((rangoPrecio[1] - rangoPrecio[0]) / 2000) * 100}%`,
                 }}
               />
-              <motion.div
-                drag="x"
-                dragElastic={0}
-                dragMomentum={false}
-                dragConstraints={{
-                  left: 0,
-                  right: 0,
-                }}
-                onDrag={(e) => {
-                  const container = e.target.parentElement;
-                  const rect = container.getBoundingClientRect();
-                  const percentage = Math.max(
-                    0,
-                    Math.min(1, (e.clientX - rect.left) / rect.width)
-                  );
-                  const newValue = Math.round(percentage * 2000);
-                  if (newValue < rangoPrecio[1]) {
-                    handlePrecioChange(0, newValue);
-                  }
-                }}
-                className="absolute w-5 h-5 bg-white border-2 border-black rounded-full cursor-grab active:cursor-grabbing shadow-sm -mt-1.5"
-                style={{
-                  left: `${(rangoPrecio[0] / 2000) * 100}%`,
-                  transform: "translateX(-50%)",
-                }}
-              />
-              <motion.div
-                drag="x"
-                dragElastic={0}
-                dragMomentum={false}
-                dragConstraints={{
-                  left: 0,
-                  right: 0,
-                }}
-                onDrag={(e) => {
-                  const container = e.target.parentElement;
-                  const rect = container.getBoundingClientRect();
-                  const percentage = Math.max(
-                    0,
-                    Math.min(1, (e.clientX - rect.left) / rect.width)
-                  );
-                  const newValue = Math.round(percentage * 2000);
-                  if (newValue > rangoPrecio[0]) {
-                    handlePrecioChange(1, newValue);
-                  }
-                }}
-                className="absolute w-5 h-5 bg-white border-2 border-black rounded-full cursor-grab active:cursor-grabbing shadow-sm -mt-1.5"
-                style={{
-                  left: `${(rangoPrecio[1] / 2000) * 100}%`,
-                  transform: "translateX(-50%)",
-                }}
-              />
+              {[0, 1].map((i) => (
+                <motion.div
+                  key={i}
+                  drag="x"
+                  dragElastic={0}
+                  dragMomentum={false}
+                  dragConstraints={{ left: 0, right: 0 }}
+                  onDrag={(e) => {
+                    const rect = sliderTrackRef.current.getBoundingClientRect();
+                    const percentage = Math.max(
+                      0,
+                      Math.min(1, (e.clientX - rect.left) / rect.width)
+                    );
+                    const newValue = Math.round(percentage * 2000);
+                    if (
+                      (i === 0 && newValue < rangoPrecio[1]) ||
+                      (i === 1 && newValue > rangoPrecio[0])
+                    ) {
+                      handlePrecioChange(i, newValue);
+                    }
+                  }}
+                  className="absolute w-5 h-5 bg-white border-2 border-black rounded-full cursor-grab active:cursor-grabbing shadow-sm -mt-1.5"
+                  style={{
+                    left: `${(rangoPrecio[i] / 2000) * 100}%`,
+                    transform: "translateX(-50%)",
+                  }}
+                />
+              ))}
             </div>
             <div className="flex justify-between mt-1 text-sm text-gray-600">
               <span>€{rangoPrecio[0]}</span>
@@ -259,7 +235,6 @@ const FiltroSidebar = ({
         </div>
       </div>
 
-      {/* Botones fijos en la parte inferior */}
       <div className="p-6 pt-4 border-t border-gray-100">
         <div className="flex gap-2">
           <motion.button
@@ -283,4 +258,5 @@ const FiltroSidebar = ({
     </motion.aside>
   );
 };
+
 export default FiltroSidebar;

@@ -13,7 +13,7 @@ export default function Navbar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      navigate(`/catalogo?search=${encodeURIComponent(searchTerm)}`);
+      navigate(`/catalogo/${encodeURIComponent(searchTerm)}`);
       setSearchTerm("");
     }
   };
@@ -21,7 +21,7 @@ export default function Navbar() {
   const categorias = [
     {
       label: "REBAJAS ⚡",
-      href: "/catalogo?categoria=rebajas",
+      href: "/catalogo/rebajas",
       content: () => (
         <div className="w-64 p-4 space-y-2">
           <h3 className="text-xl font-bold text-red-600">
@@ -41,7 +41,7 @@ export default function Navbar() {
     },
     {
       label: "TOUS",
-      href: "/catalogo?categoria=tous",
+      href: "/catalogo/tous",
       content: () => (
         <div className="w-64 p-4 space-y-2">
           <h3 className="text-xl font-bold">Colección TOUS</h3>
@@ -59,7 +59,7 @@ export default function Navbar() {
     },
     {
       label: "Anillos",
-      href: "/catalogo?categoria=anillos",
+      href: "/catalogo/anillos",
       content: () => (
         <div className="w-64 p-4 space-y-2">
           <h3 className="text-xl font-bold">Descubre nuestros anillos</h3>
@@ -77,7 +77,7 @@ export default function Navbar() {
     },
     {
       label: "Pendientes",
-      href: "/catalogo?categoria=pendientes",
+      href: "/catalogo/pendientes",
       content: () => (
         <div className="w-64 p-4">
           <h3 className="mb-2 text-xl font-bold">Para cada ocasión</h3>
@@ -103,7 +103,7 @@ export default function Navbar() {
     },
     {
       label: "Pulseras",
-      href: "/catalogo?categoria=pulseras",
+      href: "/catalogo/pulseras",
       content: () => (
         <div className="w-64 p-4 space-y-2">
           <p className="text-sm">
@@ -117,7 +117,7 @@ export default function Navbar() {
     },
     {
       label: "Colgantes y collares",
-      href: "/catalogo?categoria=colgantes",
+      href: "/catalogo/colgantes",
       content: () => (
         <div className="w-64 p-4">
           <h3 className="mb-2 text-xl font-bold">Estilos populares</h3>
@@ -143,7 +143,7 @@ export default function Navbar() {
     },
     {
       label: "Relojes",
-      href: "/catalogo?categoria=relojes",
+      href: "/catalogo/relojes",
       content: () => (
         <div className="w-64 p-4 text-sm">
           <p>Relojes de mujer y hombre para todos los estilos.</p>
@@ -154,35 +154,8 @@ export default function Navbar() {
       ),
     },
     {
-      label: "Bebé",
-      href: "/catalogo?categoria=bebe",
-      content: () => (
-        <div className="w-64 p-4 text-sm">
-          <p>Joyas delicadas y personalizadas para recién nacidos.</p>
-        </div>
-      ),
-    },
-    {
-      label: "Comunión",
-      href: "/catalogo?categoria=comunion",
-      content: () => (
-        <div className="w-64 p-4 text-sm">
-          <p>Regalos inolvidables para un día especial.</p>
-        </div>
-      ),
-    },
-    {
-      label: "Alianzas",
-      href: "/catalogo?categoria=alianzas",
-      content: () => (
-        <div className="w-64 p-4 text-sm">
-          <p>Encuentra las alianzas perfectas para tu boda.</p>
-        </div>
-      ),
-    },
-    {
-      label: "Gafas de sol",
-      href: "/catalogo?categoria=gafas",
+      label: "Gafas",
+      href: "/catalogo/gafas",
       content: () => (
         <div className="w-64 p-4 text-sm">
           <p>Protección y estilo en cada mirada.</p>

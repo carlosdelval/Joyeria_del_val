@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 
 /**
@@ -35,9 +36,9 @@ const FlyoutLink = ({ href = "#", children, FlyoutContent, classes }) => {
             exit={{ opacity: 0, y: 15 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             style={{ translateX: "-50%" }}
-            className="absolute left-1/2 top-10 z-50 bg-white text-black shadow-xl rounded-lg"
+            className="absolute z-50 text-black bg-white rounded-lg shadow-xl left-1/2 top-10"
           >
-            <div className="absolute -top-6 left-0 right-0 h-6 bg-transparent" />
+            <div className="absolute left-0 right-0 h-6 bg-transparent -top-6" />
             <FlyoutContent />
           </motion.div>
         )}

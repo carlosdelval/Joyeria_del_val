@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Catalogo from "./pages/catalogo";
+import Catalogo from "./pages/Catalogo";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import ProductoPage from "./pages/Producto";
@@ -16,7 +16,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/catalogo/:categoria" element={<Catalogo />} />
           <Route path="/producto/:slug" element={<ProductoPage />} />
           <Route path="/terminos-legales" element={<TerminosLegales />} />
           <Route path="/contacto" element={<Contacto />} />

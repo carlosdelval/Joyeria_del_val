@@ -26,90 +26,14 @@
     "slug": "pendientes-infantiles-mariquita"
   },
   {
-    "id": "3",
-    "titulo": "Pendientes infantiles mariquita",
-    "descripcion": "Perfectos para los más pequeños.",
-    "precio": 49,
-    "precioAnterior": null,
-    "imagenes": [
-      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
-    ],
-    "categorias": ["pendientes", "infantil"],
-    "etiquetas": ["niños", "alegría", "mariquita"],
-    "slug": "pendientes-infantiles-mariquita"
-  },
-  {
-    "id": "4",
-    "titulo": "Pendientes infantiles mariquita",
-    "descripcion": "Perfectos para los más pequeños.",
-    "precio": 49,
-    "precioAnterior": null,
-    "imagenes": [
-      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
-    ],
-    "categorias": ["pendientes", "infantil"],
-    "etiquetas": ["niños", "alegría", "mariquita"],
-    "slug": "pendientes-infantiles-mariquita"
-  },
-  {
-    "id": "5",
-    "titulo": "Pendientes infantiles mariquita",
-    "descripcion": "Perfectos para los más pequeños.",
-    "precio": 49,
-    "precioAnterior": null,
-    "imagenes": [
-      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
-    ],
-    "categorias": ["pendientes", "infantil"],
-    "etiquetas": ["niños", "alegría", "mariquita"],
-    "slug": "pendientes-infantiles-mariquita"
-  },
-  {
-    "id": "6",
-    "titulo": "Pendientes infantiles mariquita",
-    "descripcion": "Perfectos para los más pequeños.",
-    "precio": 49,
-    "precioAnterior": null,
-    "imagenes": [
-      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
-    ],
-    "categorias": ["pendientes", "infantil"],
-    "etiquetas": ["niños", "alegría", "mariquita"],
-    "slug": "pendientes-infantiles-mariquita"
-  },
-  {
-    "id": "7",
-    "titulo": "Pendientes infantiles mariquita",
-    "descripcion": "Perfectos para los más pequeños.",
-    "precio": 49,
-    "precioAnterior": null,
-    "imagenes": [
-      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
-    ],
-    "categorias": ["pendientes", "infantil"],
-    "etiquetas": ["niños", "alegría", "mariquita"],
-    "slug": "pendientes-infantiles-mariquita"
-  },
-  {
-    "id": "8",
-    "titulo": "Pendientes infantiles mariquita",
-    "descripcion": "Perfectos para los más pequeños.",
-    "precio": 49,
-    "precioAnterior": null,
-    "imagenes": [
-      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
-    ],
-    "categorias": ["pendientes", "infantil"],
-    "etiquetas": ["niños", "alegría", "mariquita"],
-    "slug": "pendientes-infantiles-mariquita"
-  },
-  {
     "id": "9",
     "titulo": "Pulsera de plata 925 con dije de corazón",
     "descripcion": "Elegante pulsera de plata esterlina con detalle de corazón.",
     "precio": 120,
     "precioAnterior": 150,
-    "imagenes": ["https://lecarre.es/uploads/pulseras/pulsera-corazon-plata.jpg"],
+    "imagenes": [
+      "https://lecarre.es/uploads/pulseras/pulsera-corazon-plata.jpg"
+    ],
     "categorias": ["pulseras", "plata 925"],
     "etiquetas": ["plata", "corazón", "regalo"],
     "slug": "pulsera-plata-925-corazon"
@@ -120,7 +44,9 @@
     "descripcion": "Colgante en oro amarillo 18k con zafiro azul natural.",
     "precio": 890,
     "precioAnterior": 1100,
-    "imagenes": ["https://www.baunat.com/es/15439112_ES-GY-P1-0070R_722x722/colgante-satelite-en-oro-amarillo-con-zafiro-redondo.jpg"],
+    "imagenes": [
+      "https://www.baunat.com/es/15439112_ES-GY-P1-0070R_722x722/colgante-satelite-en-oro-amarillo-con-zafiro-redondo.jpg"
+    ],
     "categorias": ["colgantes", "oro"],
     "etiquetas": ["oro 18k", "zafiro", "lujo"],
     "slug": "colgante-oro-zafiro"
@@ -131,7 +57,9 @@
     "descripcion": "Bonito anillo para niñas con diseño de estrella.",
     "precio": 35,
     "precioAnterior": null,
-    "imagenes": ["https://joyaspilardetoro.com/2598-large_default/anillo-estrella-plata-de-ley.jpg"],
+    "imagenes": [
+      "https://joyaspilardetoro.com/2598-large_default/anillo-estrella-plata-de-ley.jpg"
+    ],
     "categorias": ["anillos", "infantil", "plata"],
     "etiquetas": ["niña", "estrella", "plata 925"],
     "slug": "anillo-infantil-plata-estrella"
@@ -142,7 +70,9 @@
     "descripcion": "Clásicas gafas de sol en color negro con lentes polarizadas.",
     "precio": 180,
     "precioAnterior": 220,
-    "imagenes": ["https://images.ray-ban.com/is/image/RayBan/805289126577_shad_qt.png?impolicy=SEO_1x1"],
+    "imagenes": [
+      "https://images.ray-ban.com/is/image/RayBan/805289126577_shad_qt.png?impolicy=SEO_1x1"
+    ],
     "categorias": ["gafas", "sol"],
     "etiquetas": ["Ray-Ban", "polarizadas", "clásicas"],
     "slug": "gafas-rayban-wayfarer"
@@ -153,7 +83,9 @@
     "descripcion": "Reloj digital con diseño retro y resistencia al agua.",
     "precio": 65,
     "precioAnterior": 80,
-    "imagenes": ["https://www.reloj.es/pictures/casio-a158wetb-1aef-vintage-series-15387728.jpg"],
+    "imagenes": [
+      "https://www.reloj.es/pictures/casio-a158wetb-1aef-vintage-series-15387728.jpg"
+    ],
     "categorias": ["relojes", "digital"],
     "etiquetas": ["Casio", "retro", "deportivo"],
     "slug": "reloj-casio-digital-retro"
@@ -164,7 +96,9 @@
     "descripcion": "Elegantes pendientes de aro en plata esterlina.",
     "precio": 75,
     "precioAnterior": 90,
-    "imagenes": ["https://m.media-amazon.com/images/I/61voFvmDF5L._UY1000_.jpg"],
+    "imagenes": [
+      "https://m.media-amazon.com/images/I/61voFvmDF5L._UY1000_.jpg"
+    ],
     "categorias": ["pendientes", "plata 925"],
     "etiquetas": ["plata", "aro", "mujer"],
     "slug": "pendientes-aro-plata-925"
@@ -175,7 +109,9 @@
     "descripcion": "Gafas de vista con montura de metal y diseño elegante.",
     "precio": 150,
     "precioAnterior": null,
-    "imagenes": ["https://ulloaoptico.com/wp-content/uploads/2023/04/Diseno-sin-titulo-2021-11-18T115241.632.jpg"],
+    "imagenes": [
+      "https://ulloaoptico.com/wp-content/uploads/2023/04/Diseno-sin-titulo-2021-11-18T115241.632.jpg"
+    ],
     "categorias": ["gafas", "vista"],
     "etiquetas": ["Tous", "graduables", "elegantes"],
     "slug": "gafas-vista-tous-graduables"
@@ -197,7 +133,9 @@
     "descripcion": "Anillo robusto en acero inoxidable con acabado pulido.",
     "precio": 45,
     "precioAnterior": 60,
-    "imagenes": ["https://alianzasdeacero.es/wp-content/uploads/2020/09/anillo-acero-antialergico-hombre-acero-Antoni-HF62.jpg"],
+    "imagenes": [
+      "https://alianzasdeacero.es/wp-content/uploads/2020/09/anillo-acero-antialergico-hombre-acero-Antoni-HF62.jpg"
+    ],
     "categorias": ["anillos", "acero"],
     "etiquetas": ["hombre", "acero", "robusto"],
     "slug": "anillo-acero-hombre"
@@ -208,7 +146,9 @@
     "descripcion": "Colgante personalizable con nombre para niños.",
     "precio": 55,
     "precioAnterior": null,
-    "imagenes": ["https://www.joyeriasaresso.com/12893/collar-de-plata-nina-y-nino-personalizado.jpg"],
+    "imagenes": [
+      "https://www.joyeriasaresso.com/12893/collar-de-plata-nina-y-nino-personalizado.jpg"
+    ],
     "categorias": ["colgantes", "infantil", "plata"],
     "etiquetas": ["niño", "personalizado", "plata 925"],
     "slug": "colgante-infantil-plata-nombre"
@@ -219,7 +159,9 @@
     "descripcion": "Gafas deportivas con lentes polarizadas y protección UV.",
     "precio": 210,
     "precioAnterior": 250,
-    "imagenes": ["https://opticasport.com/wp-content/uploads/2021/02/oakley-sutro-s-matte-black-946203-1.jpg"],
+    "imagenes": [
+      "https://opticasport.com/wp-content/uploads/2021/02/oakley-sutro-s-matte-black-946203-1.jpg"
+    ],
     "categorias": ["gafas", "sol"],
     "etiquetas": ["Oakley", "polarizadas", "deportivas"],
     "slug": "gafas-oakley-polarizadas-deportivas"
@@ -230,7 +172,9 @@
     "descripcion": "Delicada pulsera de oro amarillo 18k con diseño minimalista.",
     "precio": 650,
     "precioAnterior": 800,
-    "imagenes": ["https://i.etsystatic.com/34022830/r/il/c3ddaa/4275171647/il_570xN.4275171647_3a40.jpg"],
+    "imagenes": [
+      "https://i.etsystatic.com/34022830/r/il/c3ddaa/4275171647/il_570xN.4275171647_3a40.jpg"
+    ],
     "categorias": ["pulseras", "oro"],
     "etiquetas": ["oro 18k", "mujer", "minimalista"],
     "slug": "pulsera-oro-mujer"
@@ -241,7 +185,9 @@
     "descripcion": "Reloj deportivo con GPS integrado y monitor de actividad.",
     "precio": 299,
     "precioAnterior": 350,
-    "imagenes": ["https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_2.0,f_auto,h_400,q_auto,w_400/c_pad,h_400,w_400/v1/Product_Images/en/products/010-02810-11/v/cf-xl?pgw=1"],
+    "imagenes": [
+      "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_2.0,f_auto,h_400,q_auto,w_400/c_pad,h_400,w_400/v1/Product_Images/en/products/010-02810-11/v/cf-xl?pgw=1"
+    ],
     "categorias": ["relojes", "inteligente"],
     "etiquetas": ["Garmin", "GPS", "deportivo"],
     "slug": "reloj-garmin-inteligente-gps"
@@ -252,9 +198,152 @@
     "descripcion": "Anillo de compromiso con diamante central en oro blanco 18k.",
     "precio": 2500,
     "precioAnterior": 3000,
-    "imagenes": ["https://www.nicols.es/78852-thickbox_default/anillo-compromiso-alexia-oro-blanco-18k-con-diamante-060ct.jpg"],
+    "imagenes": [
+      "https://www.nicols.es/78852-thickbox_default/anillo-compromiso-alexia-oro-blanco-18k-con-diamante-060ct.jpg"
+    ],
     "categorias": ["anillos", "compromiso", "diamantes"],
     "etiquetas": ["compromiso", "oro 18k", "diamante"],
     "slug": "anillo-compromiso-oro-diamante"
+  },
+  {
+    "id": "23",
+    "titulo": "Collar Oso TOUS",
+    "descripcion": "Elegante collar de la colección Vitoria con oso de plata vermeil.",
+    "precio": 139,
+    "precioAnterior": 163.53,
+    "imagenes": [
+      "https://masqnuevo.net/44064-large_default/collar-tous-hilo-y-colgante-oso-de-plata-vermeil-coleccion-vitoria.jpg"
+    ],
+    "categorias": ["tous", "collares", "plata"],
+    "etiquetas": ["oso", "colección vitoria", "vermeil"],
+    "slug": "collar-oso-tous"
+  },
+  {
+    "id": "24",
+    "titulo": "Pulsera de Oro TOUS",
+    "descripcion": "Pulsera de oro 18k con diseño clásico TOUS.",
+    "precio": 89,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://olaluxe.mx/cdn/shop/files/ELL5737_2048x.jpg?v=1729224745"
+    ],
+    "categorias": ["tous", "pulseras", "oro"],
+    "etiquetas": ["oro 18k", "clásico", "unisex"],
+    "slug": "pulsera-oro-tous"
+  },
+  {
+    "id": "25",
+    "titulo": "Anillo TOUS",
+    "descripcion": "Anillo Mil Osos de oro 18k con diseño icónico TOUS.",
+    "precio": 119,
+    "precioAnterior": 148.75,
+    "imagenes": [
+      "https://ianor.es/cdn/shop/files/14219GM_anillo_tous_milosos_oro_18kt_1_copia.jpg?v=1743069887"
+    ],
+    "categorias": ["tous", "anillos", "oro"],
+    "etiquetas": ["mil osos", "oro 18k", "icónico"],
+    "slug": "anillo-tous-milosos"
+  },
+  {
+    "id": "26",
+    "titulo": "Pendientes Oro TOUS",
+    "descripcion": "Pendientes de oro 18k con diseño tradicional TOUS.",
+    "precio": 159,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://www.tasadoresjoyeros.com/10598-large_default/pendientes-tous-en-oro-18kt-h15641-3.jpg"
+    ],
+    "categorias": ["tous", "pendientes", "oro"],
+    "etiquetas": ["oro 18k", "tradicional", "mujer"],
+    "slug": "pendientes-oro-tous"
+  },
+  {
+    "id": "27",
+    "titulo": "Pendientes Piedras TOUS",
+    "descripcion": "Pendientes Grace de plata de primera ley con marcasita.",
+    "precio": 159,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://masqnuevo.net/42981-large_default/pendientes-tous-grace-en-plata-de-primera-ley-y-marcasita-de-segunda-mano.jpg"
+    ],
+    "categorias": ["tous", "pendientes", "plata"],
+    "etiquetas": ["plata", "marcasita", "grace"],
+    "slug": "pendientes-piedras-tous"
+  },
+  {
+    "id": "28",
+    "titulo": "Pulsera osos TOUS",
+    "descripcion": "Pulsera con charms de osos, diseño característico TOUS.",
+    "precio": 159,
+    "precioAnterior": null,
+    "imagenes": ["https://www.modacris.es/pulsera-tous_pic470005ni1t0.jpg"],
+    "categorias": ["tous", "pulseras", "charms"],
+    "etiquetas": ["osos", "charms", "infantil"],
+    "slug": "pulsera-osos-tous"
+  },
+  {
+    "id": "29",
+    "titulo": "Pulsera TOUS",
+    "descripcion": "Pulsera de diseño moderno de la colección TOUS.",
+    "precio": 159,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://olaluxe.mx/cdn/shop/files/ELL5786.jpg?crop=center&height=1764&v=1729225675&width=2646"
+    ],
+    "categorias": ["tous", "pulseras", "moda"],
+    "etiquetas": ["moderna", "colección", "unisex"],
+    "slug": "pulsera-tous-moderna"
+  },
+  {
+    "id": "30",
+    "titulo": "Anillo oro 18k y diamantes 0.66cts",
+    "descripcion": "Anillo de compromiso en oro amarillo 18k con diamantes de 0.66 quilates, calidad certificada.",
+    "precio": 1690,
+    "precioAnterior": 3380,
+    "imagenes": [
+      "https://media.istockphoto.com/id/1219309412/es/foto/anillo-de-diamantes-aislado-en-el-anillo-de-estilo-solitario-de-compromiso-blanco.jpg?s=612x612&w=0&k=20&c=wg4DSWOFKt0SgBObfJqXRSBqEyuugTqWc1KvzcyB9o4="
+    ],
+    "categorias": ["anillos", "diamantes", "compromiso", "oro"],
+    "etiquetas": ["50% descuento", "certificado", "oro 18k"],
+    "slug": "anillo-oro-diamantes-066cts"
+  },
+  {
+    "id": "31",
+    "titulo": "Anillo oro 18k, zafiro y diamantes 0.2cts",
+    "descripcion": "Elegante anillo en oro amarillo 18k con zafiro central y diamantes de 0.2 quilates.",
+    "precio": 995,
+    "precioAnterior": 1990,
+    "imagenes": [
+      "https://media.istockphoto.com/id/469421498/es/foto/anillo-de-diamante-aislado-sobre-fondo-blanco.jpg?s=612x612&w=0&k=20&c=yyB1FPgE3c5Quvyixi1T1AmgU2Ce-w0zBiYwiSQqeB8="
+    ],
+    "categorias": ["anillos", "diamantes", "zafiro", "oro"],
+    "etiquetas": ["oferta especial", "zafiro azul", "50% descuento"],
+    "slug": "anillo-oro-zafiro-diamantes"
+  },
+  {
+    "id": "32",
+    "titulo": "Anillo oro blanco diamantes 0.50cts",
+    "descripcion": "Anillo solitario en oro blanco 18k con diamante central de 0.50 quilates.",
+    "precio": 1533,
+    "precioAnterior": 3066,
+    "imagenes": [
+      "https://media.thejewellershop.com/images/products/500/DR0548-18KW_01.jpg"
+    ],
+    "categorias": ["anillos", "diamantes", "compromiso", "oro blanco"],
+    "etiquetas": ["solitario", "calidad GIA", "50% descuento"],
+    "slug": "anillo-oro-blanco-diamantes-050cts"
+  },
+  {
+    "id": "33",
+    "titulo": "Anillo oro diamantes 0.51cts",
+    "descripcion": "Exclusivo anillo de compromiso en oro blanco con diamantes de 0.51 quilates.",
+    "precio": 1570,
+    "precioAnterior": 3140,
+    "imagenes": [
+      "https://www.baunat.com/es/122413_bau_9582_722x722/venta-exclusiva-de-stock-de-baunat-sin-30-dias-de-devolucion-0-77-quilates-anillo-de-compromiso-diamante-diseno-en-oro-blanco-disponible-en-talla-55.jpg"
+    ],
+    "categorias": ["anillos", "diamantes", "compromiso", "oro blanco"],
+    "etiquetas": ["exclusivo", "descuento limitado", "certificado"],
+    "slug": "anillo-oro-diamantes-051cts"
   }
 ]
