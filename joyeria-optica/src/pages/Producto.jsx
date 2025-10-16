@@ -3,13 +3,17 @@ import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchProducto } from "../api/productos";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Check } from "lucide-react";
+import { useCart } from "../hooks/useCart";
 
 const ProductoPage = () => {
   const { slug } = useParams();
   const [producto, setProducto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [imagenPrincipal, setImagenPrincipal] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const cargarProducto = async () => {
@@ -27,6 +31,12 @@ const ProductoPage = () => {
 
     cargarProducto();
   }, [slug]);
+
+  const handleAddToCart = () => {
+    addToCart(producto, quantity);
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000);
+  };
 
   if (loading) {
     return (
@@ -46,7 +56,11 @@ const ProductoPage = () => {
 
   // Calcular descuento si existe precio anterior
   const descuento = producto.precioAnterior
-    ? Math.round(((producto.precioAnterior - producto.precio) / producto.precioAnterior) * 100)
+    ? Math.round(
+        ((producto.precioAnterior - producto.precio) /
+          producto.precioAnterior) *
+          100
+      )
     : null;
 
   return (
@@ -60,9 +74,13 @@ const ProductoPage = () => {
       <div className="container px-4 py-12 mx-auto max-w-7xl">
         {/* Ruta de navegación */}
         <nav className="flex mb-6 text-sm text-gray-500">
-          <a href="/" className="hover:underline">Inicio</a>
+          <a href="/" className="hover:underline">
+            Inicio
+          </a>
           <span className="mx-2">/</span>
-          <a href="/catalogo" className="hover:underline">Catálogo</a>
+          <a href="/catalogo" className="hover:underline">
+            Catálogo
+          </a>
           <span className="mx-2">/</span>
           <span className="text-black">{producto.titulo}</span>
         </nav>
@@ -99,7 +117,11 @@ const ProductoPage = () => {
                   <button
                     key={index}
                     onClick={() => setImagenPrincipal(img)}
-                    className={`aspect-square bg-gray-50 ${imagenPrincipal === img ? 'ring-2 ring-black' : 'hover:ring-1 hover:ring-gray-300'}`}
+                    className={`aspect-square bg-gray-50 ${
+                      imagenPrincipal === img
+                        ? "ring-2 ring-black"
+                        : "hover:ring-1 hover:ring-gray-300"
+                    }`}
                   >
                     <img
                       src={img}
@@ -135,7 +157,7 @@ const ProductoPage = () => {
                   {producto.precio.toLocaleString("es-ES", {
                     style: "currency",
                     currency: "EUR",
-                    minimumFractionDigits: 0
+                    minimumFractionDigits: 0,
                   })}
                 </span>
                 {producto.precioAnterior && (
@@ -143,7 +165,7 @@ const ProductoPage = () => {
                     {producto.precioAnterior.toLocaleString("es-ES", {
                       style: "currency",
                       currency: "EUR",
-                      minimumFractionDigits: 0
+                      minimumFractionDigits: 0,
                     })}
                   </span>
                 )}
@@ -190,16 +212,55 @@ const ProductoPage = () => {
               </div>
             </motion.div>
 
-            {/* Botón de compra */}
+            {/* Selector de cantidad y botón de compra */}
             <motion.div
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="mt-8"
+              className="mt-8 space-y-4"
             >
-              <button className="flex items-center justify-center w-full gap-2 px-6 py-3 text-sm font-light tracking-wider text-white transition bg-black rounded-sm hover:bg-gray-800">
-                <ShoppingBag className="w-4 h-4" />
-                AÑADIR AL CARRITO
+              {/* Selector de cantidad */}
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-medium">Cantidad:</span>
+                <div className="flex items-center border border-gray-300 rounded">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="px-3 py-1 hover:bg-gray-100"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-1 border-x border-gray-300">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="px-3 py-1 hover:bg-gray-100"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* Botón de añadir al carrito */}
+              <button
+                onClick={handleAddToCart}
+                className={`flex items-center justify-center w-full gap-2 px-6 py-3 text-sm font-light tracking-wider transition rounded-sm ${
+                  addedToCart
+                    ? "bg-green-600 text-white"
+                    : "bg-black text-white hover:bg-gray-800"
+                }`}
+              >
+                {addedToCart ? (
+                  <>
+                    <Check className="w-4 h-4" />
+                    AÑADIDO AL CARRITO
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="w-4 h-4" />
+                    AÑADIR AL CARRITO
+                  </>
+                )}
               </button>
             </motion.div>
           </div>

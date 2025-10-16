@@ -8,24 +8,35 @@ import TerminosLegales from "./pages/TerminosLegales";
 import Contacto from "./pages/Contacto";
 import Privacidad from "./pages/Privacidad";
 import PoliticaEnviosDevoluciones from "./pages/Devoluciones";
+import CheckoutPage from "./pages/CheckoutPage";
+import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen text-black bg-white">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/catalogo/:categoria" element={<Catalogo />} />
-          <Route path="/producto/:slug" element={<ProductoPage />} />
-          <Route path="/terminos-legales" element={<TerminosLegales />} />
-          <Route path="/contacto" element={<Contacto />} />
-          <Route path="/privacidad" element={<Privacidad />} />
-          <Route path="/envios-devoluciones" element={<PoliticaEnviosDevoluciones />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <div className="min-h-screen text-black bg-white">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/catalogo/:categoria" element={<Catalogo />} />
+              <Route path="/producto/:slug" element={<ProductoPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/terminos-legales" element={<TerminosLegales />} />
+              <Route path="/contacto" element={<Contacto />} />
+              <Route path="/privacidad" element={<Privacidad />} />
+              <Route
+                path="/envios-devoluciones"
+                element={<PoliticaEnviosDevoluciones />}
+              />
+            </Routes>
+            <Footer />
+          </div>
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

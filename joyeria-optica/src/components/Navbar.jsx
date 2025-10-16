@@ -4,11 +4,20 @@ import { Search, User, ShoppingBag } from "lucide-react";
 import AnimatedHamburgerButton from "./HamburguerButton";
 import FlyoutLink from "./FlyoutLink";
 import { useNavigate, Link } from "react-router-dom";
+import { useCart } from "../hooks/useCart";
+import { useAuth } from "../hooks/useAuth";
+import CartSidebar from "./CartSidebar";
+import AuthModal from "./AuthModal";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [cartOpen, setCartOpen] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
+  const { itemCount } = useCart();
+  const { isAuthenticated, user, logout } = useAuth();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -22,145 +31,38 @@ export default function Navbar() {
     {
       label: "REBAJAS ⚡",
       href: "/catalogo/rebajas",
-      content: () => (
-        <div className="w-64 p-4 space-y-2">
-          <h3 className="text-xl font-bold text-red-600">
-            Descuentos especiales
-          </h3>
-          <a href="#" className="block text-sm hover:underline">
-            Hasta -50%
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Últimas unidades
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Ofertas semanales
-          </a>
-        </div>
-      ),
     },
     {
       label: "TOUS",
       href: "/catalogo/tous",
-      content: () => (
-        <div className="w-64 p-4 space-y-2">
-          <h3 className="text-xl font-bold">Colección TOUS</h3>
-          <a href="#" className="block text-sm hover:underline">
-            Novedades
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Pulseras
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Anillos
-          </a>
-        </div>
-      ),
     },
     {
-      label: "Anillos",
-      href: "/catalogo/anillos",
-      content: () => (
-        <div className="w-64 p-4 space-y-2">
-          <h3 className="text-xl font-bold">Descubre nuestros anillos</h3>
-          <a href="#" className="block text-sm hover:underline">
-            Compromiso
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Personalizados
-          </a>
-          <a href="#" className="block text-sm hover:underline">
-            Clásicos
-          </a>
-        </div>
-      ),
+      label: "Joyería Oro 18K",
+      href: "/catalogo/oro",
     },
     {
-      label: "Pendientes",
-      href: "/catalogo/pendientes",
-      content: () => (
-        <div className="w-64 p-4">
-          <h3 className="mb-2 text-xl font-bold">Para cada ocasión</h3>
-          <ul className="space-y-1 text-sm">
-            <li>
-              <a href="#" className="hover:underline">
-                Aro
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Largos
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Perlas
-              </a>
-            </li>
-          </ul>
-        </div>
-      ),
+      label: "Salvatore Plata",
+      href: "/catalogo/salvatore",
     },
     {
-      label: "Pulseras",
-      href: "/catalogo/pulseras",
-      content: () => (
-        <div className="w-64 p-4 space-y-2">
-          <p className="text-sm">
-            Pulseras elegantes, casuales y personalizadas.
-          </p>
-          <button className="w-full px-3 py-1 text-sm transition duration-300 border border-black hover:bg-black hover:text-white">
-            Ver todas
-          </button>
-        </div>
-      ),
+      label: "Nomination Italy",
+      href: "/catalogo/nomination",
     },
     {
-      label: "Colgantes y collares",
-      href: "/catalogo/colgantes",
-      content: () => (
-        <div className="w-64 p-4">
-          <h3 className="mb-2 text-xl font-bold">Estilos populares</h3>
-          <ul className="space-y-1 text-sm">
-            <li>
-              <a href="#" className="hover:underline">
-                Iniciales
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Corazones
-              </a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">
-                Personalizados
-              </a>
-            </li>
-          </ul>
-        </div>
-      ),
+      label: "Gafas graduadas",
+      href: "/catalogo/gafas-graduadas",
     },
     {
-      label: "Relojes",
-      href: "/catalogo/relojes",
-      content: () => (
-        <div className="w-64 p-4 text-sm">
-          <p>Relojes de mujer y hombre para todos los estilos.</p>
-          <a href="#" className="block mt-2 hover:underline">
-            Descubrir
-          </a>
-        </div>
-      ),
-    },
-    {
-      label: "Gafas",
+      label: "Gafas de sol",
       href: "/catalogo/gafas",
-      content: () => (
-        <div className="w-64 p-4 text-sm">
-          <p>Protección y estilo en cada mirada.</p>
-        </div>
-      ),
+    },
+    {
+      label: "Relojes caballero",
+      href: "/catalogo/relojes-hombre",
+    },
+    {
+      label: "Relojes señora",
+      href: "/catalogo/relojes-mujer",
     },
   ];
 
@@ -208,13 +110,84 @@ export default function Navbar() {
 
         {/* Derecha: iconos */}
         <div className="flex items-center justify-end gap-4">
-          <User className="w-5 h-5" />
+          {/* User Menu */}
           <div className="relative">
-            <ShoppingBag className="w-5 h-5" />
-            <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full px-1.5">
-              0
-            </span>
+            {isAuthenticated ? (
+              <button
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className="flex items-center gap-2 px-3 py-2 transition-colors rounded-full hover:bg-gray-100"
+              >
+                <div className="flex items-center justify-center w-6 h-6 bg-black rounded-full">
+                  <span className="text-xs font-medium text-white">
+                    {user?.firstName?.charAt(0) || 'U'}
+                  </span>
+                </div>
+                <span className="hidden text-sm font-medium md:block">
+                  {user?.firstName || 'Usuario'}
+                </span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setAuthModalOpen(true)}
+                className="flex items-center gap-2 transition-colors hover:text-gray-600"
+              >
+                <User className="w-5 h-5" />
+                <span className="hidden text-sm md:block">Iniciar sesión</span>
+              </button>
+            )}
+
+            {/* User Dropdown */}
+            {isAuthenticated && showUserMenu && (
+              <div className="absolute right-0 z-50 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg top-full">
+                <div className="p-3 border-b border-gray-100">
+                  <p className="font-medium">{user?.firstName} {user?.lastName}</p>
+                  <p className="text-sm text-gray-600">{user?.email}</p>
+                </div>
+                <div className="py-2">
+                  <button
+                    onClick={() => {
+                      navigate('/cuenta');
+                      setShowUserMenu(false);
+                    }}
+                    className="w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50"
+                  >
+                    Mi Cuenta
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate('/pedidos');
+                      setShowUserMenu(false);
+                    }}
+                    className="w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50"
+                  >
+                    Mis Pedidos
+                  </button>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowUserMenu(false);
+                    }}
+                    className="w-full px-4 py-2 text-sm text-left text-red-600 transition-colors hover:bg-red-50"
+                  >
+                    Cerrar Sesión
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
+
+          {/* Cart Button */}
+          <button
+            onClick={() => setCartOpen(true)}
+            className="relative transition-colors hover:text-gray-600"
+          >
+            <ShoppingBag className="w-5 h-5" />
+            {itemCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full px-1.5 min-w-[1.25rem] h-5 flex items-center justify-center">
+                {itemCount > 99 ? "99+" : itemCount}
+              </span>
+            )}
+          </button>
         </div>
       </div>
       {/* Mobile search */}
@@ -276,6 +249,16 @@ export default function Navbar() {
           ))}
         </nav>
       </div>
+
+      {/* Cart Sidebar */}
+      <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        initialMode="login"
+      />
     </header>
   );
 }

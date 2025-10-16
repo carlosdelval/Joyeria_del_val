@@ -1,261 +1,595 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { filtrosPorCategoria } from "../data/filtrosPorCategoria";
+
+// Iconos SVG simples
+const ChevronDownIcon = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M19 9l-7 7-7-7"
+    />
+  </svg>
+);
+
+const ChevronUpIcon = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M5 15l7-7 7 7"
+    />
+  </svg>
+);
+
+const XMarkIcon = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M6 18L18 6M6 6l12 12"
+    />
+  </svg>
+);
+
+const FunnelIcon = ({ className }) => (
+  <svg
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+    />
+  </svg>
+);
 
 const FiltroSidebar = ({
-  filtrosIniciales,
-  filtrosPorCategoria,
-  onAplicarFiltros,
-  onClose,
+  categoria,
+  filtros,
+  onFiltroChange,
+  isOpen,
+  onToggle,
+  totalProducts = 0,
 }) => {
-  const [filtrosSeleccionados, setFiltrosSeleccionados] = useState({});
-  const [rangoPrecio, setRangoPrecio] = useState([
-    filtrosIniciales.precioMin || 0,
-    filtrosIniciales.precioMax || 2000,
-  ]);
-  const sliderTrackRef = useRef(null);
+  const [openSections, setOpenSections] = useState({});
+  const [localFilters, setLocalFilters] = useState(filtros);
 
-  // Inicializa los filtros seleccionados al montar
-  useEffect(() => {
-    const nuevosFiltros = {};
-    for (const key in filtrosPorCategoria) {
-      const filtro = filtrosPorCategoria[key];
-      if (filtro.type === "checkbox") {
-        nuevosFiltros[key] = filtrosIniciales[key] || [];
-      } else if (filtro.type === "boolean") {
-        nuevosFiltros[key] = filtrosIniciales[key] || false;
-      }
+  // Crear filtros básicos si no existen para la categoría
+  const getFiltersForCategory = (cat) => {
+    if (filtrosPorCategoria[cat]) {
+      return filtrosPorCategoria[cat];
     }
-    setFiltrosSeleccionados(nuevosFiltros);
-  }, [filtrosIniciales, filtrosPorCategoria]);
 
-  const toggleOpcionFiltro = (filtroKey, opcion) => {
-    setFiltrosSeleccionados((prev) => {
-      const opciones = prev[filtroKey] || [];
-      if (opciones.includes(opcion)) {
-        return { ...prev, [filtroKey]: opciones.filter((o) => o !== opcion) };
-      } else {
-        return { ...prev, [filtroKey]: [...opciones, opcion] };
-      }
-    });
+    // Filtros básicos por defecto para cualquier categoría
+    console.warn(
+      `No hay filtros específicos definidos para la categoría: ${cat}. Usando filtros básicos.`
+    );
+    return {};
   };
 
-  const toggleBooleanoFiltro = (filtroKey) => {
-    setFiltrosSeleccionados((prev) => ({
+  // Initialize open sections based on priority (open high priority by default)
+  useEffect(() => {
+    if (categoria) {
+      const categoryFilters = getFiltersForCategory(categoria);
+      const initialOpenSections = {};
+
+      Object.entries(categoryFilters).forEach(([key, filter]) => {
+        // Open filters with priority 1-3 by default
+        if (filter.priority <= 3) {
+          initialOpenSections[key] = true;
+        }
+      });
+
+      setOpenSections(initialOpenSections);
+    }
+  }, [categoria]);
+
+  useEffect(() => {
+    setLocalFilters(filtros);
+  }, [filtros]);
+
+  const toggleSection = (section) => {
+    setOpenSections((prev) => ({
       ...prev,
-      [filtroKey]: !prev[filtroKey],
+      [section]: !prev[section],
     }));
   };
 
-  const handlePrecioChange = (index, value) => {
-    const nuevoRango = [...rangoPrecio];
-    nuevoRango[index] = value;
-    setRangoPrecio(nuevoRango);
+  const handleFilterChange = (filterKey, value, isChecked) => {
+    const newFilters = { ...localFilters };
+
+    if (!newFilters[filterKey]) {
+      newFilters[filterKey] = [];
+    }
+
+    if (isChecked) {
+      if (!newFilters[filterKey].includes(value)) {
+        newFilters[filterKey] = [...newFilters[filterKey], value];
+      }
+    } else {
+      newFilters[filterKey] = newFilters[filterKey].filter(
+        (item) => item !== value
+      );
+      if (newFilters[filterKey].length === 0) {
+        delete newFilters[filterKey];
+      }
+    }
+
+    setLocalFilters(newFilters);
+    onFiltroChange(newFilters);
   };
 
-  const aplicarFiltros = () => {
-    const filtros = {
-      ...filtrosSeleccionados,
-      precioMin: rangoPrecio[0],
-      precioMax: rangoPrecio[1],
-    };
-    onAplicarFiltros(filtros);
-    if (onClose) onClose(); // cerrar sidebar móvil si aplica
+  const handleRangeChange = (filterKey, min, max) => {
+    const newFilters = { ...localFilters };
+
+    if (min !== undefined || max !== undefined) {
+      newFilters[filterKey] = { min, max };
+    } else {
+      delete newFilters[filterKey];
+    }
+
+    setLocalFilters(newFilters);
+    onFiltroChange(newFilters);
   };
 
-  const limpiarFiltros = () => {
-    const filtrosReset = {
-      precioMin: 0,
-      precioMax: 2000,
-    };
-    setFiltrosSeleccionados({});
-    setRangoPrecio([0, 2000]);
-    onAplicarFiltros(filtrosReset);
-    if (onClose) onClose(); // cerrar sidebar móvil si aplica
+  const handleBooleanChange = (filterKey, value) => {
+    const newFilters = { ...localFilters };
+
+    if (value) {
+      newFilters[filterKey] = true;
+    } else {
+      delete newFilters[filterKey];
+    }
+
+    setLocalFilters(newFilters);
+    onFiltroChange(newFilters);
   };
+
+  const clearAllFilters = () => {
+    setLocalFilters({});
+    onFiltroChange({});
+  };
+
+  const clearFilter = (filterKey) => {
+    const newFilters = { ...localFilters };
+    delete newFilters[filterKey];
+    setLocalFilters(newFilters);
+    onFiltroChange(newFilters);
+  };
+
+  const renderFilterContent = (key, filter) => {
+    const currentValues = localFilters[key] || [];
+
+    switch (filter.type) {
+      case "checkbox":
+        return (
+          <div className="space-y-2">
+            {filter.options.map((option) => {
+              const optionValue =
+                typeof option === "string" ? option : option.value;
+              const optionLabel =
+                typeof option === "string" ? option : option.label;
+              const optionCount =
+                typeof option === "object" ? option.count : null;
+              const isChecked = currentValues.includes(optionValue);
+
+              return (
+                <label
+                  key={optionValue}
+                  className="flex items-center justify-between p-1 transition-colors rounded cursor-pointer hover:bg-gray-50"
+                >
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={(e) =>
+                        handleFilterChange(key, optionValue, e.target.checked)
+                      }
+                      className="w-4 h-4 border-gray-300 rounded text-amber-600 focus:ring-amber-500"
+                    />
+                    <span
+                      className={`text-sm ${
+                        isChecked
+                          ? "font-medium text-gray-900"
+                          : "text-gray-700"
+                      }`}
+                    >
+                      {optionLabel}
+                    </span>
+                  </div>
+                  {optionCount && (
+                    <span className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded-full">
+                      {optionCount}
+                    </span>
+                  )}
+                </label>
+              );
+            })}
+          </div>
+        );
+
+      case "range": {
+        const currentRange = currentValues;
+        return (
+          <div className="space-y-3">
+            <div className="flex items-center space-x-2">
+              <input
+                type="number"
+                placeholder={`Min ${filter.unit || ""}`}
+                value={currentRange?.min || ""}
+                onChange={(e) => {
+                  const min = e.target.value
+                    ? Number(e.target.value)
+                    : undefined;
+                  handleRangeChange(key, min, currentRange?.max);
+                }}
+                className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                min={filter.min}
+                max={filter.max}
+              />
+              <span className="text-gray-500">-</span>
+              <input
+                type="number"
+                placeholder={`Max ${filter.unit || ""}`}
+                value={currentRange?.max || ""}
+                onChange={(e) => {
+                  const max = e.target.value
+                    ? Number(e.target.value)
+                    : undefined;
+                  handleRangeChange(key, currentRange?.min, max);
+                }}
+                className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
+                min={filter.min}
+                max={filter.max}
+              />
+            </div>
+            <div className="text-xs text-gray-500">
+              Rango: {filter.min} - {filter.max} {filter.unit}
+            </div>
+          </div>
+        );
+      }
+
+      case "boolean": {
+        const isActive = !!currentValues;
+        return (
+          <label className="flex items-center cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isActive}
+              onChange={(e) => handleBooleanChange(key, e.target.checked)}
+              className="w-4 h-4 border-gray-300 rounded text-amber-600 focus:ring-amber-500"
+            />
+            <span
+              className={`ml-2 text-sm ${
+                isActive ? "font-medium text-gray-900" : "text-gray-700"
+              }`}
+            >
+              Sí
+            </span>
+          </label>
+        );
+      }
+
+      default:
+        return null;
+    }
+  };
+
+  const getAppliedFiltersDisplay = () => {
+    const appliedFilters = [];
+
+    Object.entries(localFilters).forEach(([key, value]) => {
+      if (Array.isArray(value) && value.length > 0) {
+        appliedFilters.push({
+          key,
+          label: filtrosPorCategoria[categoria]?.[key]?.label || key,
+          count: value.length,
+        });
+      } else if (typeof value === "object" && (value.min || value.max)) {
+        appliedFilters.push({
+          key,
+          label: filtrosPorCategoria[categoria]?.[key]?.label || key,
+          count: 1,
+        });
+      } else if (value === true) {
+        appliedFilters.push({
+          key,
+          label: filtrosPorCategoria[categoria]?.[key]?.label || key,
+          count: 1,
+        });
+      }
+    });
+
+    return appliedFilters;
+  };
+
+  if (!categoria) {
+    return null;
+  }
+
+  const categoryFilters = getFiltersForCategory(categoria);
+  const globalFilters = filtrosPorCategoria.global || {};
+
+  // Sort filters by priority
+  const sortedCategoryFilters = Object.entries(categoryFilters).sort(
+    ([, a], [, b]) => (a.priority || 999) - (b.priority || 999)
+  );
+  const sortedGlobalFilters = Object.entries(globalFilters).sort(
+    ([, a], [, b]) => (a.priority || 999) - (b.priority || 999)
+  );
+
+  const appliedFiltersDisplay = getAppliedFiltersDisplay();
 
   return (
-    <motion.aside
-      initial={{ x: -300 }}
-      animate={{ x: 0 }}
-      exit={{ x: -300 }}
-      transition={{ type: "spring", damping: 25 }}
-      className="flex flex-col h-full bg-white border-r border-gray-100 w-72"
-    >
-      <div className="p-6 pb-4 border-b border-gray-100">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-light tracking-wider text-black">
-            FILTROS
-          </h2>
-          {onClose && (
-            <button
-              onClick={onClose}
-              className="p-1 text-gray-400 hover:text-black"
-              aria-label="Cerrar filtros"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-          )}
-        </div>
+    <>
+      {/* Mobile Toggle Button */}
+      <div className="mb-4 lg:hidden">
+        <button
+          onClick={onToggle}
+          className="flex items-center justify-between w-full px-4 py-3 transition-shadow bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
+        >
+          <div className="flex items-center space-x-2">
+            <FunnelIcon className="w-5 h-5 text-gray-600" />
+            <span className="font-medium text-gray-900">Filtros</span>
+            {appliedFiltersDisplay.length > 0 && (
+              <span className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800">
+                {appliedFiltersDisplay.length}
+              </span>
+            )}
+          </div>
+          <span className="text-sm text-gray-500">
+            {totalProducts} productos
+          </span>
+        </button>
       </div>
 
-      <div className="flex-1 p-6 space-y-6 overflow-y-auto">
-        {Object.entries(filtrosPorCategoria).map(([filtroKey, filtro]) => (
-          <div key={filtroKey}>
-            <h3 className="mb-3 text-xs font-medium tracking-wider text-gray-500 uppercase">
-              {filtro.label}
-            </h3>
-
-            {filtro.type === "checkbox" && (
-              <div className="grid gap-2">
-                {filtro.options.map((opcion) => (
-                  <label
-                    key={opcion}
-                    className="inline-flex items-center space-x-3 cursor-pointer"
+      {/* Sidebar */}
+      <AnimatePresence>
+        {(isOpen ||
+          (typeof window !== "undefined" && window.innerWidth >= 1024)) && (
+          <motion.div
+            initial={{ opacity: 0, x: -300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -300 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 shadow-xl w-80 lg:relative lg:inset-auto lg:z-auto lg:w-full lg:shadow-none"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <div className="flex items-center space-x-2">
+                <FunnelIcon className="w-5 h-5 text-gray-600" />
+                <h3 className="font-semibold text-gray-900">Filtros</h3>
+                {appliedFiltersDisplay.length > 0 && (
+                  <span className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800">
+                    {appliedFiltersDisplay.length}
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center space-x-2">
+                {appliedFiltersDisplay.length > 0 && (
+                  <button
+                    onClick={clearAllFilters}
+                    className="text-xs font-medium text-amber-600 hover:text-amber-700"
                   >
-                    <div className="relative">
-                      <input
-                        type="checkbox"
-                        checked={
-                          filtrosSeleccionados[filtroKey]?.includes(opcion) ||
-                          false
-                        }
-                        onChange={() => toggleOpcionFiltro(filtroKey, opcion)}
-                        className="absolute w-0 h-0 opacity-0"
-                      />
-                      <div
-                        className={`w-5 h-5 border ${
-                          filtrosSeleccionados[filtroKey]?.includes(opcion)
-                            ? "bg-black border-black"
-                            : "border-gray-300"
-                        } flex items-center justify-center`}
+                    Limpiar todo
+                  </button>
+                )}
+                <button
+                  onClick={onToggle}
+                  className="p-1 rounded-md lg:hidden hover:bg-gray-100"
+                >
+                  <XMarkIcon className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+            </div>
+
+            {/* Results Summary */}
+            <div className="px-4 py-3 text-sm text-gray-600 border-b border-gray-200 bg-gray-50">
+              {totalProducts} productos encontrados
+            </div>
+
+            {/* Applied Filters */}
+            {appliedFiltersDisplay.length > 0 && (
+              <div className="p-4 border-b border-gray-200">
+                <h4 className="mb-2 text-sm font-medium text-gray-900">
+                  Filtros aplicados:
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {appliedFiltersDisplay.map(({ key, label, count }) => (
+                    <span
+                      key={key}
+                      className="inline-flex items-center px-3 py-1 text-xs rounded-full bg-amber-100 text-amber-800"
+                    >
+                      {label} {count > 1 && `(${count})`}
+                      <button
+                        onClick={() => clearFilter(key)}
+                        className="ml-2 hover:bg-amber-200 rounded-full p-0.5"
                       >
-                        {filtrosSeleccionados[filtroKey]?.includes(opcion) && (
-                          <svg
-                            className="w-3 h-3 text-white"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                        )}
-                      </div>
-                    </div>
-                    <span className="text-sm font-light tracking-wide text-gray-700 capitalize">
-                      {opcion}
+                        <XMarkIcon className="w-3 h-3" />
+                      </button>
                     </span>
-                  </label>
-                ))}
+                  ))}
+                </div>
               </div>
             )}
 
-            {filtro.type === "boolean" && (
-              <label className="inline-flex items-center mt-2 space-x-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={!!filtrosSeleccionados[filtroKey]}
-                  onChange={() => toggleBooleanoFiltro(filtroKey)}
-                  className="w-4 h-4 text-black border-gray-300 rounded"
-                />
-                <span className="text-sm font-light text-gray-700">
-                  {filtro.label}
-                </span>
-              </label>
-            )}
-          </div>
-        ))}
-
-        <div>
-          <h3 className="mb-3 text-xs font-medium tracking-wider text-gray-500 uppercase">
-            Rango de Precio
-          </h3>
-          <div className="px-2">
-            <div
-              ref={sliderTrackRef}
-              className="relative h-2 mb-6 bg-gray-200 rounded-full"
-            >
-              <div
-                className="absolute h-full bg-black rounded-full"
-                style={{
-                  left: `${(rangoPrecio[0] / 2000) * 100}%`,
-                  width: `${((rangoPrecio[1] - rangoPrecio[0]) / 2000) * 100}%`,
-                }}
-              />
-              {[0, 1].map((i) => (
-                <motion.div
-                  key={i}
-                  drag="x"
-                  dragElastic={0}
-                  dragMomentum={false}
-                  dragConstraints={{ left: 0, right: 0 }}
-                  onDrag={(e) => {
-                    const rect = sliderTrackRef.current.getBoundingClientRect();
-                    const percentage = Math.max(
-                      0,
-                      Math.min(1, (e.clientX - rect.left) / rect.width)
+            {/* Filter Content */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-4 space-y-6">
+                {/* Category Specific Filters */}
+                {sortedCategoryFilters.map(([key, filter]) => {
+                  // Skip filters that don't apply to current selection
+                  if (filter.applicableFor && localFilters.tipo) {
+                    const hasApplicableType = filter.applicableFor.some(
+                      (type) => localFilters.tipo.includes(type)
                     );
-                    const newValue = Math.round(percentage * 2000);
-                    if (
-                      (i === 0 && newValue < rangoPrecio[1]) ||
-                      (i === 1 && newValue > rangoPrecio[0])
-                    ) {
-                      handlePrecioChange(i, newValue);
-                    }
-                  }}
-                  className="absolute w-5 h-5 bg-white border-2 border-black rounded-full cursor-grab active:cursor-grabbing shadow-sm -mt-1.5"
-                  style={{
-                    left: `${(rangoPrecio[i] / 2000) * 100}%`,
-                    transform: "translateX(-50%)",
-                  }}
-                />
-              ))}
-            </div>
-            <div className="flex justify-between mt-1 text-sm text-gray-600">
-              <span>€{rangoPrecio[0]}</span>
-              <span>€{rangoPrecio[1]}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+                    if (!hasApplicableType) return null;
+                  }
 
-      <div className="p-6 pt-4 border-t border-gray-100">
-        <div className="flex gap-2">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={aplicarFiltros}
-            className="flex-1 py-2.5 text-sm font-light tracking-wider text-white bg-black rounded-sm hover:bg-gray-800"
-          >
-            APLICAR
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={limpiarFiltros}
-            className="flex-1 py-2.5 text-sm font-light tracking-wider text-black border border-black rounded-sm hover:bg-gray-100"
-          >
-            LIMPIAR
-          </motion.button>
-        </div>
-      </div>
-    </motion.aside>
+                  // Skip dependent filters if dependency not met
+                  if (filter.dependsOn && !localFilters[filter.dependsOn]) {
+                    return null;
+                  }
+
+                  const isOpen = openSections[key];
+                  const hasActiveFilters =
+                    localFilters[key] &&
+                    ((Array.isArray(localFilters[key]) &&
+                      localFilters[key].length > 0) ||
+                      (typeof localFilters[key] === "object" &&
+                        (localFilters[key].min || localFilters[key].max)) ||
+                      localFilters[key] === true);
+
+                  return (
+                    <div key={key} className="pb-4 border-b border-gray-100">
+                      <button
+                        onClick={() => toggleSection(key)}
+                        className="flex items-center justify-between w-full text-left group"
+                      >
+                        <span
+                          className={`font-medium ${
+                            hasActiveFilters
+                              ? "text-amber-700"
+                              : "text-gray-900"
+                          } group-hover:text-amber-600`}
+                        >
+                          {filter.label}
+                        </span>
+                        <div className="flex items-center space-x-2">
+                          {hasActiveFilters && (
+                            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                          )}
+                          {isOpen ? (
+                            <ChevronUpIcon className="w-4 h-4 text-gray-500" />
+                          ) : (
+                            <ChevronDownIcon className="w-4 h-4 text-gray-500" />
+                          )}
+                        </div>
+                      </button>
+
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="mt-3 overflow-hidden"
+                          >
+                            {renderFilterContent(key, filter)}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  );
+                })}
+
+                {/* Global Filters */}
+                {sortedGlobalFilters.length > 0 && (
+                  <>
+                    <div className="pt-4 border-t border-gray-200">
+                      <h4 className="mb-4 font-medium text-gray-900">
+                        Filtros generales
+                      </h4>
+                    </div>
+                    {sortedGlobalFilters.map(([key, filter]) => {
+                      const isOpenGlobal = openSections[key] !== false; // Default open for global filters
+                      const hasActiveFilters =
+                        localFilters[key] &&
+                        ((Array.isArray(localFilters[key]) &&
+                          localFilters[key].length > 0) ||
+                          (typeof localFilters[key] === "object" &&
+                            (localFilters[key].min || localFilters[key].max)) ||
+                          localFilters[key] === true);
+
+                      return (
+                        <div
+                          key={key}
+                          className="pb-4 border-b border-gray-100"
+                        >
+                          <button
+                            onClick={() => toggleSection(key)}
+                            className="flex items-center justify-between w-full text-left group"
+                          >
+                            <span
+                              className={`font-medium ${
+                                hasActiveFilters
+                                  ? "text-amber-700"
+                                  : "text-gray-900"
+                              } group-hover:text-amber-600`}
+                            >
+                              {filter.label}
+                            </span>
+                            <div className="flex items-center space-x-2">
+                              {hasActiveFilters && (
+                                <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                              )}
+                              {isOpenGlobal ? (
+                                <ChevronUpIcon className="w-4 h-4 text-gray-500" />
+                              ) : (
+                                <ChevronDownIcon className="w-4 h-4 text-gray-500" />
+                              )}
+                            </div>
+                          </button>
+
+                          <AnimatePresence>
+                            {isOpenGlobal && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="mt-3 overflow-hidden"
+                              >
+                                {renderFilterContent(key, filter)}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })}
+                  </>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+          onClick={onToggle}
+        />
+      )}
+    </>
   );
 };
 

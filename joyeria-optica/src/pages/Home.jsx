@@ -40,7 +40,7 @@ export default function Home() {
         <GridArticulos />
       </AnimatedSection>
 
-      <AnimatedSection className="px-4 my-16 md:my-32">
+      <AnimatedSection className="px-8 my-16 md:my-32">
         <ColeccionTous />
       </AnimatedSection>
 
@@ -48,11 +48,11 @@ export default function Home() {
         <BannerInstagram />
       </AnimatedSection>
 
-      <AnimatedSection className="px-4 my-16 md:my-32">
+      <AnimatedSection className="px-8 my-16 md:my-32">
         <PromocionDiamantes />
       </AnimatedSection>
 
-      <AnimatedSection className="px-4 my-16 md:my-32">
+      <AnimatedSection className="px-8 my-16 md:my-32">
         <h2 className="mb-8 text-2xl font-bold text-center">
           Tus marcas favoritas en óptica
         </h2>

@@ -2,10 +2,7 @@
 import { useEffect, useState } from "react";
 import { fetchProductos } from "../api/productos";
 
-export function useProductos(
-  { categoria = [], busqueda = "", ...filtros },
-  dependencia = ""
-) {
+export function useProductos(filtrosYParams = {}, dependencia = "") {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +10,7 @@ export function useProductos(
     const loadProductos = async () => {
       try {
         setLoading(true);
-        const data = await fetchProductos({ categoria, busqueda, ...filtros });
+        const data = await fetchProductos(filtrosYParams);
         setProductos(data);
       } catch (error) {
         console.error("Error loading productos:", error);
@@ -24,7 +21,12 @@ export function useProductos(
     };
 
     loadProductos();
-  }, [JSON.stringify({ categoria, busqueda, ...filtros }), dependencia]);
+    // Deshabilitamos la regla de dependencias porque causaba loops infinitos
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dependencia]);
 
-  return { productos, loading };
+  return {
+    productos,
+    loading,
+  };
 }
