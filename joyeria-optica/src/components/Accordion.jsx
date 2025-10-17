@@ -150,7 +150,7 @@ const items = [
     title: "Graduación de vista",
     Icon: Eye,
     imgSrc:
-      "https://opticaherreros.es/fotografias/graduacion-vista-optica-herreros-1.jpg",
+      "/cartelGraduacion.svg",
     description:
       "¡Reserva ya tu cita para graduarte con los mejores profesionales!",
   },

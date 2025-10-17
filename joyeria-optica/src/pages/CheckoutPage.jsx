@@ -434,7 +434,7 @@ const CheckoutPage = () => {
           </p>
           <button
             onClick={() => navigate("/")}
-            className="w-full py-3 font-medium text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+            className="w-full py-3 font-medium text-white transition-colors bg-black rounded-lg hover:bg-gray-800 cursor-pointer"
           >
             Volver a la tienda
           </button>
@@ -451,7 +451,7 @@ const CheckoutPage = () => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate(-1)}
-              className="p-2 transition-colors rounded-full hover:bg-gray-100"
+              className="p-2 transition-colors rounded-full hover:bg-gray-100 cursor-pointer"
             >
               <ArrowLeft className="w-5 h-5" />
             </button>
@@ -463,7 +463,7 @@ const CheckoutPage = () => {
       {/* Progress Steps */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-6xl px-4 py-6 mx-auto">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-wrap gap-2">
             {[
               {
                 number: 1,
@@ -486,7 +486,7 @@ const CheckoutPage = () => {
                 icon: <Check className="w-4 h-4" />,
               },
             ].map((step, index) => (
-              <div key={step.number} className="flex items-center">
+              <div key={step.number} className="flex items-center min-w-0">
                 <div
                   className={`flex items-center gap-2 ${
                     currentStep >= step.number ? "text-black" : "text-gray-400"
@@ -505,11 +505,13 @@ const CheckoutPage = () => {
                       step.icon
                     )}
                   </div>
-                  <span className="text-sm font-medium">{step.title}</span>
+                  <span className="text-sm font-medium truncate">
+                    {step.title}
+                  </span>
                 </div>
                 {index < 3 && (
                   <div
-                    className={`w-12 h-0.5 mx-4 ${
+                    className={`hidden sm:block w-12 h-0.5 mx-4 ${
                       currentStep > step.number ? "bg-black" : "bg-gray-200"
                     }`}
                   />
@@ -545,7 +547,7 @@ const CheckoutPage = () => {
                       </p>
                       <button
                         onClick={() => setShowAuthModal(true)}
-                        className="text-sm font-medium text-blue-600 hover:underline"
+                        className="text-sm font-medium text-blue-600 hover:underline cursor-pointer"
                       >
                         Iniciar sesión
                       </button>
@@ -895,11 +897,11 @@ const CheckoutPage = () => {
               )}
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6 border-t border-gray-200">
+              <div className="flex justify-between pt-6">
                 {currentStep > 1 ? (
                   <button
                     onClick={prevStep}
-                    className="px-6 py-2 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50"
+                    className="px-6 py-2 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer"
                   >
                     Anterior
                   </button>
@@ -911,7 +913,7 @@ const CheckoutPage = () => {
                   <button
                     onClick={nextStep}
                     disabled={!validateStep(currentStep)}
-                    className="px-6 py-2 text-white transition-colors bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-6 py-2 text-white transition-colors bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     Continuar
                   </button>
@@ -919,7 +921,7 @@ const CheckoutPage = () => {
                   <button
                     onClick={handlePlaceOrder}
                     disabled={!validateStep(currentStep) || processing}
-                    className="px-6 py-2 text-white transition-colors bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-6 py-2 text-white transition-colors bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {processing ? (
                       <div className="flex items-center gap-2">

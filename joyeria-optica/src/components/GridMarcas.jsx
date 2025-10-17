@@ -6,22 +6,22 @@ export default function GridMarcas() {
   const marcas = [
     {
       nombre: "Ray-Ban",
-      imagen: "https://res.cloudinary.com/leightons/image/upload/HOfYjEezJgJ51Iq4JQQw8kWG5oIuQREMd7PxJR39.png",
+      imagen: "/rayban.jpg",
       categoria: "rayban"
     },
     {
       nombre: "TOUS",
-      imagen: "https://prodevision.com/uploads/marcas/gafas-de-sol-tous-bannerh_es.jpg",
+      imagen: "/tous.jpg",
       categoria: "tous"
     },
     {
       nombre: "Dolce & Gabbana",
-      imagen: "https://www.ohgafas.com/c/197-category_default/dolce-gabbana-rx.jpg",
+      imagen: "/dolce-gabbana.jpg",
       categoria: "dolce-gabbana"
     },
     {
       nombre: "Persol",
-      imagen: "https://images.edel-optics.com/eoContentsMediaImagesLeadImage/Persol_PLP_sunglasses_unisex/691381_con_sSmall_PLP_Persol_sunglasses_woman_S.jpg",
+      imagen: "/persol.jpg",
       categoria: "persol"
     }
   ];

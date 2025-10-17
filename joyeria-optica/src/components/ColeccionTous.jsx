@@ -115,7 +115,7 @@ export default function ColeccionTous() {
         <div className="mt-4">
           <button
             onClick={() => navigate("/catalogo/tous")}
-            className="w-full px-3 py-4 text-lg transition duration-300 border border-black hover:bg-black hover:text-white"
+            className="w-full px-3 py-4 text-lg transition duration-300 border border-black hover:bg-black hover:text-white cursor-pointer"
           >
             Ver colección
           </button>

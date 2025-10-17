@@ -51,7 +51,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
               </div>
               <button
                 onClick={onClose}
-                className="p-2 transition-colors rounded-full hover:bg-gray-100"
+                className="p-2 transition-colors rounded-full hover:bg-gray-100 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -70,7 +70,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                   </p>
                   <button
                     onClick={onClose}
-                    className="px-6 py-2 text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+                    className="px-6 py-2 text-white transition-colors bg-black rounded-lg hover:bg-gray-800 cursor-pointer"
                   >
                     Seguir comprando
                   </button>
@@ -111,7 +111,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                               onClick={() =>
                                 updateQuantity(item.id, item.quantity - 1)
                               }
-                              className="p-1 rounded hover:bg-gray-100"
+                              className="p-1 rounded hover:bg-gray-100 cursor-pointer"
                             >
                               <Minus className="w-3 h-3" />
                             </button>
@@ -122,7 +122,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                               onClick={() =>
                                 updateQuantity(item.id, item.quantity + 1)
                               }
-                              className="p-1 rounded hover:bg-gray-100"
+                              className="p-1 rounded hover:bg-gray-100 cursor-pointer"
                               disabled={item.quantity >= item.maxStock}
                             >
                               <Plus className="w-3 h-3" />
@@ -130,7 +130,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                           </div>
                           <button
                             onClick={() => removeFromCart(item.id)}
-                            className="text-xs text-red-500 hover:text-red-700"
+                            className="text-xs text-red-500 hover:text-red-700 cursor-pointer"
                           >
                             Eliminar
                           </button>
@@ -156,7 +156,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                   {items.length > 0 && (
                     <button
                       onClick={clearCart}
-                      className="w-full py-2 text-sm text-center text-gray-500 transition-colors hover:text-red-500"
+                      className="w-full py-2 text-sm text-center text-gray-500 transition-colors hover:text-red-500 cursor-pointer"
                     >
                       Vaciar carrito
                     </button>
@@ -228,7 +228,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                 {/* Botón de checkout */}
                 <button
                   onClick={handleCheckout}
-                  className="w-full py-3 font-medium text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+                  className="w-full py-3 font-medium text-white transition-colors bg-black rounded-lg hover:bg-gray-800 cursor-pointer"
                 >
                   Finalizar compra
                 </button>
@@ -238,7 +238,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                   Al continuar, acepto los{" "}
                   <a
                     href="/terminos-legales"
-                    className="underline hover:text-black"
+                    className="underline hover:text-black cursor-pointer"
                   >
                     términos y condiciones
                   </a>

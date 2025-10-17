@@ -129,7 +129,7 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={() => setAuthModalOpen(true)}
-                className="flex items-center gap-2 transition-colors hover:text-gray-600"
+                className="flex items-center gap-2 transition-colors hover:text-gray-600 cursor-pointer"
               >
                 <User className="w-5 h-5" />
                 <span className="hidden text-sm md:block">Iniciar sesión</span>
@@ -179,7 +179,7 @@ export default function Navbar() {
           {/* Cart Button */}
           <button
             onClick={() => setCartOpen(true)}
-            className="relative transition-colors hover:text-gray-600"
+            className="relative transition-colors hover:text-gray-600 cursor-pointer"
           >
             <ShoppingBag className="w-5 h-5" />
             {itemCount > 0 && (

@@ -167,7 +167,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "login" }) => {
               </h2>
               <button
                 onClick={onClose}
-                className="p-2 transition-colors rounded-full hover:bg-gray-100"
+                className="p-2 transition-colors rounded-full hover:bg-gray-100 cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -402,7 +402,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "login" }) => {
                 disabled={
                   loading || Object.values(fieldErrors).some((error) => error)
                 }
-                className="w-full py-3 font-medium text-white transition-colors bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-3 font-medium text-white transition-colors bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
                   <div className="flex items-center justify-center gap-2">
@@ -427,7 +427,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "login" }) => {
                       <button
                         type="button"
                         onClick={() => switchMode("register")}
-                        className="font-medium text-black hover:underline"
+                        className="font-medium text-black hover:underline cursor-pointer"
                       >
                         Regístrate aquí
                       </button>
@@ -435,7 +435,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "login" }) => {
                     <button
                       type="button"
                       onClick={() => switchMode("forgot")}
-                      className="text-sm text-gray-500 hover:underline"
+                      className="text-sm text-gray-500 hover:underline cursor-pointer"
                     >
                       ¿Olvidaste tu contraseña?
                     </button>
@@ -461,7 +461,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "login" }) => {
                     <button
                       type="button"
                       onClick={() => switchMode("login")}
-                      className="font-medium text-black hover:underline"
+                      className="font-medium text-black hover:underline cursor-pointer"
                     >
                       Inicia sesión
                     </button>

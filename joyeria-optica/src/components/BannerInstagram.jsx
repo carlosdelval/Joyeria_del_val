@@ -21,7 +21,7 @@ return (
                             "_blank"
                         )
                     }
-                    className="flex items-center gap-3 px-8 py-4 text-lg font-semibold text-black transition-all duration-300 bg-white rounded-lg shadow-lg group hover:bg-gray-100 hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/30"
+                    className="flex items-center gap-3 px-8 py-4 text-lg font-semibold text-black transition-all duration-300 bg-white rounded-lg shadow-lg group hover:bg-gray-100 hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/30 cursor-pointer"
                 >
                     <Instagram className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" />
                     @opticadelvaljoyeros
