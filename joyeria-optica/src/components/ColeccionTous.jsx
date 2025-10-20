@@ -12,14 +12,18 @@ export default function ColeccionTous() {
   const navigate = useNavigate();
   const [isNavigating, setIsNavigating] = useState(false);
 
-  // Cargar productos TOUS
+  // Cargar bolsos TOUS
   useEffect(() => {
     const loadTousProducts = async () => {
       try {
-        const tousProducts = await fetchProductos({ categoria: ["tous"] });
-        setProducts(tousProducts);
+        const allProducts = await fetchProductos({ categoria: ["bolsos"] });
+        // Filtrar solo bolsos de la marca TOUS
+        const tousBags = allProducts.filter(
+          (product) => product.marca?.toLowerCase() === "tous"
+        );
+        setProducts(tousBags);
       } catch (error) {
-        console.error("Error cargando productos TOUS:", error);
+        console.error("Error cargando bolsos TOUS:", error);
       } finally {
         setLoading(false);
       }
@@ -74,13 +78,17 @@ export default function ColeccionTous() {
 
   // Navegar a página de producto
   const goToProduct = (slug) => {
-    setIsNavigating(true); // Bloquea interacciones
-    setTimeout(() => {
-      // Timeout para permitir el renderizado
-      navigate(`/producto/${slug}`, {
-        state: { fromCarousel: true }, // Estado opcional para la página destino
-      });
-    }, 50); // Tiempo mínimo para que React procese el estado
+    setIsNavigating(true);
+    window.scrollTo(0, 0);
+    navigate(`/producto/${slug}`, {
+      state: { fromCarousel: true },
+    });
+  };
+
+  // Navegar al catálogo
+  const goToCatalog = () => {
+    window.scrollTo(0, 0);
+    navigate("/catalogo/bolsos?marca=Tous");
   };
 
   // Auto-rotación
@@ -106,15 +114,13 @@ export default function ColeccionTous() {
     <div className="flex flex-col w-full gap-6 md:flex-row">
       {/* Sección de texto */}
       <div className="w-full md:w-1/5">
-        <h2 className="mb-3 text-3xl font-bold text-gray-800">
-          Colección TOUS
-        </h2>
+        <h2 className="mb-3 text-3xl font-bold text-black">Bolsos TOUS</h2>
         <p className="text-gray-600">
-          Descubre nuestra exclusiva selección de joyas TOUS.
+          Descubre nuestra exclusiva selección de bolsos TOUS.
         </p>
         <div className="mt-4">
           <button
-            onClick={() => navigate("/catalogo/tous")}
+            onClick={goToCatalog}
             className="w-full px-3 py-4 text-lg transition duration-300 border border-black hover:bg-black hover:text-white cursor-pointer"
           >
             Ver colección

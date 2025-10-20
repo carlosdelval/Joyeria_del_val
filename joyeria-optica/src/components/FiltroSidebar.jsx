@@ -75,6 +75,7 @@ const FiltroSidebar = ({
   isOpen,
   onToggle,
   totalProducts = 0,
+  esResultadoBusqueda = false,
 }) => {
   const [openSections, setOpenSections] = useState({});
   const [localFilters, setLocalFilters] = useState(filtros);
@@ -413,6 +414,37 @@ const FiltroSidebar = ({
             <div className="px-4 py-3 text-sm text-gray-600 border-b border-gray-200 bg-gray-50">
               {totalProducts} productos encontrados
             </div>
+
+            {/* Info sobre filtros detectados en búsqueda */}
+            {esResultadoBusqueda && categoria !== "todos" && (
+              <div className="px-4 py-3 text-sm border-b border-gray-200 bg-blue-50">
+                <div className="flex items-start gap-2">
+                  <svg
+                    className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <div className="flex-1">
+                    <p className="font-medium text-blue-900">
+                      Filtros de{" "}
+                      {categoria.charAt(0).toUpperCase() + categoria.slice(1)}
+                    </p>
+                    <p className="mt-1 text-xs text-blue-700">
+                      Mostrando filtros específicos detectados en tus resultados
+                      de búsqueda
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Applied Filters */}
             {appliedFiltersDisplay.length > 0 && (

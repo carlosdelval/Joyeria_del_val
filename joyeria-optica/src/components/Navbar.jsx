@@ -22,7 +22,8 @@ export default function Navbar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      navigate(`/catalogo/${encodeURIComponent(searchTerm)}`);
+      window.scrollTo(0, 0);
+      navigate(`/catalogo?q=${encodeURIComponent(searchTerm)}`);
       setSearchTerm("");
     }
   };
@@ -58,11 +59,11 @@ export default function Navbar() {
     },
     {
       label: "Relojes caballero",
-      href: "/catalogo/relojes-hombre",
+      href: "/catalogo/relojes",
     },
     {
       label: "Relojes señora",
-      href: "/catalogo/relojes-mujer",
+      href: "/catalogo/relojes",
     },
   ];
 
@@ -119,11 +120,11 @@ export default function Navbar() {
               >
                 <div className="flex items-center justify-center w-6 h-6 bg-black rounded-full">
                   <span className="text-xs font-medium text-white">
-                    {user?.firstName?.charAt(0) || 'U'}
+                    {user?.firstName?.charAt(0) || "U"}
                   </span>
                 </div>
                 <span className="hidden text-sm font-medium md:block">
-                  {user?.firstName || 'Usuario'}
+                  {user?.firstName || "Usuario"}
                 </span>
               </button>
             ) : (
@@ -140,13 +141,16 @@ export default function Navbar() {
             {isAuthenticated && showUserMenu && (
               <div className="absolute right-0 z-50 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg top-full">
                 <div className="p-3 border-b border-gray-100">
-                  <p className="font-medium">{user?.firstName} {user?.lastName}</p>
+                  <p className="font-medium">
+                    {user?.firstName} {user?.lastName}
+                  </p>
                   <p className="text-sm text-gray-600">{user?.email}</p>
                 </div>
                 <div className="py-2">
                   <button
                     onClick={() => {
-                      navigate('/cuenta');
+                      window.scrollTo(0, 0);
+                      navigate("/cuenta");
                       setShowUserMenu(false);
                     }}
                     className="w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50"
@@ -155,7 +159,8 @@ export default function Navbar() {
                   </button>
                   <button
                     onClick={() => {
-                      navigate('/pedidos');
+                      window.scrollTo(0, 0);
+                      navigate("/pedidos");
                       setShowUserMenu(false);
                     }}
                     className="w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50"
@@ -252,7 +257,7 @@ export default function Navbar() {
 
       {/* Cart Sidebar */}
       <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
-      
+
       {/* Auth Modal */}
       <AuthModal
         isOpen={authModalOpen}

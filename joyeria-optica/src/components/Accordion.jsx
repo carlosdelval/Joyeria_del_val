@@ -129,10 +129,10 @@ const items = [
   },
   {
     id: 2,
-    title: "Tus gafas de sol favoritas",
+    title: "Tus gafas favoritas",
     Icon: Glasses,
     imgSrc:
-      "https://www.opticabaca.com/wp-content/uploads/2023/08/%C2%BFComo-saber-si-unas-gafas-de-sol-son-buenas-o-no.webp",
+      "/gafas_acordeon.jpg",
     description:
       "Protege tus ojos con estilo. Explora nuestra colección de gafas de sol de las mejores marcas.",
   },
@@ -141,7 +141,7 @@ const items = [
     title: "Relojería",
     Icon: Watch,
     imgSrc:
-      "https://www.timeshop24.es/media/design/homepage/markenuhren-guenstig-kaufen.jpg",
+      "/reloj_acordeon.jpg",
     description:
       "Descubre nuestra amplia selección de relojes de lujo y moda. Encuentra el reloj perfecto para cada ocasión.",
   },

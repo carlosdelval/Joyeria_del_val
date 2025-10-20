@@ -1,349 +1,2338 @@
 [
   {
-    "id": "1",
-    "titulo": "Anillo oro 18k con diamantes",
-    "descripcion": "Anillo artesanal con diamantes y oro blanco 18k.",
-    "precio": 1790,
-    "precioAnterior": 2290,
-    "imagenes": [
-      "https://image.made-in-china.com/318f0j00htBGRJpWILgY/eokbry3piqqs6m2nfnm-318774451451-mp4-264-sd-mp4.webp"
-    ],
-    "categorias": ["anillos", "diamantes", "bodas", "oro"],
-    "etiquetas": ["oro", "18k", "hecho a mano"],
-    "slug": "anillo-oro-18k-diamantes"
-  },
-  {
-    "id": "2",
-    "titulo": "Pendientes infantiles mariquita",
-    "descripcion": "Perfectos para los más pequeños.",
-    "precio": 49,
+    "id": "REL001",
+    "titulo": "Reloj analógico/digital con brazalete de acero, acero rosado y esfera de nácar Epic Icon Mesh",
+    "descripcion": "Reloj analógico/digital TOUS Epic Icon Mesh con brazalete de acero inoxidable y caja de acero rosado. Diámetro: 30 mm. Esfera de nácar. Cristal mineral redondo plano. Funciones: hora y minutos. Impermeable a 5 ATM. Movimiento analógico/digital de cuarzo japonés. Brazalete: 42,5mm x 14mm x 12mm. Cierre ajustable con cierre de seguridad.",
+    "precio": 199,
     "precioAnterior": null,
     "imagenes": [
-      "https://m.media-amazon.com/images/I/61tD2xN54tL._UY1000_.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/hd7/h94/14488086413342/1200Wx1200H_product_3000143900-20250603110133/1200Wx1200H-product-3000143900-20250603110133.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/hf6/haa/14448953360414/1200Wx1200H_product_3000143900_2-20250520180215/1200Wx1200H-product-3000143900-2-20250520180215.jpg"
     ],
-    "categorias": ["pendientes", "infantil"],
-    "etiquetas": ["niños", "alegría", "mariquita"],
-    "slug": "pendientes-infantiles-mariquita"
+    "categorias": [
+      "TOUS, acero, nácar, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogicodigital-con-brazalete-de-acero-acero-rosado-y-esfera-de-nacar-epic-icon-mesh",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "acero",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000143900",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL001",
+      "title": "Reloj analógico/digital con brazalete de acero, acero rosado y esfera de nácar Epic Icon Mesh",
+      "handle": "reloj-analogicodigital-con-brazalete-de-acero-acero-rosado-y-esfera-de-nacar-epic-icon-mesh",
+      "description": "Reloj analógico/digital TOUS Epic Icon Mesh con brazalete de acero inoxidable y caja de acero rosado. Diámetro: 30 mm. Esfera de nácar. Cristal mineral redondo plano. Funciones: hora y minutos. Impermeable a 5 ATM. Movimiento analógico/digital de cuarzo japonés. Brazalete: 42,5mm x 14mm x 12mm. Cierre ajustable con cierre de seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, acero, nácar, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL001-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hd7/h94/14488086413342/1200Wx1200H_product_3000143900-20250603110133/1200Wx1200H-product-3000143900-20250603110133.jpg",
+          "position": 1,
+          "alt": "Reloj analógico/digital con brazalete de acero, acero rosado y esfera de nácar Epic Icon Mesh - Vista 1"
+        },
+        {
+          "id": "REL001-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hf6/haa/14448953360414/1200Wx1200H_product_3000143900_2-20250520180215/1200Wx1200H-product-3000143900-2-20250520180215.jpg",
+          "position": 2,
+          "alt": "Reloj analógico/digital con brazalete de acero, acero rosado y esfera de nácar Epic Icon Mesh - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL001-variant-1",
+          "product_id": "REL001",
+          "title": "Default Title",
+          "sku": "3000143900",
+          "price": "199.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "9",
-    "titulo": "Pulsera de plata 925 con dije de corazón",
-    "descripcion": "Elegante pulsera de plata esterlina con detalle de corazón.",
-    "precio": 120,
-    "precioAnterior": 150,
-    "imagenes": [
-      "https://lecarre.es/uploads/pulseras/pulsera-corazon-plata.jpg"
-    ],
-    "categorias": ["pulseras", "plata 925"],
-    "etiquetas": ["plata", "corazón", "regalo"],
-    "slug": "pulsera-plata-925-corazon"
-  },
-  {
-    "id": "10",
-    "titulo": "Colgante de oro con zafiro",
-    "descripcion": "Colgante en oro amarillo 18k con zafiro azul natural.",
-    "precio": 890,
-    "precioAnterior": 1100,
-    "imagenes": [
-      "https://www.baunat.com/es/15439112_ES-GY-P1-0070R_722x722/colgante-satelite-en-oro-amarillo-con-zafiro-redondo.jpg"
-    ],
-    "categorias": ["colgantes", "oro"],
-    "etiquetas": ["oro 18k", "zafiro", "lujo"],
-    "slug": "colgante-oro-zafiro"
-  },
-  {
-    "id": "11",
-    "titulo": "Anillo infantil de plata con estrella",
-    "descripcion": "Bonito anillo para niñas con diseño de estrella.",
-    "precio": 35,
+    "id": "REL002",
+    "titulo": "Reloj analógico con brazalete de acero y acero dorado D-Bear Party",
+    "descripcion": "Reloj analógico TOUS D-Bear Party con brazalete de acero inoxidable, acero dorado y caja transparente. Dimensiones: 36 mm x 48 mm. Esfera de metal con oso facetado acrílico asemejando una gema. Cristal mineral plano octogonal. Funciones: hora y minutos. Impermeable a 3 ATM. Movimiento analógico de cuarzo japonés. Brazalete: 23mm x 18mm x 74mm / 23mm x 18mm x 105mm. Cierre malla milanesa con cierre de seguridad.",
+    "precio": 169,
     "precioAnterior": null,
     "imagenes": [
-      "https://joyaspilardetoro.com/2598-large_default/anillo-estrella-plata-de-ley.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/h0b/h8e/14488269717534/1200Wx1200H_product_3000143500-20250603120150/1200Wx1200H-product-3000143500-20250603120150.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h2f/h28/14448943267870/1200Wx1200H_product_3000143500_2-20250520180214/1200Wx1200H-product-3000143500-2-20250520180214.jpg"
     ],
-    "categorias": ["anillos", "infantil", "plata"],
-    "etiquetas": ["niña", "estrella", "plata 925"],
-    "slug": "anillo-infantil-plata-estrella"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-de-acero-y-acero-dorado-d-bear-party",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000143500",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL002",
+      "title": "Reloj analógico con brazalete de acero y acero dorado D-Bear Party",
+      "handle": "reloj-analogico-con-brazalete-de-acero-y-acero-dorado-d-bear-party",
+      "description": "Reloj analógico TOUS D-Bear Party con brazalete de acero inoxidable, acero dorado y caja transparente. Dimensiones: 36 mm x 48 mm. Esfera de metal con oso facetado acrílico asemejando una gema. Cristal mineral plano octogonal. Funciones: hora y minutos. Impermeable a 3 ATM. Movimiento analógico de cuarzo japonés. Brazalete: 23mm x 18mm x 74mm / 23mm x 18mm x 105mm. Cierre malla milanesa con cierre de seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL002-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h0b/h8e/14488269717534/1200Wx1200H_product_3000143500-20250603120150/1200Wx1200H-product-3000143500-20250603120150.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete de acero y acero dorado D-Bear Party - Vista 1"
+        },
+        {
+          "id": "REL002-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h2f/h28/14448943267870/1200Wx1200H_product_3000143500_2-20250520180214/1200Wx1200H-product-3000143500-2-20250520180214.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete de acero y acero dorado D-Bear Party - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL002-variant-1",
+          "product_id": "REL002",
+          "title": "Default Title",
+          "sku": "3000143500",
+          "price": "169.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "12",
-    "titulo": "Gafas de sol Ray-Ban Wayfarer",
-    "descripcion": "Clásicas gafas de sol en color negro con lentes polarizadas.",
-    "precio": 180,
-    "precioAnterior": 220,
-    "imagenes": [
-      "https://images.ray-ban.com/is/image/RayBan/805289126577_shad_qt.png?impolicy=SEO_1x1"
-    ],
-    "categorias": ["gafas", "sol"],
-    "etiquetas": ["Ray-Ban", "polarizadas", "clásicas"],
-    "slug": "gafas-rayban-wayfarer"
-  },
-  {
-    "id": "13",
-    "titulo": "Reloj Casio digital retro",
-    "descripcion": "Reloj digital con diseño retro y resistencia al agua.",
-    "precio": 65,
-    "precioAnterior": 80,
-    "imagenes": [
-      "https://www.reloj.es/pictures/casio-a158wetb-1aef-vintage-series-15387728.jpg"
-    ],
-    "categorias": ["relojes", "digital"],
-    "etiquetas": ["Casio", "retro", "deportivo"],
-    "slug": "reloj-casio-digital-retro"
-  },
-  {
-    "id": "14",
-    "titulo": "Pendientes de aro en plata 925",
-    "descripcion": "Elegantes pendientes de aro en plata esterlina.",
-    "precio": 75,
-    "precioAnterior": 90,
-    "imagenes": [
-      "https://m.media-amazon.com/images/I/61voFvmDF5L._UY1000_.jpg"
-    ],
-    "categorias": ["pendientes", "plata 925"],
-    "etiquetas": ["plata", "aro", "mujer"],
-    "slug": "pendientes-aro-plata-925"
-  },
-  {
-    "id": "15",
-    "titulo": "Gafas de vista Tous con cristales graduables",
-    "descripcion": "Gafas de vista con montura de metal y diseño elegante.",
-    "precio": 150,
+    "id": "REL003",
+    "titulo": "Reloj analógico con brazalete de acero y acero rosado D-Bear Party",
+    "descripcion": "Reloj analógico TOUS D-Bear Party con brazalete de acero inoxidable, acero rosado y caja transparente. Dimensiones: 36 mm x 48 mm. Esfera de metal con oso facetado acrílico asemejando una gema. Cristal mineral plano octogonal. Funciones: hora y minutos. Impermeable a 3 ATM. Movimiento analógico de cuarzo japonés. Brazalete: 23mm x 18mm x 74mm / 23mm x 18mm x 105mm. Cierre malla milanesa con cierre de seguridad.",
+    "precio": 169,
     "precioAnterior": null,
     "imagenes": [
-      "https://ulloaoptico.com/wp-content/uploads/2023/04/Diseno-sin-titulo-2021-11-18T115241.632.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/h96/h5d/14488270635038/1200Wx1200H_product_3000143600-20250603120150/1200Wx1200H-product-3000143600-20250603120150.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h57/heb/14448946216990/1200Wx1200H_product_3000143600_2-20250520180214/1200Wx1200H-product-3000143600-2-20250520180214.jpg"
     ],
-    "categorias": ["gafas", "vista"],
-    "etiquetas": ["Tous", "graduables", "elegantes"],
-    "slug": "gafas-vista-tous-graduables"
-  },
-  {
-    "id": "16",
-    "titulo": "Reloj analógico Fossil con correa de cuero",
-    "descripcion": "Reloj clásico con esfera minimalista y correa de cuero genuino.",
-    "precio": 195,
-    "precioAnterior": 240,
-    "imagenes": ["https://m.media-amazon.com/images/I/516Q+xp-XQL._UY900_.jpg"],
-    "categorias": ["relojes", "analógico"],
-    "etiquetas": ["Fossil", "cuero", "elegante"],
-    "slug": "reloj-fossil-analogico-cuero"
-  },
-  {
-    "id": "17",
-    "titulo": "Anillo de acero para hombre",
-    "descripcion": "Anillo robusto en acero inoxidable con acabado pulido.",
-    "precio": 45,
-    "precioAnterior": 60,
-    "imagenes": [
-      "https://alianzasdeacero.es/wp-content/uploads/2020/09/anillo-acero-antialergico-hombre-acero-Antoni-HF62.jpg"
+    "categorias": [
+      "TOUS, relojes"
     ],
-    "categorias": ["anillos", "acero"],
-    "etiquetas": ["hombre", "acero", "robusto"],
-    "slug": "anillo-acero-hombre"
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-de-acero-y-acero-rosado-d-bear-party",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000143600",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL003",
+      "title": "Reloj analógico con brazalete de acero y acero rosado D-Bear Party",
+      "handle": "reloj-analogico-con-brazalete-de-acero-y-acero-rosado-d-bear-party",
+      "description": "Reloj analógico TOUS D-Bear Party con brazalete de acero inoxidable, acero rosado y caja transparente. Dimensiones: 36 mm x 48 mm. Esfera de metal con oso facetado acrílico asemejando una gema. Cristal mineral plano octogonal. Funciones: hora y minutos. Impermeable a 3 ATM. Movimiento analógico de cuarzo japonés. Brazalete: 23mm x 18mm x 74mm / 23mm x 18mm x 105mm. Cierre malla milanesa con cierre de seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL003-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h96/h5d/14488270635038/1200Wx1200H_product_3000143600-20250603120150/1200Wx1200H-product-3000143600-20250603120150.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete de acero y acero rosado D-Bear Party - Vista 1"
+        },
+        {
+          "id": "REL003-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h57/heb/14448946216990/1200Wx1200H_product_3000143600_2-20250520180214/1200Wx1200H-product-3000143600-2-20250520180214.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete de acero y acero rosado D-Bear Party - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL003-variant-1",
+          "product_id": "REL003",
+          "title": "Default Title",
+          "sku": "3000143600",
+          "price": "169.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "18",
-    "titulo": "Colgante infantil de plata con nombre",
-    "descripcion": "Colgante personalizable con nombre para niños.",
-    "precio": 55,
+    "id": "REL004",
+    "titulo": "Reloj analógico con brazalete de acero D-Bear Party",
+    "descripcion": "Reloj analógico TOUS D-Bear Party con brazalete de acero inoxidable y caja transparente. Dimensiones: 36 mm x 48 mm. Esfera de metal con oso facetado acrílico asemejando una gema. Cristal mineral plano octogonal. Funciones: hora y minutos. Impermeable a 3 ATM. Movimiento analógico de cuarzo japonés. Brazalete: 23mm x 18mm x 74mm / 23mm x 18mm x 105mm. Cierre malla milanesa con cierre de seguridad.",
+    "precio": 159,
     "precioAnterior": null,
     "imagenes": [
-      "https://www.joyeriasaresso.com/12893/collar-de-plata-nina-y-nino-personalizado.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/hee/h2b/14488085495838/1200Wx1200H_product_3000143700-20250603110133/1200Wx1200H-product-3000143700-20250603110133.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/hc8/h09/14448948641822/1200Wx1200H_product_3000143700_2-20250520180214/1200Wx1200H-product-3000143700-2-20250520180214.jpg"
     ],
-    "categorias": ["colgantes", "infantil", "plata"],
-    "etiquetas": ["niño", "personalizado", "plata 925"],
-    "slug": "colgante-infantil-plata-nombre"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-de-acero-d-bear-party",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000143700",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL004",
+      "title": "Reloj analógico con brazalete de acero D-Bear Party",
+      "handle": "reloj-analogico-con-brazalete-de-acero-d-bear-party",
+      "description": "Reloj analógico TOUS D-Bear Party con brazalete de acero inoxidable y caja transparente. Dimensiones: 36 mm x 48 mm. Esfera de metal con oso facetado acrílico asemejando una gema. Cristal mineral plano octogonal. Funciones: hora y minutos. Impermeable a 3 ATM. Movimiento analógico de cuarzo japonés. Brazalete: 23mm x 18mm x 74mm / 23mm x 18mm x 105mm. Cierre malla milanesa con cierre de seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL004-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hee/h2b/14488085495838/1200Wx1200H_product_3000143700-20250603110133/1200Wx1200H-product-3000143700-20250603110133.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete de acero D-Bear Party - Vista 1"
+        },
+        {
+          "id": "REL004-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hc8/h09/14448948641822/1200Wx1200H_product_3000143700_2-20250520180214/1200Wx1200H-product-3000143700-2-20250520180214.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete de acero D-Bear Party - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL004-variant-1",
+          "product_id": "REL004",
+          "title": "Default Title",
+          "sku": "3000143700",
+          "price": "159.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "19",
-    "titulo": "Gafas de sol Oakley polarizadas deportivas",
-    "descripcion": "Gafas deportivas con lentes polarizadas y protección UV.",
-    "precio": 210,
-    "precioAnterior": 250,
+    "id": "REL005",
+    "titulo": "Reloj digital con brazalete de acero SS y acero IPG dorado D-BEAR",
+    "descripcion": "Reloj digital D-BEAR con brazalete y caja de acero inoxidable y acero en color IPG dorado. Diámetro caja: 36,5 x 44,8 mm. Esfera: metálica / Pantalla cristal líquido (LCD) con luz. Funciones: hora en 12 o 24 horas, minutos, segundos, día, mes y día de la semana, cronógrafo 1/100 segundos y alarma. Impermeable a 3 ATM. Batería: 3V litio CR2025 / 2,5 gramos (litio 0,003 gramos). Cristal: plano cuadrado con forma de oso en el interior. Cierre desplegable con pulsadores.",
+    "precio": 169,
+    "precioAnterior": null,
     "imagenes": [
-      "https://opticasport.com/wp-content/uploads/2021/02/oakley-sutro-s-matte-black-946203-1.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/hb5/h78/13024339099678/1200Wx1200H_product_3000134600-20240103100204/1200Wx1200H-product-3000134600-20240103100204.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h8b/he3/13072209149982/1200Wx1200H_product_3000134600_2-20240118180144/1200Wx1200H-product-3000134600-2-20240118180144.jpg"
     ],
-    "categorias": ["gafas", "sol"],
-    "etiquetas": ["Oakley", "polarizadas", "deportivas"],
-    "slug": "gafas-oakley-polarizadas-deportivas"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-digital-con-brazalete-de-acero-ss-y-acero-ipg-dorado-d-bear",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000134600",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL005",
+      "title": "Reloj digital con brazalete de acero SS y acero IPG dorado D-BEAR",
+      "handle": "reloj-digital-con-brazalete-de-acero-ss-y-acero-ipg-dorado-d-bear",
+      "description": "Reloj digital D-BEAR con brazalete y caja de acero inoxidable y acero en color IPG dorado. Diámetro caja: 36,5 x 44,8 mm. Esfera: metálica / Pantalla cristal líquido (LCD) con luz. Funciones: hora en 12 o 24 horas, minutos, segundos, día, mes y día de la semana, cronógrafo 1/100 segundos y alarma. Impermeable a 3 ATM. Batería: 3V litio CR2025 / 2,5 gramos (litio 0,003 gramos). Cristal: plano cuadrado con forma de oso en el interior. Cierre desplegable con pulsadores.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL005-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hb5/h78/13024339099678/1200Wx1200H_product_3000134600-20240103100204/1200Wx1200H-product-3000134600-20240103100204.jpg",
+          "position": 1,
+          "alt": "Reloj digital con brazalete de acero SS y acero IPG dorado D-BEAR - Vista 1"
+        },
+        {
+          "id": "REL005-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h8b/he3/13072209149982/1200Wx1200H_product_3000134600_2-20240118180144/1200Wx1200H-product-3000134600-2-20240118180144.jpg",
+          "position": 2,
+          "alt": "Reloj digital con brazalete de acero SS y acero IPG dorado D-BEAR - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL005-variant-1",
+          "product_id": "REL005",
+          "title": "Default Title",
+          "sku": "3000134600",
+          "price": "169.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "20",
-    "titulo": "Pulsera de oro para mujer",
-    "descripcion": "Delicada pulsera de oro amarillo 18k con diseño minimalista.",
-    "precio": 650,
-    "precioAnterior": 800,
+    "id": "REL006",
+    "titulo": "Reloj digital con brazalete de acero SS y acero IPG dorado D-BEAR",
+    "descripcion": "Reloj digital D-BEAR con brazalete y caja de acero inoxidable y acero en color IPG dorado. Diámetro caja: 36,5 x 44,8 mm. Esfera: metálica / Pantalla cristal líquido (LCD) con luz. Funciones: hora en 12 o 24 horas, minutos, segundos, día, mes y día de la semana, cronógrafo 1/100 segundos y alarma. Impermeable a 3 ATM. Batería: 3V litio CR2025 / 2,5 gramos (litio 0,003 gramos). Cristal: plano cuadrado con forma de oso en el interior. Cierre desplegable con pulsadores.",
+    "precio": 159,
+    "precioAnterior": null,
     "imagenes": [
-      "https://i.etsystatic.com/34022830/r/il/c3ddaa/4275171647/il_570xN.4275171647_3a40.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/hbf/hc1/13024336150558/1200Wx1200H_product_3000134500-20240103100203/1200Wx1200H-product-3000134500-20240103100203.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/hf3/hed/13072204955678/1200Wx1200H_product_3000134500_2-20240118180143/1200Wx1200H-product-3000134500-2-20240118180143.jpg"
     ],
-    "categorias": ["pulseras", "oro"],
-    "etiquetas": ["oro 18k", "mujer", "minimalista"],
-    "slug": "pulsera-oro-mujer"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-digital-con-brazalete-de-acero-ss-y-acero-ipg-dorado-d-bear",
+    "stock": 2,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000134500",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL006",
+      "title": "Reloj digital con brazalete de acero SS y acero IPG dorado D-BEAR",
+      "handle": "reloj-digital-con-brazalete-de-acero-ss-y-acero-ipg-dorado-d-bear",
+      "description": "Reloj digital D-BEAR con brazalete y caja de acero inoxidable y acero en color IPG dorado. Diámetro caja: 36,5 x 44,8 mm. Esfera: metálica / Pantalla cristal líquido (LCD) con luz. Funciones: hora en 12 o 24 horas, minutos, segundos, día, mes y día de la semana, cronógrafo 1/100 segundos y alarma. Impermeable a 3 ATM. Batería: 3V litio CR2025 / 2,5 gramos (litio 0,003 gramos). Cristal: plano cuadrado con forma de oso en el interior. Cierre desplegable con pulsadores.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL006-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hbf/hc1/13024336150558/1200Wx1200H_product_3000134500-20240103100203/1200Wx1200H-product-3000134500-20240103100203.jpg",
+          "position": 1,
+          "alt": "Reloj digital con brazalete de acero SS y acero IPG dorado D-BEAR - Vista 1"
+        },
+        {
+          "id": "REL006-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hf3/hed/13072204955678/1200Wx1200H_product_3000134500_2-20240118180143/1200Wx1200H-product-3000134500-2-20240118180143.jpg",
+          "position": 2,
+          "alt": "Reloj digital con brazalete de acero SS y acero IPG dorado D-BEAR - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL006-variant-1",
+          "product_id": "REL006",
+          "title": "Default Title",
+          "sku": "3000134500",
+          "price": "159.00",
+          "compare_at_price": null,
+          "inventory_quantity": 2,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "21",
-    "titulo": "Reloj inteligente Garmin con GPS",
-    "descripcion": "Reloj deportivo con GPS integrado y monitor de actividad.",
-    "precio": 299,
-    "precioAnterior": 350,
+    "id": "REL007",
+    "titulo": "Reloj analógico con brazalete acero IPG dorado Karat",
+    "descripcion": "Toda la familia Karat está inspirada en las tallas de las gemas preciosas.; vínculo entre el heritage relojero y la esencia joyera de la marca. El brazalete se encuentran perfectamente integrado a modo de pulsera con eslabones trabajados y facetados ofreciendo un brillo que da carácter a esta colección",
+    "precio": 229,
+    "precioAnterior": null,
     "imagenes": [
-      "https://res.garmin.com/transform/image/upload/b_rgb:FFFFFF,c_pad,dpr_2.0,f_auto,h_400,q_auto,w_400/c_pad,h_400,w_400/v1/Product_Images/en/products/010-02810-11/v/cf-xl?pgw=1"
+      "https://cloud-media.tous.com/medias/sys_master/images/hcf/hb5/13620347895838/1200Wx1200H_product_3000136500-20240805140152/1200Wx1200H-product-3000136500-20240805140152.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h14/h09/13620349272094/1200Wx1200H_product_3000136500_2-20240805140152/1200Wx1200H-product-3000136500-2-20240805140152.jpg"
     ],
-    "categorias": ["relojes", "inteligente"],
-    "etiquetas": ["Garmin", "GPS", "deportivo"],
-    "slug": "reloj-garmin-inteligente-gps"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-acero-ipg-dorado-karat",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000136500",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL007",
+      "title": "Reloj analógico con brazalete acero IPG dorado Karat",
+      "handle": "reloj-analogico-con-brazalete-acero-ipg-dorado-karat",
+      "description": "Toda la familia Karat está inspirada en las tallas de las gemas preciosas.; vínculo entre el heritage relojero y la esencia joyera de la marca. El brazalete se encuentran perfectamente integrado a modo de pulsera con eslabones trabajados y facetados ofreciendo un brillo que da carácter a esta colección",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL007-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hcf/hb5/13620347895838/1200Wx1200H_product_3000136500-20240805140152/1200Wx1200H-product-3000136500-20240805140152.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete acero IPG dorado Karat - Vista 1"
+        },
+        {
+          "id": "REL007-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h14/h09/13620349272094/1200Wx1200H_product_3000136500_2-20240805140152/1200Wx1200H-product-3000136500-2-20240805140152.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete acero IPG dorado Karat - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL007-variant-1",
+          "product_id": "REL007",
+          "title": "Default Title",
+          "sku": "3000136500",
+          "price": "229.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "22",
-    "titulo": "Anillo de compromiso de diamante",
-    "descripcion": "Anillo de compromiso con diamante central en oro blanco 18k.",
-    "precio": 2500,
-    "precioAnterior": 3000,
+    "id": "REL008",
+    "titulo": "Reloj analógico de acero IPG dorado con correa de piel negra Heritage",
+    "descripcion": "El reloj Heritage es un tributo a nuestros orígenes relojeros. La esencia de los inicios de TOUS en una colección atemporal. Los acabados bicolor son perfectos para generar looks con nuestras colecciones de joyeríaTimeless",
+    "precio": 159,
+    "precioAnterior": null,
     "imagenes": [
-      "https://www.nicols.es/78852-thickbox_default/anillo-compromiso-alexia-oro-blanco-18k-con-diamante-060ct.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/h82/hc4/13620341538846/1200Wx1200H_product_3000136300-20240805140151/1200Wx1200H-product-3000136300-20240805140151.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/hca/h75/13620343111710/1200Wx1200H_product_3000136300_2-20240805140152/1200Wx1200H-product-3000136300-2-20240805140152.jpg"
     ],
-    "categorias": ["anillos", "compromiso", "diamantes"],
-    "etiquetas": ["compromiso", "oro 18k", "diamante"],
-    "slug": "anillo-compromiso-oro-diamante"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-de-acero-ipg-dorado-con-correa-de-piel-negra-heritage",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000136300",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL008",
+      "title": "Reloj analógico de acero IPG dorado con correa de piel negra Heritage",
+      "handle": "reloj-analogico-de-acero-ipg-dorado-con-correa-de-piel-negra-heritage",
+      "description": "El reloj Heritage es un tributo a nuestros orígenes relojeros. La esencia de los inicios de TOUS en una colección atemporal. Los acabados bicolor son perfectos para generar looks con nuestras colecciones de joyeríaTimeless",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL008-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h82/hc4/13620341538846/1200Wx1200H_product_3000136300-20240805140151/1200Wx1200H-product-3000136300-20240805140151.jpg",
+          "position": 1,
+          "alt": "Reloj analógico de acero IPG dorado con correa de piel negra Heritage - Vista 1"
+        },
+        {
+          "id": "REL008-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hca/h75/13620343111710/1200Wx1200H_product_3000136300_2-20240805140152/1200Wx1200H-product-3000136300-2-20240805140152.jpg",
+          "position": 2,
+          "alt": "Reloj analógico de acero IPG dorado con correa de piel negra Heritage - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL008-variant-1",
+          "product_id": "REL008",
+          "title": "Default Title",
+          "sku": "3000136300",
+          "price": "159.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "23",
-    "titulo": "Collar Oso TOUS",
-    "descripcion": "Elegante collar de la colección Vitoria con oso de plata vermeil.",
+    "id": "REL009",
+    "titulo": "Reloj analógico Icon Charms de acero IP dorado con nácar",
+    "descripcion": "Esfera: nácar",
+    "precio": 229,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/h10/h6f/13240560943134/1200Wx1200H_product_700350165-20240314180115/1200Wx1200H-product-700350165-20240314180115.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/hd6/hd1/13370330578974/1200Wx1200H_product_700350165_9-20240502190111/1200Wx1200H-product-700350165-9-20240502190111.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-icon-charms-de-acero-ip-dorado-con-nacar",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "700350165",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL009",
+      "title": "Reloj analógico Icon Charms de acero IP dorado con nácar",
+      "handle": "reloj-analogico-icon-charms-de-acero-ip-dorado-con-nacar",
+      "description": "Esfera: nácar",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL009-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h10/h6f/13240560943134/1200Wx1200H_product_700350165-20240314180115/1200Wx1200H-product-700350165-20240314180115.jpg",
+          "position": 1,
+          "alt": "Reloj analógico Icon Charms de acero IP dorado con nácar - Vista 1"
+        },
+        {
+          "id": "REL009-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hd6/hd1/13370330578974/1200Wx1200H_product_700350165_9-20240502190111/1200Wx1200H-product-700350165-9-20240502190111.jpg",
+          "position": 2,
+          "alt": "Reloj analógico Icon Charms de acero IP dorado con nácar - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL009-variant-1",
+          "product_id": "REL009",
+          "title": "Default Title",
+          "sku": "700350165",
+          "price": "229.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL010",
+    "titulo": "Reloj analógico S-Mesh de acero inoxidable",
+    "descripcion": "Elegancia clásica y atemporal. Este reloj de acero inoxidable de la colección S-Mesh renueva el estilo de los modelos más clásicos aportando estilo y distinción a tu look.",
+    "precio": 189,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/hca/h4b/13242366099486/1200Wx1200H_product_200350500-20240315120110/1200Wx1200H-product-200350500-20240315120110.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h18/h21/13350841581598/1200Wx1200H_product_200350500_9-20240425160056/1200Wx1200H-product-200350500-9-20240425160056.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-s-mesh-de-acero-inoxidable",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "200350500",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL010",
+      "title": "Reloj analógico S-Mesh de acero inoxidable",
+      "handle": "reloj-analogico-s-mesh-de-acero-inoxidable",
+      "description": "Elegancia clásica y atemporal. Este reloj de acero inoxidable de la colección S-Mesh renueva el estilo de los modelos más clásicos aportando estilo y distinción a tu look.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL010-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hca/h4b/13242366099486/1200Wx1200H_product_200350500-20240315120110/1200Wx1200H-product-200350500-20240315120110.jpg",
+          "position": 1,
+          "alt": "Reloj analógico S-Mesh de acero inoxidable - Vista 1"
+        },
+        {
+          "id": "REL010-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h18/h21/13350841581598/1200Wx1200H_product_200350500_9-20240425160056/1200Wx1200H-product-200350500-9-20240425160056.jpg",
+          "position": 2,
+          "alt": "Reloj analógico S-Mesh de acero inoxidable - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL010-variant-1",
+          "product_id": "REL010",
+          "title": "Default Title",
+          "sku": "200350500",
+          "price": "189.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL011",
+    "titulo": "Reloj analógico T-Shine de acero IP dorado con zirconias cúbicas",
+    "descripcion": "Dorado con zirconias cúbicas",
+    "precio": 289,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/h72/hb8/13242367148062/1200Wx1200H_product_200350520-20240315120110/1200Wx1200H-product-200350520-20240315120110.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h6a/h96/13362203033630/1200Wx1200H_product_200350520_9-20240429190100/1200Wx1200H-product-200350520-9-20240429190100.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-t-shine-de-acero-ip-dorado-con-zirconias-cubicas",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "200350520",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL011",
+      "title": "Reloj analógico T-Shine de acero IP dorado con zirconias cúbicas",
+      "handle": "reloj-analogico-t-shine-de-acero-ip-dorado-con-zirconias-cubicas",
+      "description": "Dorado con zirconias cúbicas",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL011-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h72/hb8/13242367148062/1200Wx1200H_product_200350520-20240315120110/1200Wx1200H-product-200350520-20240315120110.jpg",
+          "position": 1,
+          "alt": "Reloj analógico T-Shine de acero IP dorado con zirconias cúbicas - Vista 1"
+        },
+        {
+          "id": "REL011-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h6a/h96/13362203033630/1200Wx1200H_product_200350520_9-20240429190100/1200Wx1200H-product-200350520-9-20240429190100.jpg",
+          "position": 2,
+          "alt": "Reloj analógico T-Shine de acero IP dorado con zirconias cúbicas - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL011-variant-1",
+          "product_id": "REL011",
+          "title": "Default Title",
+          "sku": "200350520",
+          "price": "289.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL012",
+    "titulo": "Reloj analógico con acero IPG dorado y brazalete de acero Karat Round",
+    "descripcion": "Reloj analógico con acero IPG dorado y brazalete de acero Karat Round",
+    "precio": 349,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/h15/ha1/12492770312222/1200Wx1200H_product_300358071-20230712180039/1200Wx1200H-product-300358071-20230712180039.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h46/h7f/12492930777118/1200Wx1200H_product_300358071_5-20230712190037/1200Wx1200H-product-300358071-5-20230712190037.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-acero-ipg-dorado-y-brazalete-de-acero-karat-round",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "300358071",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL012",
+      "title": "Reloj analógico con acero IPG dorado y brazalete de acero Karat Round",
+      "handle": "reloj-analogico-con-acero-ipg-dorado-y-brazalete-de-acero-karat-round",
+      "description": "Reloj analógico con acero IPG dorado y brazalete de acero Karat Round",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL012-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h15/ha1/12492770312222/1200Wx1200H_product_300358071-20230712180039/1200Wx1200H-product-300358071-20230712180039.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con acero IPG dorado y brazalete de acero Karat Round - Vista 1"
+        },
+        {
+          "id": "REL012-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h46/h7f/12492930777118/1200Wx1200H_product_300358071_5-20230712190037/1200Wx1200H-product-300358071-5-20230712190037.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con acero IPG dorado y brazalete de acero Karat Round - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL012-variant-1",
+          "product_id": "REL012",
+          "title": "Default Title",
+          "sku": "300358071",
+          "price": "349.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL013",
+    "titulo": "Reloj digital con brazalete de acero D-Logo New",
+    "descripcion": "Reloj digital TOUS D-Logo New con brazalete de malla milanesa de acero. Funciones: hora, minutos, segundos, día, mes, día de la semana, cronógrafo 1/100 segundos y alarma. Impermeable a 3 ATM. Batería: 3V litio CR2016 / 1,69 gramos (litio 0,025 gramos). Cierre ajustable con seguridad.",
     "precio": 139,
-    "precioAnterior": 163.53,
-    "imagenes": [
-      "https://masqnuevo.net/44064-large_default/collar-tous-hilo-y-colgante-oso-de-plata-vermeil-coleccion-vitoria.jpg"
-    ],
-    "categorias": ["tous", "collares", "plata"],
-    "etiquetas": ["oso", "colección vitoria", "vermeil"],
-    "slug": "collar-oso-tous"
-  },
-  {
-    "id": "24",
-    "titulo": "Pulsera de Oro TOUS",
-    "descripcion": "Pulsera de oro 18k con diseño clásico TOUS.",
-    "precio": 89,
     "precioAnterior": null,
     "imagenes": [
-      "https://cloud-media.tous.com/medias/sys_master/images/h4f/h29/12571234533406/515Wx515H_product_311691670-20230808170107/515Wx515H-product-311691670-20230808170107.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/heb/he8/12454200541214/1200Wx1200H_product_300358100-20230627180054/1200Wx1200H-product-300358100-20230627180054.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/hfe/h11/12454202638366/1200Wx1200H_product_300358100_2-20230627180054/1200Wx1200H-product-300358100-2-20230627180054.jpg"
     ],
-    "categorias": ["tous", "pulseras", "oro"],
-    "etiquetas": ["oro 18k", "clásico", "unisex"],
-    "slug": "pulsera-oro-tous"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-digital-con-brazalete-de-acero-d-logo-new",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "300358100",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL013",
+      "title": "Reloj digital con brazalete de acero D-Logo New",
+      "handle": "reloj-digital-con-brazalete-de-acero-d-logo-new",
+      "description": "Reloj digital TOUS D-Logo New con brazalete de malla milanesa de acero. Funciones: hora, minutos, segundos, día, mes, día de la semana, cronógrafo 1/100 segundos y alarma. Impermeable a 3 ATM. Batería: 3V litio CR2016 / 1,69 gramos (litio 0,025 gramos). Cierre ajustable con seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL013-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/heb/he8/12454200541214/1200Wx1200H_product_300358100-20230627180054/1200Wx1200H-product-300358100-20230627180054.jpg",
+          "position": 1,
+          "alt": "Reloj digital con brazalete de acero D-Logo New - Vista 1"
+        },
+        {
+          "id": "REL013-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hfe/h11/12454202638366/1200Wx1200H_product_300358100_2-20230627180054/1200Wx1200H-product-300358100-2-20230627180054.jpg",
+          "position": 2,
+          "alt": "Reloj digital con brazalete de acero D-Logo New - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL013-variant-1",
+          "product_id": "REL013",
+          "title": "Default Title",
+          "sku": "300358100",
+          "price": "139.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "25",
-    "titulo": "Anillo TOUS",
-    "descripcion": "Anillo Mil Osos de oro 18k con diseño icónico TOUS.",
-    "precio": 119,
-    "precioAnterior": 148.75,
+    "id": "REL014",
+    "titulo": "Reloj digital con brazalete de acero D-Logo New",
+    "descripcion": "Reloj digital TOUS D-Logo con brazalete de acero. Funciones: hora, minutos, segundos, día, mes, día de la semana, cronógrafo 1/100 segundos y alarma. Impermeable a 5 ATM.",
+    "precio": 149,
+    "precioAnterior": null,
     "imagenes": [
-      "https://ianor.es/cdn/shop/files/14219GM_anillo_tous_milosos_oro_18kt_1_copia.jpg?v=1743069887"
+      "https://cloud-media.tous.com/medias/sys_master/images/ha1/h7b/11646571151390/product_200351021-20220922150021/product-200351021-20220922150021.jpg_1200Wx1200H",
+      "https://cloud-media.tous.com/medias/sys_master/images/heb/heb/13347327180830/1200Wx1200H_product_200351021_9-20240424130126/1200Wx1200H-product-200351021-9-20240424130126.jpg"
     ],
-    "categorias": ["tous", "anillos", "oro"],
-    "etiquetas": ["mil osos", "oro 18k", "icónico"],
-    "slug": "anillo-tous-milosos"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-digital-con-brazalete-de-acero-d-logo-new",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "200351021",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL014",
+      "title": "Reloj digital con brazalete de acero D-Logo New",
+      "handle": "reloj-digital-con-brazalete-de-acero-d-logo-new",
+      "description": "Reloj digital TOUS D-Logo con brazalete de acero. Funciones: hora, minutos, segundos, día, mes, día de la semana, cronógrafo 1/100 segundos y alarma. Impermeable a 5 ATM.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL014-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/ha1/h7b/11646571151390/product_200351021-20220922150021/product-200351021-20220922150021.jpg_1200Wx1200H",
+          "position": 1,
+          "alt": "Reloj digital con brazalete de acero D-Logo New - Vista 1"
+        },
+        {
+          "id": "REL014-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/heb/heb/13347327180830/1200Wx1200H_product_200351021_9-20240424130126/1200Wx1200H-product-200351021-9-20240424130126.jpg",
+          "position": 2,
+          "alt": "Reloj digital con brazalete de acero D-Logo New - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL014-variant-1",
+          "product_id": "REL014",
+          "title": "Default Title",
+          "sku": "200351021",
+          "price": "149.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "26",
-    "titulo": "Pendientes Oro TOUS",
-    "descripcion": "Pendientes de oro 18k con diseño tradicional TOUS.",
+    "id": "REL015",
+    "titulo": "Reloj smartwatch con correa de nylon y correa de silicona rosa palo T-Band",
+    "descripcion": "Reloj smartwatch TOUS T-Band con doble correa intercambiable y caja de PC rosado. Correa de nylon con logo rapport en rosa sobre base negra y correa de silicona en color rosa palo con oso posicionado. Compatibilidad: Android 7.0 y iOS 12.0 o superior. Pantalla/LDC: táctil rectangular de 1,47 pulgadas TFT-DLC en color (Full Touch). Sistema operativo: RT OS. Conectividad: Bluetooth versión BLE 5.0. Memoria RAM: 128 kb, ROM Flash de 64 MB. Batería: 140 mAh, acumulador de batería 3.8V Litio/2,9 gr, recargable con cable magnético, 5-7 días en funcionamiento y 8-10 en reposo. Chipset: Realtek RTL8762CK y Frecuencia cardíaca: HRS 3300- ARM Cortex-M0 - 53MHz de velocidad. Impermeabilidad: IP68. Funciones: 5 Esferas TOUS y una puede ser intercambiada desde la TOUS WEAR APP, horas, minutos, mes, día, día de la semana, actividad diaria con contador de pasos, contador de calorías y distancia recorrida en millas o kilómetros, deportes (caminar, correr, senderismo, ciclismo, cinta/elíptica, yoga y basquetbol), frecuencia cardiaca, monitorización del sueño, presión sanguínea (aproximación), oxígeno en sangre (aproximación), notificaciones (llamadas, WhatsApp, email, SMS, Facebook, etc.), clima, función ovárica, cronógrafo 1/10 segundos, control música, encontrar móvil y control cámara. Cierre hebilla de aluminio.",
+    "precio": 139,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/h92/h16/12044187500574/product_200351092-20230206140045/product-200351092-20230206140045.jpg_1200Wx1200H",
+      "https://cloud-media.tous.com/medias/sys_master/images/h77/h45/12044191727646/product_200351092_3-20230206140045/product-200351092-3-20230206140045.jpg_1200Wx1200H"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-smartwatch-con-correa-de-nylon-y-correa-de-silicona-rosa-palo-t-band",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "200351092",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL015",
+      "title": "Reloj smartwatch con correa de nylon y correa de silicona rosa palo T-Band",
+      "handle": "reloj-smartwatch-con-correa-de-nylon-y-correa-de-silicona-rosa-palo-t-band",
+      "description": "Reloj smartwatch TOUS T-Band con doble correa intercambiable y caja de PC rosado. Correa de nylon con logo rapport en rosa sobre base negra y correa de silicona en color rosa palo con oso posicionado. Compatibilidad: Android 7.0 y iOS 12.0 o superior. Pantalla/LDC: táctil rectangular de 1,47 pulgadas TFT-DLC en color (Full Touch). Sistema operativo: RT OS. Conectividad: Bluetooth versión BLE 5.0. Memoria RAM: 128 kb, ROM Flash de 64 MB. Batería: 140 mAh, acumulador de batería 3.8V Litio/2,9 gr, recargable con cable magnético, 5-7 días en funcionamiento y 8-10 en reposo. Chipset: Realtek RTL8762CK y Frecuencia cardíaca: HRS 3300- ARM Cortex-M0 - 53MHz de velocidad. Impermeabilidad: IP68. Funciones: 5 Esferas TOUS y una puede ser intercambiada desde la TOUS WEAR APP, horas, minutos, mes, día, día de la semana, actividad diaria con contador de pasos, contador de calorías y distancia recorrida en millas o kilómetros, deportes (caminar, correr, senderismo, ciclismo, cinta/elíptica, yoga y basquetbol), frecuencia cardiaca, monitorización del sueño, presión sanguínea (aproximación), oxígeno en sangre (aproximación), notificaciones (llamadas, WhatsApp, email, SMS, Facebook, etc.), clima, función ovárica, cronógrafo 1/10 segundos, control música, encontrar móvil y control cámara. Cierre hebilla de aluminio.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL015-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h92/h16/12044187500574/product_200351092-20230206140045/product-200351092-20230206140045.jpg_1200Wx1200H",
+          "position": 1,
+          "alt": "Reloj smartwatch con correa de nylon y correa de silicona rosa palo T-Band - Vista 1"
+        },
+        {
+          "id": "REL015-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h77/h45/12044191727646/product_200351092_3-20230206140045/product-200351092-3-20230206140045.jpg_1200Wx1200H",
+          "position": 2,
+          "alt": "Reloj smartwatch con correa de nylon y correa de silicona rosa palo T-Band - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL015-variant-1",
+          "product_id": "REL015",
+          "title": "Default Title",
+          "sku": "200351092",
+          "price": "139.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL016",
+    "titulo": "Reloj digital con correa de silicona en color rosa y caja de acero TOUS B-Time",
+    "descripcion": "Reloj digital TOUS B-Time con correa de silicona en color rosa y caja de acero inoxidable. Esfera: metálica / pantalla cristal líquido (LCD) con luz. Diámetro caja: 33,5mm x 33,5mm. Funciones: hora en 12 o 24 horas, minutos, segundos, día, mes i día de lasemana, señal horaria, cronógrafo 1/100 segundos, cuenta atrás y 5 alarmas. Impermeable a 3 ATM. Batería: 3V litio CR2025 / 2,5 gramos (litio 0,003 gramos). Cierre hebilla.",
+    "precio": 129,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/hde/h11/13024236011550/1200Wx1200H_product_3000131400-20240103100147/1200Wx1200H-product-3000131400-20240103100147.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h83/h8d/13024237584414/1200Wx1200H_product_3000131400_2-20240103100148/1200Wx1200H-product-3000131400-2-20240103100148.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-digital-con-correa-de-silicona-en-color-rosa-y-caja-de-acero-tous-b-time",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000131400",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL016",
+      "title": "Reloj digital con correa de silicona en color rosa y caja de acero TOUS B-Time",
+      "handle": "reloj-digital-con-correa-de-silicona-en-color-rosa-y-caja-de-acero-tous-b-time",
+      "description": "Reloj digital TOUS B-Time con correa de silicona en color rosa y caja de acero inoxidable. Esfera: metálica / pantalla cristal líquido (LCD) con luz. Diámetro caja: 33,5mm x 33,5mm. Funciones: hora en 12 o 24 horas, minutos, segundos, día, mes i día de lasemana, señal horaria, cronógrafo 1/100 segundos, cuenta atrás y 5 alarmas. Impermeable a 3 ATM. Batería: 3V litio CR2025 / 2,5 gramos (litio 0,003 gramos). Cierre hebilla.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL016-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hde/h11/13024236011550/1200Wx1200H_product_3000131400-20240103100147/1200Wx1200H-product-3000131400-20240103100147.jpg",
+          "position": 1,
+          "alt": "Reloj digital con correa de silicona en color rosa y caja de acero TOUS B-Time - Vista 1"
+        },
+        {
+          "id": "REL016-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h83/h8d/13024237584414/1200Wx1200H_product_3000131400_2-20240103100148/1200Wx1200H-product-3000131400-2-20240103100148.jpg",
+          "position": 2,
+          "alt": "Reloj digital con correa de silicona en color rosa y caja de acero TOUS B-Time - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL016-variant-1",
+          "product_id": "REL016",
+          "title": "Default Title",
+          "sku": "3000131400",
+          "price": "129.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL017",
+    "titulo": "Reloj analógico con brazalete de acero y caja de aluminio en color IPRG rosado TOUS S-Mesh Mirror",
+    "descripcion": "Reloj analógico TOUS S-Mesh Mirror con brazalete de acero inoxidable y esfera en acero IPRG rosado. Esfera metal latón con efecto espejo. Dimensiones caja: 36 mm. Funciones: hora, minutos y segundos. Impermeable a 5 ATM. Batería: 1,55V Oxido de plata SR621SW / 0,25 gramos. Cristal: mineral facetado plano redondo. Movimiento analógico de cuarzo japonés. Cierre de malla milanesa con cierre de seguridad.",
+    "precio": 189,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/he2/h85/13024258097182/1200Wx1200H_product_3000132100-20240103100153/1200Wx1200H-product-3000132100-20240103100153.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/hf2/hf2/13072186671134/1200Wx1200H_product_3000132100_2-20240118180140/1200Wx1200H-product-3000132100-2-20240118180140.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-de-acero-y-caja-de-aluminio-en-color-iprg-rosado-tous-s-mesh-mirror",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000132160",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL017",
+      "title": "Reloj analógico con brazalete de acero y caja de aluminio en color IPRG rosado TOUS S-Mesh Mirror",
+      "handle": "reloj-analogico-con-brazalete-de-acero-y-caja-de-aluminio-en-color-iprg-rosado-tous-s-mesh-mirror",
+      "description": "Reloj analógico TOUS S-Mesh Mirror con brazalete de acero inoxidable y esfera en acero IPRG rosado. Esfera metal latón con efecto espejo. Dimensiones caja: 36 mm. Funciones: hora, minutos y segundos. Impermeable a 5 ATM. Batería: 1,55V Oxido de plata SR621SW / 0,25 gramos. Cristal: mineral facetado plano redondo. Movimiento analógico de cuarzo japonés. Cierre de malla milanesa con cierre de seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL017-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/he2/h85/13024258097182/1200Wx1200H_product_3000132100-20240103100153/1200Wx1200H-product-3000132100-20240103100153.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete de acero y caja de aluminio en color IPRG rosado TOUS S-Mesh Mirror - Vista 1"
+        },
+        {
+          "id": "REL017-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hf2/hf2/13072186671134/1200Wx1200H_product_3000132100_2-20240118180140/1200Wx1200H-product-3000132100-2-20240118180140.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete de acero y caja de aluminio en color IPRG rosado TOUS S-Mesh Mirror - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL017-variant-1",
+          "product_id": "REL017",
+          "title": "Default Title",
+          "sku": "3000132160",
+          "price": "189.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL018",
+    "titulo": "Reloj analógico con acero IPRG rosa y brazalete de acero Karat Squared",
+    "descripcion": "Reloj analógico TOUS Karat Squared de acero IPRG rosa con brazalete de acero 316L, dimensiones 32 x 40 mm y esfera de metal con cristales facetados en los índices. Funciones: hora y minutos. Impermeable a 3 ATM. Batería: 1,55V Oxido de plata SR626SW/0,3 gramos. Cristal mineral facetado plano cuadrado. Movimiento cuarzo japonés. Cierre de malla milanesa con seguridad.",
+    "precio": 189,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/h12/h2c/12492763562014/1200Wx1200H_product_300358060-20230712180037/1200Wx1200H-product-300358060-20230712180037.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h43/h41/12492764676126/515Wx515H_product_300358060_2-20230712180038/515Wx515H-product-300358060-2-20230712180038.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-acero-iprg-rosa-y-brazalete-de-acero-karat-squared",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "300358060",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL018",
+      "title": "Reloj analógico con acero IPRG rosa y brazalete de acero Karat Squared",
+      "handle": "reloj-analogico-con-acero-iprg-rosa-y-brazalete-de-acero-karat-squared",
+      "description": "Reloj analógico TOUS Karat Squared de acero IPRG rosa con brazalete de acero 316L, dimensiones 32 x 40 mm y esfera de metal con cristales facetados en los índices. Funciones: hora y minutos. Impermeable a 3 ATM. Batería: 1,55V Oxido de plata SR626SW/0,3 gramos. Cristal mineral facetado plano cuadrado. Movimiento cuarzo japonés. Cierre de malla milanesa con seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL018-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h12/h2c/12492763562014/1200Wx1200H_product_300358060-20230712180037/1200Wx1200H-product-300358060-20230712180037.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con acero IPRG rosa y brazalete de acero Karat Squared - Vista 1"
+        },
+        {
+          "id": "REL018-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h43/h41/12492764676126/515Wx515H_product_300358060_2-20230712180038/515Wx515H-product-300358060-2-20230712180038.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con acero IPRG rosa y brazalete de acero Karat Squared - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL018-variant-1",
+          "product_id": "REL018",
+          "title": "Default Title",
+          "sku": "300358060",
+          "price": "189.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL019",
+    "titulo": "Reloj smartwatch con brazalete de acero IP iridiscente D-Connect",
+    "descripcion": "La declinación inteligente de nuestro best-seller D-LOGO. Diferentes acabados que te ayudarán a crear tu total look más personal. Como novedad, presentamos el acabado iridiscente y esferas personalizables con tu Avatar.",
+    "precio": 199,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/hd1/hba/13620287078430/1200Wx1200H_product_3000135500-20240805140148/1200Wx1200H-product-3000135500-20240805140148.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h59/h47/13620288323614/515Wx515H_product_3000135500_2-20240805140148/515Wx515H-product-3000135500-2-20240805140148.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-smartwatch-con-brazalete-de-acero-ip-iridiscente-d-connect",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000135500",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL019",
+      "title": "Reloj smartwatch con brazalete de acero IP iridiscente D-Connect",
+      "handle": "reloj-smartwatch-con-brazalete-de-acero-ip-iridiscente-d-connect",
+      "description": "La declinación inteligente de nuestro best-seller D-LOGO. Diferentes acabados que te ayudarán a crear tu total look más personal. Como novedad, presentamos el acabado iridiscente y esferas personalizables con tu Avatar.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL019-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hd1/hba/13620287078430/1200Wx1200H_product_3000135500-20240805140148/1200Wx1200H-product-3000135500-20240805140148.jpg",
+          "position": 1,
+          "alt": "Reloj smartwatch con brazalete de acero IP iridiscente D-Connect - Vista 1"
+        },
+        {
+          "id": "REL019-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h59/h47/13620288323614/515Wx515H_product_3000135500_2-20240805140148/515Wx515H-product-3000135500-2-20240805140148.jpg",
+          "position": 2,
+          "alt": "Reloj smartwatch con brazalete de acero IP iridiscente D-Connect - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL019-variant-1",
+          "product_id": "REL019",
+          "title": "Default Title",
+          "sku": "3000135500",
+          "price": "199.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL020",
+    "titulo": "Reloj analógico Heritage de acero IP dorado",
+    "descripcion": "Acero IP dorado",
+    "precio": 199,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/h74/h02/13240661803038/515Wx515H_product_900350400-20240314180120/515Wx515H-product-900350400-20240314180120.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h03/hc6/13257985556510/1200Wx1200H_product_900350400_9-20240321172256/1200Wx1200H-product-900350400-9-20240321172256.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-heritage-de-acero-ip-dorado",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "900350400",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL020",
+      "title": "Reloj analógico Heritage de acero IP dorado",
+      "handle": "reloj-analogico-heritage-de-acero-ip-dorado",
+      "description": "Acero IP dorado",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL020-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h74/h02/13240661803038/515Wx515H_product_900350400-20240314180120/515Wx515H-product-900350400-20240314180120.jpg",
+          "position": 1,
+          "alt": "Reloj analógico Heritage de acero IP dorado - Vista 1"
+        },
+        {
+          "id": "REL020-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h03/hc6/13257985556510/1200Wx1200H_product_900350400_9-20240321172256/1200Wx1200H-product-900350400-9-20240321172256.jpg",
+          "position": 2,
+          "alt": "Reloj analógico Heritage de acero IP dorado - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL020-variant-1",
+          "product_id": "REL020",
+          "title": "Default Title",
+          "sku": "900350400",
+          "price": "199.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL021",
+    "titulo": "Reloj analógico con brazalete de acero IP negro y acero IPRG rosa Icon Charms",
+    "descripcion": "Reloj analógico TOUS Icon Charms con brazalete de acero IP negro y caja de acero IPRG rosa. Detalle oso y corazón en acero IRPG rosa en el brazalete de malla milanesa de IP negra. Diámetro: 29,5 mm y esfera de nácar negro. Funciones: hora y minutos. Impermeable a 5 ATM. Batería: 1,55V Oxido de plata SR621SW/0,3 gramos. Movimiento cuarzo japonés. Cierre de joyería.",
+    "precio": 249,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/hc7/hbf/13240546656286/515Wx515H_product_300358200-20240314180111/515Wx515H-product-300358200-20240314180111.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h39/h04/13240551571486/515Wx515H_product_300358200_2-20240314180112/515Wx515H-product-300358200-2-20240314180112.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-de-acero-ip-negro-y-acero-iprg-rosa-icon-charms",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "300358200",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL021",
+      "title": "Reloj analógico con brazalete de acero IP negro y acero IPRG rosa Icon Charms",
+      "handle": "reloj-analogico-con-brazalete-de-acero-ip-negro-y-acero-iprg-rosa-icon-charms",
+      "description": "Reloj analógico TOUS Icon Charms con brazalete de acero IP negro y caja de acero IPRG rosa. Detalle oso y corazón en acero IRPG rosa en el brazalete de malla milanesa de IP negra. Diámetro: 29,5 mm y esfera de nácar negro. Funciones: hora y minutos. Impermeable a 5 ATM. Batería: 1,55V Oxido de plata SR621SW/0,3 gramos. Movimiento cuarzo japonés. Cierre de joyería.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL021-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hc7/hbf/13240546656286/515Wx515H_product_300358200-20240314180111/515Wx515H-product-300358200-20240314180111.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete de acero IP negro y acero IPRG rosa Icon Charms - Vista 1"
+        },
+        {
+          "id": "REL021-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h39/h04/13240551571486/515Wx515H_product_300358200_2-20240314180112/515Wx515H-product-300358200-2-20240314180112.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete de acero IP negro y acero IPRG rosa Icon Charms - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL021-variant-1",
+          "product_id": "REL021",
+          "title": "Default Title",
+          "sku": "300358200",
+          "price": "249.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL022",
+    "titulo": "Reloj analógico con brazalete de acero y acero IPG dorado S-Band",
+    "descripcion": "Marca mucho más que la hora con nuestro diseño de reloj analógico con brazalete de acero inoxidable, acero IPG dorado y esfera de metal, de la colección TOUS S-Band. Los relojes más ligeros y cosmopolitas que querrás llevar las 24 horas del día. ¡Será tuyo en cuestión de tiempo!",
+    "precio": 199,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/h6e/h03/12022536962078/product_200351070-20230130110025/product-200351070-20230130110025.jpg_1200Wx1200H",
+      "https://cloud-media.tous.com/medias/sys_master/images/h37/h90/12022543024158/product_200351070_2-20230130110025/product-200351070-2-20230130110025.jpg_1200Wx1200H"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-de-acero-y-acero-ipg-dorado-s-band",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "200351070",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL022",
+      "title": "Reloj analógico con brazalete de acero y acero IPG dorado S-Band",
+      "handle": "reloj-analogico-con-brazalete-de-acero-y-acero-ipg-dorado-s-band",
+      "description": "Marca mucho más que la hora con nuestro diseño de reloj analógico con brazalete de acero inoxidable, acero IPG dorado y esfera de metal, de la colección TOUS S-Band. Los relojes más ligeros y cosmopolitas que querrás llevar las 24 horas del día. ¡Será tuyo en cuestión de tiempo!",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL022-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h6e/h03/12022536962078/product_200351070-20230130110025/product-200351070-20230130110025.jpg_1200Wx1200H",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete de acero y acero IPG dorado S-Band - Vista 1"
+        },
+        {
+          "id": "REL022-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h37/h90/12022543024158/product_200351070_2-20230130110025/product-200351070-2-20230130110025.jpg_1200Wx1200H",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete de acero y acero IPG dorado S-Band - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL022-variant-1",
+          "product_id": "REL022",
+          "title": "Default Title",
+          "sku": "200351070",
+          "price": "199.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL023",
+    "titulo": "Reloj analógico con brazalete de acero IPG dorado Karat Squared",
+    "descripcion": "Reloj analógico TOUS Karat Squared con brazalete de acero IPG dorado 316L, dimensiones 32 x 34 mm y esfera de metal con cristales facetados en los índices. Funciones: hora y minutos. Impermeable a 3 ATM. Batería: 1,55V Oxido de plata SR621SW/0,3 gramos. Movimiento cuarzo japonés. Cierre desplegable con pulsadores.",
+    "precio": 229,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/h7c/h80/12022388588574/product_200351051-20230130110022/product-200351051-20230130110022.jpg_515Wx515H",
+      "https://cloud-media.tous.com/medias/sys_master/images/h3c/h02/12022390423582/product_200351051_2-20230130110022/product-200351051-2-20230130110022.jpg_515Wx515H"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-de-acero-ipg-dorado-karat-squared",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "200351051",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL023",
+      "title": "Reloj analógico con brazalete de acero IPG dorado Karat Squared",
+      "handle": "reloj-analogico-con-brazalete-de-acero-ipg-dorado-karat-squared",
+      "description": "Reloj analógico TOUS Karat Squared con brazalete de acero IPG dorado 316L, dimensiones 32 x 34 mm y esfera de metal con cristales facetados en los índices. Funciones: hora y minutos. Impermeable a 3 ATM. Batería: 1,55V Oxido de plata SR621SW/0,3 gramos. Movimiento cuarzo japonés. Cierre desplegable con pulsadores.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL023-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h7c/h80/12022388588574/product_200351051-20230130110022/product-200351051-20230130110022.jpg_515Wx515H",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete de acero IPG dorado Karat Squared - Vista 1"
+        },
+        {
+          "id": "REL023-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h3c/h02/12022390423582/product_200351051_2-20230130110022/product-200351051-2-20230130110022.jpg_515Wx515H",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete de acero IPG dorado Karat Squared - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL023-variant-1",
+          "product_id": "REL023",
+          "title": "Default Title",
+          "sku": "200351051",
+          "price": "229.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL024",
+    "titulo": "Reloj analógico bicolor con silueta oso y brazalete de acero T-Band Club",
+    "descripcion": "Reloj analógico TOUS T-Band Club con brazalete de acero inoxidable y caja de acero dorado con la silueta de un oso en el interior. Diámetro caja: 26,5 mm x 44 mm. Esfera: nácar. Funciones: hora y minutos. Impermeable: 3 ATM. Brazalete: 16mm x 16mm x 87mm / 16mm x 16mm x 110mm. Cierre ajustable con cierre de seguridad.",
     "precio": 159,
     "precioAnterior": null,
     "imagenes": [
-      "https://www.tasadoresjoyeros.com/10598-large_default/pendientes-tous-en-oro-18kt-h15641-3.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/h35/hfb/14488082808862/515Wx515H_product_3000140700-20250603110133/515Wx515H-product-3000140700-20250603110133.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h4a/h98/14151104528414/515Wx515H_product_3000140700_2-20250205110233/515Wx515H-product-3000140700-2-20250205110233.jpg"
     ],
-    "categorias": ["tous", "pendientes", "oro"],
-    "etiquetas": ["oro 18k", "tradicional", "mujer"],
-    "slug": "pendientes-oro-tous"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-bicolor-con-silueta-oso-y-brazalete-de-acero-t-band-club",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000140700",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL024",
+      "title": "Reloj analógico bicolor con silueta oso y brazalete de acero T-Band Club",
+      "handle": "reloj-analogico-bicolor-con-silueta-oso-y-brazalete-de-acero-t-band-club",
+      "description": "Reloj analógico TOUS T-Band Club con brazalete de acero inoxidable y caja de acero dorado con la silueta de un oso en el interior. Diámetro caja: 26,5 mm x 44 mm. Esfera: nácar. Funciones: hora y minutos. Impermeable: 3 ATM. Brazalete: 16mm x 16mm x 87mm / 16mm x 16mm x 110mm. Cierre ajustable con cierre de seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL024-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h35/hfb/14488082808862/515Wx515H_product_3000140700-20250603110133/515Wx515H-product-3000140700-20250603110133.jpg",
+          "position": 1,
+          "alt": "Reloj analógico bicolor con silueta oso y brazalete de acero T-Band Club - Vista 1"
+        },
+        {
+          "id": "REL024-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h4a/h98/14151104528414/515Wx515H_product_3000140700_2-20250205110233/515Wx515H-product-3000140700-2-20250205110233.jpg",
+          "position": 2,
+          "alt": "Reloj analógico bicolor con silueta oso y brazalete de acero T-Band Club - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL024-variant-1",
+          "product_id": "REL024",
+          "title": "Default Title",
+          "sku": "3000140700",
+          "price": "159.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "27",
-    "titulo": "Pendientes Piedras TOUS",
-    "descripcion": "Pendientes Grace de plata de primera ley con marcasita.",
-    "precio": 159,
+    "id": "REL025",
+    "titulo": "Reloj analógico con movimiento suizo, esfera de nácar y brazalete de eslabones de acero Tous Now Lady",
+    "descripcion": "Reloj analógico TOUS Now Lady con brazalete de acero inoxidable. Diámetro: 34,5 mm. Esfera: de nacar gris claro. Movimiento: analógico de cuarzo suizo. Cristal: zafiro redondo plano con recubrimiento antirreflejo. Centros de ejes: 5 rubies sintéticos. Funciones: hora, minutos y segundos. Impermeable a 10 ATM. Brazalete: 16mm x 16mm x 82mm. Cierre de mariposa con pulsadores.",
+    "precio": 269,
     "precioAnterior": null,
     "imagenes": [
-      "https://masqnuevo.net/42981-large_default/pendientes-tous-grace-en-plata-de-primera-ley-y-marcasita-de-segunda-mano.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/he8/hce/14488216240158/515Wx515H_product_3000141500-20250603120147/515Wx515H-product-3000141500-20250603120147.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h5b/h09/14151299792926/515Wx515H_product_3000141500_2-20250205120220/515Wx515H-product-3000141500-2-20250205120220.jpg"
     ],
-    "categorias": ["tous", "pendientes", "plata"],
-    "etiquetas": ["plata", "marcasita", "grace"],
-    "slug": "pendientes-piedras-tous"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-movimiento-suizo-esfera-de-nacar-y-brazalete-de-eslabones-de-acero-tous-now-lady",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000141500",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL025",
+      "title": "Reloj analógico con movimiento suizo, esfera de nácar y brazalete de eslabones de acero Tous Now Lady",
+      "handle": "reloj-analogico-con-movimiento-suizo-esfera-de-nacar-y-brazalete-de-eslabones-de-acero-tous-now-lady",
+      "description": "Reloj analógico TOUS Now Lady con brazalete de acero inoxidable. Diámetro: 34,5 mm. Esfera: de nacar gris claro. Movimiento: analógico de cuarzo suizo. Cristal: zafiro redondo plano con recubrimiento antirreflejo. Centros de ejes: 5 rubies sintéticos. Funciones: hora, minutos y segundos. Impermeable a 10 ATM. Brazalete: 16mm x 16mm x 82mm. Cierre de mariposa con pulsadores.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL025-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/he8/hce/14488216240158/515Wx515H_product_3000141500-20250603120147/515Wx515H-product-3000141500-20250603120147.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con movimiento suizo, esfera de nácar y brazalete de eslabones de acero Tous Now Lady - Vista 1"
+        },
+        {
+          "id": "REL025-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h5b/h09/14151299792926/515Wx515H_product_3000141500_2-20250205120220/515Wx515H-product-3000141500-2-20250205120220.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con movimiento suizo, esfera de nácar y brazalete de eslabones de acero Tous Now Lady - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL025-variant-1",
+          "product_id": "REL025",
+          "title": "Default Title",
+          "sku": "3000141500",
+          "price": "269.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "28",
-    "titulo": "Pulsera osos TOUS",
-    "descripcion": "Pulsera con charms de osos, diseño característico TOUS.",
-    "precio": 159,
+    "id": "REL026",
+    "titulo": "Reloj analógico con brazalete de acero dorado Karat Round Mesh",
+    "descripcion": "Reloj analógico TOUS Karat Round Mesh con brazalete de acero dorado. Diámetro: 36 mm. Esfera: con cristales facetados en los índices. Funciones: hora y minutos. Impermeable a 5 ATM. Movimiento analógico de cuarzo japonés. Brazalete: 20mm x 18mm x 70mm / 20mm x 18mm x 110mm. Cierre de malla milanesa ajustable con cierre de seguridad.",
+    "precio": 199,
     "precioAnterior": null,
-    "imagenes": ["https://www.modacris.es/pulsera-tous_pic470005ni1t0.jpg"],
-    "categorias": ["tous", "pulseras", "charms"],
-    "etiquetas": ["osos", "charms", "infantil"],
-    "slug": "pulsera-osos-tous"
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/ha3/hfd/14488079400990/515Wx515H_product_3000139800-20250603110132/515Wx515H-product-3000139800-20250603110132.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h56/hab/14151291863070/515Wx515H_product_3000139800_2-20250205120218/515Wx515H-product-3000139800-2-20250205120218.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-de-acero-dorado-karat-round-mesh",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000139800",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL026",
+      "title": "Reloj analógico con brazalete de acero dorado Karat Round Mesh",
+      "handle": "reloj-analogico-con-brazalete-de-acero-dorado-karat-round-mesh",
+      "description": "Reloj analógico TOUS Karat Round Mesh con brazalete de acero dorado. Diámetro: 36 mm. Esfera: con cristales facetados en los índices. Funciones: hora y minutos. Impermeable a 5 ATM. Movimiento analógico de cuarzo japonés. Brazalete: 20mm x 18mm x 70mm / 20mm x 18mm x 110mm. Cierre de malla milanesa ajustable con cierre de seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL026-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/ha3/hfd/14488079400990/515Wx515H_product_3000139800-20250603110132/515Wx515H-product-3000139800-20250603110132.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete de acero dorado Karat Round Mesh - Vista 1"
+        },
+        {
+          "id": "REL026-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h56/hab/14151291863070/515Wx515H_product_3000139800_2-20250205120218/515Wx515H-product-3000139800-2-20250205120218.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete de acero dorado Karat Round Mesh - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL026-variant-1",
+          "product_id": "REL026",
+          "title": "Default Title",
+          "sku": "3000139800",
+          "price": "199.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "29",
-    "titulo": "Pulsera TOUS",
-    "descripcion": "Pulsera de diseño moderno de la colección TOUS.",
-    "precio": 159,
+    "id": "REL027",
+    "titulo": "Reloj analógico con brazalete gravado de acero dorado Lit",
+    "descripcion": "Reloj analógico TOUS Lit con brazalete y caja de acero dorado con gravado. Diámetro caja: 35 mm x 43,5 mm. Esfera: de acero estampada. Cristal: mineral plano redondo. Funciones: hora, minutos y segundos. Movimiento: cuarzo japonés. Impermeable: 5 ATM. Brazalete: 22mm x 18mm x 73 mm / 22mm x 18mm x 73mm. Cierre desplegable con pulsadores.",
+    "precio": 199,
     "precioAnterior": null,
     "imagenes": [
-      "https://luxiess.com/7066-large_default/pulsera-tous-en-malla-de-acero-y-cierre-de-oro-18kt-e22669-1.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/ha8/hdc/14488207786014/515Wx515H_product_3000140000-20250603120144/515Wx515H-product-3000140000-20250603120144.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h9d/h67/14151088603166/515Wx515H_product_3000140000_2-20250205110231/515Wx515H-product-3000140000-2-20250205110231.jpg"
     ],
-    "categorias": ["tous", "pulseras", "moda"],
-    "etiquetas": ["moderna", "colección", "unisex"],
-    "slug": "pulsera-tous-moderna"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-gravado-de-acero-dorado-lit",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000140000",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL027",
+      "title": "Reloj analógico con brazalete gravado de acero dorado Lit",
+      "handle": "reloj-analogico-con-brazalete-gravado-de-acero-dorado-lit",
+      "description": "Reloj analógico TOUS Lit con brazalete y caja de acero dorado con gravado. Diámetro caja: 35 mm x 43,5 mm. Esfera: de acero estampada. Cristal: mineral plano redondo. Funciones: hora, minutos y segundos. Movimiento: cuarzo japonés. Impermeable: 5 ATM. Brazalete: 22mm x 18mm x 73 mm / 22mm x 18mm x 73mm. Cierre desplegable con pulsadores.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL027-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/ha8/hdc/14488207786014/515Wx515H_product_3000140000-20250603120144/515Wx515H-product-3000140000-20250603120144.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete gravado de acero dorado Lit - Vista 1"
+        },
+        {
+          "id": "REL027-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h9d/h67/14151088603166/515Wx515H_product_3000140000_2-20250205110231/515Wx515H-product-3000140000-2-20250205110231.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete gravado de acero dorado Lit - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL027-variant-1",
+          "product_id": "REL027",
+          "title": "Default Title",
+          "sku": "3000140000",
+          "price": "199.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "30",
-    "titulo": "Anillo oro 18k y diamantes 0.66cts",
-    "descripcion": "Anillo de compromiso en oro amarillo 18k con diamantes de 0.66 quilates, calidad certificada.",
-    "precio": 1690,
-    "precioAnterior": 3380,
+    "id": "REL028",
+    "titulo": "Reloj analógico con esfera de nácar y brazalete dorado T-Band Club",
+    "descripcion": "Reloj analógico TOUS T-Band Club con brazalete y caja de acero inoxidable dorado. Diámetro caja: 26,5 mm x 44 mm. Esfera: nácar. Funciones: hora y minutos. Impermeable: 3 ATM. Brazalete: 16mm x 16mm x 87mm / 16mm x 16mm x 110mm. Cierre ajustable con cierre de seguridad.",
+    "precio": 169,
+    "precioAnterior": null,
     "imagenes": [
-      "https://media.istockphoto.com/id/1219309412/es/foto/anillo-de-diamantes-aislado-en-el-anillo-de-estilo-solitario-de-compromiso-blanco.jpg?s=612x612&w=0&k=20&c=wg4DSWOFKt0SgBObfJqXRSBqEyuugTqWc1KvzcyB9o4="
+      "https://cloud-media.tous.com/medias/sys_master/images/h05/h2b/14488080908318/515Wx515H_product_3000140400-20250603110133/515Wx515H-product-3000140400-20250603110133.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h97/hd8/14151097974814/515Wx515H_product_3000140400_2-20250205110232/515Wx515H-product-3000140400-2-20250205110232.jpg"
     ],
-    "categorias": ["anillos", "diamantes", "compromiso", "oro"],
-    "etiquetas": ["50% descuento", "certificado", "oro 18k"],
-    "slug": "anillo-oro-diamantes-066cts"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-esfera-de-nacar-y-brazalete-dorado-t-band-club",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000140400",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL028",
+      "title": "Reloj analógico con esfera de nácar y brazalete dorado T-Band Club",
+      "handle": "reloj-analogico-con-esfera-de-nacar-y-brazalete-dorado-t-band-club",
+      "description": "Reloj analógico TOUS T-Band Club con brazalete y caja de acero inoxidable dorado. Diámetro caja: 26,5 mm x 44 mm. Esfera: nácar. Funciones: hora y minutos. Impermeable: 3 ATM. Brazalete: 16mm x 16mm x 87mm / 16mm x 16mm x 110mm. Cierre ajustable con cierre de seguridad.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL028-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h05/h2b/14488080908318/515Wx515H_product_3000140400-20250603110133/515Wx515H-product-3000140400-20250603110133.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con esfera de nácar y brazalete dorado T-Band Club - Vista 1"
+        },
+        {
+          "id": "REL028-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h97/hd8/14151097974814/515Wx515H_product_3000140400_2-20250205110232/515Wx515H-product-3000140400-2-20250205110232.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con esfera de nácar y brazalete dorado T-Band Club - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL028-variant-1",
+          "product_id": "REL028",
+          "title": "Default Title",
+          "sku": "3000140400",
+          "price": "169.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "31",
-    "titulo": "Anillo oro 18k, zafiro y diamantes 0.2cts",
-    "descripcion": "Elegante anillo en oro amarillo 18k con zafiro central y diamantes de 0.2 quilates.",
-    "precio": 995,
-    "precioAnterior": 1990,
+    "id": "REL029",
+    "titulo": "Reloj analógico con brazalete acero IPG dorado Lit",
+    "descripcion": "En el mundo de las redes sociales, “lit” expresa que algo es muy positivo y puede usarse como sinónimo de excelente o genial. Proviene de la conjugación en pasado del verbo inglés “to light que significa encender.",
+    "precio": 189,
+    "precioAnterior": null,
     "imagenes": [
-      "https://media.istockphoto.com/id/469421498/es/foto/anillo-de-diamante-aislado-sobre-fondo-blanco.jpg?s=612x612&w=0&k=20&c=yyB1FPgE3c5Quvyixi1T1AmgU2Ce-w0zBiYwiSQqeB8="
+      "https://cloud-media.tous.com/medias/sys_master/images/ha1/h6e/13620366376990/515Wx515H_product_3000137200-20240805140155/515Wx515H-product-3000137200-20240805140155.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/hed/hc4/13620368146462/515Wx515H_product_3000137200_2-20240805140155/515Wx515H-product-3000137200-2-20240805140155.jpg"
     ],
-    "categorias": ["anillos", "diamantes", "zafiro", "oro"],
-    "etiquetas": ["oferta especial", "zafiro azul", "50% descuento"],
-    "slug": "anillo-oro-zafiro-diamantes"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-analogico-con-brazalete-acero-ipg-dorado-lit",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000137200",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL029",
+      "title": "Reloj analógico con brazalete acero IPG dorado Lit",
+      "handle": "reloj-analogico-con-brazalete-acero-ipg-dorado-lit",
+      "description": "En el mundo de las redes sociales, “lit” expresa que algo es muy positivo y puede usarse como sinónimo de excelente o genial. Proviene de la conjugación en pasado del verbo inglés “to light que significa encender.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL029-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/ha1/h6e/13620366376990/515Wx515H_product_3000137200-20240805140155/515Wx515H-product-3000137200-20240805140155.jpg",
+          "position": 1,
+          "alt": "Reloj analógico con brazalete acero IPG dorado Lit - Vista 1"
+        },
+        {
+          "id": "REL029-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hed/hc4/13620368146462/515Wx515H_product_3000137200_2-20240805140155/515Wx515H-product-3000137200-2-20240805140155.jpg",
+          "position": 2,
+          "alt": "Reloj analógico con brazalete acero IPG dorado Lit - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL029-variant-1",
+          "product_id": "REL029",
+          "title": "Default Title",
+          "sku": "3000137200",
+          "price": "189.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "32",
-    "titulo": "Anillo oro blanco diamantes 0.50cts",
-    "descripcion": "Anillo solitario en oro blanco 18k con diamante central de 0.50 quilates.",
-    "precio": 1533,
-    "precioAnterior": 3066,
+    "id": "REL030",
+    "titulo": "Reloj con movimiento suizo analógico de acero con 0,49 ct en diamantes y brazalete de piel negra Les Classiques",
+    "descripcion": "Los relojes más icónicos de la marca en versión Luxury, con correa de piel y diamantes en el bisel. Un tributo a nuestros orígenes relojeros, la esencia a de los inicios de TOUS en una colección",
+    "precio": 700,
+    "precioAnterior": null,
     "imagenes": [
-      "https://media.thejewellershop.com/images/products/500/DR0548-18KW_01.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/h21/h04/13620360806430/1200Wx1200H_product_3000137000-20240805140154/1200Wx1200H-product-3000137000-20240805140154.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/haa/h64/13620361592862/515Wx515H_product_3000137000_2-20240805140154/515Wx515H-product-3000137000-2-20240805140154.jpg"
     ],
-    "categorias": ["anillos", "diamantes", "compromiso", "oro blanco"],
-    "etiquetas": ["solitario", "calidad GIA", "50% descuento"],
-    "slug": "anillo-oro-blanco-diamantes-050cts"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-con-movimiento-suizo-analogico-de-acero-con-049-ct-en-diamantes-y-brazalete-de-piel-negra-les-classiques",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000137000",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL030",
+      "title": "Reloj con movimiento suizo analógico de acero con 0,49 ct en diamantes y brazalete de piel negra Les Classiques",
+      "handle": "reloj-con-movimiento-suizo-analogico-de-acero-con-049-ct-en-diamantes-y-brazalete-de-piel-negra-les-classiques",
+      "description": "Los relojes más icónicos de la marca en versión Luxury, con correa de piel y diamantes en el bisel. Un tributo a nuestros orígenes relojeros, la esencia a de los inicios de TOUS en una colección",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL030-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h21/h04/13620360806430/1200Wx1200H_product_3000137000-20240805140154/1200Wx1200H-product-3000137000-20240805140154.jpg",
+          "position": 1,
+          "alt": "Reloj con movimiento suizo analógico de acero con 0,49 ct en diamantes y brazalete de piel negra Les Classiques - Vista 1"
+        },
+        {
+          "id": "REL030-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/haa/h64/13620361592862/515Wx515H_product_3000137000_2-20240805140154/515Wx515H-product-3000137000-2-20240805140154.jpg",
+          "position": 2,
+          "alt": "Reloj con movimiento suizo analógico de acero con 0,49 ct en diamantes y brazalete de piel negra Les Classiques - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL030-variant-1",
+          "product_id": "REL030",
+          "title": "Default Title",
+          "sku": "3000137000",
+          "price": "700.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   },
   {
-    "id": "33",
-    "titulo": "Anillo oro diamantes 0.51cts",
-    "descripcion": "Exclusivo anillo de compromiso en oro blanco con diamantes de 0.51 quilates.",
-    "precio": 1570,
-    "precioAnterior": 3140,
+    "id": "REL031",
+    "titulo": "Reloj con movimiento suizo analógico de acero con 0,54 ct en diamantes y brazalete de piel negra Les Classiques",
+    "descripcion": "Los relojes más icónicos de la marca en versión Luxury, con correa de piel y diamantes en el bisel. Un tributo a nuestros orígenes relojeros, la esencia a de los inicios de TOUS en una colección",
+    "precio": 750,
+    "precioAnterior": null,
     "imagenes": [
-      "https://www.baunat.com/es/122413_bau_9582_722x722/venta-exclusiva-de-stock-de-baunat-sin-30-dias-de-devolucion-0-77-quilates-anillo-de-compromiso-diamante-diseno-en-oro-blanco-disponible-en-talla-55.jpg"
+      "https://cloud-media.tous.com/medias/sys_master/images/hf5/h78/13620358545438/515Wx515H_product_3000136900-20240805140153/515Wx515H-product-3000136900-20240805140153.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/h37/hdf/13620359430174/515Wx515H_product_3000136900_2-20240805140153/515Wx515H-product-3000136900-2-20240805140153.jpg"
     ],
-    "categorias": ["anillos", "diamantes", "compromiso", "oro blanco"],
-    "etiquetas": ["exclusivo", "descuento limitado", "certificado"],
-    "slug": "anillo-oro-diamantes-051cts"
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-con-movimiento-suizo-analogico-de-acero-con-054-ct-en-diamantes-y-brazalete-de-piel-negra-les-classiques",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000136900",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL031",
+      "title": "Reloj con movimiento suizo analógico de acero con 0,54 ct en diamantes y brazalete de piel negra Les Classiques",
+      "handle": "reloj-con-movimiento-suizo-analogico-de-acero-con-054-ct-en-diamantes-y-brazalete-de-piel-negra-les-classiques",
+      "description": "Los relojes más icónicos de la marca en versión Luxury, con correa de piel y diamantes en el bisel. Un tributo a nuestros orígenes relojeros, la esencia a de los inicios de TOUS en una colección",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL031-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hf5/h78/13620358545438/515Wx515H_product_3000136900-20240805140153/515Wx515H-product-3000136900-20240805140153.jpg",
+          "position": 1,
+          "alt": "Reloj con movimiento suizo analógico de acero con 0,54 ct en diamantes y brazalete de piel negra Les Classiques - Vista 1"
+        },
+        {
+          "id": "REL031-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h37/hdf/13620359430174/515Wx515H_product_3000136900_2-20240805140153/515Wx515H-product-3000136900-2-20240805140153.jpg",
+          "position": 2,
+          "alt": "Reloj con movimiento suizo analógico de acero con 0,54 ct en diamantes y brazalete de piel negra Les Classiques - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL031-variant-1",
+          "product_id": "REL031",
+          "title": "Default Title",
+          "sku": "3000136900",
+          "price": "750.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "REL032",
+    "titulo": "Reloj con movimiento suizo analógico de acero con 0,40 ct en diamantes y brazalete de piel negra Les Classiques",
+    "descripcion": "Los relojes más icónicos de la marca en versión Luxury, con correa de piel y diamantes en el bisel. Un tributo a nuestros orígenes relojeros, la esencia a de los inicios de TOUS en una colección eternamente elegante.",
+    "precio": 650,
+    "precioAnterior": null,
+    "imagenes": [
+      "https://cloud-media.tous.com/medias/sys_master/images/he3/h56/13620356677662/515Wx515H_product_3000136800-20240805140153/515Wx515H-product-3000136800-20240805140153.jpg",
+      "https://cloud-media.tous.com/medias/sys_master/images/hf4/h0e/13620357529630/515Wx515H_product_3000136800_2-20240805140153/515Wx515H-product-3000136800-2-20240805140153.jpg"
+    ],
+    "categorias": [
+      "TOUS, relojes"
+    ],
+    "etiquetas": [],
+    "slug": "reloj-con-movimiento-suizo-analogico-de-acero-con-040-ct-en-diamantes-y-brazalete-de-piel-negra-les-classiques",
+    "stock": 1,
+    "disponible": true,
+    "marca": "TOUS",
+    "material": "",
+    "genero": "unisex",
+    "coleccion": "",
+    "sku": "3000136800",
+    "estilo": "",
+    "color": "",
+    "shopify": {
+      "id": "REL032",
+      "title": "Reloj con movimiento suizo analógico de acero con 0,40 ct en diamantes y brazalete de piel negra Les Classiques",
+      "handle": "reloj-con-movimiento-suizo-analogico-de-acero-con-040-ct-en-diamantes-y-brazalete-de-piel-negra-les-classiques",
+      "description": "Los relojes más icónicos de la marca en versión Luxury, con correa de piel y diamantes en el bisel. Un tributo a nuestros orígenes relojeros, la esencia a de los inicios de TOUS en una colección eternamente elegante.",
+      "vendor": "TOUS",
+      "product_type": "TOUS, relojes",
+      "tags": [],
+      "published": true,
+      "images": [
+        {
+          "id": "REL032-img-0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/he3/h56/13620356677662/515Wx515H_product_3000136800-20240805140153/515Wx515H-product-3000136800-20240805140153.jpg",
+          "position": 1,
+          "alt": "Reloj con movimiento suizo analógico de acero con 0,40 ct en diamantes y brazalete de piel negra Les Classiques - Vista 1"
+        },
+        {
+          "id": "REL032-img-1",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/hf4/h0e/13620357529630/515Wx515H_product_3000136800_2-20240805140153/515Wx515H-product-3000136800-2-20240805140153.jpg",
+          "position": 2,
+          "alt": "Reloj con movimiento suizo analógico de acero con 0,40 ct en diamantes y brazalete de piel negra Les Classiques - Vista 2"
+        }
+      ],
+      "variants": [
+        {
+          "id": "REL032-variant-1",
+          "product_id": "REL032",
+          "title": "Default Title",
+          "sku": "3000136800",
+          "price": "650.00",
+          "compare_at_price": null,
+          "inventory_quantity": 1,
+          "inventory_management": "shopify",
+          "available": true,
+          "weight": 0,
+          "weight_unit": "kg"
+        }
+      ],
+      "options": [
+        {
+          "name": "Title",
+          "position": 1,
+          "values": [
+            "Default Title"
+          ]
+        }
+      ]
+    }
   }
 ]

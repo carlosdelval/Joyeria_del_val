@@ -18,8 +18,9 @@ const CartSidebar = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
+    window.scrollTo(0, 0);
     onClose();
-    navigate('/checkout');
+    navigate("/checkout");
   };
 
   return (

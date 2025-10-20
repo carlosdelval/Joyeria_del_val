@@ -93,20 +93,93 @@ export const applyFilters = (productos, filtros, categoria) => {
       }
     }
 
-    // Filtro por correa (para relojes)
-    if (filtros.correa && filtros.correa.length > 0) {
-      if (!filtros.correa.includes(producto.correa?.toLowerCase())) {
+    // Filtros específicos para RELOJES
+    if (filtros.materialCorrea && filtros.materialCorrea.length > 0) {
+      if (
+        !filtros.materialCorrea.includes(producto.materialCorrea?.toLowerCase())
+      ) {
         return false;
       }
     }
 
-    // Filtro por funciones (para relojes)
+    if (filtros.colorCorrea && filtros.colorCorrea.length > 0) {
+      if (!filtros.colorCorrea.includes(producto.colorCorrea?.toLowerCase())) {
+        return false;
+      }
+    }
+
+    if (filtros.resistenciaAgua && filtros.resistenciaAgua.length > 0) {
+      if (
+        !filtros.resistenciaAgua.includes(
+          producto.resistenciaAgua?.toLowerCase()
+        )
+      ) {
+        return false;
+      }
+    }
+
     if (filtros.funciones && filtros.funciones.length > 0) {
       if (
         !filtros.funciones.some((func) =>
           producto.funciones?.includes(func.toLowerCase())
         )
       ) {
+        return false;
+      }
+    }
+
+    // Filtros específicos para GAFAS
+    if (filtros.materialMarco && filtros.materialMarco.length > 0) {
+      if (
+        !filtros.materialMarco.includes(producto.materialMarco?.toLowerCase())
+      ) {
+        return false;
+      }
+    }
+
+    if (filtros.colorMarco && filtros.colorMarco.length > 0) {
+      if (!filtros.colorMarco.includes(producto.colorMarco?.toLowerCase())) {
+        return false;
+      }
+    }
+
+    if (filtros.colorLente && filtros.colorLente.length > 0) {
+      if (!filtros.colorLente.includes(producto.colorLente?.toLowerCase())) {
+        return false;
+      }
+    }
+
+    // Filtros específicos para BOLSOS
+    if (filtros.tamano && filtros.tamano.length > 0) {
+      if (!filtros.tamano.includes(producto.tamano?.toLowerCase())) {
+        return false;
+      }
+    }
+
+    if (filtros.compartimentos && filtros.compartimentos.length > 0) {
+      if (
+        !filtros.compartimentos.some((comp) =>
+          producto.compartimentos?.includes(comp.toLowerCase())
+        )
+      ) {
+        return false;
+      }
+    }
+
+    if (filtros.cierre && filtros.cierre.length > 0) {
+      if (!filtros.cierre.includes(producto.cierre?.toLowerCase())) {
+        return false;
+      }
+    }
+
+    if (filtros.asa && filtros.asa.length > 0) {
+      if (!filtros.asa.includes(producto.asa?.toLowerCase())) {
+        return false;
+      }
+    }
+
+    if (filtros.coleccion && filtros.coleccion.length > 0) {
+      if (!filtros.coleccion.includes(producto.coleccion?.toLowerCase())) {
         return false;
       }
     }

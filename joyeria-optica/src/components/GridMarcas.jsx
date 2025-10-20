@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function GridMarcas() {
   const navigate = useNavigate();
@@ -7,33 +7,34 @@ export default function GridMarcas() {
     {
       nombre: "Ray-Ban",
       imagen: "/rayban.jpg",
-      categoria: "rayban"
+      categoria: "rayban",
     },
     {
       nombre: "TOUS",
       imagen: "/tous.jpg",
-      categoria: "tous"
+      categoria: "tous",
     },
     {
       nombre: "Dolce & Gabbana",
       imagen: "/dolce-gabbana.jpg",
-      categoria: "dolce-gabbana"
+      categoria: "dolce-gabbana",
     },
     {
       nombre: "Persol",
       imagen: "/persol.jpg",
-      categoria: "persol"
-    }
+      categoria: "persol",
+    },
   ];
 
   const handleClick = (marca) => {
+    window.scrollTo(0, 0);
     navigate(`/catalogo/${marca.categoria}`);
   };
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {marcas.map((marca, index) => (
-        <div 
+        <div
           key={index}
           className="relative overflow-hidden transition-all duration-300 bg-white rounded-lg shadow-md cursor-pointer group hover:shadow-xl hover:scale-[1.02]"
           onClick={() => handleClick(marca)}

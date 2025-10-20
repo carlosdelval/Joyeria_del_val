@@ -10,9 +10,9 @@ const PromocionDiamantes = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const data = await fetchProductos({ 
+        const data = await fetchProductos({
           categoria: ["diamantes"],
-          precioMax: 2000 // Solo productos con descuento
+          precioMax: 2000, // Solo productos con descuento
         });
         setProductos(data.slice(0, 4)); // Mostrar solo 4 productos
       } catch (error) {
@@ -26,10 +26,17 @@ const PromocionDiamantes = () => {
   }, []);
 
   const goToProduct = (slug) => {
+    window.scrollTo(0, 0);
     navigate(`/producto/${slug}`);
   };
 
-  if (loading) return <div className="py-12 text-center">Cargando promoción...</div>;
+  const goToCatalog = () => {
+    window.scrollTo(0, 0);
+    navigate("/catalogo/diamantes");
+  };
+
+  if (loading)
+    return <div className="py-12 text-center">Cargando promoción...</div>;
 
   return (
     <section className="py-8">
@@ -45,8 +52,8 @@ const PromocionDiamantes = () => {
             <p className="text-xl tracking-widest">DIAMANTES HASTA</p>
             <h2 className="text-6xl font-bold">50% DTO</h2>
             <p className="mt-2 text-sm tracking-widest">CALIDAD CERTIFICADA</p>
-            <button 
-              onClick={() => navigate('/catalogo/diamantes')}
+            <button
+              onClick={goToCatalog}
               className="px-6 py-2 mt-4 font-medium text-black transition duration-300 ease-in-out bg-white hover:bg-gray-200 cursor-pointer"
             >
               VER MÁS
@@ -57,8 +64,8 @@ const PromocionDiamantes = () => {
         {/* Productos en oferta */}
         <div className="grid grid-cols-2 gap-4">
           {productos.map((prod) => (
-            <div 
-              key={prod.id} 
+            <div
+              key={prod.id}
               className="relative p-2 transition-transform bg-white border rounded cursor-pointer hover:shadow-lg hover:scale-[1.02]"
               onClick={() => goToProduct(prod.slug)}
             >
@@ -68,22 +75,26 @@ const PromocionDiamantes = () => {
                 className="object-contain w-full mb-2 aspect-square"
               />
               <span className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded top-2 right-2">
-                {prod.precioAnterior ? 
-                  `-${Math.round(((prod.precioAnterior - prod.precio) / prod.precioAnterior * 100))}%` 
-                  : 'OFERTA'}
+                {prod.precioAnterior
+                  ? `-${Math.round(
+                      ((prod.precioAnterior - prod.precio) /
+                        prod.precioAnterior) *
+                        100
+                    )}%`
+                  : "OFERTA"}
               </span>
               <p className="text-sm font-medium line-clamp-2">{prod.titulo}</p>
               <p className="font-semibold text-red-600">
                 {prod.precio.toLocaleString("es-ES", {
                   style: "currency",
-                  currency: "EUR"
+                  currency: "EUR",
                 })}
               </p>
               {prod.precioAnterior && (
                 <p className="text-sm text-gray-400 line-through">
                   {prod.precioAnterior.toLocaleString("es-ES", {
                     style: "currency",
-                    currency: "EUR"
+                    currency: "EUR",
                   })}
                 </p>
               )}

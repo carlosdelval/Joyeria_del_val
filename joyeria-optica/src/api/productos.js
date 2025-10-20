@@ -28,6 +28,42 @@ async function loadProductosData() {
 // Función para normalizar datos del producto al formato esperado por los filtros
 function normalizeProduct(producto) {
   // Mapear la estructura existente a la esperada por el sistema de filtros
+  // Asegurar al menos 2 imágenes (Shopify requiere imágenes en array, y queremos soportar galería)
+  const imagenes = Array.isArray(producto.imagenes)
+    ? [...producto.imagenes]
+    : [];
+  if (imagenes.length === 0 && producto.image) imagenes.push(producto.image);
+  if (imagenes.length === 1) imagenes.push(imagenes[0]);
+
+  // Construir estructura compatible con Shopify/tiendas: id, title, handle, images, variants, options, vendor, tags, available, inventory_quantity
+  const shopifyLike = {
+    id: producto.id || producto.sku || `local-${producto.slug}`,
+    title: producto.titulo || producto.nombre,
+    handle:
+      producto.slug ||
+      (producto.titulo || "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, ""),
+    images: imagenes.map((src, idx) => ({
+      id: `${producto.id || producto.slug}-img-${idx}`,
+      src,
+    })),
+    variants: [
+      {
+        id: producto.id ? `${producto.id}-v1` : `${producto.slug}-v1`,
+        sku: producto.sku || null,
+        price: producto.precio,
+        available: (producto.stock || Math.floor(Math.random() * 15) + 1) > 0,
+        inventory_quantity:
+          producto.stock || Math.floor(Math.random() * 15) + 1,
+      },
+    ],
+    options: ["Default Title"],
+    vendor: producto.marca || null,
+    tags: producto.etiquetas || [],
+  };
+
   const normalized = {
     ...producto,
     nombre: producto.titulo || producto.nombre,
@@ -36,10 +72,14 @@ function normalizeProduct(producto) {
     genero: extractGeneroFromTags(producto.etiquetas),
     estilo: extractEstiloFromTags(producto.etiquetas),
     tipo: extractTipoFromCategories(producto.categorias),
-    marca: extractMarcaFromTags(producto.etiquetas),
-    stock: producto.stock || Math.floor(Math.random() * 15) + 1, // Simular stock
+    // IMPORTANTE: Usar el campo marca directamente si existe, sino intentar extraerlo de etiquetas
+    marca: producto.marca || extractMarcaFromTags(producto.etiquetas),
+    stock: producto.stock || shopifyLike.variants[0].inventory_quantity, // Simular stock si no existe
     novedad: isNovedad(producto),
     oferta: hasOferta(producto),
+    // Campos compatibles con Shopify exportados para futuras integraciones
+    shopify: shopifyLike,
+    imagenes,
   };
 
   return normalized;
@@ -195,59 +235,124 @@ export async function fetchProductos({
     if (!producto) return false;
 
     // 1. Filtro por categoría
-    if (categoria.length > 0) {
-      const categoriaValida = categoria.some(
-        (cat) =>
-          producto.categoria === cat || producto.categorias?.includes(cat)
-      );
+    if (categoria && categoria.length > 0) {
+      const categoriaValida = categoria.some((cat) => {
+        // Normalizar nombres de categoría
+        const catNormalizada = cat.toLowerCase().trim();
+        const prodCat = producto.categoria?.toLowerCase().trim();
+        const prodCats =
+          producto.categorias?.map((c) => c.toLowerCase().trim()) || [];
+
+        // Buscar coincidencias exactas y parciales
+        return (
+          prodCat === catNormalizada ||
+          prodCats.includes(catNormalizada) ||
+          prodCat?.includes(catNormalizada) ||
+          prodCats.some((c) => c.includes(catNormalizada))
+        );
+      });
       if (!categoriaValida) return false;
     }
 
-    // 2. Filtro por precio (con valores por defecto seguros)
+    // 2. Búsqueda por texto mejorada (búsqueda inteligente)
+    if (busqueda && busqueda.trim()) {
+      const textoBusqueda = busqueda.toLowerCase().trim();
+      const palabrasBusqueda = textoBusqueda.split(/\s+/); // Dividir en palabras
+
+      // Propiedades donde buscar
+      const camposBusqueda = [
+        producto.nombre,
+        producto.titulo,
+        producto.descripcion,
+        producto.slug,
+        producto.marca,
+        producto.material,
+        producto.tipo,
+        producto.genero,
+        producto.estilo,
+        producto.color,
+        producto.coleccion,
+        ...(producto.categorias || []),
+        ...(producto.etiquetas || []),
+      ]
+        .filter(Boolean)
+        .map((campo) => String(campo).toLowerCase());
+
+      const textoCompleto = camposBusqueda.join(" ");
+
+      // Verificar si todas las palabras de búsqueda están presentes
+      const coincide = palabrasBusqueda.every((palabra) =>
+        textoCompleto.includes(palabra)
+      );
+
+      if (!coincide) return false;
+    }
+
+    // 3. Filtro por precio (con valores por defecto seguros)
     const precio = Number(producto.precio) || 0;
-    const precioMin = Number(filtros.precioMin) || 0;
-    const precioMax = Number(filtros.precioMax) || Infinity;
+
+    // Soportar tanto { precioMin, precioMax } como { precio: { min, max } }
+    let precioMin = 0;
+    let precioMax = Infinity;
+
+    if (filtros.precio && typeof filtros.precio === "object") {
+      // Si min es undefined o null, usar 0
+      precioMin =
+        filtros.precio.min !== undefined && filtros.precio.min !== null
+          ? Number(filtros.precio.min)
+          : 0;
+
+      // Si max es undefined o null, usar Infinity
+      precioMax =
+        filtros.precio.max !== undefined && filtros.precio.max !== null
+          ? Number(filtros.precio.max)
+          : Infinity;
+    } else {
+      precioMin = Number(filtros.precioMin) || 0;
+      precioMax = Number(filtros.precioMax) || Infinity;
+    }
 
     if (precio < precioMin || precio > precioMax) return false;
 
-    // 3. Filtros específicos (usando la nueva estructura normalizada)
+    // 4. Filtros específicos de categoría
     for (const [clave, valor] of Object.entries(filtros)) {
-      if (["precioMin", "precioMax"].includes(clave)) continue;
+      if (["precioMin", "precioMax", "precio"].includes(clave)) continue;
 
+      // Filtro booleano (true/false)
       if (valor === true) {
         if (!producto[clave]) return false;
       }
 
+      // Filtro de array (selección múltiple)
       if (Array.isArray(valor) && valor.length > 0) {
-        if (!valor.includes(producto[clave])) return false;
+        const valorProducto = producto[clave];
+
+        // Si el producto tiene array de valores
+        if (Array.isArray(valorProducto)) {
+          const tieneCoincidencia = valor.some((v) =>
+            valorProducto.some(
+              (vp) => String(vp).toLowerCase() === String(v).toLowerCase()
+            )
+          );
+          if (!tieneCoincidencia) return false;
+        } else {
+          // Si el producto tiene un solo valor
+          const coincide = valor.some(
+            (v) =>
+              String(valorProducto).toLowerCase() === String(v).toLowerCase()
+          );
+          if (!coincide) return false;
+        }
       }
 
+      // Filtro de rango numérico
       if (
-        (typeof valor === "object" && valor.min !== undefined) ||
-        valor.max !== undefined
+        typeof valor === "object" &&
+        (valor.min !== undefined || valor.max !== undefined)
       ) {
         const productValue = Number(producto[clave]) || 0;
         if (valor.min && productValue < valor.min) return false;
         if (valor.max && productValue > valor.max) return false;
-      }
-    }
-
-    // 4. Búsqueda por texto (con validación)
-    if (busqueda.trim()) {
-      const textoBusqueda = busqueda.toLowerCase();
-      const propiedadesTexto = [
-        producto.nombre?.toLowerCase(),
-        producto.titulo?.toLowerCase(),
-        producto.descripcion?.toLowerCase(),
-        producto.slug?.toLowerCase(),
-        producto.marca?.toLowerCase(),
-        producto.material?.toLowerCase(),
-        ...(producto.categorias?.map((c) => c.toLowerCase()) || []),
-        ...(producto.etiquetas?.map((e) => e.toLowerCase()) || []),
-      ].filter(Boolean);
-
-      if (!propiedadesTexto.some((texto) => texto.includes(textoBusqueda))) {
-        return false;
       }
     }
 
@@ -263,7 +368,9 @@ export const fetchProducto = async (slug) => {
     await new Promise((resolve) => setTimeout(resolve, 300)); // Simular latencia
 
     const productos = await fetchProductos({});
-    const producto = productos.find((p) => p.slug === slug);
+    const producto = productos.find(
+      (p) => p.slug === slug || p.handle === slug || p.shopify?.handle === slug
+    );
 
     if (!producto) throw new Error("Producto no encontrado");
     return producto;

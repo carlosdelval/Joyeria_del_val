@@ -14,6 +14,9 @@ const ProductoPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const { addToCart } = useCart();
+  const [imageIndex, setImageIndex] = useState(0);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [imagePosition, setImagePosition] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     const cargarProducto = async () => {
@@ -21,7 +24,14 @@ const ProductoPage = () => {
         setLoading(true);
         const data = await fetchProducto(slug);
         setProducto(data);
-        setImagenPrincipal(data.imagenes[0]);
+        // Asegurarse de que existe el array imagenes (normalizeProduct en API garantiza al menos 2)
+        const imgs =
+          Array.isArray(data.imagenes) && data.imagenes.length
+            ? data.imagenes
+            : data.shopify?.images?.map((i) => i.src) || [];
+        const first = imgs[0] || "";
+        setImagenPrincipal(first);
+        setImageIndex(0);
       } catch (error) {
         console.error("Error cargando producto:", error);
       } finally {
@@ -31,6 +41,49 @@ const ProductoPage = () => {
 
     cargarProducto();
   }, [slug]);
+
+  // Funciones para el efecto zoom con movimiento
+  const handleMouseMove = (e) => {
+    if (!isZoomed) return;
+
+    const { left, top, width, height } =
+      e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+
+    setImagePosition({ x, y });
+  };
+
+  const handleMouseEnter = () => {
+    setIsZoomed(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsZoomed(false);
+    setImagePosition({ x: 50, y: 50 });
+  };
+
+  // Soporte para touch events (móvil)
+  const handleTouchStart = () => {
+    setIsZoomed(true);
+  };
+
+  const handleTouchMove = (e) => {
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      const { left, top, width, height } =
+        e.currentTarget.getBoundingClientRect();
+      const x = ((touch.clientX - left) / width) * 100;
+      const y = ((touch.clientY - top) / height) * 100;
+
+      setImagePosition({ x, y });
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsZoomed(false);
+    setImagePosition({ x: 50, y: 50 });
+  };
 
   const handleAddToCart = () => {
     addToCart(producto, quantity);
@@ -89,47 +142,105 @@ const ProductoPage = () => {
         <div className="grid gap-8 md:grid-cols-2">
           {/* Galería de imágenes */}
           <div>
-            {/* Imagen principal */}
-            <div className="relative overflow-hidden bg-gray-50 aspect-square">
+            {/* Imagen principal con efecto zoom completo */}
+            <div
+              className="relative overflow-hidden bg-gray-50 aspect-square cursor-zoom-in"
+              onMouseMove={handleMouseMove}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
               <motion.img
                 src={imagenPrincipal}
                 alt={producto.titulo}
-                className="object-cover w-full h-full"
+                className="w-full h-full object-cover select-none"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
+                animate={{
+                  opacity: 1,
+                  scale: isZoomed ? 1.5 : 1,
+                }}
+                style={{
+                  transformOrigin: `${imagePosition.x}% ${imagePosition.y}%`,
+                }}
+                transition={{
+                  opacity: { duration: 0.3 },
+                  scale: { duration: 0.3, ease: "easeOut" },
+                }}
+                draggable={false}
               />
+
               {descuento && (
                 <motion.div
-                  initial={{ scale: 0.9 }}
-                  animate={{ scale: 1 }}
-                  className="absolute px-3 py-1 text-xs font-light tracking-wider text-white bg-red-600 rounded top-4 right-4"
+                  initial={{ scale: 1.2 }}
+                  animate={{ scale: 1.5 }}
+                  className="absolute px-3 py-1 text-xs font-light tracking-wider text-white bg-red-600 rounded top-4 right-4 pointer-events-none z-10"
                 >
                   -{descuento}%
                 </motion.div>
+              )}
+
+              {/* Indicador de zoom */}
+              {!isZoomed && (
+                <div className="hidden md:block absolute bottom-4 right-4 px-3 py-1 bg-black/70 text-white text-xs rounded-full pointer-events-none">
+                  Pasa el ratón para ampliar
+                </div>
               )}
             </div>
 
             {/* Miniaturas */}
             {producto.imagenes.length > 1 && (
-              <div className="grid grid-cols-4 gap-2 mt-4">
-                {producto.imagenes.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setImagenPrincipal(img)}
-                    className={`aspect-square bg-gray-50 ${
-                      imagenPrincipal === img
-                        ? "ring-2 ring-black"
-                        : "hover:ring-1 hover:ring-gray-300"
-                    }`}
-                  >
-                    <img
-                      src={img}
-                      alt={`Vista ${index + 1} de ${producto.titulo}`}
-                      className="object-cover w-full h-full"
-                    />
-                  </button>
-                ))}
+              <div className="mt-4">
+                {/* Thumbnails: en desktop grid, en móvil carrusel horizontal */}
+                <div className="hidden md:grid grid-cols-4 gap-2">
+                  {producto.imagenes.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setImagenPrincipal(img);
+                        setImageIndex(index);
+                      }}
+                      className={`aspect-square bg-gray-50 ${
+                        imagenPrincipal === img
+                          ? "ring-2 ring-black"
+                          : "hover:ring-1 hover:ring-gray-300"
+                      }`}
+                    >
+                      <img
+                        src={img}
+                        alt={`Vista ${index + 1} de ${producto.titulo}`}
+                        className="object-cover w-full h-full"
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                {/* Mobile thumbnails scrollable */}
+                <div className="md:hidden mt-2 -mx-2 overflow-x-auto">
+                  <div className="flex gap-2 px-2">
+                    {producto.imagenes.map((img, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          setImagenPrincipal(img);
+                          setImageIndex(index);
+                        }}
+                        className={`w-20 h-20 flex-shrink-0 bg-gray-50 rounded ${
+                          imagenPrincipal === img
+                            ? "ring-2 ring-black"
+                            : "hover:ring-1 hover:ring-gray-300"
+                        }`}
+                      >
+                        <img
+                          src={img}
+                          alt={`Vista ${index + 1} de ${producto.titulo}`}
+                          className="object-cover w-full h-full"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>

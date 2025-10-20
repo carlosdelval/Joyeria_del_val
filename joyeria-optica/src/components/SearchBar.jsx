@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { productService } from "../services/productService";
 import { useNavigate } from "react-router-dom";
 
@@ -52,13 +52,15 @@ const SearchBar = ({ className = "" }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
-      navigate(`/catalogo/busqueda?q=${encodeURIComponent(query)}`);
+      window.scrollTo(0, 0);
+      navigate(`/catalogo?q=${encodeURIComponent(query)}`);
       setIsOpen(false);
       setQuery("");
     }
   };
 
   const handleProductClick = (slug) => {
+    window.scrollTo(0, 0);
     navigate(`/producto/${slug}`);
     setIsOpen(false);
     setQuery("");
@@ -142,9 +144,8 @@ const SearchBar = ({ className = "" }) => {
                 {/* Ver todos los resultados */}
                 <button
                   onClick={() => {
-                    navigate(
-                      `/catalogo/busqueda?q=${encodeURIComponent(query)}`
-                    );
+                    window.scrollTo(0, 0);
+                    navigate(`/catalogo?q=${encodeURIComponent(query)}`);
                     setIsOpen(false);
                   }}
                   className="w-full px-4 py-3 text-sm text-center text-gray-600 transition-colors border-t border-gray-100 hover:bg-gray-50"
@@ -156,7 +157,10 @@ const SearchBar = ({ className = "" }) => {
               <div className="p-4 text-center text-gray-500">
                 <p className="text-sm">No se encontraron productos</p>
                 <button
-                  onClick={() => navigate("/catalogo/todos")}
+                  onClick={() => {
+                    window.scrollTo(0, 0);
+                    navigate("/catalogo/todos");
+                  }}
                   className="mt-1 text-sm text-blue-600 hover:underline"
                 >
                   Ver todo el catálogo
