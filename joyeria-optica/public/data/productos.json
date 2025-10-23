@@ -14031,12 +14031,13 @@
   {
     "id": "BOLS043",
     "titulo": "Capazo grande negro Scoubidou",
-    "descripcion": "",
-    "precio": 0,
+    "descripcion": "Bolso capazo grande TOUS Scoubidou elaborado con rafia de mezcla de papel procedente de bosques sostenibles y materiales reciclados. También incorpora detalles de poliuretano en color negro. Cierre con cordón ajustable. En el interior hay un bolsillo con cremallera, dos bolsillos abiertos para pequeñas pertenencias y un portabolígrafo. Asas fijas de hombro. Medidas (alto x ancho x fondo): 23,5 x 39 x 14 cm.",
+    "precio": 159,
     "precioAnterior": null,
     "imagenes": [
-      "https://docs.google.com/spreadsheets/d/1WMUF0X6vI0j-BUoo37geUEHAtD_TEleThGoUf0Ob6JM/edit?pli=1&gid=0#gid=0",
-      "https://docs.google.com/spreadsheets/d/1WMUF0X6vI0j-BUoo37geUEHAtD_TEleThGoUf0Ob6JM/edit?pli=1&gid=0#gid=0"
+      "https://cloud-media.tous.com/medias/sys_master/images/h65/h1e/12095086919710/product_395901569-20230223210041/product-395901569-20230223210041.jpg_515Wx515H",
+      "https://cloud-media.tous.com/medias/sys_master/images/h7b/h66/12095090589726/product_395901569_2-20230223210042/product-395901569-2-20230223210042.jpg_515Wx515H",
+      "https://cloud-media.tous.com/medias/sys_master/images/h00/h76/13418256498718/515Wx515H_product_395901569_5-20240520150126/515Wx515H-product-395901569-5-20240520150126.jpg"
     ],
     "categorias": [
       "TOUS, bolsos"
@@ -14056,7 +14057,7 @@
       "id": "BOLS043",
       "title": "Capazo grande negro Scoubidou",
       "handle": "capazo-grande-negro-scoubidou",
-      "description": "",
+      "description": "Bolso capazo grande TOUS Scoubidou elaborado con rafia de mezcla de papel procedente de bosques sostenibles y materiales reciclados. También incorpora detalles de poliuretano en color negro. Cierre con cordón ajustable. En el interior hay un bolsillo con cremallera, dos bolsillos abiertos para pequeñas pertenencias y un portabolígrafo. Asas fijas de hombro. Medidas (alto x ancho x fondo): 23,5 x 39 x 14 cm.",
       "vendor": "TOUS",
       "product_type": "TOUS, bolsos",
       "tags": [],
@@ -14064,15 +14065,21 @@
       "images": [
         {
           "id": "BOLS043-img-0",
-          "src": "https://docs.google.com/spreadsheets/d/1WMUF0X6vI0j-BUoo37geUEHAtD_TEleThGoUf0Ob6JM/edit?pli=1&gid=0#gid=0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h65/h1e/12095086919710/product_395901569-20230223210041/product-395901569-20230223210041.jpg_515Wx515H",
           "position": 1,
           "alt": "Capazo grande negro Scoubidou - Vista 1"
         },
         {
           "id": "BOLS043-img-1",
-          "src": "https://docs.google.com/spreadsheets/d/1WMUF0X6vI0j-BUoo37geUEHAtD_TEleThGoUf0Ob6JM/edit?pli=1&gid=0#gid=0",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h7b/h66/12095090589726/product_395901569_2-20230223210042/product-395901569-2-20230223210042.jpg_515Wx515H",
           "position": 2,
           "alt": "Capazo grande negro Scoubidou - Vista 2"
+        },
+        {
+          "id": "BOLS043-img-2",
+          "src": "https://cloud-media.tous.com/medias/sys_master/images/h00/h76/13418256498718/515Wx515H_product_395901569_5-20240520150126/515Wx515H-product-395901569-5-20240520150126.jpg",
+          "position": 3,
+          "alt": "Capazo grande negro Scoubidou - Vista 3"
         }
       ],
       "variants": [
@@ -14081,7 +14088,7 @@
           "product_id": "BOLS043",
           "title": "Default Title",
           "sku": "395901569",
-          "price": "0.00",
+          "price": "159.00",
           "compare_at_price": null,
           "inventory_quantity": 1,
           "inventory_management": "shopify",
