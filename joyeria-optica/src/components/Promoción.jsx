@@ -11,10 +11,17 @@ const PromocionDiamantes = () => {
     const loadProducts = async () => {
       try {
         const data = await fetchProductos({
-          categoria: ["diamantes"],
-          precioMax: 2000, // Solo productos con descuento
+          categoria: ["relojes"],
+          marca: ["tous"], // Solo relojes TOUS
         });
-        setProductos(data.slice(0, 4)); // Mostrar solo 4 productos
+        // Priorizar productos con descuento, si no hay suficientes, mostrar todos
+        const productosConDescuento = data.filter(
+          (p) => p.precioAnterior && p.precioAnterior > p.precio
+        );
+        const productosAMostrar =
+          productosConDescuento.length >= 4 ? productosConDescuento : data;
+
+        setProductos(productosAMostrar.slice(0, 4)); // Mostrar solo 4 productos
       } catch (error) {
         console.error("Error loading products:", error);
       } finally {
@@ -32,7 +39,7 @@ const PromocionDiamantes = () => {
 
   const goToCatalog = () => {
     window.scrollTo(0, 0);
-    navigate("/catalogo/diamantes");
+    navigate("/catalogo/relojes");
   };
 
   if (loading)
@@ -44,12 +51,12 @@ const PromocionDiamantes = () => {
         {/* Banner principal */}
         <div className="relative w-full h-full min-h-[400px]">
           <img
-            src="https://www.oksilver.es/blog/wp-content/uploads/2023/02/tipos-anillos-compromiso-1.png"
-            alt="Promo Diamantes"
+            src="/promoRelojTous.jpg"
+            alt="Promo Relojes"
             className="object-cover w-full h-full"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white bg-black/30">
-            <p className="text-xl tracking-widest">DIAMANTES HASTA</p>
+            <p className="text-xl tracking-widest">RELOJES TOUS HASTA</p>
             <h2 className="text-6xl font-bold">50% DTO</h2>
             <p className="mt-2 text-sm tracking-widest">CALIDAD CERTIFICADA</p>
             <button
