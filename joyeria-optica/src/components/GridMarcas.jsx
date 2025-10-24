@@ -7,28 +7,29 @@ export default function GridMarcas() {
     {
       nombre: "Ray-Ban",
       imagen: "/rayban.jpg",
-      categoria: "rayban",
+      slug: "ray-ban",
     },
     {
       nombre: "TOUS",
       imagen: "/tous.jpg",
-      categoria: "tous",
+      slug: "tous",
     },
     {
       nombre: "Dolce & Gabbana",
       imagen: "/dolce-gabbana.jpg",
-      categoria: "dolce-gabbana",
+      slug: "dolce-gabbana",
     },
     {
       nombre: "Persol",
       imagen: "/persol.jpg",
-      categoria: "persol",
+      slug: "persol",
     },
   ];
 
   const handleClick = (marca) => {
     window.scrollTo(0, 0);
-    navigate(`/catalogo/${marca.categoria}`);
+    // Navegar al catálogo con el filtro de marca aplicado
+    navigate(`/catalogo/gafas?marca=${marca.slug}`);
   };
 
   return (

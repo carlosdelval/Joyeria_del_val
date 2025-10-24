@@ -1,0 +1,271 @@
+import { motion, AnimatePresence } from "framer-motion";
+import { Heart, ShoppingBag, Trash2, ArrowLeft } from "lucide-react";
+import { useWishlist } from "../hooks/useWishlist";
+import { useCart } from "../hooks/useCart";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import SEO from "../components/SEO";
+import WishlistButton from "../components/WishlistButton";
+
+const FavoritosPage = () => {
+  const { items, clearWishlist, itemCount } = useWishlist();
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+  const [addedToCart, setAddedToCart] = useState({});
+
+  const handleAddToCart = (item) => {
+    // Reconstruir el objeto producto con la estructura completa
+    const producto = {
+      id: item.id,
+      slug: item.slug,
+      titulo: item.titulo,
+      precio: item.precio,
+      precioAnterior: item.precioAnterior,
+      imagenes: [item.imagen], // Convertir imagen única a array
+      marca: item.marca,
+      disponible: item.disponible,
+      stock: 99, // Asumimos stock disponible
+    };
+
+    addToCart(producto, 1);
+    setAddedToCart({ ...addedToCart, [item.id]: true });
+    setTimeout(() => {
+      setAddedToCart((prev) => ({ ...prev, [item.id]: false }));
+    }, 2000);
+  };
+
+  const handleAddAllToCart = () => {
+    items.forEach((item) => {
+      const producto = {
+        id: item.id,
+        slug: item.slug,
+        titulo: item.titulo,
+        precio: item.precio,
+        precioAnterior: item.precioAnterior,
+        imagenes: [item.imagen],
+        marca: item.marca,
+        disponible: item.disponible,
+        stock: 99,
+      };
+      addToCart(producto, 1);
+    });
+    alert(`${items.length} productos añadidos al carrito`);
+  };
+
+  const handleClearWishlist = () => {
+    if (confirm("¿Estás seguro de que quieres eliminar todos los favoritos?")) {
+      clearWishlist();
+    }
+  };
+
+  if (items.length === 0) {
+    return (
+      <>
+        <SEO
+          title="Mis Favoritos - Óptica Del Val Joyeros"
+          description="Guarda tus productos favoritos y compra más tarde. Lista de deseos de joyas, relojes y gafas."
+          url="https://opticadelvaljoyeros.com/favoritos"
+        />
+        <div className="min-h-screen bg-gray-50">
+          <div className="container px-4 py-16 mx-auto max-w-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-col items-center justify-center text-center"
+            >
+              <div className="p-6 mb-6 bg-white rounded-full shadow-sm">
+                <Heart className="w-16 h-16 text-gray-300" />
+              </div>
+              <h1 className="mb-4 text-3xl font-light tracking-wider text-black">
+                Tu lista de favoritos está vacía
+              </h1>
+              <p className="mb-8 text-gray-600">
+                Guarda los productos que te gusten para comprarlos más tarde
+              </p>
+              <button
+                onClick={() => navigate("/catalogo")}
+                className="flex items-center gap-2 px-6 py-3 text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+              >
+                <ArrowLeft className="w-5 h-5" />
+                Explorar productos
+              </button>
+            </motion.div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <SEO
+        title={`Mis Favoritos (${itemCount}) - Óptica Del Val Joyeros`}
+        description="Tu lista de productos favoritos. Guarda y compra tus joyas, relojes y gafas preferidas."
+        url="https://opticadelvaljoyeros.com/favoritos"
+      />
+      <div className="min-h-screen bg-gray-50">
+        <div className="container px-4 py-8 mx-auto max-w-7xl md:py-12">
+          {/* Header */}
+          <div className="flex flex-col gap-4 pb-6 mb-8 border-b md:flex-row md:items-center md:justify-between">
+            <div>
+              <button
+                onClick={() => navigate(-1)}
+                className="flex items-center gap-2 mb-4 text-sm text-gray-600 transition-colors hover:text-black"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Volver
+              </button>
+              <h1 className="flex items-center gap-3 text-3xl font-light tracking-wider text-black">
+                <Heart className="w-8 h-8" />
+                Mis Favoritos
+              </h1>
+              <p className="mt-2 text-gray-600">
+                {itemCount}{" "}
+                {itemCount === 1 ? "producto guardado" : "productos guardados"}
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <button
+                onClick={handleAddAllToCart}
+                className="flex items-center justify-center gap-2 px-6 py-3 text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                Añadir todo al carrito
+              </button>
+              <button
+                onClick={handleClearWishlist}
+                className="flex items-center justify-center gap-2 px-6 py-3 text-red-600 transition-colors bg-white border border-red-300 rounded-lg hover:bg-red-50"
+              >
+                <Trash2 className="w-5 h-5" />
+                Limpiar lista
+              </button>
+            </div>
+          </div>
+
+          {/* Grid de productos */}
+          <AnimatePresence mode="popLayout">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 md:gap-6">
+              {items.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  className="relative overflow-hidden bg-white border border-gray-100 rounded-lg group"
+                >
+                  {/* Imagen */}
+                  <div className="relative overflow-hidden aspect-square bg-gray-50">
+                    <img
+                      src={item.imagen}
+                      alt={item.titulo}
+                      className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                    />
+
+                    {/* Botón de eliminar de favoritos */}
+                    <div className="absolute z-10 top-2 right-2">
+                      <WishlistButton product={item} size="sm" />
+                    </div>
+
+                    {/* Badge de descuento */}
+                    {item.precioAnterior && (
+                      <div className="absolute px-2 py-1 text-xs font-medium text-white bg-red-600 rounded top-2 left-2">
+                        -
+                        {Math.round(
+                          ((item.precioAnterior - item.precio) /
+                            item.precioAnterior) *
+                            100
+                        )}
+                        %
+                      </div>
+                    )}
+
+                    {/* Overlay con botones en hover */}
+                    <div className="absolute inset-0 flex items-center justify-center transition-opacity duration-300 opacity-0 bg-black/40 group-hover:opacity-100">
+                      <div className="flex flex-col gap-2">
+                        <button
+                          onClick={() => navigate(`/producto/${item.slug}`)}
+                          className="px-4 py-2 text-sm font-medium text-black transition-colors bg-white rounded-lg hover:bg-gray-100"
+                        >
+                          Ver detalles
+                        </button>
+                        <button
+                          onClick={() => handleAddToCart(item)}
+                          disabled={addedToCart[item.id]}
+                          className={`px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg ${
+                            addedToCart[item.id]
+                              ? "bg-green-600"
+                              : "bg-black hover:bg-gray-800"
+                          }`}
+                        >
+                          {addedToCart[item.id]
+                            ? "¡Añadido!"
+                            : "Añadir al carrito"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Info del producto */}
+                  <div className="p-3 md:p-4">
+                    {item.marca && (
+                      <p className="mb-1 text-xs font-medium tracking-wider text-gray-500 uppercase">
+                        {item.marca}
+                      </p>
+                    )}
+                    <h3 className="mb-2 text-sm font-light line-clamp-2 text-gray-900">
+                      {item.titulo}
+                    </h3>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-medium text-black">
+                        {item.precio.toLocaleString("es-ES", {
+                          style: "currency",
+                          currency: "EUR",
+                          minimumFractionDigits: 0,
+                        })}
+                      </span>
+                      {item.precioAnterior && (
+                        <span className="text-sm text-gray-400 line-through">
+                          {item.precioAnterior.toLocaleString("es-ES", {
+                            style: "currency",
+                            currency: "EUR",
+                            minimumFractionDigits: 0,
+                          })}
+                        </span>
+                      )}
+                    </div>
+
+                    {!item.disponible && (
+                      <p className="mt-2 text-xs text-red-600">Sin stock</p>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </AnimatePresence>
+
+          {/* Call to action inferior */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mt-12 text-center"
+          >
+            <p className="mb-4 text-gray-600">¿Buscas algo más?</p>
+            <button
+              onClick={() => navigate("/catalogo")}
+              className="px-8 py-3 text-white transition-colors bg-black rounded-lg hover:bg-gray-800"
+            >
+              Seguir comprando
+            </button>
+          </motion.div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default FavoritosPage;

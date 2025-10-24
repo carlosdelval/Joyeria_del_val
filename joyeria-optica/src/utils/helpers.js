@@ -148,36 +148,181 @@ export const analytics = {
       window.gtag("event", event, properties);
     }
 
+    // Meta Pixel (Facebook)
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", event, properties);
+    }
+
     // Shopify Analytics (cuando esté integrado)
-    if (window.ShopifyAnalytics) {
+    if (typeof window !== "undefined" && window.ShopifyAnalytics) {
       window.ShopifyAnalytics.lib.track(event, properties);
     }
 
-    console.log("Analytics:", event, properties);
+    // Log en desarrollo
+    if (import.meta.env.DEV) {
+      console.log("📊 Analytics Event:", event, properties);
+    }
   },
 
-  trackPurchase: (transactionId, value, currency = "EUR", items = []) => {
+  // Evento: Ver página de producto
+  trackViewProduct: (producto) => {
+    analytics.track("view_item", {
+      currency: "EUR",
+      value: producto.precio,
+      items: [
+        {
+          item_id: producto.id,
+          item_name: producto.titulo,
+          item_brand: producto.marca,
+          item_category: producto.categorias?.[0],
+          price: producto.precio,
+        },
+      ],
+    });
+  },
+
+  // Evento: Añadir al carrito
+  trackAddToCart: (item, quantity = 1) => {
+    analytics.track("add_to_cart", {
+      currency: "EUR",
+      value: item.precio * quantity,
+      items: [
+        {
+          item_id: item.id || item.productId,
+          item_name: item.titulo,
+          item_brand: item.marca,
+          item_category: item.categorias?.[0],
+          price: item.precio,
+          quantity: quantity,
+        },
+      ],
+    });
+  },
+
+  // Evento: Eliminar del carrito
+  trackRemoveFromCart: (item) => {
+    analytics.track("remove_from_cart", {
+      currency: "EUR",
+      value: item.precio * item.quantity,
+      items: [
+        {
+          item_id: item.id || item.productId,
+          item_name: item.titulo,
+          price: item.precio,
+          quantity: item.quantity,
+        },
+      ],
+    });
+  },
+
+  // Evento: Iniciar checkout
+  trackBeginCheckout: (items, value) => {
+    analytics.track("begin_checkout", {
+      currency: "EUR",
+      value: value,
+      items: items.map((item) => ({
+        item_id: item.id || item.productId,
+        item_name: item.titulo,
+        price: item.precio,
+        quantity: item.quantity,
+      })),
+    });
+  },
+
+  // Evento: Añadir información de envío
+  trackAddShippingInfo: (shippingMethod, value) => {
+    analytics.track("add_shipping_info", {
+      currency: "EUR",
+      value: value,
+      shipping_tier: shippingMethod,
+    });
+  },
+
+  // Evento: Añadir información de pago
+  trackAddPaymentInfo: (paymentMethod, value) => {
+    analytics.track("add_payment_info", {
+      currency: "EUR",
+      value: value,
+      payment_type: paymentMethod,
+    });
+  },
+
+  // Evento: Compra completada
+  trackPurchase: (
+    transactionId,
+    value,
+    currency = "EUR",
+    items = [],
+    tax = 0,
+    shipping = 0
+  ) => {
     analytics.track("purchase", {
       transaction_id: transactionId,
       value: value,
       currency: currency,
-      items: items,
+      tax: tax,
+      shipping: shipping,
+      items: items.map((item) => ({
+        item_id: item.id || item.productId,
+        item_name: item.titulo || item.title,
+        item_brand: item.marca,
+        price: item.precio || item.price,
+        quantity: item.quantity,
+      })),
     });
   },
 
-  trackAddToCart: (item) => {
-    analytics.track("add_to_cart", {
-      currency: "EUR",
-      value: item.precio,
+  // Evento: Búsqueda
+  trackSearch: (searchTerm, resultsCount) => {
+    analytics.track("search", {
+      search_term: searchTerm,
+      results_count: resultsCount,
+    });
+  },
+
+  // Evento: Ver lista de productos
+  trackViewItemList: (listName, items) => {
+    analytics.track("view_item_list", {
+      item_list_name: listName,
+      items: items.slice(0, 10).map((item, index) => ({
+        item_id: item.id,
+        item_name: item.titulo,
+        item_brand: item.marca,
+        item_category: item.categorias?.[0],
+        price: item.precio,
+        index: index,
+      })),
+    });
+  },
+
+  // Evento: Click en producto
+  trackSelectItem: (producto, listName, index) => {
+    analytics.track("select_item", {
+      item_list_name: listName,
       items: [
         {
-          item_id: item.id,
-          item_name: item.titulo,
-          item_category: item.categorias?.[0],
-          price: item.precio,
-          quantity: 1,
+          item_id: producto.id,
+          item_name: producto.titulo,
+          item_brand: producto.marca,
+          item_category: producto.categorias?.[0],
+          price: producto.precio,
+          index: index,
         },
       ],
+    });
+  },
+
+  // Evento: Ver carrito
+  trackViewCart: (items, value) => {
+    analytics.track("view_cart", {
+      currency: "EUR",
+      value: value,
+      items: items.map((item) => ({
+        item_id: item.id || item.productId,
+        item_name: item.titulo,
+        price: item.precio,
+        quantity: item.quantity,
+      })),
     });
   },
 };

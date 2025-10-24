@@ -1,5 +1,8 @@
 // Context para manejo del carrito
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect, useState } from "react";
+import { analytics } from "../utils/helpers";
+import { couponService } from "../services/couponService";
+import Cookies from "js-cookie";
 
 // Acciones del carrito
 const CART_ACTIONS = {
@@ -10,6 +13,7 @@ const CART_ACTIONS = {
   LOAD_CART: "LOAD_CART",
   SET_SHIPPING: "SET_SHIPPING",
   APPLY_DISCOUNT: "APPLY_DISCOUNT",
+  REMOVE_DISCOUNT: "REMOVE_DISCOUNT",
 };
 
 // Reducer del carrito
@@ -101,6 +105,17 @@ function cartReducer(state, action) {
         ...state,
         discountCode: action.payload.code,
         discountAmount: action.payload.amount,
+        freeShipping: action.payload.freeShipping || false,
+        appliedCoupon: action.payload.coupon || null,
+      };
+
+    case CART_ACTIONS.REMOVE_DISCOUNT:
+      return {
+        ...state,
+        discountCode: null,
+        discountAmount: 0,
+        freeShipping: false,
+        appliedCoupon: null,
       };
 
     default:
@@ -118,6 +133,8 @@ const initialState = {
   },
   discountCode: null,
   discountAmount: 0,
+  freeShipping: false,
+  appliedCoupon: null,
 };
 
 // Context
@@ -126,23 +143,72 @@ const CartContext = createContext();
 // Provider del carrito
 export function CartProvider({ children }) {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const [cookiesAccepted, setCookiesAccepted] = useState(false);
 
-  // Persistir carrito en localStorage
+  // Verificar consentimiento de cookies al iniciar
   useEffect(() => {
-    const savedCart = localStorage.getItem("optica-del-val-cart");
-    if (savedCart) {
-      try {
-        const cartData = JSON.parse(savedCart);
-        dispatch({ type: CART_ACTIONS.LOAD_CART, payload: cartData });
-      } catch (error) {
-        console.error("Error loading cart from localStorage:", error);
+    const consent = Cookies.get("cookie-consent");
+    if (consent === "accepted") {
+      setCookiesAccepted(true);
+      // Cargar carrito desde cookies
+      const savedCart = Cookies.get("optica-del-val-cart");
+      if (savedCart) {
+        try {
+          const cartData = JSON.parse(savedCart);
+          dispatch({ type: CART_ACTIONS.LOAD_CART, payload: cartData });
+        } catch (error) {
+          console.error("Error loading cart from cookies:", error);
+        }
+      }
+    } else {
+      // Fallback a localStorage si no hay consentimiento aún
+      const savedCart = localStorage.getItem("optica-del-val-cart");
+      if (savedCart) {
+        try {
+          const cartData = JSON.parse(savedCart);
+          dispatch({ type: CART_ACTIONS.LOAD_CART, payload: cartData });
+        } catch (error) {
+          console.error("Error loading cart from localStorage:", error);
+        }
       }
     }
-  }, []);
 
+    // Suscribirse a cambios en el consentimiento
+    const checkConsent = setInterval(() => {
+      const currentConsent = Cookies.get("cookie-consent");
+      if (currentConsent === "accepted" && !cookiesAccepted) {
+        setCookiesAccepted(true);
+        // Migrar de localStorage a cookies
+        const localStorageData = localStorage.getItem("optica-del-val-cart");
+        if (localStorageData) {
+          Cookies.set("optica-del-val-cart", localStorageData, {
+            expires: 7, // 7 días para el carrito
+            sameSite: "Lax",
+            secure: window.location.protocol === "https:",
+          });
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(checkConsent);
+  }, [cookiesAccepted]);
+
+  // Guardar en cookies o localStorage según consentimiento
   useEffect(() => {
-    localStorage.setItem("optica-del-val-cart", JSON.stringify(state));
-  }, [state]);
+    const cartData = JSON.stringify(state);
+
+    if (cookiesAccepted) {
+      // Guardar en cookies (7 días de duración)
+      Cookies.set("optica-del-val-cart", cartData, {
+        expires: 7,
+        sameSite: "Lax",
+        secure: window.location.protocol === "https:",
+      });
+    } else {
+      // Guardar en localStorage mientras no hay consentimiento
+      localStorage.setItem("optica-del-val-cart", cartData);
+    }
+  }, [state, cookiesAccepted]);
 
   // Funciones del carrito
   const addToCart = (product, quantity = 1, variant = null) => {
@@ -150,13 +216,24 @@ export function CartProvider({ children }) {
       type: CART_ACTIONS.ADD_ITEM,
       payload: { product, quantity, variant },
     });
+
+    // Track añadir al carrito
+    analytics.trackAddToCart(product, quantity);
   };
 
   const removeFromCart = (itemId) => {
+    // Encontrar el item antes de eliminarlo para tracking
+    const item = state.items.find((i) => i.id === itemId);
+
     dispatch({
       type: CART_ACTIONS.REMOVE_ITEM,
       payload: { itemId },
     });
+
+    // Track eliminar del carrito
+    if (item) {
+      analytics.trackRemoveFromCart(item);
+    }
   };
 
   const updateQuantity = (itemId, quantity) => {
@@ -177,11 +254,28 @@ export function CartProvider({ children }) {
     });
   };
 
-  const applyDiscount = (code, amount) => {
+  const applyDiscount = async (code) => {
+    const validation = await couponService.validateCoupon(code, subtotal);
+
+    if (!validation.valid) {
+      throw new Error(validation.error);
+    }
+
     dispatch({
       type: CART_ACTIONS.APPLY_DISCOUNT,
-      payload: { code, amount },
+      payload: {
+        code: validation.coupon.code,
+        amount: validation.discountAmount || 0,
+        freeShipping: validation.freeShipping || false,
+        coupon: validation.coupon,
+      },
     });
+
+    return validation;
+  };
+
+  const removeDiscount = () => {
+    dispatch({ type: CART_ACTIONS.REMOVE_DISCOUNT });
   };
 
   // Cálculos
@@ -195,7 +289,11 @@ export function CartProvider({ children }) {
     0
   );
 
-  const shippingCost = subtotal > 50 ? 0 : state.shipping.cost; // Envío gratis >50€
+  const shippingCost = state.freeShipping
+    ? 0
+    : subtotal > 50
+    ? 0
+    : state.shipping.cost; // Envío gratis >50€ o con cupón
 
   const total = subtotal + shippingCost - state.discountAmount;
 
@@ -209,6 +307,8 @@ export function CartProvider({ children }) {
     shipping: state.shipping,
     discountCode: state.discountCode,
     discountAmount: state.discountAmount,
+    freeShipping: state.freeShipping,
+    appliedCoupon: state.appliedCoupon,
 
     // Acciones
     addToCart,
@@ -217,6 +317,7 @@ export function CartProvider({ children }) {
     clearCart,
     setShipping,
     applyDiscount,
+    removeDiscount,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

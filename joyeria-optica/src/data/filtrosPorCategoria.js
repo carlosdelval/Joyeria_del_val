@@ -13,6 +13,16 @@ export const filtrosPorCategoria = {
       ],
       priority: 1,
     },
+    genero: {
+      label: "Género",
+      type: "checkbox",
+      options: [
+        { value: "hombre", label: "Caballero", count: 0 },
+        { value: "mujer", label: "Señora", count: 0 },
+        { value: "unisex", label: "Unisex", count: 0 },
+      ],
+      priority: 2,
+    },
   },
   gafas: {
     marca: {
@@ -21,6 +31,7 @@ export const filtrosPorCategoria = {
       options: [
         { value: "tous", label: "TOUS", count: 0 },
         { value: "ray-ban", label: "Ray-Ban", count: 0 },
+        { value: "dolce-gabbana", label: "Dolce & Gabbana", count: 0 },
         { value: "oakley", label: "Oakley", count: 0 },
         { value: "persol", label: "Persol", count: 0 },
         { value: "hawkers", label: "Hawkers", count: 0 },

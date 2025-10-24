@@ -69,7 +69,8 @@ function normalizeProduct(producto) {
     nombre: producto.titulo || producto.nombre,
     categoria: extractCategoryFromCategories(producto.categorias),
     material: extractMaterialFromTags(producto.etiquetas, producto.categorias),
-    genero: extractGeneroFromTags(producto.etiquetas),
+    // IMPORTANTE: Usar el campo genero directamente si existe, sino intentar extraerlo de etiquetas
+    genero: producto.genero || extractGeneroFromTags(producto.etiquetas),
     estilo: extractEstiloFromTags(producto.etiquetas),
     tipo: extractTipoFromCategories(producto.categorias),
     // IMPORTANTE: Usar el campo marca directamente si existe, sino intentar extraerlo de etiquetas

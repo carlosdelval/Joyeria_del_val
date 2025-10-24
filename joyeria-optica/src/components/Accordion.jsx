@@ -152,7 +152,7 @@ const items = [
     imgSrc:
       "/cartelGraduacion.svg",
     description:
-      "¡Reserva ya tu cita para graduarte con los mejores profesionales!",
+      "¡Reserva ya tu cita!",
   },
   {
     id: 5,

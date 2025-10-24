@@ -11,8 +11,9 @@ import {
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { formatCurrency } from "../utils/helpers";
+import { formatCurrency, analytics } from "../utils/helpers";
 import AuthModal from "../components/AuthModal";
+import { sendOrderConfirmation } from "../services/emailService";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -55,8 +56,11 @@ const CheckoutPage = () => {
   useEffect(() => {
     if (items.length === 0 && !orderComplete) {
       navigate("/");
+    } else if (items.length > 0) {
+      // Track inicio de checkout
+      analytics.trackBeginCheckout(items, total);
     }
-  }, [items.length, navigate, orderComplete]);
+  }, [items.length, navigate, orderComplete, items, total]);
 
   // Actualizar datos del usuario cuando se autentique
   useEffect(() => {
@@ -389,21 +393,82 @@ const CheckoutPage = () => {
     setProcessing(true);
 
     try {
+      // Track inicio de checkout
+      analytics.trackBeginCheckout(items, total);
+
       // Aquí se integrará con Shopify Checkout API
+      const shippingMethodData = shippingMethods.find(
+        (m) => m.id === shippingMethod
+      );
+      const finalTotal = total + (shippingMethodData?.price || 0);
+      const transactionId = `ORD-${Date.now()}`;
+
       const orderData = {
+        orderId: transactionId,
         items: items,
         shipping: shippingData,
-        shippingMethod: shippingMethods.find((m) => m.id === shippingMethod),
+        shippingMethod: shippingMethodData,
         payment: paymentData,
-        total:
-          total +
-          (shippingMethods.find((m) => m.id === shippingMethod)?.price || 0),
+        total: finalTotal,
+        customerEmail: shippingData.email,
+        customerName: `${shippingData.firstName} ${shippingData.lastName}`,
+        orderDate: new Date().toISOString(),
       };
 
-      // Simular procesamiento
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      // Simular procesamiento de pago
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       console.log("Order placed:", orderData);
+
+      // Track compra completada
+      const shippingPrice = shippingMethodData?.price || 0;
+      const tax = total * 0.21; // IVA 21%
+
+      analytics.trackPurchase(
+        transactionId,
+        finalTotal,
+        "EUR",
+        items,
+        tax,
+        shippingPrice
+      );
+
+      // 📧 Enviar email de confirmación
+      try {
+        const emailData = {
+          orderId: transactionId,
+          customerEmail: shippingData.email,
+          customerName: `${shippingData.firstName} ${shippingData.lastName}`,
+          items: items,
+          subtotal: subtotal,
+          shippingCost: shippingPrice,
+          discountAmount: 0, // Si tienes cupones, añádelo aquí
+          total: finalTotal,
+          shippingAddress: {
+            name: `${shippingData.firstName} ${shippingData.lastName}`,
+            address: `${shippingData.address1}${
+              shippingData.address2 ? ", " + shippingData.address2 : ""
+            }`,
+            city: shippingData.city,
+            postalCode: shippingData.zipCode,
+            phone: shippingData.phone,
+          },
+          paymentMethod: paymentMethod,
+          orderDate: orderData.orderDate,
+        };
+
+        const emailResult = await sendOrderConfirmation(emailData);
+
+        if (emailResult.success) {
+          console.log("✅ Email de confirmación enviado");
+        } else {
+          console.error("❌ Error enviando email:", emailResult.error);
+          // No bloqueamos el pedido si falla el email
+        }
+      } catch (emailError) {
+        console.error("Error en servicio de email:", emailError);
+        // Continuamos con el pedido aunque falle el email
+      }
 
       setOrderComplete(true);
       clearCart();

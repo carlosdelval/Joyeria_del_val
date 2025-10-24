@@ -1,11 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import React, { useState } from "react";
+import WishlistButton from "./WishlistButton";
 
 const ProductoCard = ({ producto }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const { titulo: nombre, imagenes, precio, precioAnterior, slug } = producto;
+  const { titulo: nombre, imagenes, precio, precioAnterior, slug, stock = 99 } = producto;
 
   const descuento = precioAnterior
     ? Math.round(((precioAnterior - precio) / precioAnterior) * 100)
@@ -49,13 +50,18 @@ const ProductoCard = ({ producto }) => {
 
         {descuento && (
           <motion.div
-            initial={{ scale: 0.9 }}
+            initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
-            className="absolute px-2 py-1 text-xs font-light tracking-wider text-white bg-red-600 rounded top-2 right-2"
+            className="absolute px-3 py-1 text-xs font-light tracking-wider text-white bg-red-600 rounded top-4 left-4"
           >
             -{descuento}%
           </motion.div>
         )}
+
+        {/* Botón de wishlist */}
+        <div className="absolute top-4 right-4 z-10">
+          <WishlistButton product={producto} size="sm" />
+        </div>
       </div>
 
       <div className="p-4">

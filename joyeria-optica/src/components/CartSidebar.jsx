@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Minus, ShoppingBag, Truck } from "lucide-react";
 import { useCart } from "../hooks/useCart";
 import { useNavigate } from "react-router-dom";
+import CouponInput from "./CouponInput";
 
 const CartSidebar = ({ isOpen, onClose }) => {
   const {
@@ -13,6 +14,11 @@ const CartSidebar = ({ isOpen, onClose }) => {
     updateQuantity,
     removeFromCart,
     clearCart,
+    discountAmount,
+    appliedCoupon,
+    freeShipping,
+    applyDiscount,
+    removeDiscount,
   } = useCart();
 
   const navigate = useNavigate();
@@ -21,6 +27,14 @@ const CartSidebar = ({ isOpen, onClose }) => {
     window.scrollTo(0, 0);
     onClose();
     navigate("/checkout");
+  };
+
+  const handleApplyCoupon = async (code) => {
+    return await applyDiscount(code);
+  };
+
+  const handleRemoveCoupon = () => {
+    removeDiscount();
   };
 
   return (
@@ -112,19 +126,30 @@ const CartSidebar = ({ isOpen, onClose }) => {
                               onClick={() =>
                                 updateQuantity(item.id, item.quantity - 1)
                               }
-                              className="p-1 rounded hover:bg-gray-100 cursor-pointer"
+                              disabled={item.quantity <= 1}
+                              className={`p-1 rounded transition ${
+                                item.quantity <= 1
+                                  ? "text-gray-300 cursor-not-allowed"
+                                  : "hover:bg-gray-100 cursor-pointer text-gray-700"
+                              }`}
+                              aria-label="Disminuir cantidad"
                             >
                               <Minus className="w-3 h-3" />
                             </button>
-                            <span className="px-2 text-sm font-medium">
+                            <span className="px-2 text-sm font-medium min-w-[2rem] text-center">
                               {item.quantity}
                             </span>
                             <button
                               onClick={() =>
                                 updateQuantity(item.id, item.quantity + 1)
                               }
-                              className="p-1 rounded hover:bg-gray-100 cursor-pointer"
                               disabled={item.quantity >= item.maxStock}
+                              className={`p-1 rounded transition ${
+                                item.quantity >= item.maxStock
+                                  ? "text-gray-300 cursor-not-allowed"
+                                  : "hover:bg-gray-100 cursor-pointer text-gray-700"
+                              }`}
+                              aria-label="Aumentar cantidad"
                             >
                               <Plus className="w-3 h-3" />
                             </button>
@@ -136,6 +161,14 @@ const CartSidebar = ({ isOpen, onClose }) => {
                             Eliminar
                           </button>
                         </div>
+
+                        {/* Aviso de stock limitado */}
+                        {item.quantity >= item.maxStock &&
+                          item.maxStock < 99 && (
+                            <p className="mt-1 text-xs text-orange-600 font-medium">
+                              Máximo disponible alcanzado
+                            </p>
+                          )}
                       </div>
 
                       {/* Precio */}
@@ -170,7 +203,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
             {items.length > 0 && (
               <div className="p-6 space-y-4 border-t border-gray-100">
                 {/* Envío gratis */}
-                {subtotal < 50 && (
+                {!freeShipping && subtotal < 50 && (
                   <div className="flex items-center gap-2 p-3 rounded-lg bg-blue-50">
                     <Truck className="w-4 h-4 text-blue-600" />
                     <p className="text-sm text-blue-600">
@@ -184,14 +217,21 @@ const CartSidebar = ({ isOpen, onClose }) => {
                   </div>
                 )}
 
-                {subtotal >= 50 && (
+                {(freeShipping || subtotal >= 50) && (
                   <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50">
                     <Truck className="w-4 h-4 text-green-600" />
                     <p className="text-sm text-green-600">
-                      ¡Envío gratis incluido!
+                      ¡Envío gratis {freeShipping ? "con cupón" : "incluido"}!
                     </p>
                   </div>
                 )}
+
+                {/* Input de cupón */}
+                <CouponInput
+                  onApply={handleApplyCoupon}
+                  appliedCoupon={appliedCoupon}
+                  onRemove={handleRemoveCoupon}
+                />
 
                 {/* Totales */}
                 <div className="space-y-2">
@@ -204,6 +244,20 @@ const CartSidebar = ({ isOpen, onClose }) => {
                       })}
                     </span>
                   </div>
+
+                  {discountAmount > 0 && (
+                    <div className="flex justify-between text-sm text-green-600">
+                      <span>Descuento</span>
+                      <span>
+                        -
+                        {discountAmount.toLocaleString("es-ES", {
+                          style: "currency",
+                          currency: "EUR",
+                        })}
+                      </span>
+                    </div>
+                  )}
+
                   {shippingCost > 0 && (
                     <div className="flex justify-between text-sm">
                       <span>Envío</span>
@@ -215,6 +269,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                       </span>
                     </div>
                   )}
+
                   <div className="flex justify-between pt-2 text-lg font-semibold border-t">
                     <span>Total</span>
                     <span>

@@ -1,11 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import { useState, useEffect } from "react";
-import { Search, User, ShoppingBag } from "lucide-react";
+import { Search, User, ShoppingBag, Heart } from "lucide-react";
 import AnimatedHamburgerButton from "./HamburguerButton";
 import FlyoutLink from "./FlyoutLink";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
+import { useWishlist } from "../hooks/useWishlist";
 import CartSidebar from "./CartSidebar";
 import AuthModal from "./AuthModal";
 
@@ -17,6 +18,7 @@ export default function Navbar() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
   const { itemCount } = useCart();
+  const { itemCount: wishlistCount } = useWishlist();
   const { isAuthenticated, user, logout } = useAuth();
 
   const handleSearch = (e) => {
@@ -59,11 +61,11 @@ export default function Navbar() {
     },
     {
       label: "Relojes caballero",
-      href: "/catalogo/relojes",
+      href: "/catalogo/relojes?genero=hombre",
     },
     {
       label: "Relojes señora",
-      href: "/catalogo/relojes",
+      href: "/catalogo/relojes?genero=mujer",
     },
   ];
 
@@ -150,22 +152,12 @@ export default function Navbar() {
                   <button
                     onClick={() => {
                       window.scrollTo(0, 0);
-                      navigate("/cuenta");
+                      navigate("/perfil");
                       setShowUserMenu(false);
                     }}
                     className="w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50"
                   >
                     Mi Cuenta
-                  </button>
-                  <button
-                    onClick={() => {
-                      window.scrollTo(0, 0);
-                      navigate("/pedidos");
-                      setShowUserMenu(false);
-                    }}
-                    className="w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50"
-                  >
-                    Mis Pedidos
                   </button>
                   <button
                     onClick={() => {
@@ -181,6 +173,20 @@ export default function Navbar() {
             )}
           </div>
 
+          {/* Wishlist Button */}
+          <button
+            onClick={() => navigate("/favoritos")}
+            className="relative transition-colors hover:text-gray-600 cursor-pointer"
+            title="Favoritos"
+          >
+            <Heart className="w-5 h-5" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 min-w-[1.25rem] h-5 flex items-center justify-center">
+                {wishlistCount > 99 ? "99+" : wishlistCount}
+              </span>
+            )}
+          </button>
+
           {/* Cart Button */}
           <button
             onClick={() => setCartOpen(true)}
@@ -188,7 +194,7 @@ export default function Navbar() {
           >
             <ShoppingBag className="w-5 h-5" />
             {itemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full px-1.5 min-w-[1.25rem] h-5 flex items-center justify-center">
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 min-w-[1.25rem] h-5 flex items-center justify-center">
                 {itemCount > 99 ? "99+" : itemCount}
               </span>
             )}

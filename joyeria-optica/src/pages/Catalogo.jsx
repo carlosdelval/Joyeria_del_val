@@ -6,22 +6,34 @@ import { filtrosPorCategoria } from "../data/filtrosPorCategoria";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import ProductoCard from "../components/ProductoCard";
+import SEO from "../components/SEO";
 
 const Catalogo = () => {
   const { categoria } = useParams();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("q");
   const marcaParam = searchParams.get("marca");
+  const generoParam = searchParams.get("genero");
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [filtros, setFiltros] = useState({});
 
-  // Aplicar marca desde URL cuando se monta el componente
+  // Aplicar filtros desde URL cuando se monta el componente
   useEffect(() => {
+    const newFiltros = {};
+
     if (marcaParam) {
-      setFiltros((prev) => ({ ...prev, marca: [marcaParam] }));
+      newFiltros.marca = [marcaParam];
     }
-  }, [marcaParam]);
+
+    if (generoParam) {
+      newFiltros.genero = [generoParam];
+    }
+
+    if (Object.keys(newFiltros).length > 0) {
+      setFiltros(newFiltros);
+    }
+  }, [marcaParam, generoParam]);
 
   // Determinar qué categoría buscar
   const categoriasBusqueda = useMemo(() => {
@@ -144,8 +156,64 @@ const Catalogo = () => {
     );
   }, [categoria, searchQuery]);
 
+  // SEO dinámico para catálogo
+  const getCatalogoSEO = () => {
+    const baseUrl = "https://opticadelvaljoyeros.com/catalogo";
+
+    if (searchQuery) {
+      return {
+        title: `Resultados para "${searchQuery}" - Óptica Del Val Joyeros`,
+        description: `Encuentra productos relacionados con ${searchQuery} en nuestra tienda online. ${productosFiltrados.length} resultados encontrados.`,
+        url: `${baseUrl}?q=${searchQuery}`,
+      };
+    }
+
+    const seoData = {
+      relojes: {
+        title: "Relojes TOUS para Mujer - Colección 2025 | Óptica Del Val",
+        description:
+          "Descubre nuestra exclusiva colección de relojes TOUS para mujer. Diseños elegantes en acero, oro rosa y nácar. Envío gratis +50€.",
+        keywords: "relojes TOUS, relojes mujer, relojes acero, TOUS Córdoba",
+      },
+      gafas: {
+        title: "Gafas de Sol Ray-Ban, Dolce & Gabbana | Óptica Del Val",
+        description:
+          "Las mejores marcas de gafas de sol: Ray-Ban Aviator, Wayfarer, Dolce & Gabbana, Oakley. Protección UV certificada.",
+        keywords: "gafas de sol, Ray-Ban, Dolce Gabbana, gafas Puente Genil",
+      },
+      bolsos: {
+        title: "Bolsos TOUS - Colección Original | Óptica Del Val Joyeros",
+        description:
+          "Bolsos TOUS auténticos con diseños exclusivos. Calidad premium y estilo único. Compra segura online.",
+        keywords: "bolsos TOUS, bolsos mujer, complementos TOUS",
+      },
+      todos: {
+        title: "Catálogo Completo - Joyería y Óptica | Óptica Del Val",
+        description:
+          "Explora todo nuestro catálogo: joyas, relojes, gafas y complementos de las mejores marcas. Más de 200 productos disponibles.",
+        keywords: "joyería, óptica, relojes, gafas, TOUS, Ray-Ban",
+      },
+    };
+
+    const data = seoData[categoria] || seoData.todos;
+    return {
+      title: data.title,
+      description: data.description,
+      keywords: data.keywords,
+      url: categoria ? `${baseUrl}/${categoria}` : baseUrl,
+    };
+  };
+
+  const seoData = getCatalogoSEO();
+
   return (
     <>
+      <SEO
+        title={seoData.title}
+        description={seoData.description}
+        keywords={seoData.keywords}
+        url={seoData.url}
+      />
       <div className="flex flex-col min-h-screen lg:flex-row">
         {/* Sidebar Fijo (solo visible en escritorio) */}
         <div className="hidden lg:block lg:w-80">
