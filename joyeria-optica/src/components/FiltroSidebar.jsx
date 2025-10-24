@@ -212,6 +212,7 @@ const FiltroSidebar = ({
                         handleFilterChange(key, optionValue, e.target.checked)
                       }
                       className="w-4 h-4 border-gray-300 rounded text-amber-600 focus:ring-amber-500"
+                      aria-label={optionLabel}
                     />
                     <span
                       className={`text-sm ${
@@ -219,12 +220,16 @@ const FiltroSidebar = ({
                           ? "font-medium text-gray-900"
                           : "text-gray-700"
                       }`}
+                      aria-hidden="true"
                     >
                       {optionLabel}
                     </span>
                   </div>
                   {optionCount && (
-                    <span className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded-full">
+                    <span
+                      className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded-full"
+                      aria-label={`${optionCount} productos disponibles`}
+                    >
                       {optionCount}
                     </span>
                   )}
@@ -252,8 +257,13 @@ const FiltroSidebar = ({
                 className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
                 min={filter.min}
                 max={filter.max}
+                aria-label={`Valor mínimo de ${filter.label} en ${
+                  filter.unit || "unidades"
+                }`}
               />
-              <span className="text-gray-500">-</span>
+              <span className="text-gray-500" aria-hidden="true">
+                -
+              </span>
               <input
                 type="number"
                 placeholder={`Max ${filter.unit || ""}`}
@@ -267,9 +277,12 @@ const FiltroSidebar = ({
                 className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
                 min={filter.min}
                 max={filter.max}
+                aria-label={`Valor máximo de ${filter.label} en ${
+                  filter.unit || "unidades"
+                }`}
               />
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-500" role="note">
               Rango: {filter.min} - {filter.max} {filter.unit}
             </div>
           </div>
@@ -285,11 +298,13 @@ const FiltroSidebar = ({
               checked={isActive}
               onChange={(e) => handleBooleanChange(key, e.target.checked)}
               className="w-4 h-4 border-gray-300 rounded text-amber-600 focus:ring-amber-500"
+              aria-label={filter.label}
             />
             <span
               className={`ml-2 text-sm ${
                 isActive ? "font-medium text-gray-900" : "text-gray-700"
               }`}
+              aria-hidden="true"
             >
               Sí
             </span>
@@ -353,18 +368,29 @@ const FiltroSidebar = ({
       <div className="mb-4 lg:hidden">
         <button
           onClick={onToggle}
-          className="flex items-center justify-between w-full px-4 py-3 transition-shadow bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md"
+          className="flex items-center justify-between w-full px-4 py-3 transition-shadow bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-black"
+          aria-expanded={isOpen}
+          aria-controls="filtro-sidebar"
+          aria-label={`${isOpen ? "Cerrar" : "Abrir"} panel de filtros${
+            appliedFiltersDisplay.length > 0
+              ? `, ${appliedFiltersDisplay.length} filtros aplicados`
+              : ""
+          }`}
         >
           <div className="flex items-center space-x-2">
-            <FunnelIcon className="w-5 h-5 text-gray-600" />
+            <FunnelIcon className="w-5 h-5 text-gray-600" aria-hidden="true" />
             <span className="font-medium text-gray-900">Filtros</span>
             {appliedFiltersDisplay.length > 0 && (
-              <span className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800">
+              <span
+                className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800"
+                role="status"
+                aria-label={`${appliedFiltersDisplay.length} filtros activos`}
+              >
                 {appliedFiltersDisplay.length}
               </span>
             )}
           </div>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500" aria-live="polite">
             {totalProducts} productos
           </span>
         </button>
@@ -375,19 +401,28 @@ const FiltroSidebar = ({
         {(isOpen ||
           (typeof window !== "undefined" && window.innerWidth >= 1024)) && (
           <motion.div
+            id="filtro-sidebar"
             initial={{ opacity: 0, x: -300 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -300 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 shadow-xl w-80 lg:relative lg:inset-auto lg:z-auto lg:w-full lg:shadow-none"
+            role="region"
+            aria-label="Panel de filtros de productos"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
               <div className="flex items-center space-x-2">
-                <FunnelIcon className="w-5 h-5 text-gray-600" />
+                <FunnelIcon
+                  className="w-5 h-5 text-gray-600"
+                  aria-hidden="true"
+                />
                 <h3 className="font-semibold text-gray-900">Filtros</h3>
                 {appliedFiltersDisplay.length > 0 && (
-                  <span className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800">
+                  <span
+                    className="px-2 py-1 text-xs rounded-full bg-amber-100 text-amber-800"
+                    role="status"
+                  >
                     {appliedFiltersDisplay.length}
                   </span>
                 )}
@@ -396,34 +431,47 @@ const FiltroSidebar = ({
                 {appliedFiltersDisplay.length > 0 && (
                   <button
                     onClick={clearAllFilters}
-                    className="text-xs font-medium text-amber-600 hover:text-amber-700"
+                    className="text-xs font-medium text-amber-600 hover:text-amber-700 focus:outline-none focus:ring-2 focus:ring-amber-500 rounded px-2 py-1"
+                    aria-label="Limpiar todos los filtros aplicados"
                   >
                     Limpiar todo
                   </button>
                 )}
                 <button
                   onClick={onToggle}
-                  className="p-1 rounded-md lg:hidden hover:bg-gray-100"
+                  className="p-1 rounded-md lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black"
+                  aria-label="Cerrar panel de filtros"
                 >
-                  <XMarkIcon className="w-5 h-5 text-gray-500" />
+                  <XMarkIcon
+                    className="w-5 h-5 text-gray-500"
+                    aria-hidden="true"
+                  />
                 </button>
               </div>
             </div>
 
             {/* Results Summary */}
-            <div className="px-4 py-3 text-sm text-gray-600 border-b border-gray-200 bg-gray-50">
+            <div
+              className="px-4 py-3 text-sm text-gray-600 border-b border-gray-200 bg-gray-50"
+              role="status"
+              aria-live="polite"
+            >
               {totalProducts} productos encontrados
             </div>
 
             {/* Info sobre filtros detectados en búsqueda */}
             {esResultadoBusqueda && categoria !== "todos" && (
-              <div className="px-4 py-3 text-sm border-b border-gray-200 bg-blue-50">
+              <div
+                className="px-4 py-3 text-sm border-b border-gray-200 bg-blue-50"
+                role="status"
+              >
                 <div className="flex items-start gap-2">
                   <svg
                     className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -448,7 +496,11 @@ const FiltroSidebar = ({
 
             {/* Applied Filters */}
             {appliedFiltersDisplay.length > 0 && (
-              <div className="p-4 border-b border-gray-200">
+              <div
+                className="p-4 border-b border-gray-200"
+                role="region"
+                aria-label="Filtros aplicados actualmente"
+              >
                 <h4 className="mb-2 text-sm font-medium text-gray-900">
                   Filtros aplicados:
                 </h4>
@@ -457,13 +509,15 @@ const FiltroSidebar = ({
                     <span
                       key={key}
                       className="inline-flex items-center px-3 py-1 text-xs rounded-full bg-amber-100 text-amber-800"
+                      role="status"
                     >
                       {label} {count > 1 && `(${count})`}
                       <button
                         onClick={() => clearFilter(key)}
-                        className="ml-2 hover:bg-amber-200 rounded-full p-0.5"
+                        className="ml-2 hover:bg-amber-200 rounded-full p-0.5 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                        aria-label={`Eliminar filtro ${label}`}
                       >
-                        <XMarkIcon className="w-3 h-3" />
+                        <XMarkIcon className="w-3 h-3" aria-hidden="true" />
                       </button>
                     </span>
                   ))}
@@ -502,7 +556,9 @@ const FiltroSidebar = ({
                     <div key={key} className="pb-4 border-b border-gray-100">
                       <button
                         onClick={() => toggleSection(key)}
-                        className="flex items-center justify-between w-full text-left group"
+                        className="flex items-center justify-between w-full text-left group focus:outline-none focus:ring-2 focus:ring-amber-500 rounded p-1"
+                        aria-expanded={isOpen}
+                        aria-controls={`filter-section-${key}`}
                       >
                         <span
                           className={`font-medium ${
@@ -515,12 +571,21 @@ const FiltroSidebar = ({
                         </span>
                         <div className="flex items-center space-x-2">
                           {hasActiveFilters && (
-                            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                            <span
+                              className="w-2 h-2 rounded-full bg-amber-500"
+                              aria-label="Filtro activo"
+                            ></span>
                           )}
                           {isOpen ? (
-                            <ChevronUpIcon className="w-4 h-4 text-gray-500" />
+                            <ChevronUpIcon
+                              className="w-4 h-4 text-gray-500"
+                              aria-hidden="true"
+                            />
                           ) : (
-                            <ChevronDownIcon className="w-4 h-4 text-gray-500" />
+                            <ChevronDownIcon
+                              className="w-4 h-4 text-gray-500"
+                              aria-hidden="true"
+                            />
                           )}
                         </div>
                       </button>
@@ -528,11 +593,14 @@ const FiltroSidebar = ({
                       <AnimatePresence>
                         {isOpen && (
                           <motion.div
+                            id={`filter-section-${key}`}
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: "auto" }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.2 }}
                             className="mt-3 overflow-hidden"
+                            role="group"
+                            aria-label={`Opciones de filtro para ${filter.label}`}
                           >
                             {renderFilterContent(key, filter)}
                           </motion.div>
@@ -567,7 +635,9 @@ const FiltroSidebar = ({
                         >
                           <button
                             onClick={() => toggleSection(key)}
-                            className="flex items-center justify-between w-full text-left group"
+                            className="flex items-center justify-between w-full text-left group focus:outline-none focus:ring-2 focus:ring-amber-500 rounded p-1"
+                            aria-expanded={isOpenGlobal}
+                            aria-controls={`filter-section-global-${key}`}
                           >
                             <span
                               className={`font-medium ${
@@ -580,12 +650,21 @@ const FiltroSidebar = ({
                             </span>
                             <div className="flex items-center space-x-2">
                               {hasActiveFilters && (
-                                <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                                <span
+                                  className="w-2 h-2 rounded-full bg-amber-500"
+                                  aria-label="Filtro activo"
+                                ></span>
                               )}
                               {isOpenGlobal ? (
-                                <ChevronUpIcon className="w-4 h-4 text-gray-500" />
+                                <ChevronUpIcon
+                                  className="w-4 h-4 text-gray-500"
+                                  aria-hidden="true"
+                                />
                               ) : (
-                                <ChevronDownIcon className="w-4 h-4 text-gray-500" />
+                                <ChevronDownIcon
+                                  className="w-4 h-4 text-gray-500"
+                                  aria-hidden="true"
+                                />
                               )}
                             </div>
                           </button>
@@ -593,11 +672,14 @@ const FiltroSidebar = ({
                           <AnimatePresence>
                             {isOpenGlobal && (
                               <motion.div
+                                id={`filter-section-global-${key}`}
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: "auto" }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.2 }}
                                 className="mt-3 overflow-hidden"
+                                role="group"
+                                aria-label={`Opciones de filtro para ${filter.label}`}
                               >
                                 {renderFilterContent(key, filter)}
                               </motion.div>
@@ -619,6 +701,7 @@ const FiltroSidebar = ({
         <div
           className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
           onClick={onToggle}
+          aria-hidden="true"
         />
       )}
     </>

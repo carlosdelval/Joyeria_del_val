@@ -26,12 +26,16 @@ function cartReducer(state, action) {
       const existingItem = state.items.find((item) => item.id === itemId);
 
       if (existingItem) {
+        // Verificar que no se exceda el stock máximo
+        const newQuantity = Math.min(
+          existingItem.quantity + quantity,
+          existingItem.maxStock
+        );
+
         return {
           ...state,
           items: state.items.map((item) =>
-            item.id === itemId
-              ? { ...item, quantity: item.quantity + quantity }
-              : item
+            item.id === itemId ? { ...item, quantity: newQuantity } : item
           ),
         };
       }

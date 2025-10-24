@@ -2,18 +2,74 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, ShoppingBag, Trash2, ArrowLeft } from "lucide-react";
 import { useWishlist } from "../hooks/useWishlist";
 import { useCart } from "../hooks/useCart";
+import { useToast } from "../context/ToastContext";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SEO from "../components/SEO";
 import WishlistButton from "../components/WishlistButton";
+import ConfirmModal from "../components/ConfirmModal";
 
 const FavoritosPage = () => {
   const { items, clearWishlist, itemCount } = useWishlist();
-  const { addToCart } = useCart();
+  const { addToCart, items: cartItems } = useCart();
+  const { showSuccess, showInfo, showWarning } = useToast();
   const navigate = useNavigate();
   const [addedToCart, setAddedToCart] = useState({});
+  const [showClearModal, setShowClearModal] = useState(false);
+  const [cartKey, setCartKey] = useState(0);
+
+  // Forzar re-render cuando cambie el carrito
+  useEffect(() => {
+    setCartKey((prev) => prev + 1);
+  }, [cartItems.length, cartItems]);
+
+  // Función helper para obtener la cantidad actual en el carrito de un producto
+  const getCartQuantity = (productId) => {
+    // Buscar por productId (puede haber variantes con diferentes IDs)
+    const matchingItems = cartItems.filter(
+      (item) => item.productId === productId || item.id === productId
+    );
+
+    // Sumar todas las cantidades de las variantes del mismo producto
+    const totalQuantity = matchingItems.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    return totalQuantity;
+  };
+
+  // Función helper para verificar si se puede añadir más al carrito
+  const canAddToCart = (item) => {
+    const currentQuantity = getCartQuantity(item.id);
+    const availableStock = item.stock || 99;
+    const canAdd = currentQuantity < availableStock;
+
+    // Debug: descomentar para ver los valores
+    // console.log('canAddToCart:', {
+    //   productId: item.id,
+    //   titulo: item.titulo,
+    //   currentQuantity,
+    //   availableStock,
+    //   canAdd
+    // });
+
+    return canAdd;
+  };
 
   const handleAddToCart = (item) => {
+    // Verificar si hay stock disponible ANTES de añadir
+    const currentQuantity = getCartQuantity(item.id);
+    const availableStock = item.stock || 99;
+
+    if (currentQuantity >= availableStock) {
+      showWarning(`Stock máximo alcanzado para ${item.titulo}`, 3000);
+      return;
+    }
+
+    // Guardar cantidad antes de añadir
+    const quantityBefore = currentQuantity;
+
     // Reconstruir el objeto producto con la estructura completa
     const producto = {
       id: item.id,
@@ -24,18 +80,42 @@ const FavoritosPage = () => {
       imagenes: [item.imagen], // Convertir imagen única a array
       marca: item.marca,
       disponible: item.disponible,
-      stock: 99, // Asumimos stock disponible
+      stock: item.stock || 99, // Usar stock real del producto
     };
 
     addToCart(producto, 1);
-    setAddedToCart({ ...addedToCart, [item.id]: true });
+
+    // Verificar si realmente se añadió después de un pequeño delay
     setTimeout(() => {
-      setAddedToCart((prev) => ({ ...prev, [item.id]: false }));
-    }, 2000);
+      const quantityAfter = getCartQuantity(item.id);
+
+      if (quantityAfter > quantityBefore) {
+        // Se añadió correctamente
+        setAddedToCart({ ...addedToCart, [item.id]: true });
+        showSuccess(`${item.titulo} añadido al carrito`);
+
+        // Resetear el estado de "añadido"
+        setTimeout(() => {
+          setAddedToCart((prev) => ({ ...prev, [item.id]: false }));
+        }, 2000);
+      } else {
+        // No se pudo añadir (límite alcanzado)
+        showWarning(`Stock máximo alcanzado para ${item.titulo}`, 3000);
+      }
+    }, 100);
   };
 
   const handleAddAllToCart = () => {
+    let addedCount = 0;
+    let skippedCount = 0;
+
     items.forEach((item) => {
+      // Verificar si hay stock disponible
+      if (!canAddToCart(item)) {
+        skippedCount++;
+        return;
+      }
+
       const producto = {
         id: item.id,
         slug: item.slug,
@@ -45,17 +125,39 @@ const FavoritosPage = () => {
         imagenes: [item.imagen],
         marca: item.marca,
         disponible: item.disponible,
-        stock: 99,
+        stock: item.stock || 99,
       };
       addToCart(producto, 1);
+      addedCount++;
     });
-    alert(`${items.length} productos añadidos al carrito`);
+
+    // Mostrar notificación según el resultado
+    if (addedCount > 0) {
+      showSuccess(
+        `${addedCount} ${
+          addedCount === 1 ? "producto añadido" : "productos añadidos"
+        } al carrito`,
+        4000
+      );
+    }
+
+    if (skippedCount > 0) {
+      showWarning(
+        `${skippedCount} ${
+          skippedCount === 1 ? "producto omitido" : "productos omitidos"
+        } por falta de stock`,
+        4000
+      );
+    }
   };
 
   const handleClearWishlist = () => {
-    if (confirm("¿Estás seguro de que quieres eliminar todos los favoritos?")) {
-      clearWishlist();
-    }
+    setShowClearModal(true);
+  };
+
+  const confirmClearWishlist = () => {
+    clearWishlist();
+    showInfo("Lista de favoritos limpiada", 3000);
   };
 
   if (items.length === 0) {
@@ -103,6 +205,19 @@ const FavoritosPage = () => {
         description="Tu lista de productos favoritos. Guarda y compra tus joyas, relojes y gafas preferidas."
         url="https://opticadelvaljoyeros.com/favoritos"
       />
+
+      {/* Modal de confirmación */}
+      <ConfirmModal
+        isOpen={showClearModal}
+        onClose={() => setShowClearModal(false)}
+        onConfirm={confirmClearWishlist}
+        title="¿Limpiar lista de favoritos?"
+        message="Se eliminarán todos los productos de tu lista de favoritos. Esta acción no se puede deshacer."
+        confirmText="Sí, limpiar lista"
+        cancelText="Cancelar"
+        type="danger"
+      />
+
       <div className="min-h-screen bg-gray-50">
         <div className="container px-4 py-8 mx-auto max-w-7xl md:py-12">
           {/* Header */}
@@ -193,15 +308,24 @@ const FavoritosPage = () => {
                         </button>
                         <button
                           onClick={() => handleAddToCart(item)}
-                          disabled={addedToCart[item.id]}
+                          disabled={addedToCart[item.id] || !canAddToCart(item)}
                           className={`px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg ${
                             addedToCart[item.id]
                               ? "bg-green-600"
+                              : !canAddToCart(item)
+                              ? "bg-gray-400 cursor-not-allowed"
                               : "bg-black hover:bg-gray-800"
                           }`}
+                          title={
+                            !canAddToCart(item)
+                              ? "Stock máximo en el carrito"
+                              : ""
+                          }
                         >
                           {addedToCart[item.id]
                             ? "¡Añadido!"
+                            : !canAddToCart(item)
+                            ? "Stock máximo"
                             : "Añadir al carrito"}
                         </button>
                       </div>
@@ -238,8 +362,22 @@ const FavoritosPage = () => {
                       )}
                     </div>
 
-                    {!item.disponible && (
+                    {/* Indicadores de disponibilidad y stock */}
+                    {!item.disponible ? (
                       <p className="mt-2 text-xs text-red-600">Sin stock</p>
+                    ) : (
+                      <>
+                        {!canAddToCart(item) && (
+                          <p className="mt-2 text-xs text-orange-600">
+                            Stock máximo en carrito
+                          </p>
+                        )}
+                        {item.stock && item.stock < 5 && canAddToCart(item) && (
+                          <p className="mt-2 text-xs text-orange-600">
+                            Solo quedan {item.stock} unidades
+                          </p>
+                        )}
+                      </>
                     )}
                   </div>
                 </motion.div>

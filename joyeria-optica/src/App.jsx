@@ -16,6 +16,7 @@ import PerfilUsuario from "./pages/PerfilUsuario";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { WishlistProvider } from "./context/WishlistContext";
+import { ToastProvider } from "./context/ToastContext";
 
 function App() {
   return (
@@ -23,32 +24,34 @@ function App() {
       <AuthProvider>
         <WishlistProvider>
           <CartProvider>
-            <Router>
-              <div className="min-h-screen text-black bg-white">
-                <Navbar />
-                <CookieBanner />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/catalogo" element={<Catalogo />} />
-                  <Route path="/catalogo/:categoria" element={<Catalogo />} />
-                  <Route path="/producto/:slug" element={<ProductoPage />} />
-                  <Route path="/checkout" element={<CheckoutPage />} />
-                  <Route path="/favoritos" element={<Favoritos />} />
-                  <Route path="/perfil" element={<PerfilUsuario />} />
-                  <Route
-                    path="/terminos-legales"
-                    element={<TerminosLegales />}
-                  />
-                  <Route path="/contacto" element={<Contacto />} />
-                  <Route path="/privacidad" element={<Privacidad />} />
-                  <Route
-                    path="/envios-devoluciones"
-                    element={<PoliticaEnviosDevoluciones />}
-                  />
-                </Routes>
-                <Footer />
-              </div>
-            </Router>
+            <ToastProvider>
+              <Router>
+                <div className="min-h-screen text-black bg-white">
+                  <Navbar />
+                  <CookieBanner />
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/catalogo" element={<Catalogo />} />
+                    <Route path="/catalogo/:categoria" element={<Catalogo />} />
+                    <Route path="/producto/:slug" element={<ProductoPage />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
+                    <Route path="/favoritos" element={<Favoritos />} />
+                    <Route path="/perfil" element={<PerfilUsuario />} />
+                    <Route
+                      path="/terminos-legales"
+                      element={<TerminosLegales />}
+                    />
+                    <Route path="/contacto" element={<Contacto />} />
+                    <Route path="/privacidad" element={<Privacidad />} />
+                    <Route
+                      path="/envios-devoluciones"
+                      element={<PoliticaEnviosDevoluciones />}
+                    />
+                  </Routes>
+                  <Footer />
+                </div>
+              </Router>
+            </ToastProvider>
           </CartProvider>
         </WishlistProvider>
       </AuthProvider>

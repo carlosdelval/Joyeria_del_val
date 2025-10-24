@@ -6,7 +6,14 @@ import WishlistButton from "./WishlistButton";
 const ProductoCard = ({ producto }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
-  const { titulo: nombre, imagenes, precio, precioAnterior, slug, stock = 99 } = producto;
+  const {
+    titulo: nombre,
+    imagenes,
+    precio,
+    precioAnterior,
+    slug,
+    stock = 99,
+  } = producto;
 
   const descuento = precioAnterior
     ? Math.round(((precioAnterior - precio) / precioAnterior) * 100)
@@ -20,25 +27,43 @@ const ProductoCard = ({ producto }) => {
         window.scrollTo(0, 0);
         window.location.href = `/producto/${slug}`;
       }}
+      aria-label={`Ver detalles de ${nombre} - ${precio.toLocaleString(
+        "es-ES",
+        {
+          style: "currency",
+          currency: "EUR",
+        }
+      )}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5 }}
       transition={{ type: "spring", stiffness: 300, duration: 0.2 }}
-      className="block overflow-hidden bg-white border border-gray-100 rounded-sm"
+      className="block overflow-hidden bg-white border border-gray-100 rounded-sm focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
     >
       {/* Contenedor de imagen con skeleton - SIEMPRE mantiene aspect-square */}
-      <div className="relative overflow-hidden aspect-square bg-gray-50">
+      <div
+        className="relative overflow-hidden aspect-square bg-gray-50"
+        role="img"
+        aria-label={imageLoaded && !imageError ? nombre : "Cargando imagen"}
+      >
         {!imageLoaded && !imageError && (
-          <div className="absolute inset-0 bg-gray-200 animate-pulse"></div>
+          <div
+            className="absolute inset-0 bg-gray-200 animate-pulse"
+            aria-live="polite"
+            aria-busy="true"
+          ></div>
         )}
         {imageError ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400">
+          <div
+            className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400"
+            role="alert"
+          >
             <span className="text-xs">Imagen no disponible</span>
           </div>
         ) : (
           <motion.img
             src={imagenes[0]}
-            alt={nombre}
+            alt={`Imagen de producto ${nombre}`}
             className="object-cover w-full h-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: imageLoaded ? 1 : 0 }}
@@ -53,6 +78,8 @@ const ProductoCard = ({ producto }) => {
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
             className="absolute px-3 py-1 text-xs font-light tracking-wider text-white bg-red-600 rounded top-4 left-4"
+            role="status"
+            aria-label={`Descuento del ${descuento}%`}
           >
             -{descuento}%
           </motion.div>

@@ -83,7 +83,7 @@ export default function Navbar() {
           </div>
           {/* Logo solo en móvil */}
           <a href="/" className="flex items-center md:hidden">
-            <img src="/logo.jpg" alt="Logo" className="object-contain h-10" />
+            <img src="/logo.jpg" alt="Logo" className="object-contain h-8" />
           </a>
 
           {/* Buscador solo en desktop */}
@@ -108,10 +108,14 @@ export default function Navbar() {
 
         {/* Centro: logo solo en desktop */}
         <div className="hidden md:flex md:justify-center">
-          <a href="/" className="flex items-center">
+          <a
+            href="/"
+            className="flex items-center"
+            aria-label="Ir a la página principal de Joyería del Val"
+          >
             <img
               src="/logo.jpg"
-              alt="Logo"
+              alt="Logotipo de Joyería del Val"
               className="object-contain h-20 mx-auto"
             />
           </a>
@@ -124,7 +128,10 @@ export default function Navbar() {
             {isAuthenticated ? (
               <button
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="flex items-center gap-2 px-3 py-2 transition-colors rounded-full hover:bg-gray-100"
+                aria-label="Abrir menú de usuario"
+                aria-expanded={showUserMenu}
+                aria-haspopup="true"
+                className="flex items-center gap-2 px-3 py-2 transition-colors rounded-full hover:bg-gray-100 focus:outline-none"
               >
                 <div className="flex items-center justify-center w-6 h-6 bg-black rounded-full">
                   <span className="text-xs font-medium text-white">
@@ -138,16 +145,38 @@ export default function Navbar() {
             ) : (
               <button
                 onClick={() => setAuthModalOpen(true)}
-                className="flex items-center gap-2 transition-colors hover:text-gray-600 cursor-pointer"
+                aria-label="Iniciar sesión o registrarse"
+                className="flex items-center gap-2 transition-colors hover:text-gray-600 cursor-pointer focus:outline-none rounded-md px-2 py-1"
               >
-                <User className="w-5 h-5" />
+                <User className="w-5 h-5" aria-hidden="true" />
                 <span className="hidden text-sm md:block">Iniciar sesión</span>
               </button>
             )}
-
-            {/* User Dropdown */}
             {isAuthenticated && showUserMenu && (
-              <div className="absolute right-0 z-50 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg top-full">
+              <div
+                className="absolute right-0 z-50 w-48 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg top-full"
+                role="menu"
+                aria-label="Menú de usuario"
+                ref={(node) => {
+                  if (node) {
+                    const handleClickOutside = (event) => {
+                      if (
+                        !node.contains(event.target) &&
+                        !event.target.closest("button[aria-expanded]")
+                      ) {
+                        setShowUserMenu(false);
+                      }
+                    };
+
+                    document.addEventListener("mousedown", handleClickOutside);
+                    return () =>
+                      document.removeEventListener(
+                        "mousedown",
+                        handleClickOutside
+                      );
+                  }
+                }}
+              >
                 <div className="p-3 border-b border-gray-100">
                   <p className="font-medium">
                     {user?.firstName} {user?.lastName}
@@ -161,7 +190,8 @@ export default function Navbar() {
                       navigate("/perfil");
                       setShowUserMenu(false);
                     }}
-                    className="w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50"
+                    role="menuitem"
+                    className="w-full px-4 py-2 text-sm text-left transition-colors hover:bg-gray-50 focus:outline-none focus:bg-gray-100"
                   >
                     Mi Cuenta
                   </button>
@@ -170,7 +200,8 @@ export default function Navbar() {
                       logout();
                       setShowUserMenu(false);
                     }}
-                    className="w-full px-4 py-2 text-sm text-left text-red-600 transition-colors hover:bg-red-50"
+                    role="menuitem"
+                    className="w-full px-4 py-2 text-sm text-left text-red-600 transition-colors hover:bg-red-50 focus:outline-none focus:bg-red-100"
                   >
                     Cerrar Sesión
                   </button>
@@ -182,7 +213,8 @@ export default function Navbar() {
           {/* Wishlist Button */}
           <button
             onClick={() => navigate("/favoritos")}
-            className="relative transition-colors hover:text-gray-600 cursor-pointer"
+            aria-label={`Ver favoritos (${wishlistCount} productos)`}
+            className="relative transition-colors hover:text-gray-600 cursor-pointer focus:outline-none rounded-md p-2"
             title="Favoritos"
           >
             <Heart className="w-5 h-5" />
@@ -196,11 +228,17 @@ export default function Navbar() {
           {/* Cart Button */}
           <button
             onClick={() => setCartOpen(true)}
-            className="relative transition-colors hover:text-gray-600 cursor-pointer"
+            aria-label={`Abrir carrito de compras (${itemCount} productos)`}
+            aria-expanded={cartOpen}
+            className="relative transition-colors hover:text-gray-600 cursor-pointer focus:outline-none rounded-md p-2"
+            title="Carrito de compras"
           >
-            <ShoppingBag className="w-5 h-5" />
+            <ShoppingBag className="w-5 h-5" aria-hidden="true" />
             {itemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 min-w-[1.25rem] h-5 flex items-center justify-center">
+              <span
+                className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 min-w-[1.25rem] h-5 flex items-center justify-center"
+                aria-label={`${itemCount} productos en el carrito`}
+              >
                 {itemCount > 99 ? "99+" : itemCount}
               </span>
             )}

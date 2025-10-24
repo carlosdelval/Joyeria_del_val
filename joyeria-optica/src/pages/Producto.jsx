@@ -19,6 +19,7 @@ const ProductoPage = () => {
   const [imagenPrincipal, setImagenPrincipal] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const { addToCart } = useCart();
   const [imageIndex, setImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -95,9 +96,15 @@ const ProductoPage = () => {
   };
 
   const handleAddToCart = () => {
-    addToCart(producto, quantity);
-    setAddedToCart(true);
-    setTimeout(() => setAddedToCart(false), 2000);
+    setIsAddingToCart(true);
+
+    // Simular pequeño delay para mejor UX
+    setTimeout(() => {
+      addToCart(producto, quantity);
+      setIsAddingToCart(false);
+      setAddedToCart(true);
+      setTimeout(() => setAddedToCart(false), 2000);
+    }, 300);
   };
 
   if (loading) {
@@ -489,31 +496,43 @@ const ProductoPage = () => {
                 {/* Botones de acción */}
                 <div className="flex gap-3">
                   {/* Botón de añadir al carrito */}
-                  <button
+                  <motion.button
                     onClick={handleAddToCart}
-                    disabled={!hasStock}
+                    disabled={!hasStock || isAddingToCart}
+                    whileTap={{ scale: 0.95 }}
                     className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 text-sm font-light tracking-wider transition rounded-sm ${
                       !hasStock
                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                         : addedToCart
                         ? "bg-green-600 text-white"
+                        : isAddingToCart
+                        ? "bg-gray-700 text-white cursor-wait"
                         : "bg-black text-white hover:bg-gray-800"
                     }`}
                   >
                     {!hasStock ? (
                       <>AGOTADO</>
-                    ) : addedToCart ? (
+                    ) : isAddingToCart ? (
                       <>
-                        <Check className="w-4 h-4" />
-                        AÑADIDO AL CARRITO
+                        <div className="w-4 h-4 border-2 border-white rounded-full animate-spin border-t-transparent"></div>
+                        AÑADIENDO...
                       </>
+                    ) : addedToCart ? (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="flex items-center gap-2"
+                      >
+                        <Check className="w-4 h-4" />
+                        ¡AÑADIDO!
+                      </motion.div>
                     ) : (
                       <>
                         <ShoppingBag className="w-4 h-4" />
                         AÑADIR AL CARRITO
                       </>
                     )}
-                  </button>
+                  </motion.button>
 
                   {/* Botón de favoritos */}
                   <WishlistButton product={producto} size="lg" />

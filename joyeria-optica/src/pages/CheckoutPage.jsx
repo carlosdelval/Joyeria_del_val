@@ -717,6 +717,7 @@ const CheckoutPage = () => {
                       onBlur={() => handleBlur("shipping", "address1")}
                       placeholder="Calle, número, piso..."
                       className={getInputClasses("shipping", "address1")}
+                      disabled={processing}
                       required
                     />
                     {renderFieldError("shipping", "address1")}
@@ -983,20 +984,25 @@ const CheckoutPage = () => {
                     Continuar
                   </button>
                 ) : (
-                  <button
+                  <motion.button
                     onClick={handlePlaceOrder}
                     disabled={!validateStep(currentStep) || processing}
-                    className="px-6 py-2 text-white transition-colors bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    whileTap={{ scale: processing ? 1 : 0.95 }}
+                    className={`px-6 py-3 text-white font-medium transition-all rounded-lg ${
+                      processing
+                        ? "bg-gray-600 cursor-wait"
+                        : "bg-black hover:bg-gray-800 cursor-pointer"
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {processing ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin" />
-                        Procesando...
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="w-5 h-5 border-2 border-white rounded-full border-t-transparent animate-spin" />
+                        <span>Procesando pedido...</span>
                       </div>
                     ) : (
                       "Confirmar Pedido"
                     )}
-                  </button>
+                  </motion.button>
                 )}
               </div>
             </div>
