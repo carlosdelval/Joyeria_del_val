@@ -72,15 +72,21 @@ export default function Navbar() {
   return (
     <header className="w-full">
       {/* Top bar */}
-      <div className="grid items-center grid-cols-3 px-4 py-3 md:py-4 md:px-8">
-        {/* Izquierda */}
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between px-4 py-3 md:py-4 md:px-8 md:grid md:grid-cols-3">
+        {/* Izquierda - Mobile: Hamburguesa + Logo, Desktop: Buscador */}
+        <div className="flex items-center gap-3 md:gap-4">
           <div className="lg:hidden">
             <AnimatedHamburgerButton
               active={menuOpen}
               setActive={setMenuOpen}
             />
           </div>
+          {/* Logo solo en móvil */}
+          <a href="/" className="flex items-center md:hidden">
+            <img src="/logo.jpg" alt="Logo" className="object-contain h-10" />
+          </a>
+
+          {/* Buscador solo en desktop */}
           <div className="relative hidden w-64 lg:block">
             <form onSubmit={handleSearch}>
               <input
@@ -100,13 +106,13 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Centro: logo */}
-        <div className="flex justify-center">
+        {/* Centro: logo solo en desktop */}
+        <div className="hidden md:flex md:justify-center">
           <a href="/" className="flex items-center">
             <img
               src="/logo.jpg"
               alt="Logo"
-              className="object-contain h-10 mx-auto md:h-20 pointer-coarse:"
+              className="object-contain h-20 mx-auto"
             />
           </a>
         </div>

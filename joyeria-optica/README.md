@@ -38,6 +38,7 @@ npm run update:productos
 ## ✨ Características
 
 ### 🛍️ E-commerce
+
 - ✅ Sistema de productos con múltiples imágenes
 - ✅ Galería con zoom interactivo
 - ✅ Gestión de stock CSV → JSON
@@ -50,6 +51,7 @@ npm run update:productos
 - ✅ Indicadores visuales de disponibilidad
 
 ### 🍪 RGPD & Privacidad
+
 - ✅ Banner de cookies personalizado
 - ✅ Panel de configuración de cookies
 - ✅ Gestión granular de consentimientos
@@ -58,6 +60,7 @@ npm run update:productos
 - ✅ Cumplimiento RGPD completo
 
 ### 📧 Email & Notificaciones
+
 - ✅ Emails de confirmación de pedido (EmailJS)
 - ✅ Plantillas HTML personalizadas
 - ✅ Diseño minimalista blanco/negro
@@ -65,12 +68,14 @@ npm run update:productos
 - ✅ 200 emails/mes gratuitos
 
 ### 🚀 Optimizaciones Avanzadas
+
 - ✅ **Imágenes optimizadas**: WebP, lazy loading, CDN-ready
 - ✅ **Error Boundary**: Recuperación elegante de errores
 - ✅ **Perfil de usuario**: Historial de pedidos, favoritos, configuración
 - ✅ **Analytics**: Google Analytics 4 + Meta Pixel integrados
 
 ### 🎨 UI/UX
+
 - ✅ Diseño elegante minimalista (blanco/negro/gris)
 - ✅ Animaciones fluidas con Framer Motion
 - ✅ Responsive design completo
@@ -223,12 +228,14 @@ firebase deploy
 ## 🎯 Mejoras Implementadas (Octubre 2025)
 
 ### ✅ Sistema de Cookies y RGPD
+
 - Banner de cookies elegante con diseño minimalista
 - Panel de configuración granular de cookies
 - Persistencia: 365 días (favoritos), 7 días (carrito)
 - Cumplimiento total de RGPD
 
 ### ✅ Control de Stock Avanzado
+
 - Indicadores visuales de disponibilidad
 - Badges de stock en tarjetas de producto
 - Límites de cantidad en carrito
@@ -236,17 +243,20 @@ firebase deploy
 - Avisos de bajo stock
 
 ### ✅ Optimizaciones de Rendimiento
+
 - **OptimizedImage**: WebP, lazy loading, skeleton loaders
 - **ErrorBoundary**: Recuperación elegante de errores React
 - **Code splitting**: Carga bajo demanda de componentes
 
 ### ✅ Sistema de Emails
+
 - Confirmación de pedidos automática
 - Plantillas HTML responsive personalizadas
 - Integración con EmailJS (200 emails/mes gratis)
 - Notificaciones de envío
 
 ### ✅ Página de Perfil de Usuario
+
 - Historial completo de pedidos
 - Gestión de favoritos integrada
 - Edición de datos personales
