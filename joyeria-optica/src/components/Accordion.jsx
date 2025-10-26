@@ -40,12 +40,12 @@ const Panel = ({ open, setOpen, id, Icon, title, imgSrc, description }) => {
           style={{
             writingMode: "vertical-lr",
           }}
-          className="hidden lg:block text-xl font-light rotate-180"
+          className="hidden text-xl font-light rotate-180 lg:block"
         >
           {title}
         </span>
-        <span className="block lg:hidden text-xl font-light">{title}</span>
-        <div className="w-6 lg:w-full aspect-square text-black grid place-items-center">
+        <span className="block text-xl font-light lg:hidden">{title}</span>
+        <div className="grid w-6 text-black lg:w-full aspect-square place-items-center">
           <Icon />
         </div>
         <span className="w-4 h-4 bg-white group-hover:bg-slate-50 transition-colors border-r-[1px] border-b-[1px] lg:border-b-0 lg:border-t-[1px] border-slate-200 rotate-45 absolute bottom-0 lg:bottom-[50%] right-[50%] lg:right-0 translate-y-[50%] translate-x-[50%] z-20" />
@@ -55,7 +55,7 @@ const Panel = ({ open, setOpen, id, Icon, title, imgSrc, description }) => {
         {isOpen && (
           <motion.div
             key={`panel-${id}`}
-            variants={width && width > 1024 ? panelVariants : panelVariantsSm}
+            variants={width && width >= 1024 ? panelVariants : panelVariantsSm}
             initial="closed"
             animate="open"
             exit="closed"
@@ -64,14 +64,14 @@ const Panel = ({ open, setOpen, id, Icon, title, imgSrc, description }) => {
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
-            className="w-full h-full overflow-hidden relative bg-black flex items-end"
+            className="relative flex items-end w-full h-full overflow-hidden bg-black"
           >
             <motion.div
               variants={descriptionVariants}
               initial="closed"
               animate="open"
               exit="closed"
-              className="px-4 py-2 bg-black/40 backdrop-blur-sm text-white"
+              className="px-4 py-2 text-white bg-black/40 backdrop-blur-sm"
             >
               <p>{description}</p>
             </motion.div>

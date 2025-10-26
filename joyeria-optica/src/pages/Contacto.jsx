@@ -19,15 +19,15 @@ const Contacto = () => {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-white"
     >
-      <div className="container max-w-4xl py-12 mx-auto">
+      <div className="container max-w-4xl py-8 sm:py-12 mx-auto px-4 sm:px-6">
         {/* Encabezado */}
         <motion.header
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4 }}
-          className="mb-12 text-center"
+          className="mb-8 sm:mb-12 text-center"
         >
-          <h1 className="mb-4 text-2xl font-semibold tracking-wider text-black md:text-4xl">
+          <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-wider text-black">
             CONTACTO
           </h1>
           <div className="w-24 h-px mx-auto bg-gray-300"></div>
@@ -43,17 +43,19 @@ const Contacto = () => {
             transition={{ delay: 0.1 }}
             className="p-6 border border-gray-100 rounded-sm"
           >
-            <h2 className="flex items-center pb-2 mb-6 text-xl font-light tracking-wider text-black border-b">
-              <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
+            <h2 className="flex items-center pb-2 mb-4 sm:mb-6 text-lg sm:text-xl font-light tracking-wider text-black border-b">
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-red-600" />
               Información de contacto
             </h2>
 
-            <div className="space-y-4 text-sm text-gray-700">
-              <div className="grid gap-6 sm:grid-cols-2">
+            <div className="space-y-4 text-xs sm:text-sm text-gray-700">
+              <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
                 <div className="flex items-start">
-                  <MapPin className="flex-shrink-0 w-5 h-5 mt-0.5 mr-3 text-red-600" />
+                  <MapPin className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 mt-0.5 mr-2 sm:mr-3 text-red-600" />
                   <div>
-                    <h3 className="font-medium">Dirección</h3>
+                    <h3 className="font-medium text-sm sm:text-base">
+                      Dirección
+                    </h3>
                     <p className="mt-1 text-gray-600">
                       Calle Cristobal Castillo 13
                       <br />

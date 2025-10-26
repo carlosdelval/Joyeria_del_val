@@ -40,39 +40,39 @@ export default function Home() {
         url="https://opticadelvaljoyeros.com"
         structuredData={generateOrganizationSchema()}
       />
-      <div className="container py-6 mx-auto">
-        <AnimatedSection className="mb-16 md:mb-32">
+      <div className="container py-4 sm:py-6 md:py-8 mx-auto px-3 sm:px-4">
+        <AnimatedSection className="mb-12 sm:mb-16 md:mb-24 lg:mb-32">
           <VerticalAccordion />
         </AnimatedSection>
 
-        <AnimatedSection className="px-4 my-16 md:my-32">
+        <AnimatedSection className="px-2 sm:px-4 my-12 sm:my-16 md:my-24 lg:my-32">
           <GridArticulos />
         </AnimatedSection>
 
-        <AnimatedSection className="px-8 my-16 md:my-32">
+        <AnimatedSection className="px-2 sm:px-4 md:px-8 my-12 sm:my-16 md:my-24 lg:my-32">
           <ColeccionTous />
         </AnimatedSection>
 
-        <AnimatedSection className="my-16 md:my-32">
+        <AnimatedSection className="my-12 sm:my-16 md:my-24 lg:my-32">
           <BannerInstagram />
         </AnimatedSection>
 
-        <AnimatedSection className="px-8 my-16 md:my-32">
+        <AnimatedSection className="px-2 sm:px-4 md:px-8 my-12 sm:my-16 md:my-24 lg:my-32">
           <PromocionDiamantes />
         </AnimatedSection>
 
-        <AnimatedSection className="px-8 my-16 md:my-32">
-          <h2 className="mb-8 text-2xl font-bold text-center">
+        <AnimatedSection className="px-2 sm:px-4 md:px-8 my-12 sm:my-16 md:my-24 lg:my-32">
+          <h2 className="mb-6 sm:mb-8 text-xl sm:text-2xl lg:text-3xl font-bold text-center">
             Tus marcas favoritas en óptica
           </h2>
           <GridMarcas />
         </AnimatedSection>
 
-        <AnimatedSection className="my-16 md:my-32">
+        <AnimatedSection className="my-12 sm:my-16 md:my-24 lg:my-32">
           <ColeccionesDestacadas />
         </AnimatedSection>
 
-        <section className="my-16 md:my-32">
+        <section className="my-12 sm:my-16 md:my-24 lg:my-32">
           <ContactoOptica />
         </section>
       </div>

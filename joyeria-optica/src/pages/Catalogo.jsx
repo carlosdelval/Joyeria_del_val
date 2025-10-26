@@ -216,7 +216,7 @@ const Catalogo = () => {
       />
       <div className="flex flex-col min-h-screen lg:flex-row">
         {/* Sidebar Fijo (solo visible en escritorio) */}
-        <div className="hidden lg:block lg:w-80">
+        <div className="hidden lg:block lg:w-72 xl:w-80">
           <FiltroSidebar
             categoria={categoriaPredominante}
             filtros={filtros}
@@ -229,9 +229,9 @@ const Catalogo = () => {
         </div>
 
         {/* Contenido principal */}
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-3 sm:p-4 md:p-6 lg:p-8">
           {/* Mobile Filter Button */}
-          <div className="lg:hidden mb-6">
+          <div className="mb-4 lg:hidden sm:mb-6">
             <FiltroSidebar
               categoria={categoriaPredominante}
               filtros={filtros}
@@ -243,42 +243,42 @@ const Catalogo = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-semibold tracking-wide text-gray-900">
+          <div className="flex flex-col justify-between gap-3 mb-4 sm:flex-row sm:items-center sm:mb-6">
+            <h1 className="text-xl font-semibold tracking-wide text-gray-900 sm:text-2xl lg:text-3xl">
               {tituloCategoria}
             </h1>
-            <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500 sm:text-base">
               {productos.length} productos
             </div>
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {/* Skeleton loaders */}
               {[...Array(8)].map((_, index) => (
                 <div
                   key={index}
                   className="bg-white rounded-lg shadow-sm animate-pulse"
                 >
-                  <div className="aspect-square bg-gray-200 rounded-t-lg"></div>
-                  <div className="p-4 space-y-3">
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-                    <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+                  <div className="bg-gray-200 rounded-t-lg aspect-square"></div>
+                  <div className="p-3 space-y-3 sm:p-4">
+                    <div className="w-3/4 h-4 bg-gray-200 rounded"></div>
+                    <div className="w-1/2 h-4 bg-gray-200 rounded"></div>
+                    <div className="w-1/3 h-6 bg-gray-200 rounded"></div>
                   </div>
                 </div>
               ))}
             </div>
           ) : productos.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-gray-500 mb-4">
+            <div className="px-4 py-12 text-center">
+              <p className="mb-4 text-sm text-gray-500 sm:text-base">
                 {searchQuery
                   ? `No se encontraron productos para "${searchQuery}"`
                   : "No se encontraron productos que coincidan con los filtros seleccionados."}
               </p>
               <button
                 onClick={limpiarFiltros}
-                className="px-4 py-2 text-amber-600 hover:text-amber-700 hover:bg-amber-50 font-medium rounded-md transition-colors"
+                className="px-4 py-2 text-sm font-medium transition-colors rounded-md sm:text-base text-amber-600 hover:text-amber-700 hover:bg-amber-50"
               >
                 Limpiar filtros
               </button>
@@ -291,7 +291,7 @@ const Catalogo = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
               >
                 {productos.map((producto) => (
                   <ProductoCard key={producto.slug} producto={producto} />

@@ -180,9 +180,9 @@ const ProductoPage = () => {
         className="min-h-screen bg-white"
       >
         {/* Contenedor principal */}
-        <div className="container px-4 py-12 mx-auto max-w-7xl">
+        <div className="container px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12 mx-auto max-w-7xl">
           {/* Ruta de navegación */}
-          <nav className="flex mb-6 text-sm text-gray-500">
+          <nav className="flex mb-4 sm:mb-6 text-xs sm:text-sm text-gray-500">
             <a href="/" className="hover:underline">
               Inicio
             </a>
@@ -191,11 +191,13 @@ const ProductoPage = () => {
               Catálogo
             </a>
             <span className="mx-2">/</span>
-            <span className="text-black">{producto.titulo}</span>
+            <span className="text-black truncate max-w-[150px] sm:max-w-none">
+              {producto.titulo}
+            </span>
           </nav>
 
           {/* Grid de producto */}
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-6 sm:gap-8 lg:gap-12 md:grid-cols-2">
             {/* Galería de imágenes */}
             <div>
               {/* Imagen principal con efecto zoom completo */}
@@ -307,7 +309,7 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.1 }}
-                className="text-2xl font-light tracking-wider text-black md:text-3xl"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-wider text-black"
               >
                 {producto.titulo}
               </motion.h1>
@@ -317,10 +319,10 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="mt-4"
+                className="mt-3 sm:mt-4"
               >
-                <div className="flex items-center">
-                  <span className="text-xl font-medium text-black">
+                <div className="flex items-center flex-wrap gap-2">
+                  <span className="text-2xl sm:text-3xl md:text-4xl font-medium text-black">
                     {producto.precio.toLocaleString("es-ES", {
                       style: "currency",
                       currency: "EUR",
@@ -328,7 +330,7 @@ const ProductoPage = () => {
                     })}
                   </span>
                   {producto.precioAnterior && (
-                    <span className="ml-3 text-sm text-gray-400 line-through">
+                    <span className="ml-2 text-base sm:text-lg text-gray-400 line-through">
                       {producto.precioAnterior.toLocaleString("es-ES", {
                         style: "currency",
                         currency: "EUR",
@@ -338,7 +340,7 @@ const ProductoPage = () => {
                   )}
                 </div>
                 {descuento && (
-                  <p className="mt-1 text-sm text-red-600">
+                  <p className="mt-1 sm:mt-2 text-sm sm:text-base text-red-600 font-medium">
                     Ahorras {descuento}% en este artículo
                   </p>
                 )}
@@ -349,12 +351,12 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="mt-6"
+                className="mt-4 sm:mt-6"
               >
-                <h2 className="mb-2 text-sm font-medium tracking-wider text-gray-700 uppercase">
+                <h2 className="mb-2 text-xs sm:text-sm font-medium tracking-wider text-gray-700 uppercase">
                   Descripción
                 </h2>
-                <p className="text-sm font-light text-gray-700">
+                <p className="text-sm sm:text-base font-light text-gray-700 leading-relaxed">
                   {producto.descripcion}
                 </p>
               </motion.div>
@@ -364,14 +366,14 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="mt-6"
+                className="mt-4 sm:mt-6"
               >
                 <div className="flex flex-wrap gap-2">
                   {producto.categorias.map((cat, index) => (
                     <a
                       key={index}
                       href={`/catalogo/${cat.toLowerCase()}`}
-                      className="px-2 py-1 text-xs text-black bg-gray-100 rounded hover:bg-gray-200"
+                      className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm text-black bg-gray-100 rounded hover:bg-gray-200 transition-colors"
                     >
                       {cat.toUpperCase()}
                     </a>
@@ -384,19 +386,19 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="mt-8 space-y-4"
+                className="mt-6 sm:mt-8 space-y-4"
               >
                 {/* Indicador de stock */}
                 {hasStock ? (
-                  <div className="p-4 space-y-2 bg-gray-50 border border-gray-200 rounded-lg">
-                    <div className="flex items-center justify-between text-sm">
+                  <div className="p-3 sm:p-4 space-y-2 bg-gray-50 border border-gray-200 rounded-lg">
+                    <div className="flex items-center justify-between text-xs sm:text-sm">
                       <div className="flex items-center gap-2">
                         <span className="font-medium text-gray-700">
                           Disponibilidad:
                         </span>
                         <div className="group relative">
-                          <Info className="w-4 h-4 text-gray-400 cursor-help" />
-                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-48 p-2 bg-gray-900 text-white text-xs rounded shadow-lg z-10">
+                          <Info className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 cursor-help" />
+                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-40 sm:w-48 p-2 bg-gray-900 text-white text-xs rounded shadow-lg z-10">
                             Stock actualizado en tiempo real. La cantidad máxima
                             que puedes añadir al carrito está limitada por la
                             disponibilidad.
@@ -453,13 +455,15 @@ const ProductoPage = () => {
                 )}
 
                 {/* Selector de cantidad */}
-                <div className="flex items-center gap-4">
-                  <span className="text-sm font-medium">Cantidad:</span>
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <span className="text-xs sm:text-sm font-medium">
+                    Cantidad:
+                  </span>
                   <div className="flex items-center border border-gray-300 rounded">
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
                       disabled={quantity <= 1 || !hasStock}
-                      className={`px-3 py-1 transition ${
+                      className={`px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg transition ${
                         quantity <= 1 || !hasStock
                           ? "text-gray-300 cursor-not-allowed bg-gray-50"
                           : "hover:bg-gray-100 text-gray-700"
@@ -468,13 +472,13 @@ const ProductoPage = () => {
                     >
                       -
                     </button>
-                    <span className="px-4 py-1 border-x border-gray-300 min-w-[3rem] text-center">
+                    <span className="px-3 sm:px-4 py-1 sm:py-2 border-x border-gray-300 min-w-[2.5rem] sm:min-w-[3rem] text-center text-sm sm:text-base">
                       {quantity}
                     </span>
                     <button
                       onClick={() => setQuantity(Math.min(stock, quantity + 1))}
                       disabled={quantity >= stock || !hasStock}
-                      className={`px-3 py-1 transition ${
+                      className={`px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg transition ${
                         quantity >= stock || !hasStock
                           ? "text-gray-300 cursor-not-allowed bg-gray-50"
                           : "hover:bg-gray-100 text-gray-700"
@@ -487,20 +491,20 @@ const ProductoPage = () => {
 
                   {/* Aviso si alcanza el máximo */}
                   {quantity >= stock && stock < 99 && hasStock && (
-                    <span className="text-xs text-orange-600 font-medium">
+                    <span className="text-xs sm:text-sm text-orange-600 font-medium">
                       Máximo disponible
                     </span>
                   )}
                 </div>
 
                 {/* Botones de acción */}
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   {/* Botón de añadir al carrito */}
                   <motion.button
                     onClick={handleAddToCart}
                     disabled={!hasStock || isAddingToCart}
                     whileTap={{ scale: 0.95 }}
-                    className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 text-sm font-light tracking-wider transition rounded-sm ${
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-light tracking-wider transition rounded-sm ${
                       !hasStock
                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                         : addedToCart
@@ -515,7 +519,8 @@ const ProductoPage = () => {
                     ) : isAddingToCart ? (
                       <>
                         <div className="w-4 h-4 border-2 border-white rounded-full animate-spin border-t-transparent"></div>
-                        AÑADIENDO...
+                        <span className="hidden sm:inline">AÑADIENDO...</span>
+                        <span className="sm:hidden">...</span>
                       </>
                     ) : addedToCart ? (
                       <motion.div
@@ -523,19 +528,24 @@ const ProductoPage = () => {
                         animate={{ scale: 1 }}
                         className="flex items-center gap-2"
                       >
-                        <Check className="w-4 h-4" />
+                        <Check className="w-4 h-4 sm:w-5 sm:h-5" />
                         ¡AÑADIDO!
                       </motion.div>
                     ) : (
                       <>
-                        <ShoppingBag className="w-4 h-4" />
-                        AÑADIR AL CARRITO
+                        <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span className="hidden sm:inline">
+                          AÑADIR AL CARRITO
+                        </span>
+                        <span className="sm:hidden">AÑADIR</span>
                       </>
                     )}
                   </motion.button>
 
                   {/* Botón de favoritos */}
-                  <WishlistButton product={producto} size="lg" />
+                  <div className="flex-shrink-0">
+                    <WishlistButton product={producto} size="lg" />
+                  </div>
                 </div>
               </motion.div>
             </div>

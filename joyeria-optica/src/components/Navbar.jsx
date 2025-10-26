@@ -72,9 +72,9 @@ export default function Navbar() {
   return (
     <header className="w-full">
       {/* Top bar */}
-      <div className="flex items-center justify-between px-4 py-3 md:py-4 md:px-8 md:grid md:grid-cols-3">
+      <div className="flex items-center justify-between px-3 py-3 sm:px-4 md:py-4 lg:px-6 xl:px-8 md:grid md:grid-cols-3">
         {/* Izquierda - Mobile: Hamburguesa + Logo, Desktop: Buscador */}
-        <div className="flex items-center gap-3 md:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
           <div className="lg:hidden">
             <AnimatedHamburgerButton
               active={menuOpen}
@@ -83,24 +83,28 @@ export default function Navbar() {
           </div>
           {/* Logo solo en móvil */}
           <a href="/" className="flex items-center md:hidden">
-            <img src="/logo.jpg" alt="Logo" className="object-contain h-8" />
+            <img
+              src="/logo.jpg"
+              alt="Logo"
+              className="object-contain h-7 sm:h-8 md:h-10"
+            />
           </a>
 
           {/* Buscador solo en desktop */}
-          <div className="relative hidden w-64 lg:block">
+          <div className="relative hidden w-56 lg:w-64 xl:w-72 lg:block">
             <form onSubmit={handleSearch}>
               <input
                 type="text"
                 placeholder="Búsqueda en catálogo"
-                className="w-full px-4 py-2 pl-10 text-sm bg-white border border-gray-300 rounded-full shadow-sm"
+                className="w-full px-4 py-2 pl-10 text-sm transition-all bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <button
                 type="submit"
-                className="absolute transform -translate-y-1/2 left-3 top-1/2"
+                className="absolute transition-colors transform -translate-y-1/2 left-3 top-1/2 hover:text-gray-600"
               >
-                <Search className="w-5 h-5" />
+                <Search className="w-4 h-4" />
               </button>
             </form>
           </div>
@@ -116,13 +120,13 @@ export default function Navbar() {
             <img
               src="/logo.jpg"
               alt="Logotipo de Joyería del Val"
-              className="object-contain h-20 mx-auto"
+              className="object-contain h-16 mx-auto lg:h-20 xl:h-24"
             />
           </a>
         </div>
 
         {/* Derecha: iconos */}
-        <div className="flex items-center justify-end gap-4">
+        <div className="flex items-center justify-end gap-2 sm:gap-3 lg:gap-4">
           {/* User Menu */}
           <div className="relative">
             {isAuthenticated ? (
@@ -133,12 +137,12 @@ export default function Navbar() {
                 aria-haspopup="true"
                 className="flex items-center gap-2 px-3 py-2 transition-colors rounded-full hover:bg-gray-100 focus:outline-none"
               >
-                <div className="flex items-center justify-center w-6 h-6 bg-black rounded-full">
-                  <span className="text-xs font-medium text-white">
+                <div className="flex items-center justify-center w-6 h-6 bg-black rounded-full sm:w-7 sm:h-7">
+                  <span className="text-xs font-medium text-white sm:text-sm">
                     {user?.firstName?.charAt(0) || "U"}
                   </span>
                 </div>
-                <span className="hidden text-sm font-medium md:block">
+                <span className="hidden text-sm font-medium lg:block">
                   {user?.firstName || "Usuario"}
                 </span>
               </button>
@@ -146,10 +150,10 @@ export default function Navbar() {
               <button
                 onClick={() => setAuthModalOpen(true)}
                 aria-label="Iniciar sesión o registrarse"
-                className="flex items-center gap-2 transition-colors hover:text-gray-600 cursor-pointer focus:outline-none rounded-md px-2 py-1"
+                className="flex items-center gap-1 px-2 py-1 transition-colors rounded-md cursor-pointer sm:gap-2 hover:text-gray-600 focus:outline-none"
               >
-                <User className="w-5 h-5" aria-hidden="true" />
-                <span className="hidden text-sm md:block">Iniciar sesión</span>
+                <User className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
+                <span className="hidden text-sm lg:block">Iniciar sesión</span>
               </button>
             )}
             {isAuthenticated && showUserMenu && (
@@ -214,12 +218,12 @@ export default function Navbar() {
           <button
             onClick={() => navigate("/favoritos")}
             aria-label={`Ver favoritos (${wishlistCount} productos)`}
-            className="relative transition-colors hover:text-gray-600 cursor-pointer focus:outline-none rounded-md p-2"
+            className="relative p-1.5 sm:p-2 transition-colors rounded-md cursor-pointer hover:text-gray-600 focus:outline-none"
             title="Favoritos"
           >
-            <Heart className="w-5 h-5" />
+            <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
             {wishlistCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 min-w-[1.25rem] h-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-xs rounded-full px-1 sm:px-1.5 min-w-[1rem] sm:min-w-[1.25rem] h-4 sm:h-5 flex items-center justify-center">
                 {wishlistCount > 99 ? "99+" : wishlistCount}
               </span>
             )}
@@ -230,13 +234,13 @@ export default function Navbar() {
             onClick={() => setCartOpen(true)}
             aria-label={`Abrir carrito de compras (${itemCount} productos)`}
             aria-expanded={cartOpen}
-            className="relative transition-colors hover:text-gray-600 cursor-pointer focus:outline-none rounded-md p-2"
+            className="relative p-1.5 sm:p-2 transition-colors rounded-md cursor-pointer hover:text-gray-600 focus:outline-none"
             title="Carrito de compras"
           >
-            <ShoppingBag className="w-5 h-5" aria-hidden="true" />
+            <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
             {itemCount > 0 && (
               <span
-                className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 min-w-[1.25rem] h-5 flex items-center justify-center"
+                className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-xs rounded-full px-1 sm:px-1.5 min-w-[1rem] sm:min-w-[1.25rem] h-4 sm:h-5 flex items-center justify-center"
                 aria-label={`${itemCount} productos en el carrito`}
               >
                 {itemCount > 99 ? "99+" : itemCount}
@@ -246,31 +250,31 @@ export default function Navbar() {
         </div>
       </div>
       {/* Mobile search */}
-      <div className="px-4 md:hidden">
+      <div className="px-3 pb-3 border-b border-gray-200 sm:px-4 lg:hidden">
         <form onSubmit={handleSearch} className="relative">
           <input
             type="text"
             placeholder="Búsqueda en catálogo"
-            className="w-full px-4 py-2 pl-10 text-sm bg-white border border-gray-300 rounded-full shadow-sm"
+            className="w-full px-4 py-2 pl-10 text-sm bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <button
             type="submit"
-            className="absolute transform -translate-y-1/2 left-3 top-1/2"
+            className="absolute transition-colors transform -translate-y-1/2 left-3 top-1/2 hover:text-gray-600"
           >
-            <Search className="w-5 h-5" />
+            <Search className="w-4 h-4" />
           </button>
         </form>
       </div>
       {/* Desktop nav */}
-      <nav className="justify-center hidden py-2 space-x-8 border-t border-gray-200 lg:flex">
+      <nav className="justify-center hidden py-3 space-x-4 border-t border-gray-200 lg:space-x-6 xl:space-x-8 lg:flex">
         {categorias.map(({ label, href, content: Content }, index) => (
           <FlyoutLink
             key={label}
             href={href}
             FlyoutContent={Content}
-            classes={`text-md ${
+            classes={`text-sm lg:text-base ${
               index === 0
                 ? "text-red-700 hover:text-red-500 hover:border-red-500"
                 : "text-gray-700 hover:text-black hover:border-black"
