@@ -24,42 +24,40 @@ const colecciones = [
 ];
 
 const ColeccionesDestacadas = () => {
-return (
+  return (
     <section>
-        <h2 className="mb-8 text-2xl font-bold text-center">
-            Colecciones destacadas
-        </h2>
-        <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-4">
-            {colecciones.map((coleccion, index) => (
-                <a
-                    key={index}
-                    href={coleccion.href}
-                    className="relative block overflow-hidden cursor-pointer group"
-                >
-                    <img
-                        src={coleccion.img}
-                        alt={coleccion.titulo}
-                        className="object-cover w-full h-full transition duration-500 group-hover:brightness-100"
-                    />
-                    <div className="absolute z-10 text-white bottom-4 left-4">
-                        <h3 className="mb-1 text-base font-semibold">
-                            {coleccion.titulo}
-                        </h3>
-                        <div className="flex items-center text-sm font-semibold transition-all">
-                            VER COLECCIÓN
-                            <span
-                                className="ml-1 transition-transform duration-300 transform group-hover:translate-x-1 "
-                            >
-                                →
-                            </span>
-                        </div>
-                    </div>
-                    <div className="absolute inset-0 z-0 transition bg-black/30 group-hover:bg-black/20" />
-                </a>
-            ))}
-        </div>
+      <h2 className="mb-6 text-xl font-bold text-center sm:mb-8 sm:text-2xl lg:text-3xl">
+        Colecciones destacadas
+      </h2>
+      <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-4">
+        {colecciones.map((coleccion, index) => (
+          <a
+            key={index}
+            href={coleccion.href}
+            className="relative block overflow-hidden cursor-pointer group"
+          >
+            <img
+              src={coleccion.img}
+              alt={coleccion.titulo}
+              className="object-cover w-full h-full transition duration-500 group-hover:brightness-100"
+            />
+            <div className="absolute z-10 text-white bottom-4 left-4">
+              <h3 className="mb-1 text-base font-semibold">
+                {coleccion.titulo}
+              </h3>
+              <div className="flex items-center text-sm font-semibold transition-all">
+                VER COLECCIÓN
+                <span className="ml-1 transition-transform duration-300 transform group-hover:translate-x-1 ">
+                  →
+                </span>
+              </div>
+            </div>
+            <div className="absolute inset-0 z-0 transition bg-black/30 group-hover:bg-black/20" />
+          </a>
+        ))}
+      </div>
     </section>
-);
+  );
 };
 
 export default ColeccionesDestacadas;

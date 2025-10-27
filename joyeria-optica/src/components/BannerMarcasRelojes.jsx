@@ -46,16 +46,15 @@ export default function BannerMarcasRelojes() {
   };
 
   return (
-    <section className="py-12">
       <div className="container mx-auto">
         {/* Header */}
-        <div className="mb-8 text-center">
+        <div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="mb-6 sm:mb-8 text-xl sm:text-2xl lg:text-3xl font-bold text-center"
+            className="mb-6 text-xl font-bold text-center sm:mb-8 sm:text-2xl lg:text-3xl"
           >
             Marcas de Relojería
           </motion.h2>
@@ -124,6 +123,5 @@ export default function BannerMarcasRelojes() {
           ))}
         </div>
       </div>
-    </section>
   );
 }
