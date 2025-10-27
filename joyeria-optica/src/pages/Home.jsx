@@ -41,20 +41,20 @@ export default function Home() {
         url="https://opticadelvaljoyeros.com"
         structuredData={generateOrganizationSchema()}
       />
-      <div className="container px-3 py-4 mx-auto sm:py-6 md:py-8 sm:px-4">
+      <div className="container py-4 mx-auto sm:py-6 md:py-8 sm:px-4">
         <AnimatedSection className="mb-12 sm:mb-16 md:mb-24 lg:mb-32">
           <VerticalAccordion />
         </AnimatedSection>
 
-        <AnimatedSection className="px-2 my-12 sm:px-4 sm:my-16 md:my-24 lg:my-32">
+        <AnimatedSection className="px-5 my-12 sm:px-4 sm:my-16 md:my-24 lg:my-32">
           <GridArticulos />
         </AnimatedSection>
 
-        <AnimatedSection className="px-2 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
+        <AnimatedSection className="px-5 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
           <ColeccionTous />
         </AnimatedSection>
 
-        <AnimatedSection className="px-2 my-12 sm:my-16 md:my-24 lg:my-32">
+        <AnimatedSection className="px-5 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
           <BannerMarcasRelojes />
         </AnimatedSection>
 
@@ -62,12 +62,12 @@ export default function Home() {
           <BannerInstagram />
         </AnimatedSection>
 
-        <AnimatedSection className="px-2 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
+        <AnimatedSection className="px-5 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
           <PromocionDiamantes />
         </AnimatedSection>
 
-        <AnimatedSection className="px-2 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
-          <h2 className="mb-6 text-xl font-bold text-center sm:mb-8 sm:text-2xl lg:text-3xl">
+        <AnimatedSection className="px-5 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
+          <h2 className="mb-6 text-3xl font-bold text-left sm:text-center sm:mb-8">
             Tus marcas favoritas en óptica
           </h2>
           <GridMarcas />

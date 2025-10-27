@@ -26,7 +26,7 @@ const colecciones = [
 const ColeccionesDestacadas = () => {
   return (
     <section>
-      <h2 className="mb-6 text-xl font-bold text-center sm:mb-8 sm:text-2xl lg:text-3xl">
+      <h2 className="mb-6 font-bold hidden sm:block text-center sm:mb-8 text-3xl">
         Colecciones destacadas
       </h2>
       <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-4">

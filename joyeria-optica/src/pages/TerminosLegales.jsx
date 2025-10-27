@@ -44,7 +44,7 @@ const TerminosLegales = () => {
             
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                En cumplimiento de la Ley 34/2002 de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSICE), se informa que la titularidad del dominio de nuestra tienda virtual, <a href="http://www.opticadelvaljoyeros.com" className="text-black underline hover:text-gray-600">www.opticadelvaljoyeros.com</a>, corresponde a Óptica Del Val Joyeros, sociedad legalmente constituida en España.
+                En cumplimiento de la Ley 34/2002 de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSICE), se informa que la titularidad del dominio de nuestra tienda virtual, <a href="http://www.opticadelvaljoyeros.es" className="text-black underline hover:text-gray-600">www.opticadelvaljoyeros.es</a>, corresponde a Óptica Del Val Joyeros, sociedad legalmente constituida en España.
               </p>
               <p>
                 Para cualquier consulta, puede contactar con Óptica Del Val Joyeros en el correo electrónico <a href="mailto:opticadelvaljoyeros@gmail.com" className="text-black underline hover:text-gray-600">opticadelvaljoyeros@gmail.com</a> o en el teléfono <a href="tel:957602123" className="text-black underline hover:text-gray-600">957 60 21 23</a>.
@@ -249,7 +249,7 @@ const TerminosLegales = () => {
             
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Es necesario registrarse en <a href="http://www.opticadelvaljoyeros.com" className="text-black underline hover:text-gray-600">www.opticadelvaljoyeros.com</a> y seguir el proceso de compra. Óptica Del Val Joyeros no se responsabiliza por errores en datos de envío.
+                Es necesario registrarse en <a href="http://www.opticadelvaljoyeros.es" className="text-black underline hover:text-gray-600">www.opticadelvaljoyeros.es</a> y seguir el proceso de compra. Óptica Del Val Joyeros no se responsabiliza por errores en datos de envío.
               </p>
               <p>
                 Los productos personalizados requieren información precisa; si no se proporciona, se usará la opción por defecto.
