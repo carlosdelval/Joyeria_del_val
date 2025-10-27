@@ -10,6 +10,7 @@ import ColeccionesDestacadas from "../components/ColeccionesDestacadas";
 import PromocionDiamantes from "../components/Promoción";
 import ContactoOptica from "../components/ContactCard";
 import BannerInstagram from "../components/BannerInstagram";
+import BannerMarcasRelojes from "../components/BannerMarcasRelojes";
 
 const AnimatedSection = ({ children, className = "" }) => {
   const [ref, inView] = useInView({
@@ -47,6 +48,10 @@ export default function Home() {
 
         <AnimatedSection className="px-2 sm:px-4 my-12 sm:my-16 md:my-24 lg:my-32">
           <GridArticulos />
+        </AnimatedSection>
+
+        <AnimatedSection className="my-12 sm:my-16 md:my-24 lg:my-32">
+          <BannerMarcasRelojes />
         </AnimatedSection>
 
         <AnimatedSection className="px-2 sm:px-4 md:px-8 my-12 sm:my-16 md:my-24 lg:my-32">

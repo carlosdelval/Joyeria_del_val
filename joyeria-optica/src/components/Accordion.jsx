@@ -153,14 +153,5 @@ const items = [
       "/cartelGraduacion.svg",
     description:
       "¡Reserva ya tu cita!",
-  },
-  {
-    id: 5,
-    title: "Alianzas y comuniones",
-    Icon: Church,
-    imgSrc:
-      "https://imagenes.heraldo.es/files/image_990_556/uploads/imagenes/2018/11/30/_weddingrings36112771920_327dfd14.jpg",
-    description:
-      "¿Buscas alianza? Encuentra tu joya perfecta para bodas y comuniones. Regalos únicos y elegantes.",
-  },
+  }
 ];
