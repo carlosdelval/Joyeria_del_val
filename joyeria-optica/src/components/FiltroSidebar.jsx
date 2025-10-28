@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import { filtrosPorCategoria } from "../data/filtrosPorCategoria";
+import PriceRangeSlider from "./PriceRangeSlider";
 
 // Iconos SVG simples
 const ChevronDownIcon = ({ className }) => (
@@ -241,49 +242,80 @@ const FiltroSidebar = ({
 
       case "range": {
         const currentRange = currentValues;
+
+        // Si es el filtro de precio, usar el slider elegante
+        if (key === "precio") {
+          return (
+            <PriceRangeSlider
+              min={filter.min}
+              max={filter.max}
+              valueMin={currentRange?.min}
+              valueMax={currentRange?.max}
+              onChange={(min, max) => handleRangeChange(key, min, max)}
+              currency="€"
+              step={filter.step || 10}
+            />
+          );
+        }
+
+        // Para otros rangos, usar inputs numéricos con validación mejorada
         return (
           <div className="space-y-3">
             <div className="flex items-center space-x-2">
-              <input
-                type="number"
-                placeholder={`Min ${filter.unit || ""}`}
-                value={currentRange?.min || ""}
-                onChange={(e) => {
-                  const min = e.target.value
-                    ? Number(e.target.value)
-                    : undefined;
-                  handleRangeChange(key, min, currentRange?.max);
-                }}
-                className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
-                min={filter.min}
-                max={filter.max}
-                aria-label={`Valor mínimo de ${filter.label} en ${
-                  filter.unit || "unidades"
-                }`}
-              />
-              <span className="text-gray-500" aria-hidden="true">
-                -
-              </span>
-              <input
-                type="number"
-                placeholder={`Max ${filter.unit || ""}`}
-                value={currentRange?.max || ""}
-                onChange={(e) => {
-                  const max = e.target.value
-                    ? Number(e.target.value)
-                    : undefined;
-                  handleRangeChange(key, currentRange?.min, max);
-                }}
-                className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-amber-500 focus:border-amber-500"
-                min={filter.min}
-                max={filter.max}
-                aria-label={`Valor máximo de ${filter.label} en ${
-                  filter.unit || "unidades"
-                }`}
-              />
+              <div className="flex-1">
+                <label className="block mb-1 text-xs text-gray-600">
+                  Mínimo
+                </label>
+                <input
+                  type="number"
+                  placeholder={`${filter.min}`}
+                  value={currentRange?.min || ""}
+                  onChange={(e) => {
+                    const min = e.target.value
+                      ? Number(e.target.value)
+                      : undefined;
+                    // Validar que min no sea mayor que max
+                    const validMin = currentRange?.max
+                      ? Math.min(min || filter.min, currentRange.max)
+                      : min;
+                    handleRangeChange(key, validMin, currentRange?.max);
+                  }}
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-black focus:border-transparent"
+                  min={filter.min}
+                  max={currentRange?.max || filter.max}
+                  aria-label={`Valor mínimo de ${filter.label}`}
+                />
+              </div>
+              <div className="pt-5 text-gray-400" aria-hidden="true">
+                —
+              </div>
+              <div className="flex-1">
+                <label className="block mb-1 text-xs text-gray-600">
+                  Máximo
+                </label>
+                <input
+                  type="number"
+                  placeholder={`${filter.max}`}
+                  value={currentRange?.max || ""}
+                  onChange={(e) => {
+                    const max = e.target.value
+                      ? Number(e.target.value)
+                      : undefined;
+                    // Validar que max no sea menor que min
+                    const validMax = currentRange?.min
+                      ? Math.max(max || filter.max, currentRange.min)
+                      : max;
+                    handleRangeChange(key, currentRange?.min, validMax);
+                  }}
+                  className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-black focus:border-transparent"
+                  min={currentRange?.min || filter.min}
+                  max={filter.max}
+                  aria-label={`Valor máximo de ${filter.label}`}
+                />
+              </div>
             </div>
-            <div className="text-xs text-gray-500" role="note">
-              Rango: {filter.min} - {filter.max} {filter.unit}
+            <div className="text-xs text-gray-500 text-center" role="note">
+              Rango disponible: {filter.min} - {filter.max} {filter.unit || ""}
             </div>
           </div>
         );

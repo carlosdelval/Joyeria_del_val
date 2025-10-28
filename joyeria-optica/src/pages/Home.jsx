@@ -4,13 +4,14 @@ import { useInView } from "react-intersection-observer";
 import SEO, { generateOrganizationSchema } from "../components/SEO";
 import VerticalAccordion from "../components/Accordion";
 import GridArticulos from "../components/GridArticulos";
-import GridMarcas from "../components/GridMarcas";
+import BannerMarcas from "../components/BannerMarcas";
 import ColeccionTous from "../components/ColeccionTous";
 import ColeccionesDestacadas from "../components/ColeccionesDestacadas";
-import PromocionDiamantes from "../components/Promoción";
+import Promocion from "../components/Promoción";
 import ContactoOptica from "../components/ContactCard";
 import BannerInstagram from "../components/BannerInstagram";
 import BannerMarcasRelojes from "../components/BannerMarcasRelojes";
+import BannerRaybanMeta from "../components/BannerRaybanMeta";
 
 const AnimatedSection = ({ children, className = "" }) => {
   const [ref, inView] = useInView({
@@ -32,55 +33,103 @@ const AnimatedSection = ({ children, className = "" }) => {
 };
 
 export default function Home() {
+  // Datos de marcas de óptica
+  const marcasOptica = [
+    {
+      nombre: "Ray-Ban",
+      imagen: "/rayban.jpg",
+      slug: "ray-ban",
+      objectPosition: "object-left",
+    },
+    {
+      nombre: "TOUS",
+      imagen: "/tous.jpg",
+      slug: "tous",
+      objectPosition: "object-left md:object-right",
+    },
+    {
+      nombre: "Dolce & Gabbana",
+      imagen: "/dolce-gabbana.jpg",
+      slug: "dolce-gabbana",
+      objectPosition: "object-left",
+    },
+    {
+      nombre: "Persol",
+      imagen: "/persol.jpg",
+      slug: "persol",
+    },
+  ];
+
   return (
     <>
       <SEO
         title="Óptica Del Val Joyeros - Joyería y Óptica en Puente Genil | TOUS, Ray-Ban"
         description="Descubre nuestra exclusiva colección de joyas TOUS, relojes de diseño y gafas Ray-Ban en Puente Genil, Córdoba. Envío gratis en pedidos superiores a 50€. Visítanos en Calle Cristobal Castillo 13."
         keywords="joyería Puente Genil, óptica Puente Genil, TOUS Córdoba, Ray-Ban, relojes mujer, gafas de sol, joyas, Dolce & Gabbana"
-        url="https://opticadelvaljoyeros.com"
+        url="https://opticadelvaljoyeros.es"
         structuredData={generateOrganizationSchema()}
       />
-      <div className="container py-4 mx-auto sm:py-6 md:py-8 sm:px-4">
-        <AnimatedSection className="mb-12 sm:mb-16 md:mb-24 lg:mb-32">
+
+      {/* Acordeón Hero */}
+      <div className="container mx-auto pt-4 sm:pt-6 md:pt-8">
+        <AnimatedSection>
           <VerticalAccordion />
         </AnimatedSection>
+      </div>
 
-        <AnimatedSection className="px-5 my-12 sm:px-4 sm:my-16 md:my-24 lg:my-32">
+      {/* Secciones con contenedor y padding consistente */}
+      <div className="container mx-auto px-5 sm:px-4">
+        {/* Grid de artículos */}
+        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
           <GridArticulos />
         </AnimatedSection>
 
-        <AnimatedSection className="px-5 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
+        {/* Colección TOUS */}
+        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
           <ColeccionTous />
         </AnimatedSection>
 
-        <AnimatedSection className="px-5 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
+        {/* Promoción */}
+        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+          <Promocion />
+        </AnimatedSection>
+
+        {/* Banner Marcas Relojes */}
+        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
           <BannerMarcasRelojes />
         </AnimatedSection>
-
-        <AnimatedSection className="my-12 sm:my-16 md:my-24 lg:my-32">
-          <BannerInstagram />
-        </AnimatedSection>
-
-        <AnimatedSection className="px-5 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
-          <PromocionDiamantes />
-        </AnimatedSection>
-
-        <AnimatedSection className="px-5 my-12 sm:px-4 md:px-8 sm:my-16 md:my-24 lg:my-32">
-          <h2 className="mb-6 text-3xl font-bold text-left sm:text-center sm:mb-8">
-            Tus marcas favoritas en óptica
-          </h2>
-          <GridMarcas />
-        </AnimatedSection>
-
-        <AnimatedSection className="my-12 sm:my-16 md:my-24 lg:my-32">
-          <ColeccionesDestacadas />
-        </AnimatedSection>
-
-        <section className="mt-12 sm:mt-16 md:mt-24 lg:mt-32">
-          <ContactoOptica />
-        </section>
       </div>
+
+      {/* Banner Ray-Ban Meta (ancho completo) */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <BannerRaybanMeta />
+      </AnimatedSection>
+
+      {/* Banner Marcas Óptica */}
+      <div className="container mx-auto px-5 sm:px-4">
+        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+          <BannerMarcas
+            titulo="Tus marcas favoritas en óptica"
+            marcas={marcasOptica}
+            categoriaBase="gafas"
+          />
+        </AnimatedSection>
+      </div>
+
+      {/* Banner Instagram (ancho completo) */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <BannerInstagram />
+      </AnimatedSection>
+
+      {/* Colecciones Destacadas (ancho completo) */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <ColeccionesDestacadas />
+      </AnimatedSection>
+
+      {/* Contacto (ancho completo, sin AnimatedSection para evitar doble animación) */}
+      <section className="mt-16 sm:mt-20 md:mt-24 lg:mt-28 mb-0">
+        <ContactoOptica />
+      </section>
     </>
   );
 }

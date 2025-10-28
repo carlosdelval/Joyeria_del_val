@@ -11,6 +11,7 @@ import SEO, {
   generateBreadcrumbSchema,
 } from "../components/SEO";
 import WishlistButton from "../components/WishlistButton";
+import { PageSpinner, ButtonSpinner } from "../components/Spinner";
 
 const ProductoPage = () => {
   const { slug } = useParams();
@@ -108,11 +109,7 @@ const ProductoPage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="w-12 h-12 border-2 border-black rounded-full animate-spin border-t-transparent"></div>
-      </div>
-    );
+    return <PageSpinner label="Cargando producto..." />;
   }
 
   if (!producto) {
@@ -517,11 +514,17 @@ const ProductoPage = () => {
                     {!hasStock ? (
                       <>AGOTADO</>
                     ) : isAddingToCart ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white rounded-full animate-spin border-t-transparent"></div>
-                        <span className="hidden sm:inline">AÑADIENDO...</span>
-                        <span className="sm:hidden">...</span>
-                      </>
+                      <ButtonSpinner
+                        color="white"
+                        label={
+                          <>
+                            <span className="hidden sm:inline">
+                              AÑADIENDO...
+                            </span>
+                            <span className="sm:hidden">...</span>
+                          </>
+                        }
+                      />
                     ) : addedToCart ? (
                       <motion.div
                         initial={{ scale: 0 }}

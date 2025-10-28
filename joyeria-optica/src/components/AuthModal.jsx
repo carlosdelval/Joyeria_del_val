@@ -17,6 +17,7 @@ import {
   validateForm,
   getPasswordStrength,
 } from "../utils/validators";
+import { ButtonSpinner } from "./Spinner";
 
 const AuthModal = ({ isOpen, onClose, initialMode = "login" }) => {
   const [mode, setMode] = useState(initialMode); // 'login', 'register', 'forgot'
@@ -405,10 +406,7 @@ const AuthModal = ({ isOpen, onClose, initialMode = "login" }) => {
                 className="w-full py-3 font-medium text-white transition-colors bg-black rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 {loading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white rounded-full border-t-transparent animate-spin" />
-                    Procesando...
-                  </div>
+                  <ButtonSpinner color="white" label="Procesando..." />
                 ) : (
                   <>
                     {mode === "login" && "Iniciar Sesión"}

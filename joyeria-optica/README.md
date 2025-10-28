@@ -79,8 +79,10 @@ npm run update:productos
 - ✅ Diseño elegante minimalista (blanco/negro/gris)
 - ✅ Animaciones fluidas con Framer Motion
 - ✅ Responsive design completo
-- ✅ Skeleton loaders y estados de carga
+- ✅ **Skeleton loaders elegantes** con efecto shimmer
+- ✅ **Spinners consistentes** para todos los estados de carga
 - ✅ Feedback visual en todas las acciones
+- ✅ Loading states optimizados (ver `LOADING-STATES.md`)
 
 ## 🛠️ Tecnologías
 
@@ -111,7 +113,9 @@ joyeria-optica/
 │   │   ├── CookieBanner.jsx       # NUEVO: Banner RGPD
 │   │   ├── CookieSettings.jsx     # NUEVO: Panel cookies
 │   │   ├── OptimizedImage.jsx     # NUEVO: Imágenes optimizadas
-│   │   └── ErrorBoundary.jsx      # NUEVO: Error handling
+│   │   ├── ErrorBoundary.jsx      # NUEVO: Error handling
+│   │   ├── Spinner.jsx            # NUEVO: Sistema de spinners
+│   │   └── Skeleton.jsx           # NUEVO: Skeleton loaders
 │   ├── services/                   # Servicios externos
 │   │   ├── emailService.js        # NUEVO: EmailJS
 │   │   └── shopify.js
@@ -217,8 +221,9 @@ firebase deploy
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
-## � Documentación Adicional
+## 📚 Documentación Adicional
 
+- **[LOADING-STATES.md](./LOADING-STATES.md)** - Sistema completo de loading states
 - **[OPTIMIZATIONS.md](./OPTIMIZATIONS.md)** - Optimizaciones avanzadas implementadas
 - **[COOKIES-SYSTEM.md](./COOKIES-SYSTEM.md)** - Sistema de cookies y RGPD
 - **[EMAILJS-SETUP.md](./EMAILJS-SETUP.md)** - Configuración completa de EmailJS
@@ -226,6 +231,67 @@ firebase deploy
 - **[GUIA-GESTION-STOCK.md](./GUIA-GESTION-STOCK.md)** - Gestión de inventario
 
 ## 🎯 Mejoras Implementadas (Octubre 2025)
+
+### ✨ Actualización 28 de Octubre 2025
+
+#### 🎨 Sistema de Loading States Optimizado
+- **Spinners elegantes**: 6 variantes consistentes (Spinner, PageSpinner, ButtonSpinner, OverlaySpinner, InlineSpinner, CardSpinner)
+- **Skeleton loaders**: Efecto shimmer animado con 6 componentes especializados
+- **Integración completa**: Producto.jsx, CheckoutPage.jsx, AuthModal.jsx, Catalogo.jsx
+- Ver documentación en `LOADING-STATES.md`
+
+#### 🖼️ Optimización Masiva de Imágenes
+- **Script de optimización**: Sharp para compresión JPEG progresiva (quality 80%, max 1920px)
+- **Resultados**: 11.5 MB → 596 KB (94% reducción) en galería principal
+- **Acordeón**: joyeria_acordeon.jpg 1778 KB → 152 KB (91.5% reducción)
+- **Backup automático**: Originales guardados en `public/original-images/`
+
+#### 🎚️ Filtro de Precio Mejorado
+- **PriceRangeSlider**: Doble slider con validación min/max
+- **UX mejorada**: Inputs numéricos + slider visual sincronizados
+- **Animaciones**: Framer Motion para feedback visual suave
+- **Responsive**: Diseño optimizado para móvil y desktop
+
+#### 🍪 Sistema de Cookies Optimizado
+- **Overlay bloqueante**: Fondo semi-transparente con blur que impide interacción
+- **Diseño elegante**: bg-black/20 + backdrop-blur-sm
+- **UX clara**: Usuario debe aceptar/rechazar antes de navegar
+
+#### 🎯 Refactorización de Componentes de Marcas
+- **BannerMarcas reutilizable**: Componente genérico para grids 2x2 de marcas
+- **BannerMarcasRelojes**: Simplificado usando BannerMarcas
+- **Eliminado GridMarcas**: Migrado a BannerMarcas con mejor diseño
+- **Consistencia visual**: Mismo estilo elegante en todas las secciones
+
+#### 📱 Banner Ray-Ban Meta (Nuevo)
+- **Carrusel automático**: 3 imágenes promocionales con transición suave cada 5s
+- **Diseño premium**: Fondo oscuro con efectos de luz azul/púrpura
+- **Layout adaptativo**: Imagen primero en móvil, contenido optimizado
+- **Elementos ocultos en móvil**: Descripción, características y badge "Disponible ahora"
+- **Controles interactivos**: Indicadores de puntos clicables
+- **Animaciones**: Fade + zoom con AnimatePresence
+- **CTA directo**: Botones "Visítanos" y "Llámanos" destacados
+
+#### 📐 Optimización de Espaciado en Home
+- **Sistema coherente**: mt-16 sm:mt-20 md:mt-24 lg:mt-28 (progresivo)
+- **Sin márgenes bottom**: Evita espaciado duplicado
+- **Padding consistente**: px-5 sm:px-4 solo donde necesario
+- **Secciones width completo**: BannerRaybanMeta, BannerInstagram, ColeccionesDestacadas
+- **Ritmo visual perfecto**: Espaciado proporcional mobile-first
+
+#### 🛠️ Componentes Creados/Modificados
+- ✅ `Spinner.jsx` - 6 variantes de spinners
+- ✅ `Skeleton.jsx` - 6 tipos de skeleton loaders
+- ✅ `PriceRangeSlider.jsx` - Slider de rango dual
+- ✅ `BannerMarcas.jsx` - Componente reutilizable de marcas
+- ✅ `BannerRaybanMeta.jsx` - Banner promocional con carrusel
+- ✅ `scripts/optimize-images.js` - Optimizador de imágenes
+- ✅ `LOADING-STATES.md` - Documentación completa
+
+#### 🗑️ Limpieza de Código
+- ❌ Eliminado `GridMarcas.jsx` - Reemplazado por BannerMarcas
+- 🧹 Refactorizado sistema de z-index en PriceRangeSlider
+- 🔧 Simplificado layout de Home.jsx
 
 ### ✅ Sistema de Cookies y RGPD
 
@@ -254,6 +320,14 @@ firebase deploy
 - Plantillas HTML responsive personalizadas
 - Integración con EmailJS (200 emails/mes gratis)
 - Notificaciones de envío
+
+### ✅ Loading States Elegantes (Octubre 2025)
+
+- **Spinners consistentes**: 6 variantes para diferentes contextos
+- **Skeleton loaders**: Efecto shimmer animado para catálogo
+- **Optimización de performance**: Imágenes 94% más ligeras
+- **Animaciones fluidas**: 60 FPS constantes en todas las transiciones
+- Ver documentación completa en `LOADING-STATES.md`
 
 ### ✅ Página de Perfil de Usuario
 

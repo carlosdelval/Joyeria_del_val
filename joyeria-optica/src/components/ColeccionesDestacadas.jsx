@@ -2,24 +2,24 @@ import React from "react";
 
 const colecciones = [
   {
-    titulo: "Así comienzan los nuevos capítulos",
-    img: "https://www.serranojoyeros.es/46780-large_default/alianza-boda-argyor-oro-amarillo-18kt-facetada-brillante-5140544.jpg",
-    href: "/catalogo/anillos",
+    titulo: "Marina García Joyería",
+    img: "/marinagarcia-banner.jpg",
+    slug: "Alta Joyería",
   },
   {
-    titulo: "Colección TOUS",
-    img: "https://static.tous.com/21202/pub/directus/80d65115-e569-453d-b3eb-e39bc649fa68.jpg",
-    href: "/catalogo/tous",
+    titulo: "Salvatore PLATA",
+    img: "/salvatore-banner.jpg",
+    slug: "Plata de ley"
   },
   {
-    titulo: "Plata de primera ley",
-    img: "https://sansarushop.com/cdn/shop/files/tobilleras_32a6bd5d-873f-486d-9f41-9b1e57024303.jpg?v=1714992715&width=533",
-    href: "/catalogo/plata",
+    titulo: "Nomination Italy",
+    img: "/nomination-banner.jpg",
+    slug: "¡Pregunta en nuestro local!"
   },
   {
-    titulo: "Joyas para los más pequeños",
-    img: "https://i.etsystatic.com/10590541/r/il/7b002b/5333591874/il_fullxfull.5333591874_pock.jpg",
-    href: "/catalogo/infantil",
+    titulo: "La Petra",
+    img: "/lapetra-banner.jpg",
+    slug: "Pequeños tesoros de oro"
   },
 ];
 
@@ -27,7 +27,7 @@ const ColeccionesDestacadas = () => {
   return (
     <section>
       <h2 className="mb-6 font-bold hidden sm:block text-center sm:mb-8 text-3xl">
-        Colecciones destacadas
+        La mejor selección de joyería disponible en tienda
       </h2>
       <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-4">
         {colecciones.map((coleccion, index) => (
@@ -46,13 +46,10 @@ const ColeccionesDestacadas = () => {
                 {coleccion.titulo}
               </h3>
               <div className="flex items-center text-sm font-semibold transition-all">
-                VER COLECCIÓN
-                <span className="ml-1 transition-transform duration-300 transform group-hover:translate-x-1 ">
-                  →
-                </span>
+                {coleccion.slug}
               </div>
             </div>
-            <div className="absolute inset-0 z-0 transition bg-black/30 group-hover:bg-black/20" />
+            <div className="absolute inset-0 z-0 transition bg-black/20 group-hover:bg-black/10" />
           </a>
         ))}
       </div>

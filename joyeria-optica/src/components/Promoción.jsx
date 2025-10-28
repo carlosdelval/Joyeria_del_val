@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchProductos } from "../api/productos";
 import { useNavigate } from "react-router-dom";
 
-const PromocionDiamantes = () => {
+const Promocion = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -113,4 +113,4 @@ const PromocionDiamantes = () => {
   );
 };
 
-export default PromocionDiamantes;
+export default Promocion;

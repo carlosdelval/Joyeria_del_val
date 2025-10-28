@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { formatCurrency, analytics } from "../utils/helpers";
 import AuthModal from "../components/AuthModal";
 import { sendOrderConfirmation } from "../services/emailService";
+import { ButtonSpinner } from "../components/Spinner";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -995,10 +996,10 @@ const CheckoutPage = () => {
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     {processing ? (
-                      <div className="flex items-center justify-center gap-2">
-                        <div className="w-5 h-5 border-2 border-white rounded-full border-t-transparent animate-spin" />
-                        <span>Procesando pedido...</span>
-                      </div>
+                      <ButtonSpinner
+                        color="white"
+                        label="Procesando pedido..."
+                      />
                     ) : (
                       "Confirmar Pedido"
                     )}

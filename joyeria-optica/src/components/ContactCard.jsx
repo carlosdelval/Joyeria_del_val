@@ -1,6 +1,5 @@
 import { Phone, Mail, MapPin, Clock, ChevronDown } from "lucide-react";
-// eslint-disable-next-line no-unused-vars
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useState } from "react";
 
@@ -44,70 +43,78 @@ const galleryImages = [
     id: 4,
     src: "/reconocimiento2.jpg",
     title: "Reconocimientos",
-    description: "Premios y certificaciones que avalan nuestros años de servicio",
+    description:
+      "Premios y certificaciones que avalan nuestros años de servicio",
   },
 ];
 
 const AccordionImage = ({ image, isOpen, onToggle }) => {
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
   return (
     <motion.div
+      ref={ref}
       initial={false}
       animate={{
         flex: isOpen ? "1 1 60%" : "1 1 0%",
       }}
-      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
       className="relative overflow-hidden rounded-lg cursor-pointer group min-h-[200px] sm:min-h-[300px] lg:min-h-[400px]"
       onClick={onToggle}
+      style={{ willChange: isOpen ? "flex" : "auto" }}
     >
-      {/* Imagen de fondo */}
-      <motion.div
-        className="absolute inset-0 bg-center bg-cover"
-        style={{ backgroundImage: `url(${image.src})` }}
-        animate={{
-          scale: isOpen ? 1 : 1.1,
-        }}
-        transition={{ duration: 0.5 }}
-      />
+      {/* Imagen de fondo con lazy loading */}
+      {inView && (
+        <div
+          className="absolute inset-0 bg-center bg-cover transition-transform duration-[400ms]"
+          style={{
+            backgroundImage: `url(${image.src})`,
+            transform: isOpen ? "scale(1)" : "scale(1.1)",
+            willChange: "transform",
+          }}
+        />
+      )}
 
       {/* Overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
       {/* Contenido */}
       <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6">
-        <motion.div
-          initial={false}
-          animate={{
+        <div
+          className="transition-all duration-300"
+          style={{
             opacity: isOpen ? 1 : 0.9,
-            y: isOpen ? 0 : 10,
+            transform: isOpen ? "translateY(0)" : "translateY(10px)",
           }}
-          transition={{ duration: 0.3 }}
         >
           <h3 className="mb-2 text-lg font-bold text-white sm:text-xl lg:text-2xl">
             {image.title}
           </h3>
 
-          <AnimatePresence>
-            {isOpen && (
-              <motion.p
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="mb-3 text-sm text-gray-200 sm:text-base"
-              >
-                {image.description}
-              </motion.p>
-            )}
-          </AnimatePresence>
+          <div
+            className="overflow-hidden transition-all duration-300"
+            style={{
+              maxHeight: isOpen ? "100px" : "0px",
+              opacity: isOpen ? 1 : 0,
+            }}
+          >
+            <p className="mb-3 text-sm text-gray-200 sm:text-base">
+              {image.description}
+            </p>
+          </div>
 
-          <motion.div
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="inline-block"
+          <div
+            className="inline-block transition-transform duration-300"
+            style={{
+              transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+            }}
           >
             <ChevronDown className="w-5 h-5 text-white sm:w-6 sm:h-6" />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
       {/* Indicador de hover cuando no está abierto */}

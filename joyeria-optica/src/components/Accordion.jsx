@@ -123,7 +123,7 @@ const items = [
     title: "La mejor selección en joyería",
     Icon: Gem,
     imgSrc:
-      "https://imagenes.eltiempo.com/files/og_thumbnail/uploads/2023/05/15/64628bf667ab8.png",
+      "/joyeria_acordeon.jpg",
     description:
       "Encuentra joyas únicas y elegantes para cada ocasión. Desde anillos hasta collares, tenemos lo que buscas.",
   },

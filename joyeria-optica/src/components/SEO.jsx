@@ -4,8 +4,8 @@ const SEO = ({
   title = "Óptica Del Val Joyeros - Joyería y Óptica en Puente Genil",
   description = "Descubre nuestra selección de joyas, relojes y gafas de las mejores marcas: TOUS, Ray-Ban, Dolce & Gabbana. Envío gratis en pedidos +50€.",
   keywords = "joyería, óptica, relojes, gafas, TOUS, Ray-Ban, Puente Genil, Córdoba",
-  image = "https://opticadelvaljoyeros.com/og-image.jpg",
-  url = "https://opticadelvaljoyeros.com",
+  image = "https://opticadelvaljoyeros.es/og-image.jpg",
+  url = "https://opticadelvaljoyeros.es",
   type = "website",
   structuredData = null,
   noindex = false,
@@ -119,8 +119,8 @@ export const generateOrganizationSchema = () => ({
   image: "https://opticadelvaljoyeros.com/logo.png",
   description:
     "Joyería y óptica en Puente Genil especializada en TOUS, Ray-Ban y marcas premium",
-  "@id": "https://opticadelvaljoyeros.com",
-  url: "https://opticadelvaljoyeros.com",
+  "@id": "https://opticadelvaljoyeros.es",
+  url: "https://opticadelvaljoyeros.es",
   telephone: "+34957602123",
   email: "opticadelvaljoyeros@gmail.com",
   address: {
