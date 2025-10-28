@@ -3,18 +3,18 @@ import BannerMarcas from "./BannerMarcas";
 export default function BannerMarcasRelojes() {
   const marcas = [
     {
-      nombre: "Casio",
-      descripcion: "Tecnología y precisión japonesa",
-      imagen: "/casio-banner.jpg",
-      slug: "casio",
-      objectPosition: "",
+      nombre: "Tommy Hilfiger",
+      descripcion: "Estilo y elegancia atemporal",
+      imagen: "/tommy-banner.jpg",
+      slug: "tommy-hilfiger",
+      objectPosition: "object-right",
     },
     {
-      nombre: "Fossil",
-      descripcion: "Estilo americano clásico",
-      imagen: "/fossil-banner.jpg",
-      slug: "fossil",
-      objectPosition: "",
+      nombre: "Citizen",
+      descripcion: "Tecnología Eco-Drive",
+      imagen: "/citizen-banner.jpg",
+      slug: "citizen",
+      objectPosition: "object-center md:object-left",
     },
     {
       nombre: "Seiko",
