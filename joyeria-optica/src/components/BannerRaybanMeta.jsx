@@ -6,11 +6,14 @@ import { useNavigate } from "react-router-dom";
 export default function BannerRaybanMeta() {
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [key, setKey] = useState(0); // Key para forzar reinicio del useEffect
 
   // Array de imágenes del carrusel
   const carouselImages = [
     "/raybanmeta1.jpg",
-    "/raybanmeta2.jpg",
+    "/raybanmeta3.avif",
+    "/raybanmeta2.avif",
+    "/raybanmeta1.avif",
     "/raybanmeta-banner.jpg",
   ];
 
@@ -20,14 +23,19 @@ export default function BannerRaybanMeta() {
       setCurrentImageIndex(
         (prevIndex) => (prevIndex + 1) % carouselImages.length
       );
-    }, 7000); // Cambiar cada 7 segundos
+    }, 5000); // Cambiar cada 5 segundos
 
     return () => clearInterval(interval);
-  }, [carouselImages.length]);
+  }, [carouselImages.length, key]); // Añadido 'key' como dependencia
 
   const handleContacto = () => {
     window.scrollTo(0, 0);
     navigate("/contacto");
+  };
+
+  const handleManualChange = (index) => {
+    setCurrentImageIndex(index);
+    setKey((prevKey) => prevKey + 1); // Reinicia el temporizador
   };
 
   return (
@@ -73,7 +81,7 @@ export default function BannerRaybanMeta() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{
-                      duration: 1.2,
+                      duration: 0.8,
                       ease: "easeInOut",
                     }}
                     onError={(e) => {
@@ -90,7 +98,7 @@ export default function BannerRaybanMeta() {
                   {carouselImages.map((_, index) => (
                     <button
                       key={index}
-                      onClick={() => setCurrentImageIndex(index)}
+                      onClick={() => handleManualChange(index)}
                       className={`w-2 h-2 rounded-full transition-all duration-300 ${
                         index === currentImageIndex
                           ? "bg-white w-8"

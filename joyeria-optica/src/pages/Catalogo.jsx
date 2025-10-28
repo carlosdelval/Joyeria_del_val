@@ -158,7 +158,7 @@ const Catalogo = () => {
 
   // SEO dinámico para catálogo
   const getCatalogoSEO = () => {
-    const baseUrl = "https://opticadelvaljoyeros.com/catalogo";
+    const baseUrl = "https://opticadelvaljoyeros.es/catalogo";
 
     if (searchQuery) {
       return {

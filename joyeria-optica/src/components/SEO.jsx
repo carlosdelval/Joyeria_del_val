@@ -76,7 +76,7 @@ export const generateProductSchema = (producto) => {
     },
     offers: {
       "@type": "Offer",
-      url: `https://opticadelvaljoyeros.com/producto/${producto.slug}`,
+      url: `https://opticadelvaljoyeros.es/producto/${producto.slug}`,
       priceCurrency: "EUR",
       price: producto.precio,
       availability: producto.disponible
@@ -116,7 +116,7 @@ export const generateOrganizationSchema = () => ({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "Óptica Del Val Joyeros",
-  image: "https://opticadelvaljoyeros.com/logo.png",
+  image: "https://opticadelvaljoyeros.es/logo.png",
   description:
     "Joyería y óptica en Puente Genil especializada en TOUS, Ray-Ban y marcas premium",
   "@id": "https://opticadelvaljoyeros.es",

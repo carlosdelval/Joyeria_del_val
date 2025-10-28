@@ -21,7 +21,7 @@ const ProductoPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
-  const { addToCart } = useCart();
+  const { addToCart, items: cartItems } = useCart();
   const [imageIndex, setImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [imagePosition, setImagePosition] = useState({ x: 50, y: 50 });
@@ -122,9 +122,16 @@ const ProductoPage = () => {
 
   // Obtener stock del producto (con fallback a 99 si no está definido)
   const stock = producto.stock || 99;
-  const hasStock = stock > 0;
-  const isLowStock = stock > 0 && stock <= 5;
-  const stockPercentage = Math.min((stock / 10) * 100, 100); // Para barra visual (máx 10 = 100%)
+
+  // Calcular cantidad en el carrito para este producto
+  const itemInCart = cartItems?.find((item) => item.productId === producto.id);
+  const quantityInCart = itemInCart ? itemInCart.quantity : 0;
+
+  // Stock disponible = stock total - cantidad en carrito
+  const availableStock = stock - quantityInCart;
+  const hasStock = availableStock > 0;
+  const isLowStock = availableStock > 0 && availableStock <= 5;
+  const stockPercentage = Math.min((availableStock / 10) * 100, 100); // Para barra visual (máx 10 = 100%)
 
   // Calcular descuento si existe precio anterior
   const descuento = producto.precioAnterior
@@ -136,13 +143,13 @@ const ProductoPage = () => {
     : null;
 
   // SEO dinámico para el producto
-  const productUrl = `https://opticadelvaljoyeros.com/producto/${producto.slug}`;
+  const productUrl = `https://opticadelvaljoyeros.es/producto/${producto.slug}`;
   const productImage =
-    producto.imagenes[0] || "https://opticadelvaljoyeros.com/og-image.jpg";
+    producto.imagenes[0] || "https://opticadelvaljoyeros.es/og-image.jpg";
 
   const breadcrumbItems = [
-    { name: "Inicio", url: "https://opticadelvaljoyeros.com" },
-    { name: "Catálogo", url: "https://opticadelvaljoyeros.com/catalogo" },
+    { name: "Inicio", url: "https://opticadelvaljoyeros.es" },
+    { name: "Catálogo", url: "https://opticadelvaljoyeros.es/catalogo" },
     { name: producto.titulo, url: productUrl },
   ];
 
@@ -386,71 +393,62 @@ const ProductoPage = () => {
                 className="mt-6 sm:mt-8 space-y-4"
               >
                 {/* Indicador de stock */}
-                {hasStock ? (
-                  <div className="p-3 sm:p-4 space-y-2 bg-gray-50 border border-gray-200 rounded-lg">
-                    <div className="flex items-center justify-between text-xs sm:text-sm">
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium text-gray-700">
-                          Disponibilidad:
-                        </span>
-                        <div className="group relative">
-                          <Info className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 cursor-help" />
-                          <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-40 sm:w-48 p-2 bg-gray-900 text-white text-xs rounded shadow-lg z-10">
-                            Stock actualizado en tiempo real. La cantidad máxima
-                            que puedes añadir al carrito está limitada por la
-                            disponibilidad.
-                          </div>
-                        </div>
-                      </div>
-                      <span
-                        className={`font-semibold flex items-center gap-2 ${
-                          isLowStock ? "text-orange-600" : "text-green-600"
-                        }`}
-                      >
-                        <span
-                          className={`w-2 h-2 rounded-full ${
-                            isLowStock ? "bg-orange-600" : "bg-green-600"
-                          } animate-pulse`}
-                        ></span>
-                        {isLowStock
-                          ? `¡Solo ${stock} unidades!`
-                          : stock < 99
-                          ? `${stock} disponibles`
-                          : "En stock"}
+                <div className="p-3 sm:p-4 space-y-2 bg-gray-50 border border-gray-200 rounded-lg">
+                  <div className="flex items-center justify-between text-xs sm:text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium text-gray-700">
+                        Disponibilidad:
                       </span>
-                    </div>
-
-                    {/* Barra de stock visual (solo si stock < 99) */}
-                    {stock < 99 && (
-                      <div className="space-y-1">
-                        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${stockPercentage}%` }}
-                            transition={{ duration: 0.5, delay: 0.7 }}
-                            className={`h-full ${
-                              isLowStock
-                                ? "bg-gradient-to-r from-orange-500 to-red-500"
-                                : "bg-gradient-to-r from-green-500 to-emerald-500"
-                            }`}
-                          />
+                      <div className="group relative">
+                        <Info className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 cursor-help" />
+                        <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-40 sm:w-48 p-2 bg-gray-900 text-white text-xs rounded shadow-lg z-10">
+                          Stock actualizado en tiempo real. La cantidad máxima
+                          que puedes añadir al carrito está limitada por la
+                          disponibilidad.
                         </div>
-                        <p className="text-xs text-gray-500 text-right">
-                          {isLowStock
-                            ? "Stock limitado"
-                            : "Buena disponibilidad"}
-                        </p>
                       </div>
-                    )}
+                    </div>
+                    <span
+                      className={`font-semibold flex items-center gap-2 ${
+                        isLowStock ? "text-orange-600" : "text-green-600"
+                      }`}
+                    >
+                      <span
+                        className={`w-2 h-2 rounded-full ${
+                          isLowStock ? "bg-orange-600" : "bg-green-600"
+                        } animate-pulse`}
+                      ></span>
+                      {isLowStock
+                        ? `¡Solo ${availableStock} ${
+                            availableStock === 1 ? "unidad" : "unidades"
+                          }!`
+                        : availableStock < 99
+                        ? `${availableStock} disponibles`
+                        : "En stock"}
+                    </span>
                   </div>
-                ) : (
-                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-sm font-medium text-red-800">
-                      Lo sentimos, este producto está agotado actualmente.
-                    </p>
-                  </div>
-                )}
 
+                  {/* Barra de stock visual (solo si stock < 99) */}
+                  {availableStock < 99 && (
+                    <div className="space-y-1">
+                      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${stockPercentage}%` }}
+                          transition={{ duration: 0.5, delay: 0.7 }}
+                          className={`h-full ${
+                            isLowStock
+                              ? "bg-gradient-to-r from-orange-500 to-red-500"
+                              : "bg-gradient-to-r from-green-500 to-emerald-500"
+                          }`}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500 text-right">
+                        {isLowStock ? "Stock limitado" : "Buena disponibilidad"}
+                      </p>
+                    </div>
+                  )}
+                </div>
                 {/* Selector de cantidad */}
                 <div className="flex items-center gap-3 sm:gap-4">
                   <span className="text-xs sm:text-sm font-medium">
@@ -473,10 +471,12 @@ const ProductoPage = () => {
                       {quantity}
                     </span>
                     <button
-                      onClick={() => setQuantity(Math.min(stock, quantity + 1))}
-                      disabled={quantity >= stock || !hasStock}
+                      onClick={() =>
+                        setQuantity(Math.min(availableStock, quantity + 1))
+                      }
+                      disabled={quantity >= availableStock || !hasStock}
                       className={`px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg transition ${
-                        quantity >= stock || !hasStock
+                        quantity >= availableStock || !hasStock
                           ? "text-gray-300 cursor-not-allowed bg-gray-50"
                           : "hover:bg-gray-100 text-gray-700"
                       }`}
@@ -487,32 +487,39 @@ const ProductoPage = () => {
                   </div>
 
                   {/* Aviso si alcanza el máximo */}
-                  {quantity >= stock && stock < 99 && hasStock && (
-                    <span className="text-xs sm:text-sm text-orange-600 font-medium">
-                      Máximo disponible
-                    </span>
-                  )}
+                  {quantity >= availableStock &&
+                    availableStock < 99 &&
+                    hasStock && (
+                      <span className="text-xs sm:text-sm text-orange-600 font-medium">
+                        Máximo disponible
+                      </span>
+                    )}
                 </div>
 
                 {/* Botones de acción */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   {/* Botón de añadir al carrito */}
                   <motion.button
-                    onClick={handleAddToCart}
+                    onClick={
+                      !hasStock || isAddingToCart ? undefined : handleAddToCart
+                    }
                     disabled={!hasStock || isAddingToCart}
-                    whileTap={{ scale: 0.95 }}
+                    whileTap={
+                      !hasStock || isAddingToCart ? {} : { scale: 0.95 }
+                    }
                     className={`flex-1 flex items-center justify-center gap-2 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-light tracking-wider transition rounded-sm ${
                       !hasStock
-                        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                        ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-60"
                         : addedToCart
                         ? "bg-green-600 text-white"
                         : isAddingToCart
                         ? "bg-gray-700 text-white cursor-wait"
                         : "bg-black text-white hover:bg-gray-800"
                     }`}
+                    style={!hasStock ? { pointerEvents: "none" } : {}}
                   >
                     {!hasStock ? (
-                      <>AGOTADO</>
+                      <>SIN STOCK</>
                     ) : isAddingToCart ? (
                       <ButtonSpinner
                         color="white"

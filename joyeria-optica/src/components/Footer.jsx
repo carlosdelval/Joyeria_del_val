@@ -2,7 +2,7 @@ import { Facebook, Instagram, Mail, Phone } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="pt-8 sm:pt-10 text-gray-800 bg-gray-100">
+    <footer className="pt-8 sm:pt-10 text-white bg-black">
       <div className="grid grid-cols-1 gap-6 sm:gap-8 px-4 sm:px-6 md:px-8 pb-6 sm:pb-8 mx-auto border-b border-gray-300 max-w-7xl md:grid-cols-3">
         {/* Logo + Descripción */}
         <div>
@@ -88,7 +88,7 @@ export default function Footer() {
       </div>
 
       {/* Copyright */}
-      <div className="py-4 sm:py-5 text-xs sm:text-sm text-center text-gray-500">
+      <div className="py-4 sm:py-5 text-xs sm:text-sm text-center text-gray-400">
         &copy; {new Date().getFullYear()} Óptica y Joyería Del Val. Todos los
         derechos reservados.
       </div>

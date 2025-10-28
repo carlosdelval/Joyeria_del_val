@@ -166,7 +166,7 @@ const FavoritosPage = () => {
         <SEO
           title="Mis Favoritos - Óptica Del Val Joyeros"
           description="Guarda tus productos favoritos y compra más tarde. Lista de deseos de joyas, relojes y gafas."
-          url="https://opticadelvaljoyeros.com/favoritos"
+          url="https://opticadelvaljoyeros.es/favoritos"
         />
         <div className="min-h-screen bg-gray-50">
           <div className="container px-4 py-16 mx-auto max-w-7xl">
@@ -203,7 +203,7 @@ const FavoritosPage = () => {
       <SEO
         title={`Mis Favoritos (${itemCount}) - Óptica Del Val Joyeros`}
         description="Tu lista de productos favoritos. Guarda y compra tus joyas, relojes y gafas preferidas."
-        url="https://opticadelvaljoyeros.com/favoritos"
+        url="https://opticadelvaljoyeros.es/favoritos"
       />
 
       {/* Modal de confirmación */}

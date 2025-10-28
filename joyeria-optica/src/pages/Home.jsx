@@ -39,24 +39,25 @@ export default function Home() {
       nombre: "Ray-Ban",
       imagen: "/rayban.jpg",
       slug: "ray-ban",
-      objectPosition: "object-left",
-    },
-    {
-      nombre: "TOUS",
-      imagen: "/tous.jpg",
-      slug: "tous",
-      objectPosition: "object-left md:object-right",
-    },
-    {
-      nombre: "Dolce & Gabbana",
-      imagen: "/dolce-gabbana.jpg",
-      slug: "dolce-gabbana",
-      objectPosition: "object-left",
+      objectPosition: "object-right md:object-left",
     },
     {
       nombre: "Persol",
       imagen: "/persol.jpg",
       slug: "persol",
+      objectPosition: "object-center",
+    },
+    {
+      nombre: "Dolce & Gabbana",
+      imagen: "/dolce-gabbana.jpg",
+      slug: "dolce-gabbana",
+      objectPosition: "object-right md:object-center",
+    },
+    {
+      nombre: "TOUS",
+      imagen: "/tous.jpg",
+      slug: "tous",
+      objectPosition: "object-center",
     },
   ];
 
@@ -109,7 +110,7 @@ export default function Home() {
       <div className="container mx-auto px-5 sm:px-4">
         <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
           <BannerMarcas
-            titulo="Tus marcas favoritas en óptica"
+            titulo="Tenemos tus marcas favoritas en óptica"
             marcas={marcasOptica}
             categoriaBase="gafas"
           />

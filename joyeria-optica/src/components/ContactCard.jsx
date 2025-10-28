@@ -38,6 +38,7 @@ const galleryImages = [
     src: "/tienda3.jpg",
     title: "Confianza y experiencia",
     description: "Años de trayectoria ofreciendo lo mejor a nuestros clientes",
+    rotated: true, // Imagen necesita rotación 180°
   },
   {
     id: 4,
@@ -72,7 +73,13 @@ const AccordionImage = ({ image, isOpen, onToggle }) => {
           className="absolute inset-0 bg-center bg-cover transition-transform duration-[400ms]"
           style={{
             backgroundImage: `url(${image.src})`,
-            transform: isOpen ? "scale(1)" : "scale(1.1)",
+            transform: isOpen
+              ? image.rotated
+                ? "scale(1) rotate(180deg)"
+                : "scale(1)"
+              : image.rotated
+              ? "scale(1.1) rotate(180deg)"
+              : "scale(1.1)",
             willChange: "transform",
           }}
         />
