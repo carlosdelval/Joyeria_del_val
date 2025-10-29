@@ -92,7 +92,7 @@ const Panel = ({
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
-            className="relative flex items-end w-full h-full overflow-hidden bg-black cursor-pointer hover:brightness-110"
+            className="relative flex items-end w-full h-full overflow-hidden bg-black cursor-pointer hover:brightness-110 transition-all duration-700 ease-out"
           >
             <motion.div
               variants={descriptionVariants}

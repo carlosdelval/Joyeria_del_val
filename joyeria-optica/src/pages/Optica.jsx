@@ -272,6 +272,7 @@ const MarcasOptica = () => {
       descripcion: "Lentes fotocromáticas inteligentes",
       especialidad: "Fotocromáticos",
       imagen: "/transitions-banner.jpg",
+      objectPosition: "",
     },
     {
       nombre: "Essilor",
@@ -280,22 +281,22 @@ const MarcasOptica = () => {
       imagen: "/essilor-banner.jpg",
     },
     {
-      nombre: "Crizal",
-      descripcion: "Tratamientos antirreflejantes premium",
-      especialidad: "Tratamientos",
-      imagen: "/crizal-banner.jpg",
-    },
-    {
       nombre: "Ray-Ban",
       descripcion: "Monturas icónicas desde 1937",
       especialidad: "Monturas",
       imagen: "/rayban.jpg",
     },
     {
-      nombre: "Oakley",
-      descripcion: "Tecnología deportiva de alto rendimiento",
-      especialidad: "Deportivas",
-      imagen: "/oakley-banner.jpg",
+      nombre: "De Rigo",
+      descripcion: "Estilo y tradición italiana en gafas de todo el mundo",
+      especialidad: "Estilo",
+      imagen: "/derigo-banner.jpg",
+    },
+    {
+      nombre: "Marcolin",
+      descripcion: "Artesanía y tecnologías italianas.",
+      especialidad: "Moda",
+      imagen: "/marcolin-banner.jpg",
     },
   ];
 
@@ -334,7 +335,9 @@ const MarcasOptica = () => {
                 <img
                   src={marca.imagen}
                   alt={marca.nombre}
-                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  className={`object-cover w-full h-full transition-transform duration-500 group-hover:scale-110 ${
+                    marca.objectPosition || "object-center"
+                  }`}
                   onError={(e) => {
                     e.target.style.display = "none";
                     e.target.parentElement.classList.add("bg-gray-200");
@@ -453,11 +456,27 @@ export default function Optica() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Prevenir el scroll automático del navegador
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    // Forzar scroll al inicio inmediatamente
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
     const timer = setTimeout(() => {
       setIsLoading(false);
+      // Asegurar scroll al inicio después de cargar
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, 500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      // Restaurar comportamiento por defecto al desmontar
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
+    };
   }, []);
 
   if (isLoading) {

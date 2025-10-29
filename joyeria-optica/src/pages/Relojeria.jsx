@@ -180,10 +180,10 @@ const MarcasRelojes = () => {
       objectPosition: "object-right",
     },
     {
-      nombre: "Lotus",
-      descripcion: "Innovación española en relojería deportiva",
-      imagen: "/lotus-banner.jpg",
-      objectPosition: "object-center",
+      nombre: "Lacoste",
+      descripcion: "Elegancia deportiva con el icónico cocodrilo",
+      imagen: "/lacoste-banner.jpg",
+      objectPosition: "object-right",
     },
     {
       nombre: "Viceroy",
@@ -210,10 +210,10 @@ const MarcasRelojes = () => {
       objectPosition: "object-center",
     },
     {
-      nombre: "Festina",
-      descripcion: "Tradición relojera suiza desde 1902",
-      imagen: "/festina-banner.jpg",
-      objectPosition: "object-center md:object-left",
+      nombre: "Maserati",
+      descripcion: "Potencia italiana y diseño deportivo",
+      imagen: "/maserati-banner.jpg",
+      objectPosition: "object-center",
     },
     {
       nombre: "Orient",
@@ -565,11 +565,27 @@ export default function Relojes() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Prevenir el scroll automático del navegador
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    // Forzar scroll al inicio inmediatamente
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
     const timer = setTimeout(() => {
       setIsLoading(false);
+      // Asegurar scroll al inicio después de cargar
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, 500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      // Restaurar comportamiento por defecto al desmontar
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
+    };
   }, []);
 
   if (isLoading) {

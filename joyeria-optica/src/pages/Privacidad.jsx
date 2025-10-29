@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Mail, Phone, ChevronRight } from "lucide-react";
 import CookieSettings from "../components/CookieSettings";
 
 const PoliticaPrivacidad = () => {
+  // Scroll al inicio al cargar la página
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+    return () => {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
+    };
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}

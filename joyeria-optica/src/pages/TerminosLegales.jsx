@@ -1,9 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Mail, Phone, Clock, ChevronRight } from "lucide-react";
 
 const TerminosLegales = () => {
+  // Scroll al inicio al cargar la página
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+    return () => {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
+    };
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -24,7 +38,12 @@ const TerminosLegales = () => {
           </h1>
           <div className="w-24 h-px mx-auto bg-gray-300"></div>
           <p className="mt-4 text-gray-600">
-            Última actualización: {new Date().toLocaleDateString("es-ES", { year: 'numeric', month: 'long', day: 'numeric' })}
+            Última actualización:{" "}
+            {new Date().toLocaleDateString("es-ES", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
           </p>
         </motion.header>
 
@@ -41,13 +60,38 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               1. Titularidad del dominio
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                En cumplimiento de la Ley 34/2002 de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSICE), se informa que la titularidad del dominio de nuestra tienda virtual, <a href="http://www.opticadelvaljoyeros.es" className="text-black underline hover:text-gray-600">www.opticadelvaljoyeros.es</a>, corresponde a Óptica Del Val Joyeros, sociedad legalmente constituida en España.
+                En cumplimiento de la Ley 34/2002 de Servicios de la Sociedad de
+                la Información y del Comercio Electrónico (LSSICE), se informa
+                que la titularidad del dominio de nuestra tienda virtual,{" "}
+                <a
+                  href="http://www.opticadelvaljoyeros.es"
+                  className="text-black underline hover:text-gray-600"
+                >
+                  www.opticadelvaljoyeros.es
+                </a>
+                , corresponde a Óptica Del Val Joyeros, sociedad legalmente
+                constituida en España.
               </p>
               <p>
-                Para cualquier consulta, puede contactar con Óptica Del Val Joyeros en el correo electrónico <a href="mailto:opticadelvaljoyeros@gmail.com" className="text-black underline hover:text-gray-600">opticadelvaljoyeros@gmail.com</a> o en el teléfono <a href="tel:957602123" className="text-black underline hover:text-gray-600">957 60 21 23</a>.
+                Para cualquier consulta, puede contactar con Óptica Del Val
+                Joyeros en el correo electrónico{" "}
+                <a
+                  href="mailto:opticadelvaljoyeros@gmail.com"
+                  className="text-black underline hover:text-gray-600"
+                >
+                  opticadelvaljoyeros@gmail.com
+                </a>{" "}
+                o en el teléfono{" "}
+                <a
+                  href="tel:957602123"
+                  className="text-black underline hover:text-gray-600"
+                >
+                  957 60 21 23
+                </a>
+                .
               </p>
             </div>
           </motion.section>
@@ -63,13 +107,18 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               2. Objeto y ámbito de aplicación
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Estas Condiciones Generales regulan el acceso y uso de la tienda online de Óptica Del Val Joyeros, así como las transacciones comerciales entre los usuarios y la tienda. La navegación y/o compra de productos implica la aceptación sin reservas de estas condiciones.
+                Estas Condiciones Generales regulan el acceso y uso de la tienda
+                online de Óptica Del Val Joyeros, así como las transacciones
+                comerciales entre los usuarios y la tienda. La navegación y/o
+                compra de productos implica la aceptación sin reservas de estas
+                condiciones.
               </p>
               <p>
-                Óptica Del Val Joyeros podrá modificarlas en cualquier momento publicando las actualizaciones en el sitio web.
+                Óptica Del Val Joyeros podrá modificarlas en cualquier momento
+                publicando las actualizaciones en el sitio web.
               </p>
             </div>
           </motion.section>
@@ -85,10 +134,12 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               3. Información suministrada en el website
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Intentamos garantizar que toda la información sea precisa y libre de errores. En caso de error tipográfico o informático en precios, se comunicará al cliente.
+                Intentamos garantizar que toda la información sea precisa y
+                libre de errores. En caso de error tipográfico o informático en
+                precios, se comunicará al cliente.
               </p>
               <p>
                 Todos los contratos y comunicaciones se realizan en castellano.
@@ -107,13 +158,17 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               4. Propiedad intelectual e industrial
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Los contenidos, diseños, logos y materiales del sitio web son propiedad de Óptica Del Val Joyeros o de terceros con autorización.
+                Los contenidos, diseños, logos y materiales del sitio web son
+                propiedad de Óptica Del Val Joyeros o de terceros con
+                autorización.
               </p>
               <p>
-                Está prohibido el uso no autorizado de cualquier contenido, así como el establecimiento de hiperenlaces con fines comerciales sin consentimiento.
+                Está prohibido el uso no autorizado de cualquier contenido, así
+                como el establecimiento de hiperenlaces con fines comerciales
+                sin consentimiento.
               </p>
             </div>
           </motion.section>
@@ -129,18 +184,25 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               5. Responsabilidad de Óptica Del Val Joyeros
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Los productos están conformes con la legislación española. Óptica Del Val Joyeros no se responsabiliza de productos que no cumplan la normativa de otros países.
+                Los productos están conformes con la legislación española.
+                Óptica Del Val Joyeros no se responsabiliza de productos que no
+                cumplan la normativa de otros países.
               </p>
               <p>
-                Tampoco es responsable de interferencias, virus, fallos técnicos o mal uso del sitio por parte de los usuarios o terceros.
+                Tampoco es responsable de interferencias, virus, fallos técnicos
+                o mal uso del sitio por parte de los usuarios o terceros.
               </p>
               <div className="p-4 mt-4 border-l-4 border-red-600 bg-red-50">
-                <h3 className="font-medium text-red-600">Condiciones sobre errores de precio</h3>
+                <h3 className="font-medium text-red-600">
+                  Condiciones sobre errores de precio
+                </h3>
                 <p className="mt-1 text-red-700">
-                  Si se muestra un precio claramente erróneo por fallo técnico, Óptica Del Val Joyeros se reserva el derecho a cancelar el pedido, notificando al cliente.
+                  Si se muestra un precio claramente erróneo por fallo técnico,
+                  Óptica Del Val Joyeros se reserva el derecho a cancelar el
+                  pedido, notificando al cliente.
                 </p>
               </div>
             </div>
@@ -157,10 +219,11 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               6. Obligaciones de clientes y usuarios
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Los usuarios deben actuar conforme a la ley y buena fe. En particular, se comprometen a:
+                Los usuarios deben actuar conforme a la ley y buena fe. En
+                particular, se comprometen a:
               </p>
               <ul className="pl-5 space-y-2 list-disc">
                 <li>No introducir contenido ilegal, dañino o difamatorio</li>
@@ -182,10 +245,19 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               7. Privacidad y protección de datos personales
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Óptica Del Val Joyeros trata los datos personales conforme a la normativa vigente. Los usuarios pueden ejercer los derechos de acceso, rectificación, cancelación y oposición escribiendo a <a href="mailto:opticadelvaljoyeros@gmail.com" className="text-black underline hover:text-gray-600">opticadelvaljoyeros@gmail.com</a>.
+                Óptica Del Val Joyeros trata los datos personales conforme a la
+                normativa vigente. Los usuarios pueden ejercer los derechos de
+                acceso, rectificación, cancelación y oposición escribiendo a{" "}
+                <a
+                  href="mailto:opticadelvaljoyeros@gmail.com"
+                  className="text-black underline hover:text-gray-600"
+                >
+                  opticadelvaljoyeros@gmail.com
+                </a>
+                .
               </p>
             </div>
           </motion.section>
@@ -201,10 +273,12 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               8. Cookies
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Este sitio web utiliza cookies para mejorar la experiencia de navegación. Las cookies no contienen virus ni pueden ejecutar código. Puedes gestionarlas desde tu navegador.
+                Este sitio web utiliza cookies para mejorar la experiencia de
+                navegación. Las cookies no contienen virus ni pueden ejecutar
+                código. Puedes gestionarlas desde tu navegador.
               </p>
             </div>
           </motion.section>
@@ -220,17 +294,34 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               9. Gastos de envío
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <ul className="pl-5 space-y-2 list-disc">
-                <li><span className="font-medium">Gratis</span> en pedidos superiores a 50 € (sólo Península)</li>
-                <li><span className="font-medium">Baleares, Ceuta y Melilla:</span> gratis desde 100 €; 10 € si es inferior</li>
-                <li><span className="font-medium">Canarias:</span> 57 € si supera los 139 €; 39 € si es inferior</li>
-                <li><span className="font-medium">Europa:</span> 15 € (Francia); 20 € (Alemania, Bélgica, etc.)</li>
-                <li><span className="font-medium">América:</span> 55 €</li>
+                <li>
+                  <span className="font-medium">Gratis</span> en pedidos
+                  superiores a 50 € (sólo Península)
+                </li>
+                <li>
+                  <span className="font-medium">
+                    Baleares, Ceuta y Melilla:
+                  </span>{" "}
+                  gratis desde 100 €; 10 € si es inferior
+                </li>
+                <li>
+                  <span className="font-medium">Canarias:</span> 57 € si supera
+                  los 139 €; 39 € si es inferior
+                </li>
+                <li>
+                  <span className="font-medium">Europa:</span> 15 € (Francia);
+                  20 € (Alemania, Bélgica, etc.)
+                </li>
+                <li>
+                  <span className="font-medium">América:</span> 55 €
+                </li>
               </ul>
               <p className="text-xs italic text-gray-500">
-                *Pedidos fuera de la UE pueden tener costes adicionales por aduanas.
+                *Pedidos fuera de la UE pueden tener costes adicionales por
+                aduanas.
               </p>
             </div>
           </motion.section>
@@ -246,13 +337,22 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               10. Realización del pedido
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Es necesario registrarse en <a href="http://www.opticadelvaljoyeros.es" className="text-black underline hover:text-gray-600">www.opticadelvaljoyeros.es</a> y seguir el proceso de compra. Óptica Del Val Joyeros no se responsabiliza por errores en datos de envío.
+                Es necesario registrarse en{" "}
+                <a
+                  href="http://www.opticadelvaljoyeros.es"
+                  className="text-black underline hover:text-gray-600"
+                >
+                  www.opticadelvaljoyeros.es
+                </a>{" "}
+                y seguir el proceso de compra. Óptica Del Val Joyeros no se
+                responsabiliza por errores en datos de envío.
               </p>
               <p>
-                Los productos personalizados requieren información precisa; si no se proporciona, se usará la opción por defecto.
+                Los productos personalizados requieren información precisa; si
+                no se proporciona, se usará la opción por defecto.
               </p>
             </div>
           </motion.section>
@@ -268,13 +368,15 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               11. Derecho de Desistimiento y Devoluciones
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Puedes devolver tu producto dentro de los 30 días naturales. Los productos personalizados no admiten devolución.
+                Puedes devolver tu producto dentro de los 30 días naturales. Los
+                productos personalizados no admiten devolución.
               </p>
               <p>
-                En caso de devolución, los gastos corren por cuenta del cliente salvo error por parte de Óptica Del Val Joyeros.
+                En caso de devolución, los gastos corren por cuenta del cliente
+                salvo error por parte de Óptica Del Val Joyeros.
               </p>
             </div>
           </motion.section>
@@ -290,13 +392,21 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               12. Desistimiento
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Tienes derecho a desistir del contrato en 14 días naturales. No aplica a productos personalizados.
+                Tienes derecho a desistir del contrato en 14 días naturales. No
+                aplica a productos personalizados.
               </p>
               <p>
-                Para ello, escribe a <a href="mailto:opticadelvaljoyeros@gmail.com" className="text-black underline hover:text-gray-600">opticadelvaljoyeros@gmail.com</a>.
+                Para ello, escribe a{" "}
+                <a
+                  href="mailto:opticadelvaljoyeros@gmail.com"
+                  className="text-black underline hover:text-gray-600"
+                >
+                  opticadelvaljoyeros@gmail.com
+                </a>
+                .
               </p>
             </div>
           </motion.section>
@@ -312,13 +422,28 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               13. Atención al cliente
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Puedes contactar con nosotros en <a href="mailto:opticadelvaljoyeros@gmail.com" className="text-black underline hover:text-gray-600">opticadelvaljoyeros@gmail.com</a> o en el <a href="tel:957602123" className="text-black underline hover:text-gray-600">957 60 21 23</a> (lunes a viernes, de 9:00 a 14:00 y de 15:00 a 18:00).
+                Puedes contactar con nosotros en{" "}
+                <a
+                  href="mailto:opticadelvaljoyeros@gmail.com"
+                  className="text-black underline hover:text-gray-600"
+                >
+                  opticadelvaljoyeros@gmail.com
+                </a>{" "}
+                o en el{" "}
+                <a
+                  href="tel:957602123"
+                  className="text-black underline hover:text-gray-600"
+                >
+                  957 60 21 23
+                </a>{" "}
+                (lunes a viernes, de 9:00 a 14:00 y de 15:00 a 18:00).
               </p>
               <p>
-                Disponemos de hojas de reclamaciones oficiales disponibles tanto físicamente como en formato digital bajo solicitud.
+                Disponemos de hojas de reclamaciones oficiales disponibles tanto
+                físicamente como en formato digital bajo solicitud.
               </p>
             </div>
           </motion.section>
@@ -334,13 +459,16 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               14. Disponibilidad de los productos
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                La oferta es válida mientras los productos estén visibles en la web. Si no hay stock, el plazo de entrega dependerá del proveedor.
+                La oferta es válida mientras los productos estén visibles en la
+                web. Si no hay stock, el plazo de entrega dependerá del
+                proveedor.
               </p>
               <p>
-                En productos personalizados el tiempo puede extenderse 24-48h adicionales.
+                En productos personalizados el tiempo puede extenderse 24-48h
+                adicionales.
               </p>
             </div>
           </motion.section>
@@ -356,11 +484,16 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               15. Modos y plazos de envío
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <ul className="pl-5 space-y-2 list-disc">
-                <li><span className="font-medium">En stock:</span> 24-48h</li>
-                <li><span className="font-medium">Personalizados:</span> +24-48h según volumen de trabajo del taller</li>
+                <li>
+                  <span className="font-medium">En stock:</span> 24-48h
+                </li>
+                <li>
+                  <span className="font-medium">Personalizados:</span> +24-48h
+                  según volumen de trabajo del taller
+                </li>
               </ul>
             </div>
           </motion.section>
@@ -376,7 +509,7 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               16. Pago
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>Opciones:</p>
               <ul className="grid grid-cols-1 gap-2 pl-5 sm:grid-cols-2">
@@ -423,10 +556,12 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               17. Bonos y descuentos
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Los bonos tienen una validez de 90 días y solo son válidos para compras online. Óptica Del Val Joyeros puede modificarlos o anularlos si detecta uso indebido.
+                Los bonos tienen una validez de 90 días y solo son válidos para
+                compras online. Óptica Del Val Joyeros puede modificarlos o
+                anularlos si detecta uso indebido.
               </p>
             </div>
           </motion.section>
@@ -442,14 +577,14 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               18. Garantía de bienes de consumo
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Todos los productos tienen garantía de 2 años según la Ley de Defensa de los Consumidores. Para reclamar, contáctanos por email o teléfono.
+                Todos los productos tienen garantía de 2 años según la Ley de
+                Defensa de los Consumidores. Para reclamar, contáctanos por
+                email o teléfono.
               </p>
-              <p>
-                La garantía no cubre desgaste por mal uso.
-              </p>
+              <p>La garantía no cubre desgaste por mal uso.</p>
             </div>
           </motion.section>
 
@@ -464,10 +599,13 @@ const TerminosLegales = () => {
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               19. Legislación aplicable y jurisdicción
             </h2>
-            
+
             <div className="space-y-4 text-sm text-gray-700">
               <p>
-                Las compraventas se rigen por la legislación española. En caso de conflicto, el fuero aplicable será el correspondiente al domicilio del consumidor, en Puente Genil (Córdoba), salvo disposición legal en contra.
+                Las compraventas se rigen por la legislación española. En caso
+                de conflicto, el fuero aplicable será el correspondiente al
+                domicilio del consumidor, en Puente Genil (Córdoba), salvo
+                disposición legal en contra.
               </p>
             </div>
           </motion.section>
@@ -483,20 +621,20 @@ const TerminosLegales = () => {
               <h2 className="mb-4 text-xl font-light tracking-wider">
                 ¿Necesitas Ayuda?
               </h2>
-              <p className="mb-6 text-gray-300">
-                Contacta con nuestra tienda
-              </p>
+              <p className="mb-6 text-gray-300">Contacta con nuestra tienda</p>
               <div className="grid max-w-md gap-4 mx-auto sm:grid-cols-2">
-                <a 
-                  href="mailto:opticadelvaljoyeros@gmail.com" 
+                <a
+                  href="mailto:opticadelvaljoyeros@gmail.com"
                   className="flex flex-col items-center p-4 transition-colors rounded-sm hover:bg-gray-800"
                 >
                   <Mail className="w-5 h-5 mb-2" />
                   <span className="text-sm">Email</span>
-                  <span className="text-xs text-gray-300">opticadelvaljoyeros@gmail.com</span>
+                  <span className="text-xs text-gray-300">
+                    opticadelvaljoyeros@gmail.com
+                  </span>
                 </a>
-                <a 
-                  href="tel:957602123" 
+                <a
+                  href="tel:957602123"
                   className="flex flex-col items-center p-4 transition-colors rounded-sm hover:bg-gray-800"
                 >
                   <Phone className="w-5 h-5 mb-2" />

@@ -399,11 +399,27 @@ export default function Joyeria() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Prevenir el scroll automático del navegador
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    // Forzar scroll al inicio inmediatamente
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
     const timer = setTimeout(() => {
       setIsLoading(false);
+      // Asegurar scroll al inicio después de cargar
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, 500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      // Restaurar comportamiento por defecto al desmontar
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
+    };
   }, []);
 
   if (isLoading) {
@@ -427,9 +443,6 @@ export default function Joyeria() {
 
         {/* Categorías/Colecciones */}
         <CategoriasJoyeria />
-
-        {/* Marcas */}
-        <MarcasJoyeria />
 
         {/* Productos destacados */}
         <ProductosDestacados categoria="anillos" titulo="Anillos en Oferta" />
