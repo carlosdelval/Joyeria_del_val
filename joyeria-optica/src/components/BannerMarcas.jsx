@@ -35,7 +35,7 @@ export default function BannerMarcas({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-6 text-3xl font-bold text-left sm:text-center sm:mb-8"
+          className="hidden mb-6 text-3xl font-bold text-left sm:text-center sm:mb-8 md:block"
         >
           {titulo}
         </motion.h2>
