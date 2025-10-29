@@ -174,7 +174,7 @@ const Catalogo = () => {
     if (searchQuery) {
       return {
         title: `Resultados para "${searchQuery}" - Óptica Del Val Joyeros`,
-        description: `Encuentra productos relacionados con ${searchQuery} en nuestra tienda online. ${productosFiltrados.length} resultados encontrados.`,
+        description: `Encuentra productos relacionados con ${searchQuery} en nuestra tienda online. ${productos.length} resultados encontrados.`,
         url: `${baseUrl}?q=${searchQuery}`,
       };
     }
