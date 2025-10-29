@@ -196,8 +196,6 @@ const FiltroSidebar = ({
                 typeof option === "string" ? option : option.value;
               const optionLabel =
                 typeof option === "string" ? option : option.label;
-              const optionCount =
-                typeof option === "object" ? option.count : null;
               const isChecked = currentValues.includes(optionValue);
 
               return (
@@ -226,14 +224,6 @@ const FiltroSidebar = ({
                       {optionLabel}
                     </span>
                   </div>
-                  {optionCount && (
-                    <span
-                      className="px-2 py-1 text-xs text-gray-500 bg-gray-100 rounded-full"
-                      aria-label={`${optionCount} productos disponibles`}
-                    >
-                      {optionCount}
-                    </span>
-                  )}
                 </label>
               );
             })}
@@ -427,6 +417,22 @@ const FiltroSidebar = ({
           </span>
         </button>
       </div>
+
+      {/* Overlay for mobile - DEBE IR ANTES DEL SIDEBAR */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-40 lg:hidden"
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+            onClick={onToggle}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
 
       {/* Sidebar */}
       <AnimatePresence>
@@ -727,15 +733,6 @@ const FiltroSidebar = ({
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Overlay for mobile */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
-          onClick={onToggle}
-          aria-hidden="true"
-        />
-      )}
     </>
   );
 };
