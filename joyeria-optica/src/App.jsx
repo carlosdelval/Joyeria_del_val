@@ -13,6 +13,10 @@ import PoliticaEnviosDevoluciones from "./pages/Devoluciones";
 import CheckoutPage from "./pages/CheckoutPage";
 import Favoritos from "./pages/Favoritos";
 import PerfilUsuario from "./pages/PerfilUsuario";
+import Joyeria from "./pages/Joyeria";
+import Relojes from "./pages/Relojeria";
+import Gafas from "./pages/Optica";
+import NotFound from "./pages/404";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { WishlistProvider } from "./context/WishlistContext";
@@ -34,6 +38,9 @@ function App() {
                     <Route path="/catalogo" element={<Catalogo />} />
                     <Route path="/catalogo/:categoria" element={<Catalogo />} />
                     <Route path="/producto/:slug" element={<ProductoPage />} />
+                    <Route path="/joyeria" element={<Joyeria />} />
+                    <Route path="/relojeria" element={<Relojes />} />
+                    <Route path="/optica" element={<Gafas />} />
                     <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/favoritos" element={<Favoritos />} />
                     <Route path="/perfil" element={<PerfilUsuario />} />
@@ -47,6 +54,8 @@ function App() {
                       path="/envios-devoluciones"
                       element={<PoliticaEnviosDevoluciones />}
                     />
+                    {/* Ruta 404 - debe ir al final */}
+                    <Route path="*" element={<NotFound />} />
                   </Routes>
                   <Footer />
                 </div>

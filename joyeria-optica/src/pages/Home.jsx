@@ -110,7 +110,7 @@ export default function Home() {
       <div className="container mx-auto px-5 sm:px-4">
         <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
           <BannerMarcas
-            titulo="Tenemos tus marcas favoritas en óptica"
+            titulo="Tenemos tus marcas favoritas en gafas de sol"
             marcas={marcasOptica}
             categoriaBase="gafas"
           />
@@ -124,6 +124,9 @@ export default function Home() {
 
       {/* Colecciones Destacadas (ancho completo) */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <h2 className="mb-6 font-bold hidden sm:block text-center sm:mb-8 text-3xl">
+          La mejor selección de joyería disponible en tienda
+        </h2>
         <ColeccionesDestacadas />
       </AnimatedSection>
 

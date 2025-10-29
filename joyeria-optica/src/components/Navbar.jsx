@@ -36,28 +36,16 @@ export default function Navbar() {
       href: "/catalogo/rebajas",
     },
     {
+      label: "Joyería",
+      href: "/joyeria",
+    },
+    {
+      label: "Gafas de vista",
+      href: "/optica",
+    },
+    {
       label: "TOUS",
       href: "/catalogo/tous",
-    },
-    {
-      label: "Joyería Oro 18K",
-      href: "/catalogo/oro",
-    },
-    {
-      label: "Salvatore Plata",
-      href: "/catalogo/salvatore",
-    },
-    {
-      label: "Nomination Italy",
-      href: "/catalogo/nomination",
-    },
-    {
-      label: "Gafas graduadas",
-      href: "/catalogo/gafas-graduadas",
-    },
-    {
-      label: "Gafas de sol",
-      href: "/catalogo/gafas",
     },
     {
       label: "Relojes caballero",
@@ -66,6 +54,14 @@ export default function Navbar() {
     {
       label: "Relojes señora",
       href: "/catalogo/relojes?genero=mujer",
+    },
+    {
+      label: "Gafas de sol caballero",
+      href: "/catalogo/gafas?genero=hombre",
+    },
+    {
+      label: "Gafas de sol señora",
+      href: "/catalogo/gafas?genero=mujer",
     },
   ];
 

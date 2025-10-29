@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import ProductoCard from "../components/ProductoCard";
 import SEO from "../components/SEO";
 import { SkeletonGrid } from "../components/Skeleton";
+import { PageSpinner } from "../components/Spinner";
 
 const Catalogo = () => {
   const { categoria } = useParams();
@@ -17,6 +18,16 @@ const Catalogo = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [filtros, setFiltros] = useState({});
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+
+  // Loader inicial de la página
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Aplicar filtros desde URL cuando se monta el componente
   useEffect(() => {
@@ -205,6 +216,10 @@ const Catalogo = () => {
   };
 
   const seoData = getCatalogoSEO();
+
+  if (isInitialLoading) {
+    return <PageSpinner />;
+  }
 
   return (
     <>

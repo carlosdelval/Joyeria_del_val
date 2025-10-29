@@ -2,33 +2,60 @@ import { Glasses, Gem, Watch, Eye, Church } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useWindowSize } from "./useWindowSize";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const VerticalAccordion = () => {
   const [open, setOpen] = useState(items[0].id);
 
   return (
-      <div className="flex flex-col lg:flex-row h-fit lg:h-[450px] w-full max-w-6xl mx-auto shadow overflow-hidden">
-        {items.map((item) => {
-          return (
-            <Panel
-              key={item.id}
-              open={open}
-              setOpen={setOpen}
-              id={item.id}
-              Icon={item.Icon}
-              title={item.title}
-              imgSrc={item.imgSrc}
-              description={item.description}
-            />
-          );
-        })}
-      </div>
+    <div className="flex flex-col lg:flex-row h-fit lg:h-[450px] w-full max-w-6xl mx-auto shadow overflow-hidden">
+      {items.map((item) => {
+        return (
+          <Panel
+            key={item.id}
+            open={open}
+            setOpen={setOpen}
+            id={item.id}
+            Icon={item.Icon}
+            title={item.title}
+            imgSrc={item.imgSrc}
+            description={item.description}
+            href={item.href}
+          />
+        );
+      })}
+    </div>
   );
 };
 
-const Panel = ({ open, setOpen, id, Icon, title, imgSrc, description }) => {
+const Panel = ({
+  open,
+  setOpen,
+  id,
+  Icon,
+  title,
+  imgSrc,
+  description,
+  href,
+}) => {
   const { width } = useWindowSize();
+  const navigate = useNavigate();
   const isOpen = open === id;
+
+  const handleImageClick = () => {
+    if (href) {
+      // Navegación interna para las primeras 3 opciones
+      window.scrollTo(0, 0);
+      navigate(href);
+    } else if (id === 4) {
+      // WhatsApp para la opción de graduación
+      const phoneNumber = "664146433";
+      const message = encodeURIComponent(
+        "Hola, me gustaría reservar una cita para graduación de vista."
+      );
+      window.open(`https://wa.me/34${phoneNumber}?text=${message}`, "_blank");
+    }
+  };
 
   return (
     <>
@@ -59,12 +86,13 @@ const Panel = ({ open, setOpen, id, Icon, title, imgSrc, description }) => {
             initial="closed"
             animate="open"
             exit="closed"
+            onClick={handleImageClick}
             style={{
               backgroundImage: `url(${imgSrc})`,
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
-            className="relative flex items-end w-full h-full overflow-hidden bg-black"
+            className="relative flex items-end w-full h-full overflow-hidden bg-black cursor-pointer hover:brightness-110"
           >
             <motion.div
               variants={descriptionVariants}
@@ -72,6 +100,7 @@ const Panel = ({ open, setOpen, id, Icon, title, imgSrc, description }) => {
               animate="open"
               exit="closed"
               className="px-4 py-2 text-white bg-black/40 backdrop-blur-sm"
+              onClick={(e) => e.stopPropagation()} // Evitar que el click en la descripción active la navegación
             >
               <p>{description}</p>
             </motion.div>
@@ -88,10 +117,18 @@ const panelVariants = {
   open: {
     width: "100%",
     height: "100%",
+    transition: {
+      duration: 0.3,
+      ease: "easeOut",
+    },
   },
   closed: {
     width: "0%",
     height: "100%",
+    transition: {
+      duration: 0.3,
+      ease: "easeIn",
+    },
   },
 };
 
@@ -99,10 +136,18 @@ const panelVariantsSm = {
   open: {
     width: "100%",
     height: "200px",
+    transition: {
+      duration: 0.3,
+      ease: "easeOut",
+    },
   },
   closed: {
     width: "100%",
     height: "0px",
+    transition: {
+      duration: 0.3,
+      ease: "easeIn",
+    },
   },
 };
 
@@ -122,36 +167,34 @@ const items = [
     id: 1,
     title: "La mejor selección en joyería",
     Icon: Gem,
-    imgSrc:
-      "/joyeria_acordeon.jpg",
+    imgSrc: "/joyeria_acordeon.jpg",
     description:
       "Encuentra joyas únicas y elegantes para cada ocasión. Desde anillos hasta collares, tenemos lo que buscas.",
+    href: "/joyeria",
   },
   {
     id: 2,
     title: "Tus gafas favoritas",
     Icon: Glasses,
-    imgSrc:
-      "/gafas_acordeon.jpg",
+    imgSrc: "/gafas_acordeon.jpg",
     description:
       "Protege tus ojos con estilo. Explora nuestra colección de gafas de sol de las mejores marcas.",
+    href: "/optica",
   },
   {
     id: 3,
     title: "Relojería",
     Icon: Watch,
-    imgSrc:
-      "/reloj_acordeon.jpg",
+    imgSrc: "/reloj_acordeon.jpg",
     description:
       "Descubre nuestra amplia selección de relojes de lujo y moda. Encuentra el reloj perfecto para cada ocasión.",
+    href: "/relojeria",
   },
   {
     id: 4,
     title: "Graduación de vista",
     Icon: Eye,
-    imgSrc:
-      "/cartelGraduacion.svg",
-    description:
-      "¡Reserva ya tu cita!",
-  }
+    imgSrc: "/cartelGraduacion.svg",
+    description: "¡Reserva ya tu cita!",
+  },
 ];

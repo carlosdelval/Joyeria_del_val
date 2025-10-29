@@ -232,6 +232,39 @@ firebase deploy
 
 ## 🎯 Mejoras Implementadas (Octubre 2025)
 
+### ✨ Actualización 29 de Octubre 2025 - Rediseño Minimalista
+
+#### 🎨 Redesign Completo Páginas Comerciales
+
+- **Estilo minimalista blanco y negro**: Eliminados gradientes de colores, enfoque en negro/blanco/gris
+- **Página 404**: Rediseñada con estética profesional minimalista
+- **Página Óptica**: Enfoque en servicios (sin productos), hero con imagen restaurado, 6 marcas con imágenes promocionales
+- **Página Joyería**: Nueva estructura con categorías clickables, 4 marcas con banners, productos destacados
+- **Página Relojería**: 8 marcas de relojes, carrusel Tous adaptado, servicios detallados con iconos Lucide
+
+#### 🏗️ Componentes y Estructura
+
+- **Componentes nuevos**: MarcasRelojes, CarruselRelojesTous, CategoriasJoyeria, MarcasJoyeria, ProductosDestacados
+- **Servicios detallados**: 4 servicios por página con descripciones completas y listas de características
+- **Animaciones scroll**: useInView con delays escalonados para efecto cascada
+- **Imágenes promocionales**: h-48 con overlay y etiquetas de especialidad (eliminadas en relojes)
+
+#### 🎯 Sistema de Diseño Unificado
+
+- **Tipografía**: font-light en todo, uppercase tracking-widest en títulos
+- **Bordes**: border-2 border-gray-200, hover:border-black, sin rounded corners
+- **Iconos**: Lucide React en cuadrados negros (w-16 h-16)
+- **Animaciones hover**: scale-110 en iconos, bottom line scale-x-0 to scale-x-100
+- **Líneas decorativas**: h-px bg-gray-300/black para separadores visuales
+- **WhatsApp CTAs**: Integrados estratégicamente en múltiples secciones
+
+#### 🔧 Mejoras Técnicas
+
+- **objectPosition funcional**: Soporte para posicionamiento de imágenes responsive
+- **Descripciones de marcas**: Actualizadas con información precisa y característica de cada marca
+- **Carrusel adaptado**: ColeccionTous convertido para relojes con estilo minimalista
+- **Grid responsive**: sm:grid-cols-2 lg:grid-cols-4 consistente en todas las páginas
+
 ### ✨ Actualización 28 de Octubre 2025
 
 #### 🎨 Sistema de Loading States Optimizado
