@@ -13,7 +13,7 @@ const HeroRelojes = () => {
     <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src="/reloj_acordeon.jpg"
+          src="/maserati-acordeon3.jpg"
           alt="Relojes de lujo"
           className="object-cover w-full h-full"
         />

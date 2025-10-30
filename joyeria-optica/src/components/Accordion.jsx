@@ -167,7 +167,7 @@ const items = [
     id: 1,
     title: "La mejor selección en joyería",
     Icon: Gem,
-    imgSrc: "/joyeria_acordeon.jpg",
+    imgSrc: "/salvatore-acordeon.jpg",
     description:
       "Encuentra joyas únicas y elegantes para cada ocasión. Desde anillos hasta collares, tenemos lo que buscas.",
     href: "/joyeria",
@@ -176,16 +176,16 @@ const items = [
     id: 2,
     title: "Tus gafas favoritas",
     Icon: Glasses,
-    imgSrc: "/gafas_acordeon.jpg",
+    imgSrc: "/optica-acordeon.jpg",
     description:
-      "Protege tus ojos con estilo. Explora nuestra colección de gafas de sol de las mejores marcas.",
+      "Descubre nuestra colección de gafas de sol y vista. Estilo y protección para tu mirada.",
     href: "/optica",
   },
   {
     id: 3,
     title: "Relojería",
     Icon: Watch,
-    imgSrc: "/reloj_acordeon.jpg",
+    imgSrc: "/maserati-acordeon2.jpg",
     description:
       "Descubre nuestra amplia selección de relojes de lujo y moda. Encuentra el reloj perfecto para cada ocasión.",
     href: "/relojeria",

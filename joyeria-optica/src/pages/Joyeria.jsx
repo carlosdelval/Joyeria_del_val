@@ -14,7 +14,7 @@ const HeroJoyeria = () => {
     <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src="/joyeria_acordeon.jpg"
+          src="/joyeria-acordeon2.jpg"
           alt="Joyería de lujo"
           className="object-cover w-full h-full"
         />

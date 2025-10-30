@@ -131,7 +131,7 @@ export default function Navbar() {
                 aria-label="Abrir menú de usuario"
                 aria-expanded={showUserMenu}
                 aria-haspopup="true"
-                className="flex items-center gap-2 px-3 py-2 transition-colors rounded-full hover:bg-gray-100 focus:outline-none"
+                className="flex items-center gap-2 px-3 py-2 transition-colors rounded-full hover:bg-gray-100 focus:outline-none cursor-pointer"
               >
                 <div className="flex items-center justify-center w-6 h-6 bg-black rounded-full sm:w-7 sm:h-7">
                   <span className="text-xs font-medium text-white sm:text-sm">
