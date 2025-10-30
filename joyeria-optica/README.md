@@ -42,13 +42,15 @@ npm run update:productos
 - ✅ Sistema de productos con múltiples imágenes
 - ✅ Galería con zoom interactivo
 - ✅ Gestión de stock CSV → JSON
-- ✅ Compatible con Shopify desde el inicio
+- ✅ **Integración Shopify completa** (Cart API 2024-10)
+- ✅ **Checkout directo a Shopify** desde el carrito
 - ✅ Filtros por categoría, material, precio, género
 - ✅ Sistema de descuentos automático
 - ✅ Carrito de compra con persistencia
-- ✅ Checkout integrado con validación
 - ✅ Control de stock en tiempo real
 - ✅ Indicadores visuales de disponibilidad
+- ✅ **Scripts de testing y conversión** Shopify
+- ✅ **Lookup automático de variants** por SKU
 
 ### 🍪 RGPD & Privacidad
 
@@ -71,8 +73,9 @@ npm run update:productos
 
 - ✅ **Imágenes optimizadas**: WebP, lazy loading, CDN-ready
 - ✅ **Error Boundary**: Recuperación elegante de errores
-- ✅ **Perfil de usuario**: Historial de pedidos, favoritos, configuración
+- ✅ **Perfil de usuario rediseñado**: Hero elegante, tabs animados, edición in-place
 - ✅ **Analytics**: Google Analytics 4 + Meta Pixel integrados
+- ✅ **Shopify Customer API ready**: Estructura preparada para sincronización
 
 ### 🎨 UI/UX
 
@@ -91,6 +94,7 @@ npm run update:productos
 - **Tailwind CSS 4** - Styling
 - **Framer Motion** - Animations
 - **React Router 7** - Routing
+- **Shopify Storefront API 2024-10** - E-commerce backend
 - **EmailJS** - Servicio de emails transaccionales
 - **js-cookie** - Gestión de cookies
 - **Firebase** - Backend (opcional)
@@ -145,6 +149,10 @@ npm run lint             # Linter
 # Gestión de stock
 npm run update:productos              # Actualizar desde plantilla
 npm run csv:convert archivo.csv       # Conversión personalizada
+
+# Shopify
+npm run test:shopify                  # Test de conexión Shopify (3 pruebas)
+npm run convert:shopify               # Convertir CSV a formato Shopify
 ```
 
 ## 🔧 Configuración
@@ -152,10 +160,10 @@ npm run csv:convert archivo.csv       # Conversión personalizada
 ### Variables de Entorno (.env)
 
 ```env
-# Shopify (opcional)
-VITE_SHOPIFY_DOMAIN=tu-tienda.myshopify.com
-VITE_SHOPIFY_STOREFRONT_TOKEN=tu_token
-VITE_SHOPIFY_ADMIN_TOKEN=tu_admin_token
+# Shopify (REQUIRED para checkout)
+VITE_SHOPIFY_DOMAIN=opticadelvaljoyeros.myshopify.com
+VITE_SHOPIFY_STOREFRONT_TOKEN=tu_storefront_token
+VITE_USE_SHOPIFY=true                 # false = modo local, true = Shopify
 
 # EmailJS (para emails de confirmación)
 VITE_EMAILJS_SERVICE_ID=service_xxxxx
@@ -166,6 +174,15 @@ VITE_EMAILJS_PUBLIC_KEY=tu_public_key
 VITE_APP_ENV=development
 VITE_API_FALLBACK_ENABLED=true
 ```
+
+### Configurar Shopify (5 minutos)
+
+1. **Importar productos**: Sube `PLANTILLA-PRODUCTOS.csv` en Shopify Admin
+2. **Activar modo Shopify**: `VITE_USE_SHOPIFY=true` en `.env`
+3. **Reiniciar servidor**: `npm run dev`
+4. **Probar checkout**: Añade producto al carrito → "Finalizar compra"
+
+Ver guía completa: `SHOPIFY-QUICKSTART.md`
 
 ### Configurar EmailJS
 
@@ -223,14 +240,110 @@ firebase deploy
 
 ## 📚 Documentación Adicional
 
+### 🛍️ Shopify
+
+- **[SHOPIFY-QUICKSTART.md](./SHOPIFY-QUICKSTART.md)** - ⚡ Guía rápida 5 minutos
+- **[SHOPIFY-INTEGRACION-COMPLETA.md](./SHOPIFY-INTEGRACION-COMPLETA.md)** - Documentación completa
+- **[SHOPIFY-SETUP.md](./SHOPIFY-SETUP.md)** - Setup inicial y credenciales
+- **[CHECKOUT-DIRECTO-SHOPIFY.md](./CHECKOUT-DIRECTO-SHOPIFY.md)** - Flujo de checkout
+
+### 🎨 UI/UX
+
 - **[LOADING-STATES.md](./LOADING-STATES.md)** - Sistema completo de loading states
 - **[OPTIMIZATIONS.md](./OPTIMIZATIONS.md)** - Optimizaciones avanzadas implementadas
+
+### 🔐 Privacidad
+
 - **[COOKIES-SYSTEM.md](./COOKIES-SYSTEM.md)** - Sistema de cookies y RGPD
+
+### 📧 Email
+
 - **[EMAILJS-SETUP.md](./EMAILJS-SETUP.md)** - Configuración completa de EmailJS
 - **[EMAILJS-CONFIG-RAPIDA.md](./EMAILJS-CONFIG-RAPIDA.md)** - Guía rápida EmailJS
+
+### 📦 Inventario
+
 - **[GUIA-GESTION-STOCK.md](./GUIA-GESTION-STOCK.md)** - Gestión de inventario
 
 ## 🎯 Mejoras Implementadas (Octubre 2025)
+
+### ✨ Actualización 30 de Octubre 2025 - Shopify Checkout + Perfil Usuario
+
+#### 🛍️ Integración Shopify Completa (Cart API 2024-10)
+
+- **Migración a Cart API**: Deprecado checkoutCreate → cartCreate
+- **Checkout directo desde carrito**: Eliminada página intermedia
+- **CartSidebar actualizado**: Botón "Finalizar compra" crea cart y redirige
+- **CheckoutPage inteligente**: Auto-redirect en modo Shopify con loading screen
+- **Lookup automático de variants**: Busca variant ID por SKU del producto
+- **Logs detallados**: Console logs para debugging del proceso completo
+- **Dual-mode**: Soporta modo local (JSON) y modo Shopify con variable .env
+
+#### 🧪 Scripts y Herramientas Shopify
+
+- **test-shopify.js**: 3 tests automáticos (conexión tienda, productos, checkout)
+- **convert-to-shopify-csv.js**: Conversión masiva de PLANTILLA-PRODUCTOS.csv a formato Shopify
+- **Soporte múltiples imágenes**: Script maneja imágenes separadas por `|`
+- **SHOPIFY-QUICKSTART.md**: Guía de activación en 5 minutos
+- **Validación de credenciales**: Verificación automática de tokens y dominio
+
+#### 👤 Rediseño Completo Perfil Usuario
+
+- **Hero banner elegante**: Degradado oscuro (gray-900 → black) con líneas decorativas blancas
+- **Avatar premium**: Efecto halo blanco con blur, animación hover, degradado gris en inicial
+- **Layout moderno**: Sticky sidebar + 4 tabs animados (Pedidos, Favoritos, Perfil, Ajustes)
+- **AnimatePresence**: Transiciones suaves entre tabs con fade + slide
+- **Edición in-place**: Perfiles y direcciones editables con botones Edit/Save/Cancel
+- **Empty states elegantes**: Ilustraciones con CTAs claros para pedidos y favoritos vacíos
+- **Badge verificación**: Shield icon + "Cuenta verificada" en header
+- **Responsive completo**: Mobile-first con breakpoints md/lg optimizados
+
+#### 🧹 Limpieza y Estructura
+
+- **Eliminados datos mock**: No más pedidos falsos que confunden
+- **TODO comments**: Guías inline para integración Shopify Customer API
+- **Estructura Shopify-ready**: Order format compatible con GraphQL de Shopify
+- **Console logs útiles**: Mensajes emoji para debugging rápido
+- **Error handling**: Try-catch robusto en todas las llamadas API
+
+#### 🎨 Sistema de Diseño Consistente
+
+- **Paleta monocromática**: Negro, gris (50-900), blanco exclusivamente
+- **Tipografía elegante**: font-extralight + tracking-[0.2em] en títulos principales
+- **Iconos Lucide**: Colores blancos en elementos destacados, consistencia total
+- **Glassmorphism**: bg-white/5 + backdrop-blur-sm en botones sobre fondos oscuros
+- **Bordes sutiles**: border-white/10 con hover a border-white/50
+- **Hover effects**: Transiciones duration-300 en todos los elementos interactivos
+
+#### 🔧 Mejoras Técnicas
+
+- **CartContext actualizado**: Items incluyen SKU, exporta proceedToCheckout
+- **checkoutService refactorizado**: Queries GraphQL documentadas inline
+- **SKU matching**: Búsqueda de variant en Shopify por SKU del producto local
+- **Response parsing**: Adaptado a estructura cart.checkoutUrl de Cart API
+- **Validación pre-checkout**: Verifica productos disponibles antes de crear cart
+
+#### 📚 Documentación Nueva
+
+- **SHOPIFY-QUICKSTART.md**: Pasos inmediatos para activar (5 min)
+- **CHECKOUT-DIRECTO-SHOPIFY.md**: Explicación del flujo completo
+- **Comentarios inline**: Ejemplos de Customer API queries listos para implementar
+- **TODO estructurados**: Roadmap claro para próximas integraciones
+
+#### 🚀 Flujo de Checkout Optimizado
+
+**ANTES**: Carrito → CheckoutPage (formulario) → Email local → Nada en Shopify  
+**AHORA**: Carrito → Crear Cart en Shopify → Redirect a Shopify Checkout → Order en Shopify Admin
+
+**Ventajas**:
+
+- ✅ Pedidos llegan a Shopify automáticamente
+- ✅ Cliente ve checkout nativo de Shopify
+- ✅ Shopify maneja pagos, emails, fulfillment
+- ✅ Inventario se actualiza automáticamente
+- ✅ Una página menos en el flujo (más rápido)
+
+## 🎯 Mejoras Implementadas (Octubre 2025) - Anteriores
 
 ### ✨ Actualización 29 de Octubre 2025 (Tarde) - SEO, SSL y UX
 

@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Minus, ShoppingBag, Truck } from "lucide-react";
 import { useCart } from "../hooks/useCart";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import CouponInput from "./CouponInput";
 
 const CartSidebar = ({ isOpen, onClose }) => {
@@ -19,14 +20,43 @@ const CartSidebar = ({ isOpen, onClose }) => {
     freeShipping,
     applyDiscount,
     removeDiscount,
+    proceedToCheckout,
   } = useCart();
 
   const navigate = useNavigate();
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const handleCheckout = () => {
-    window.scrollTo(0, 0);
-    onClose();
-    navigate("/checkout");
+  const handleCheckout = async () => {
+    // Si Shopify está activado, ir directo al checkout de Shopify
+    if (import.meta.env.VITE_USE_SHOPIFY === "true") {
+      setIsProcessing(true);
+
+      try {
+        console.log("🛒 Creando checkout de Shopify desde el carrito...");
+
+        // Crear el checkout y obtener la URL
+        const result = await proceedToCheckout();
+
+        if (result.success && result.url) {
+          console.log("✅ Redirigiendo a Shopify checkout:", result.url);
+          // La redirección ocurre automáticamente en proceedToCheckout
+          onClose();
+        } else {
+          console.error("❌ Error al crear checkout:", result.error);
+          alert("Error al crear el checkout. Por favor intenta de nuevo.");
+          setIsProcessing(false);
+        }
+      } catch (error) {
+        console.error("Error en checkout:", error);
+        alert("Error al procesar el checkout. Por favor intenta de nuevo.");
+        setIsProcessing(false);
+      }
+    } else {
+      // Modo local: ir a la página de checkout personalizada
+      window.scrollTo(0, 0);
+      onClose();
+      navigate("/checkout");
+    }
   };
 
   const handleApplyCoupon = async (code) => {
@@ -334,13 +364,40 @@ const CartSidebar = ({ isOpen, onClose }) => {
                 {/* Botón de checkout */}
                 <button
                   onClick={handleCheckout}
-                  className="w-full py-3 font-medium text-white transition-colors bg-black rounded-lg hover:bg-gray-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
+                  disabled={isProcessing}
+                  className="w-full py-3 font-medium text-white transition-colors bg-black rounded-lg hover:bg-gray-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   aria-label={`Finalizar compra de ${itemCount} productos por ${total.toLocaleString(
                     "es-ES",
                     { style: "currency", currency: "EUR" }
                   )}`}
                 >
-                  Finalizar compra
+                  {isProcessing ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg
+                        className="animate-spin h-5 w-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Procesando...
+                    </span>
+                  ) : (
+                    "Finalizar compra"
+                  )}
                 </button>
 
                 {/* Políticas */}

@@ -18,7 +18,8 @@ import { ButtonSpinner } from "../components/Spinner";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
-  const { items, subtotal, shippingCost, total, clearCart } = useCart();
+  const { items, subtotal, shippingCost, total, clearCart, proceedToCheckout } =
+    useCart();
   const { isAuthenticated, user } = useAuth();
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -52,6 +53,41 @@ const CheckoutPage = () => {
   // Estados de validación
   const [validationErrors, setValidationErrors] = useState({});
   const [touchedFields, setTouchedFields] = useState({});
+  const [redirectingToShopify, setRedirectingToShopify] = useState(false);
+
+  // Si Shopify está activo, redirigir automáticamente
+  useEffect(() => {
+    const redirectToShopify = async () => {
+      if (
+        import.meta.env.VITE_USE_SHOPIFY === "true" &&
+        items.length > 0 &&
+        !orderComplete
+      ) {
+        setRedirectingToShopify(true);
+
+        try {
+          console.log("🛒 Redirigiendo automáticamente a Shopify checkout...");
+
+          const result = await proceedToCheckout();
+
+          if (!result.success) {
+            console.error("❌ Error al crear checkout:", result.error);
+            alert(
+              "Error al crear el checkout de Shopify. Contacta con soporte."
+            );
+            navigate("/");
+          }
+          // Si success es true, proceedToCheckout ya redirige automáticamente
+        } catch (error) {
+          console.error("Error redirigiendo a Shopify:", error);
+          alert("Error al procesar el checkout. Por favor intenta de nuevo.");
+          navigate("/");
+        }
+      }
+    };
+
+    redirectToShopify();
+  }, [items.length, orderComplete, navigate, proceedToCheckout]);
 
   // Redirigir si no hay items
   useEffect(() => {
@@ -394,6 +430,44 @@ const CheckoutPage = () => {
     setProcessing(true);
 
     try {
+      // 🛒 Si Shopify está activado, redirigir a checkout de Shopify
+      if (import.meta.env.VITE_USE_SHOPIFY === "true") {
+        console.log("🛍️ Creando checkout de Shopify...");
+
+        const customerInfo = {
+          email: shippingData.email,
+          shippingAddress: {
+            firstName: shippingData.firstName,
+            lastName: shippingData.lastName,
+            address1: shippingData.address1,
+            address2: shippingData.address2,
+            city: shippingData.city,
+            province: shippingData.province,
+            country: shippingData.country,
+            zip: shippingData.zipCode,
+            phone: shippingData.phone,
+          },
+        };
+
+        const result = await proceedToCheckout(customerInfo);
+
+        if (result.success && result.url) {
+          console.log("✅ Redirigiendo a Shopify checkout:", result.url);
+          // Track inicio de checkout antes de redireccionar
+          analytics.trackBeginCheckout(items, total);
+          // La redirección ocurre automáticamente en proceedToCheckout
+          return;
+        } else {
+          console.error("❌ Error creando checkout de Shopify:", result.error);
+          alert("Error al crear el checkout. Por favor intenta de nuevo.");
+          setProcessing(false);
+          return;
+        }
+      }
+
+      // 📦 Checkout local (modo sin Shopify)
+      console.log("📦 Procesando pedido localmente...");
+
       // Track inicio de checkout
       analytics.trackBeginCheckout(items, total);
 
@@ -481,6 +555,52 @@ const CheckoutPage = () => {
       setProcessing(false);
     }
   };
+
+  // Pantalla de carga cuando se redirige a Shopify
+  if (redirectingToShopify) {
+    return (
+      <div className="flex items-center justify-center min-h-screen p-4 bg-gray-50">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="w-full max-w-md p-8 text-center bg-white rounded-lg shadow-lg"
+        >
+          <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6">
+            <svg
+              className="animate-spin h-12 w-12 text-black"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+          </div>
+          <h2 className="mb-4 text-2xl font-semibold">
+            Preparando tu compra...
+          </h2>
+          <p className="mb-6 text-gray-600">
+            Te estamos redirigiendo al checkout seguro de Shopify.
+          </p>
+          <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+            <Lock className="w-4 h-4" />
+            <span>Pago seguro con SSL</span>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   if (orderComplete) {
     return (

@@ -9,7 +9,7 @@ export class ShopifyService {
   // Configuración GraphQL para Shopify Storefront API
   async graphqlRequest(query, variables = {}) {
     const response = await fetch(
-      `https://${this.domain}/api/2023-10/graphql.json`,
+      `https://${this.domain}/api/2024-10/graphql.json`,
       {
         method: "POST",
         headers: {
@@ -254,6 +254,47 @@ export class ShopifyService {
       cartId,
       lines: [{ merchandiseId: variantId, quantity }],
     });
+  }
+
+  // Crear checkout con productos
+  async checkoutCreate(lineItems, customerInfo = null) {
+    const mutation = `
+      mutation checkoutCreate($input: CheckoutCreateInput!) {
+        checkoutCreate(input: $input) {
+          checkout {
+            id
+            webUrl
+            totalPrice {
+              amount
+              currencyCode
+            }
+          }
+          checkoutUserErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const input = {
+      lineItems: lineItems.map((item) => ({
+        variantId: item.variantId || item.id,
+        quantity: item.quantity,
+      })),
+    };
+
+    // Añadir información del cliente si está disponible
+    if (customerInfo) {
+      if (customerInfo.email) {
+        input.email = customerInfo.email;
+      }
+      if (customerInfo.shippingAddress) {
+        input.shippingAddress = customerInfo.shippingAddress;
+      }
+    }
+
+    return this.graphqlRequest(mutation, { input });
   }
 
   // Convertir datos de Shopify al formato actual

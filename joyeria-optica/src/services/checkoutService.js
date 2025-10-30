@@ -1,9 +1,60 @@
 // Servicio de checkout adaptable para Shopify
-import { shopifyService } from './shopify';
+import { shopifyService } from "./shopify";
 
 class CheckoutService {
   constructor() {
-    this.useShopify = import.meta.env.VITE_USE_SHOPIFY === 'true';
+    this.useShopify = import.meta.env.VITE_USE_SHOPIFY === "true";
+    this.variantCache = new Map(); // Cache para variant IDs
+  }
+
+  // Buscar producto en Shopify por SKU
+  async findVariantBySKU(sku) {
+    // Verificar cache primero
+    if (this.variantCache.has(sku)) {
+      return this.variantCache.get(sku);
+    }
+
+    const query = `
+      query getProductBySKU($query: String!) {
+        products(first: 1, query: $query) {
+          edges {
+            node {
+              id
+              title
+              variants(first: 1) {
+                edges {
+                  node {
+                    id
+                    sku
+                    price {
+                      amount
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    try {
+      const response = await shopifyService.graphqlRequest(query, {
+        query: `sku:${sku}`,
+      });
+
+      const product = response.data?.products?.edges[0]?.node;
+      if (product?.variants?.edges[0]?.node) {
+        const variant = product.variants.edges[0].node;
+        this.variantCache.set(sku, variant.id);
+        return variant.id;
+      }
+
+      return null;
+    } catch (error) {
+      console.error(`Error buscando producto con SKU ${sku}:`, error);
+      return null;
+    }
   }
 
   // Crear checkout session
@@ -14,45 +65,53 @@ class CheckoutService {
     return this.createLocalCheckout(items, customerInfo);
   }
 
-  // Checkout con Shopify
+  // Checkout con Shopify (usando Cart API - Storefront API 2024-10)
   async createShopifyCheckout(items, customerInfo) {
+    console.log("📦 Items recibidos para checkout:", items);
+
     const mutation = `
-      mutation checkoutCreate($input: CheckoutCreateInput!) {
-        checkoutCreate(input: $input) {
-          checkout {
+      mutation cartCreate($input: CartInput!) {
+        cartCreate(input: $input) {
+          cart {
             id
-            webUrl
-            subtotalPrice {
-              amount
-              currencyCode
+            checkoutUrl
+            cost {
+              totalAmount {
+                amount
+                currencyCode
+              }
+              subtotalAmount {
+                amount
+                currencyCode
+              }
+              totalTaxAmount {
+                amount
+                currencyCode
+              }
             }
-            totalTax {
-              amount
-              currencyCode
-            }
-            totalPrice {
-              amount
-              currencyCode
-            }
-            lineItems(first: 100) {
+            lines(first: 100) {
               edges {
                 node {
                   id
-                  title
                   quantity
-                  variant {
-                    id
-                    title
-                    price {
-                      amount
-                      currencyCode
+                  merchandise {
+                    ... on ProductVariant {
+                      id
+                      title
+                      product {
+                        title
+                      }
+                      price {
+                        amount
+                        currencyCode
+                      }
                     }
                   }
                 }
               }
             }
           }
-          checkoutUserErrors {
+          userErrors {
             field
             message
           }
@@ -61,69 +120,130 @@ class CheckoutService {
     `;
 
     // Transformar items a formato Shopify
-    const lineItems = items.map(item => ({
-      variantId: item.variantId || item.id, // En Shopify necesitamos variant ID
-      quantity: item.quantity
-    }));
+    const lineItems = [];
 
-    const input = {
-      lineItems,
-      email: customerInfo?.email,
-      shippingAddress: customerInfo?.shippingAddress ? {
-        firstName: customerInfo.shippingAddress.firstName,
-        lastName: customerInfo.shippingAddress.lastName,
-        company: customerInfo.shippingAddress.company,
-        address1: customerInfo.shippingAddress.address1,
-        address2: customerInfo.shippingAddress.address2,
-        city: customerInfo.shippingAddress.city,
-        province: customerInfo.shippingAddress.province,
-        country: customerInfo.shippingAddress.country,
-        zip: customerInfo.shippingAddress.zipCode,
-        phone: customerInfo.shippingAddress.phone
-      } : null
-    };
+    for (const item of items) {
+      // Intentar obtener el variantId de diferentes fuentes
+      let variantId = item.variantId || item.variant?.id;
 
-    const response = await shopifyService.graphqlRequest(mutation, { input });
-    
-    if (response.data?.checkoutCreate?.checkoutUserErrors?.length > 0) {
-      throw new Error(response.data.checkoutCreate.checkoutUserErrors[0].message);
+      // Si no hay variantId pero hay un shopify ID, construirlo
+      if (!variantId && item.shopify?.variants?.[0]?.id) {
+        variantId = item.shopify.variants[0].id;
+      }
+
+      // Si hay SKU, buscar en Shopify
+      if (!variantId && (item.sku || item.productId)) {
+        const sku = item.sku || item.productId;
+        console.log(`🔍 Buscando variant ID para SKU: ${sku}`);
+        variantId = await this.findVariantBySKU(sku);
+
+        if (!variantId) {
+          console.error(
+            `❌ No se encontró el producto con SKU: ${sku} en Shopify`
+          );
+          throw new Error(
+            `El producto "${item.titulo}" (SKU: ${sku}) no se encontró en Shopify. Asegúrate de que el producto esté importado.`
+          );
+        }
+      }
+
+      if (!variantId) {
+        console.warn("⚠️ Producto sin variantId:", item);
+        throw new Error(
+          `El producto "${item.titulo}" no tiene un variantId válido de Shopify. Asegúrate de que los productos se carguen desde Shopify.`
+        );
+      }
+
+      console.log(`  ✅ ${item.titulo}: ${variantId} x${item.quantity}`);
+
+      lineItems.push({
+        merchandiseId: variantId, // Cart API usa merchandiseId en lugar de variantId
+        quantity: item.quantity,
+      });
     }
 
+    console.log("📝 Line items para Shopify:", lineItems);
+
+    const input = {
+      lines: lineItems,
+    };
+
+    // Añadir información del cliente si está disponible
+    if (customerInfo?.email) {
+      input.buyerIdentity = {
+        email: customerInfo.email,
+      };
+    }
+
+    console.log("📤 Creando cart en Shopify con input:", input);
+
+    const response = await shopifyService.graphqlRequest(mutation, { input });
+
+    console.log("📦 Respuesta de Shopify:", JSON.stringify(response, null, 2));
+
+    // Verificar si hay errores en la respuesta
+    if (response.errors) {
+      console.error("❌ Errores GraphQL:", response.errors);
+      throw new Error(`Error en GraphQL: ${response.errors[0].message}`);
+    }
+
+    if (!response.data || !response.data.cartCreate) {
+      console.error("❌ Respuesta inesperada:", response);
+      throw new Error("Respuesta de Shopify no válida");
+    }
+
+    if (response.data?.cartCreate?.userErrors?.length > 0) {
+      const error = response.data.cartCreate.userErrors[0];
+      console.error("❌ Error de usuario:", error);
+      throw new Error(`${error.field}: ${error.message}`);
+    }
+
+    const cart = response.data.cartCreate.cart;
+    console.log("✅ Cart creado:", cart.checkoutUrl);
+
     return {
-      id: response.data.checkoutCreate.checkout.id,
-      url: response.data.checkoutCreate.checkout.webUrl,
-      subtotal: parseFloat(response.data.checkoutCreate.checkout.subtotalPrice.amount),
-      tax: parseFloat(response.data.checkoutCreate.checkout.totalTax.amount),
-      total: parseFloat(response.data.checkoutCreate.checkout.totalPrice.amount),
-      items: response.data.checkoutCreate.checkout.lineItems.edges.map(edge => edge.node)
+      success: true,
+      checkoutUrl: cart.checkoutUrl,
+      id: cart.id,
+      url: cart.checkoutUrl,
+      subtotal: parseFloat(cart.cost.subtotalAmount.amount),
+      tax: parseFloat(cart.cost.totalTaxAmount?.amount || 0),
+      total: parseFloat(cart.cost.totalAmount.amount),
+      items: cart.lines.edges.map((edge) => edge.node),
     };
   }
 
   // Checkout local (simulado)
   async createLocalCheckout(items, customerInfo) {
     // Simular procesamiento
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const subtotal = items.reduce((sum, item) => sum + (item.precio * item.quantity), 0);
+    const subtotal = items.reduce(
+      (sum, item) => sum + item.precio * item.quantity,
+      0
+    );
     const tax = subtotal * 0.21; // IVA del 21%
     const shipping = subtotal >= 50 ? 0 : 4.95;
     const total = subtotal + tax + shipping;
 
     return {
-      id: 'local-checkout-' + Date.now(),
+      success: true,
+      orderId: "local-checkout-" + Date.now(),
+      id: "local-checkout-" + Date.now(),
       url: null, // Para checkout local no hay URL externa
+      checkoutUrl: null,
       subtotal,
       tax,
       shipping,
       total,
-      items: items.map(item => ({
+      items: items.map((item) => ({
         id: item.id,
         title: item.titulo,
         quantity: item.quantity,
         price: item.precio,
-        image: item.imagen
+        image: item.imagen,
       })),
-      customer: customerInfo
+      customer: customerInfo,
     };
   }
 
@@ -163,14 +283,20 @@ class CheckoutService {
 
     const response = await shopifyService.graphqlRequest(mutation, {
       checkoutId,
-      shippingAddress: address
+      shippingAddress: address,
     });
 
-    if (response.data?.checkoutShippingAddressUpdateV2?.checkoutUserErrors?.length > 0) {
-      throw new Error(response.data.checkoutShippingAddressUpdateV2.checkoutUserErrors[0].message);
+    if (
+      response.data?.checkoutShippingAddressUpdateV2?.checkoutUserErrors
+        ?.length > 0
+    ) {
+      throw new Error(
+        response.data.checkoutShippingAddressUpdateV2.checkoutUserErrors[0].message
+      );
     }
 
-    return response.data.checkoutShippingAddressUpdateV2.checkout.availableShippingRates;
+    return response.data.checkoutShippingAddressUpdateV2.checkout
+      .availableShippingRates;
   }
 
   async updateLocalShippingAddress(checkoutId, address) {
@@ -179,16 +305,16 @@ class CheckoutService {
       ready: true,
       shippingRates: [
         {
-          handle: 'standard',
-          title: 'Envío Estándar',
-          price: { amount: '4.95', currencyCode: 'EUR' }
+          handle: "standard",
+          title: "Envío Estándar",
+          price: { amount: "4.95", currencyCode: "EUR" },
         },
         {
-          handle: 'express',
-          title: 'Envío Express',
-          price: { amount: '9.95', currencyCode: 'EUR' }
-        }
-      ]
+          handle: "express",
+          title: "Envío Express",
+          price: { amount: "9.95", currencyCode: "EUR" },
+        },
+      ],
     };
   }
 
@@ -223,11 +349,16 @@ class CheckoutService {
 
       const response = await shopifyService.graphqlRequest(mutation, {
         checkoutId,
-        shippingRateHandle
+        shippingRateHandle,
       });
 
-      if (response.data?.checkoutShippingLineUpdate?.checkoutUserErrors?.length > 0) {
-        throw new Error(response.data.checkoutShippingLineUpdate.checkoutUserErrors[0].message);
+      if (
+        response.data?.checkoutShippingLineUpdate?.checkoutUserErrors?.length >
+        0
+      ) {
+        throw new Error(
+          response.data.checkoutShippingLineUpdate.checkoutUserErrors[0].message
+        );
       }
 
       return response.data.checkoutShippingLineUpdate.checkout;
@@ -245,32 +376,32 @@ class CheckoutService {
       return {
         success: true,
         redirectUrl: checkoutData.url,
-        message: 'Redirigiendo al checkout de Shopify'
+        message: "Redirigiendo al checkout de Shopify",
       };
     }
 
     // Simulación de procesamiento de pago local
-    await new Promise(resolve => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     // Validaciones básicas
     if (!paymentData.cardNumber || paymentData.cardNumber.length < 16) {
-      throw new Error('Número de tarjeta inválido');
+      throw new Error("Número de tarjeta inválido");
     }
 
     if (!paymentData.cvv || paymentData.cvv.length < 3) {
-      throw new Error('CVV inválido');
+      throw new Error("CVV inválido");
     }
 
     // Simular éxito/fallo aleatoriamente (90% éxito)
     if (Math.random() < 0.1) {
-      throw new Error('Pago rechazado. Verifique los datos de su tarjeta.');
+      throw new Error("Pago rechazado. Verifique los datos de su tarjeta.");
     }
 
     return {
       success: true,
-      transactionId: 'txn_' + Date.now(),
-      orderId: 'order_' + Date.now(),
-      message: 'Pago procesado exitosamente'
+      transactionId: "txn_" + Date.now(),
+      orderId: "order_" + Date.now(),
+      message: "Pago procesado exitosamente",
     };
   }
 
@@ -284,36 +415,38 @@ class CheckoutService {
       subtotal: checkoutData.subtotal,
       tax: checkoutData.tax,
       shipping: checkoutData.shipping,
-      status: 'confirmed',
-      paymentStatus: 'paid',
-      fulfillmentStatus: 'unfulfilled',
+      status: "confirmed",
+      paymentStatus: "paid",
+      fulfillmentStatus: "unfulfilled",
       items: checkoutData.items,
       shippingAddress: checkoutData.customer?.shippingAddress,
       paymentDetails: {
         transactionId: paymentResult.transactionId,
-        method: 'credit_card',
-        last4: paymentResult.last4 || '****'
+        method: "credit_card",
+        last4: paymentResult.last4 || "****",
       },
       createdAt: new Date().toISOString(),
-      estimatedDelivery: this.calculateEstimatedDelivery()
+      estimatedDelivery: this.calculateEstimatedDelivery(),
     };
 
     // En producción, esto se guardaría en la base de datos
-    console.log('Order created:', orderData);
+    console.log("Order created:", orderData);
 
     return orderData;
   }
 
   // Utilidades
   generateOrderNumber() {
-    const prefix = 'OPT';
+    const prefix = "OPT";
     const timestamp = Date.now().toString().slice(-6);
-    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    const random = Math.floor(Math.random() * 1000)
+      .toString()
+      .padStart(3, "0");
     return `${prefix}${timestamp}${random}`;
   }
 
-  calculateEstimatedDelivery(shippingMethod = 'standard') {
-    const days = shippingMethod === 'express' ? 2 : 5;
+  calculateEstimatedDelivery(shippingMethod = "standard") {
+    const days = shippingMethod === "express" ? 2 : 5;
     const deliveryDate = new Date();
     deliveryDate.setDate(deliveryDate.getDate() + days);
     return deliveryDate.toISOString();
@@ -324,28 +457,28 @@ class CheckoutService {
     const errors = [];
 
     if (!data.customer?.email) {
-      errors.push('Email es requerido');
+      errors.push("Email es requerido");
     }
 
     if (!data.customer?.shippingAddress?.address1) {
-      errors.push('Dirección de envío es requerida');
+      errors.push("Dirección de envío es requerida");
     }
 
     if (!data.customer?.shippingAddress?.city) {
-      errors.push('Ciudad es requerida');
+      errors.push("Ciudad es requerida");
     }
 
     if (!data.customer?.shippingAddress?.zipCode) {
-      errors.push('Código postal es requerido');
+      errors.push("Código postal es requerido");
     }
 
     if (data.items.length === 0) {
-      errors.push('No hay productos en el carrito');
+      errors.push("No hay productos en el carrito");
     }
 
     return {
       isValid: errors.length === 0,
-      errors
+      errors,
     };
   }
 }

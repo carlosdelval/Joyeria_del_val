@@ -2,6 +2,7 @@
 import { createContext, useReducer, useEffect, useState } from "react";
 import { analytics } from "../utils/helpers";
 import { couponService } from "../services/couponService";
+import { checkoutService } from "../services/checkoutService";
 import Cookies from "js-cookie";
 
 // Acciones del carrito
@@ -47,6 +48,7 @@ function cartReducer(state, action) {
           {
             id: itemId,
             productId: product.id,
+            sku: product.sku, // SKU para Shopify
             slug: product.slug,
             titulo: product.titulo,
             precio: variant ? variant.precio : product.precio,
@@ -282,6 +284,32 @@ export function CartProvider({ children }) {
     dispatch({ type: CART_ACTIONS.REMOVE_DISCOUNT });
   };
 
+  // Proceder al checkout (Shopify o local)
+  const proceedToCheckout = async (customerInfo = null) => {
+    try {
+      const result = await checkoutService.createCheckout(
+        state.items,
+        customerInfo
+      );
+
+      if (result.success && result.checkoutUrl) {
+        // Redirigir al checkout de Shopify
+        window.location.href = result.checkoutUrl;
+        return { success: true, url: result.checkoutUrl };
+      } else if (result.success && result.orderId) {
+        // Checkout local procesado
+        return { success: true, orderId: result.orderId };
+      } else {
+        // Error al crear checkout
+        console.error("Error al crear checkout:", result.errors);
+        return { success: false, errors: result.errors };
+      }
+    } catch (error) {
+      console.error("Error al proceder al checkout:", error);
+      return { success: false, error: error.message };
+    }
+  };
+
   // Cálculos
   const itemCount = state.items.reduce(
     (total, item) => total + item.quantity,
@@ -322,6 +350,7 @@ export function CartProvider({ children }) {
     setShipping,
     applyDiscount,
     removeDiscount,
+    proceedToCheckout,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
