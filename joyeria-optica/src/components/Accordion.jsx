@@ -169,7 +169,7 @@ const items = [
     Icon: Gem,
     imgSrc: "/joyeria-acordeon3.jpg",
     description:
-      "Encuentra joyas únicas y elegantes para cada ocasión. Desde anillos hasta collares, tenemos lo que buscas.",
+      "Encuentra joyas únicas y elegantes para cada ocasión.",
     href: "/joyeria",
   },
   {
@@ -187,7 +187,7 @@ const items = [
     Icon: Watch,
     imgSrc: "/relojeria-acordeon.jpg",
     description:
-      "Amplia selección de relojes de caballero y señora.",
+      "Amplia selección de relojes caballero y señora.",
     href: "/relojeria",
   },
   {
