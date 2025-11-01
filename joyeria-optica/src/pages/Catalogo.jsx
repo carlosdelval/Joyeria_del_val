@@ -48,7 +48,7 @@ const Catalogo = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Aplicar filtros desde URL cuando se monta el componente
+  // Aplicar filtros desde URL (se ejecuta al montar y cuando cambian params o categoría)
   useEffect(() => {
     const newFiltros = {};
 
@@ -60,10 +60,9 @@ const Catalogo = () => {
       newFiltros.genero = [generoParam];
     }
 
-    if (Object.keys(newFiltros).length > 0) {
-      setFiltros(newFiltros);
-    }
-  }, [marcaParam, generoParam]);
+    // Siempre actualizar filtros, incluso si está vacío (para limpiar cuando no hay params)
+    setFiltros(Object.keys(newFiltros).length > 0 ? newFiltros : {});
+  }, [marcaParam, generoParam, categoria]);
 
   // Determinar qué categoría buscar
   const categoriasBusqueda = useMemo(() => {
