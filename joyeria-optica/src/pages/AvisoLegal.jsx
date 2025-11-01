@@ -82,7 +82,7 @@ const AvisoLegal = () => {
                   </a>
                 </div>
                 <div>
-                  <strong>Sitio web:</strong> https://joyeriadelval.com
+                  <strong>Sitio web:</strong> https://opticadelvaljoyeros.es
                 </div>
                 <div className="mt-2 pt-2 border-t border-gray-200">
                   <strong>Objeto Social:</strong> Comercio al por menor de
@@ -109,7 +109,7 @@ const AvisoLegal = () => {
             <div className="space-y-4 text-sm text-gray-700">
               <p>
                 El presente aviso legal regula el uso y utilización del sitio
-                web <strong>joyeriadelval.com</strong>, del que es titular{" "}
+                web <strong>https://opticadelvaljoyeros.es</strong>, del que es titular{" "}
                 <strong>Óptica Del Val Joyeros S.L.</strong> (CIF: B14629406).
               </p>
               <p>
