@@ -11,6 +11,7 @@ import {
 import SEO from "../components/SEO";
 import { PageSpinner } from "../components/Spinner";
 import { useInView } from "react-intersection-observer";
+import ConfirmModal from "../components/ConfirmModal";
 
 // Componente de imagen del acordeón (reutilizado de ContactCard)
 const AccordionImage = ({ image, isOpen, onToggle }) => {
@@ -454,6 +455,7 @@ const GaleriaOptica = () => {
 
 export default function Optica() {
   const [isLoading, setIsLoading] = useState(true);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
 
   useEffect(() => {
     // Prevenir el scroll automático del navegador
@@ -531,16 +533,7 @@ export default function Optica() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    const phoneNumber = "664146433";
-                    const message = encodeURIComponent(
-                      "Hola, me gustaría reservar cita para graduarme la vista."
-                    );
-                    window.open(
-                      `https://wa.me/34${phoneNumber}?text=${message}`,
-                      "_blank"
-                    );
-                  }}
+                  onClick={() => setShowWhatsAppModal(true)}
                   className="flex items-center justify-center gap-3 px-10 py-4 text-base font-light tracking-wide text-white transition-all duration-300 bg-black border-2 border-black hover:bg-gray-900"
                 >
                   <Phone className="w-5 h-5" />
@@ -563,6 +556,26 @@ export default function Optica() {
           </div>
         </section>
       </div>
+
+      <ConfirmModal
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        onConfirm={() => {
+          const phoneNumber = "664146433";
+          const message = encodeURIComponent(
+            "Hola, me gustaría reservar cita para graduarme la vista."
+          );
+          window.open(
+            `https://wa.me/34${phoneNumber}?text=${message}`,
+            "_blank"
+          );
+        }}
+        title="Reservar Cita"
+        message="Se abrirá WhatsApp para contactar con nosotros y reservar tu cita para graduación de vista."
+        confirmText="Abrir WhatsApp"
+        cancelText="Cancelar"
+        type="info"
+      />
     </>
   );
 }

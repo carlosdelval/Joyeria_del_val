@@ -3,28 +3,53 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useWindowSize } from "./useWindowSize";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ConfirmModal from "./ConfirmModal";
 
 const VerticalAccordion = () => {
   const [open, setOpen] = useState(items[0].id);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
 
   return (
-    <div className="flex flex-col lg:flex-row h-fit lg:h-[450px] w-full max-w-7xl mx-auto shadow overflow-hidden">
-      {items.map((item) => {
-        return (
-          <Panel
-            key={item.id}
-            open={open}
-            setOpen={setOpen}
-            id={item.id}
-            Icon={item.Icon}
-            title={item.title}
-            imgSrc={item.imgSrc}
-            description={item.description}
-            href={item.href}
-          />
-        );
-      })}
-    </div>
+    <>
+      <div className="flex flex-col lg:flex-row h-fit lg:h-[450px] w-full max-w-7xl mx-auto shadow overflow-hidden">
+        {items.map((item) => {
+          return (
+            <Panel
+              key={item.id}
+              open={open}
+              setOpen={setOpen}
+              id={item.id}
+              Icon={item.Icon}
+              title={item.title}
+              imgSrc={item.imgSrc}
+              description={item.description}
+              href={item.href}
+              onWhatsAppClick={() => setShowWhatsAppModal(true)}
+            />
+          );
+        })}
+      </div>
+
+      <ConfirmModal
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        onConfirm={() => {
+          const phoneNumber = "664146433";
+          const message = encodeURIComponent(
+            "Hola, me gustaría reservar una cita para graduación de vista."
+          );
+          window.open(
+            `https://wa.me/34${phoneNumber}?text=${message}`,
+            "_blank"
+          );
+        }}
+        title="Reservar Cita"
+        message="Se abrirá WhatsApp para contactar con nosotros y reservar tu cita para graduación de vista."
+        confirmText="Abrir WhatsApp"
+        cancelText="Cancelar"
+        type="info"
+      />
+    </>
   );
 };
 
@@ -37,6 +62,7 @@ const Panel = ({
   imgSrc,
   description,
   href,
+  onWhatsAppClick,
 }) => {
   const { width } = useWindowSize();
   const navigate = useNavigate();
@@ -48,12 +74,8 @@ const Panel = ({
       window.scrollTo(0, 0);
       navigate(href);
     } else if (id === 4) {
-      // WhatsApp para la opción de graduación
-      const phoneNumber = "664146433";
-      const message = encodeURIComponent(
-        "Hola, me gustaría reservar una cita para graduación de vista."
-      );
-      window.open(`https://wa.me/34${phoneNumber}?text=${message}`, "_blank");
+      // Modal de confirmación para WhatsApp
+      onWhatsAppClick();
     }
   };
 
@@ -168,8 +190,7 @@ const items = [
     title: "La mejor selección en joyería",
     Icon: Gem,
     imgSrc: "/joyeria-acordeon3.jpg",
-    description:
-      "Encuentra joyas únicas y elegantes para cada ocasión.",
+    description: "Encuentra joyas únicas y elegantes para cada ocasión.",
     href: "/joyeria",
   },
   {
@@ -186,8 +207,7 @@ const items = [
     title: "Relojería",
     Icon: Watch,
     imgSrc: "/relojeria-acordeon.jpg",
-    description:
-      "Amplia selección de relojes caballero y señora.",
+    description: "Amplia selección de relojes caballero y señora.",
     href: "/relojeria",
   },
   {
@@ -195,6 +215,6 @@ const items = [
     title: "Graduación de vista",
     Icon: Eye,
     imgSrc: "/cartelGraduacion.svg",
-    description: "¡Reserva ya tu cita!",
+    description: "¡Clicka y reserva cita!",
   },
 ];

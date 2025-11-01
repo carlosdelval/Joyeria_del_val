@@ -80,7 +80,7 @@ const ConfirmModal = ({
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute p-1 transition-colors rounded-full top-4 right-4 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black"
+              className="absolute p-1 transition-colors rounded-full top-4 right-4 hover:bg-gray-100 focus:outline-none focus:ring-2"
               aria-label="Cerrar modal"
             >
               <X className="w-5 h-5 text-gray-500" aria-hidden="true" />

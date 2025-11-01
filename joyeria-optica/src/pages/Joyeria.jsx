@@ -8,6 +8,7 @@ import { useInView } from "react-intersection-observer";
 import ColeccionesDestacadas from "../components/ColeccionesDestacadas";
 import { Gem, Sparkles, Heart, Crown, Phone } from "lucide-react";
 import VideoHeroBanner from "../components/VideoHeroBanner";
+import ConfirmModal from "../components/ConfirmModal";
 
 // Sección Hero CON VIDEO (comentada la versión anterior)
 // const HeroJoyeria = () => {
@@ -373,6 +374,7 @@ const ProductosDestacados = ({ categoria, titulo, marca }) => {
 
 export default function Joyeria() {
   const [isLoading, setIsLoading] = useState(true);
+  const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
 
   useEffect(() => {
     // Prevenir el scroll automático del navegador
@@ -460,16 +462,7 @@ export default function Joyeria() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => {
-                    const phoneNumber = "664146433";
-                    const message = encodeURIComponent(
-                      "Hola, me gustaría información sobre joyería."
-                    );
-                    window.open(
-                      `https://wa.me/34${phoneNumber}?text=${message}`,
-                      "_blank"
-                    );
-                  }}
+                  onClick={() => setShowWhatsAppModal(true)}
                   className="flex items-center justify-center gap-3 px-10 py-4 text-base font-light tracking-wide text-white transition-all duration-300 bg-black border-2 border-black hover:bg-gray-900"
                 >
                   <Phone className="w-5 h-5" />
@@ -492,6 +485,26 @@ export default function Joyeria() {
           </div>
         </section>
       </div>
+
+      <ConfirmModal
+        isOpen={showWhatsAppModal}
+        onClose={() => setShowWhatsAppModal(false)}
+        onConfirm={() => {
+          const phoneNumber = "664146433";
+          const message = encodeURIComponent(
+            "Hola, me gustaría información sobre joyería."
+          );
+          window.open(
+            `https://wa.me/34${phoneNumber}?text=${message}`,
+            "_blank"
+          );
+        }}
+        title="Contactar por WhatsApp"
+        message="Se abrirá WhatsApp para contactar con nosotros y obtener más información sobre joyería."
+        confirmText="Abrir WhatsApp"
+        cancelText="Cancelar"
+        type="info"
+      />
     </>
   );
 }
