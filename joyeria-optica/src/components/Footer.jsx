@@ -25,6 +25,11 @@ export default function Footer() {
           <h3 className="mb-3 font-semibold text-base sm:text-lg">Enlaces</h3>
           <ul className="space-y-2 text-sm sm:text-base">
             <li>
+              <a href="/aviso-legal" className="hover:underline">
+                Aviso Legal
+              </a>
+            </li>
+            <li>
               <a href="terminos-legales" className="hover:underline">
                 Términos y Condiciones
               </a>

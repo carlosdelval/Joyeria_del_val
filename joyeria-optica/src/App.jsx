@@ -23,6 +23,7 @@ const PerfilUsuario = lazy(() => import("./pages/PerfilUsuario"));
 const TerminosLegales = lazy(() => import("./pages/TerminosLegales"));
 const Contacto = lazy(() => import("./pages/Contacto"));
 const Privacidad = lazy(() => import("./pages/Privacidad"));
+const AvisoLegal = lazy(() => import("./pages/AvisoLegal"));
 const PoliticaEnviosDevoluciones = lazy(() => import("./pages/Devoluciones"));
 const NotFound = lazy(() => import("./pages/404"));
 
@@ -61,6 +62,7 @@ function App() {
                       />
                       <Route path="/contacto" element={<Contacto />} />
                       <Route path="/privacidad" element={<Privacidad />} />
+                      <Route path="/aviso-legal" element={<AvisoLegal />} />
                       <Route
                         path="/envios-devoluciones"
                         element={<PoliticaEnviosDevoluciones />}

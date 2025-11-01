@@ -25,6 +25,11 @@ const ProductoPage = () => {
   const [imageIndex, setImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [imagePosition, setImagePosition] = useState({ x: 50, y: 50 });
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  // Distancia mínima para considerar un swipe (en px)
+  const minSwipeDistance = 50;
 
   useEffect(() => {
     const cargarProducto = async () => {
@@ -75,23 +80,41 @@ const ProductoPage = () => {
   };
 
   // Soporte para touch events (móvil)
-  const handleTouchStart = () => {
-    setIsZoomed(true);
+  const handleTouchStart = (e) => {
+    setTouchEnd(0); // Reset
+    setTouchStart(e.targetTouches[0].clientX);
   };
 
   const handleTouchMove = (e) => {
-    if (e.touches.length > 0) {
-      const touch = e.touches[0];
-      const { left, top, width, height } =
-        e.currentTarget.getBoundingClientRect();
-      const x = ((touch.clientX - left) / width) * 100;
-      const y = ((touch.clientY - top) / height) * 100;
-
-      setImagePosition({ x, y });
-    }
+    setTouchEnd(e.targetTouches[0].clientX);
   };
 
   const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (producto?.imagenes && producto.imagenes.length > 1) {
+      if (isLeftSwipe) {
+        // Swipe izquierda → siguiente imagen
+        const nextIndex = (imageIndex + 1) % producto.imagenes.length;
+        setImageIndex(nextIndex);
+        setImagenPrincipal(producto.imagenes[nextIndex]);
+      }
+
+      if (isRightSwipe) {
+        // Swipe derecha → imagen anterior
+        const prevIndex =
+          (imageIndex - 1 + producto.imagenes.length) %
+          producto.imagenes.length;
+        setImageIndex(prevIndex);
+        setImagenPrincipal(producto.imagenes[prevIndex]);
+      }
+    }
+
+    // Reset zoom si estaba activo
     setIsZoomed(false);
     setImagePosition({ x: 50, y: 50 });
   };

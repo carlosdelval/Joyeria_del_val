@@ -172,6 +172,22 @@ const PoliticaPrivacidad = () => {
                   transporte, pasarelas de pago, servicios técnicos
                 </li>
                 <li>
+                  <strong>EmailJS (Formularios de contacto):</strong> Utilizado
+                  para gestionar las consultas enviadas a través de nuestros
+                  formularios. Los datos compartidos (nombre, email, mensaje) se
+                  envían a través de EmailJS para su entrega a nuestra cuenta de
+                  correo. Ubicación: Estados Unidos (EE.UU.) con garantías RGPD
+                  mediante cláusulas contractuales tipo. Más información:{" "}
+                  <a
+                    href="https://www.emailjs.com/legal/privacy-policy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-black underline hover:text-gray-600"
+                  >
+                    Política de privacidad de EmailJS
+                  </a>
+                </li>
+                <li>
                   <strong>Autoridades reguladoras:</strong> Cuando sea requerido
                   por ley
                 </li>
@@ -420,11 +436,28 @@ const PoliticaPrivacidad = () => {
             className="p-8 text-white bg-black rounded-sm"
           >
             <div className="text-center">
-              <h2 className="mb-4 text-xl font-light tracking-wider">
-                ¿Tienes preguntas sobre privacidad?
+              <h2 className="mb-2 text-xl font-light tracking-wider">
+                Responsable del Tratamiento
               </h2>
+              <div className="mb-6 text-sm text-gray-300 space-y-1">
+                <p>
+                  <strong className="text-white">Razón Social:</strong> Óptica
+                  Del Val Joyeros S.L.
+                </p>
+                <p>
+                  <strong className="text-white">CIF:</strong> B14629406
+                </p>
+                <p>
+                  <strong className="text-white">Dirección:</strong> C/
+                  Cristobal Castillo, 13, 14500 Puente Genil, Córdoba
+                </p>
+              </div>
+
+              <h3 className="mb-4 text-lg font-light tracking-wider">
+                ¿Tienes preguntas sobre privacidad?
+              </h3>
               <p className="mb-6 text-gray-300">
-                Contacta con nuestro delegado de protección de datos
+                Contacta con nosotros para ejercer tus derechos
               </p>
               <div className="grid max-w-md gap-4 mx-auto sm:grid-cols-2">
                 <a

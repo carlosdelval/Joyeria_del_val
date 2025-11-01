@@ -2,7 +2,20 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-5ZF2CZJB");
+    </script>
+    <!-- End Google Tag Manager -->
     <!-- Preconnect a recursos externos críticos -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
@@ -18,11 +31,11 @@
     <!-- SEO Meta Tags -->
     <meta
       name="description"
-      content="Óptica Del Val Joyeros en Valladolid. Especialistas en óptica, joyería y relojería. Gafas graduadas, gafas de sol, relojes de marca, anillos, pulseras y servicio técnico especializado."
+      content="Óptica Del Val Joyeros en Puente Genil. Especialistas en óptica, joyería y relojería. Gafas graduadas, gafas de sol, relojes de marca, anillos, pulseras y servicio técnico especializado."
     />
     <meta
       name="keywords"
-      content="óptica valladolid, joyería valladolid, relojería valladolid, gafas graduadas, gafas de sol, relojes, anillos, pulseras, Ray-Ban, Tous, Festina, Viceroy, Lotus, servicio técnico relojes"
+      content="óptica puente genil, joyería puente genil, relojería puente genil, gafas graduadas, gafas de sol, relojes, anillos, pulseras, Ray-Ban, Tous, Festina, Viceroy, Lotus, servicio técnico relojes"
     />
     <meta name="author" content="Óptica Del Val Joyeros" />
     <meta name="robots" content="index, follow" />
@@ -31,10 +44,10 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://opticadelvaljoyeros.es/" />
-    <meta property="og:title" content="Óptica Del Val Joyeros - Valladolid" />
+    <meta property="og:title" content="Óptica Del Val Joyeros - Puente Genil" />
     <meta
       property="og:description"
-      content="Especialistas en óptica, joyería y relojería en Valladolid. Las mejores marcas y servicio técnico especializado."
+      content="Especialistas en óptica, joyería y relojería en Puente Genil. Las mejores marcas y servicio técnico especializado."
     />
     <meta
       property="og:image"
@@ -45,10 +58,13 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://opticadelvaljoyeros.es/" />
-    <meta name="twitter:title" content="Óptica Del Val Joyeros - Valladolid" />
+    <meta
+      name="twitter:title"
+      content="Óptica Del Val Joyeros - Puente Genil"
+    />
     <meta
       name="twitter:description"
-      content="Especialistas en óptica, joyería y relojería en Valladolid."
+      content="Especialistas en óptica, joyería y relojería en Puente Genil."
     />
     <meta
       name="twitter:image"
@@ -61,11 +77,12 @@
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         "name": "Óptica Del Val Joyeros",
-        "description": "Óptica, joyería y relojería en Valladolid",
+        "description": "Óptica, joyería y relojería en Puente Genil, Córdoba",
         "image": "https://opticadelvaljoyeros.es/logo.jpg",
         "address": {
           "@type": "PostalAddress",
-          "addressLocality": "Valladolid",
+          "addressLocality": "Puente Genil",
+          "addressRegion": "Córdoba",
           "addressCountry": "ES"
         },
         "telephone": "+34664146433",
@@ -111,7 +128,7 @@
     </script>
 
     <title>
-      Óptica Del Val Joyeros - Valladolid | Gafas, Relojes y Joyería
+      Óptica Del Val Joyeros - Puente Genil | Gafas, Relojes y Joyería
     </title>
 
     <!-- EmailJS -->
@@ -124,12 +141,9 @@
         emailjs.init("TAe6PgiHoPzn3keqW");
       })();
     </script>
-
-    <!-- Google Analytics 4 -->
-    <!-- Reemplazar G-XXXXXXXXXX con tu Measurement ID real -->
     <script
       async
-      src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+      src="https://www.googletagmanager.com/gtag/js?id=G-1Y95WR7C2V"
     ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -137,11 +151,12 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-      gtag("config", "G-XXXXXXXXXX");
+      // Configuración con anonimización de IP para RGPD
+      gtag("config", "G-1Y95WR7C2V", {
+        anonymize_ip: true,
+        cookie_flags: "SameSite=None;Secure",
+      });
     </script>
-
-    <!-- Meta Pixel (Facebook) -->
-    <!-- Reemplazar YOUR_PIXEL_ID con tu Pixel ID real -->
     <script>
       !(function (f, b, e, v, n, t, s) {
         if (f.fbq) return;
@@ -166,12 +181,23 @@
         "script",
         "https://connect.facebook.net/en_US/fbevents.js"
       );
-      fbq("init", "YOUR_PIXEL_ID");
+      fbq("init", "YOUR_PIXEL_ID"); // ← REEMPLAZAR AQUÍ
       fbq("track", "PageView");
     </script>
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-5ZF2CZJB"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <!-- Meta Pixel Noscript -->
+    <!-- ⚠️ REEMPLAZAR YOUR_PIXEL_ID con tu Pixel ID real -->
     <noscript>
       <img
         height="1"

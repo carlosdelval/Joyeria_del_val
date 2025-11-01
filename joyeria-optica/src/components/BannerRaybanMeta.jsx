@@ -7,6 +7,8 @@ export default function BannerRaybanMeta() {
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [key, setKey] = useState(0); // Key para forzar reinicio del useEffect
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   // Array de imágenes del carrusel
   const carouselImages = [
@@ -16,6 +18,9 @@ export default function BannerRaybanMeta() {
     "/raybanmeta1.avif",
     "/raybanmeta-banner.jpg",
   ];
+
+  // Distancia mínima para considerar un swipe (en px)
+  const minSwipeDistance = 50;
 
   // Carrusel automático cada 5 segundos
   useEffect(() => {
@@ -36,6 +41,37 @@ export default function BannerRaybanMeta() {
   const handleManualChange = (index) => {
     setCurrentImageIndex(index);
     setKey((prevKey) => prevKey + 1); // Reinicia el temporizador
+  };
+
+  // Handlers para touch/swipe en mobile
+  const onTouchStart = (e) => {
+    setTouchEnd(0); // Reset para evitar swipes accidentales
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      // Swipe izquierda → siguiente imagen
+      const nextIndex = (currentImageIndex + 1) % carouselImages.length;
+      handleManualChange(nextIndex);
+    }
+
+    if (isRightSwipe) {
+      // Swipe derecha → imagen anterior
+      const prevIndex =
+        (currentImageIndex - 1 + carouselImages.length) % carouselImages.length;
+      handleManualChange(prevIndex);
+    }
   };
 
   return (
@@ -70,7 +106,12 @@ export default function BannerRaybanMeta() {
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl"></div>
 
               {/* Contenedor del carrusel */}
-              <div className="relative h-full overflow-hidden bg-white/5 backdrop-blur-sm rounded-lg lg:rounded-none">
+              <div
+                className="relative h-full overflow-hidden bg-white/5 backdrop-blur-sm rounded-lg lg:rounded-none"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={currentImageIndex}
@@ -87,6 +128,7 @@ export default function BannerRaybanMeta() {
                     onError={(e) => {
                       e.target.src = "/rayban.jpg"; // Fallback
                     }}
+                    draggable={false}
                   />
                 </AnimatePresence>
 
