@@ -9,17 +9,17 @@ const colecciones = [
   {
     titulo: "Salvatore PLATA",
     img: "/salvatore-banner.jpg",
-    slug: "Plata de ley"
+    slug: "Plata de ley",
   },
   {
     titulo: "Nomination Italy",
     img: "/nomination-banner.jpg",
-    slug: "¡Pregunta en nuestro local!"
+    slug: "¡Pregunta en nuestro local!",
   },
   {
     titulo: "La Petra",
     img: "/lapetra-banner.jpg",
-    slug: "Pequeños tesoros de oro"
+    slug: "Pequeños tesoros de oro",
   },
 ];
 
@@ -28,13 +28,11 @@ const ColeccionesDestacadas = () => {
     <section>
       <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-4">
         {colecciones.map((coleccion, index) => (
-          <div
-            key={index}
-            className="relative block overflow-hidden group"
-          >
+          <div key={index} className="relative block overflow-hidden group">
             <img
               src={coleccion.img}
               alt={coleccion.titulo}
+              loading="lazy"
               className="object-cover w-full h-full transition duration-500 group-hover:brightness-100"
             />
             <div className="absolute z-10 text-white bottom-4 left-4">

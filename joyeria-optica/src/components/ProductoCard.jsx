@@ -27,6 +27,7 @@ const ProductoCard = ({ producto }) => {
         window.scrollTo(0, 0);
         window.location.href = `/producto/${slug}`;
       }}
+      data-product-card
       aria-label={`Ver detalles de ${nombre} - ${precio.toLocaleString(
         "es-ES",
         {
@@ -65,6 +66,7 @@ const ProductoCard = ({ producto }) => {
             src={imagenes[0]}
             alt={`Imagen de producto ${nombre}`}
             className="object-cover w-full h-full"
+            loading="lazy"
             initial={{ opacity: 0 }}
             animate={{ opacity: imageLoaded ? 1 : 0 }}
             transition={{ duration: 0.3 }}

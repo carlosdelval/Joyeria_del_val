@@ -158,6 +158,7 @@ export default function ColeccionTous() {
                   <img
                     src={product.imagenes?.[0] || "/placeholder-product.jpg"}
                     alt={product.titulo}
+                    loading="lazy"
                     className="object-cover w-full aspect-square"
                   />
                   {product.precioAnterior && (

@@ -58,6 +58,7 @@ export default function BannerMarcas({
               <img
                 src={marca.imagen}
                 alt={`${marca.nombre} ${marca.descripcion || ""}`}
+                loading="lazy"
                 className={`object-cover w-full h-full transition-transform duration-700 group-hover:scale-110 ${
                   marca.objectPosition || ""
                 }`}

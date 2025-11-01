@@ -47,7 +47,8 @@ export default function VideoHeroBanner({
             objectFit: "contain",
             objectPosition: "center center",
           }}
-          preload="auto"
+          preload="metadata"
+          loading="lazy"
         >
           <source src={videoSrc} type="video/mp4" />
           {/* Fallback: imagen si el video no carga */}

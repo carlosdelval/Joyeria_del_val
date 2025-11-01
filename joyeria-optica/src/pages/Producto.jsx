@@ -272,6 +272,7 @@ const ProductoPage = () => {
                         <img
                           src={img}
                           alt={`Vista ${index + 1} de ${producto.titulo}`}
+                          loading="lazy"
                           className="object-cover w-full h-full"
                         />
                       </button>
@@ -297,6 +298,7 @@ const ProductoPage = () => {
                           <img
                             src={img}
                             alt={`Vista ${index + 1} de ${producto.titulo}`}
+                            loading="lazy"
                             className="object-cover w-full h-full"
                           />
                         </button>

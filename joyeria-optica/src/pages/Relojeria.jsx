@@ -584,7 +584,7 @@ export default function Relojes() {
         <VideoHeroBanner
           videoSrc="/viceroy-video.mp4"
           posterSrc="/viceroy-video-miniatura.png"
-          title="RELOJERÍA DE LUJO"
+          title="RELOJERÍA"
           subtitle="Precisión y diseño atemporal en cada detalle. Descubre las mejores marcas con servicio técnico especializado."
           ctaText="Ver relojes"
           ctaLink="/catalogo/relojes?marca=viceroy"

@@ -414,7 +414,7 @@ export default function Joyeria() {
         {/* Hero con Video */}
         <VideoHeroBanner
           videoSrc="/marinagarcia-video.mp4"
-          posterSrc="/marinagarcia-video-miniatura.png"
+          posterSrc="/marinagarcia-video-miniatura.webp"
           title="JOYERÍA DEL VAL"
           subtitle="Piezas únicas que cuentan tu historia. Alta joyería de autor y diseños exclusivos para momentos especiales."
           ctaText="Obtener información"

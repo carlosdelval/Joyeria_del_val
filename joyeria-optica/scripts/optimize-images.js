@@ -14,6 +14,11 @@ const imagesToOptimize = [
   "joyeria_acordeon.jpg",
   "gafas_acordeon.jpg",
   "reloj_acordeon.jpg",
+  // Imágenes pesadas que requieren optimización urgente
+  "reconocimiento1.jpg", // 8.15 MB
+  "joyeria-acordeon3.jpg", // 3.91 MB
+  "dolce-gabbana.jpg", // 1.10 MB
+  "marinagarcia-banner.jpg", // 0.66 MB
 ];
 
 const publicDir = join(__dirname, "..", "public");

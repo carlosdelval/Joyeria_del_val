@@ -86,6 +86,7 @@ export default function Navbar() {
             <img
               src="/logo.jpg"
               alt="Logo"
+              loading="eager"
               className="object-contain h-7 sm:h-8 md:h-10"
             />
           </a>
@@ -120,6 +121,7 @@ export default function Navbar() {
             <img
               src="/logo.jpg"
               alt="Logotipo de Joyería del Val"
+              loading="eager"
               className="object-contain h-16 mx-auto lg:h-20 xl:h-24"
             />
           </a>
