@@ -13,6 +13,7 @@ import ContactoOptica from "../components/ContactCard";
 import BannerInstagram from "../components/BannerInstagram";
 import BannerMarcasRelojes from "../components/BannerMarcasRelojes";
 import BannerRaybanMeta from "../components/BannerRaybanMeta";
+import VideoHeroBanner from "../components/VideoHeroBanner";
 
 const AnimatedSection = ({ children, className = "" }) => {
   const [ref, inView] = useInView({
@@ -86,8 +87,24 @@ export default function Home() {
         structuredData={generateOrganizationSchema()}
       />
 
+      {/* Video Hero Banner - Pantalla Completa */}
+      <VideoHeroBanner
+        videoSrc="/rayban-video.mp4"
+        posterSrc="/rayban-video-miniatura.jpg"
+        title="RAY-BAN"
+        subtitle="Descubre nuestra colección exclusiva. Estilo, calidad y protección certificada."
+        ctaText="Ver colección Ray-Ban"
+        ctaLink="/catalogo/gafas?marca=ray-ban"
+        secondaryCta={{
+          text: "Visítanos en tienda",
+          link: "/contacto",
+        }}
+        overlayOpacity="45"
+        height="h-screen"
+      />
+
       {/* Acordeón Hero */}
-      <div className="container mx-auto pt-4 sm:pt-6 md:pt-8">
+      <div className="container mx-auto block md:hidden sm:mt-20 md:mt-24 lg:mt-28">
         <AnimatedSection>
           <VerticalAccordion />
         </AnimatedSection>

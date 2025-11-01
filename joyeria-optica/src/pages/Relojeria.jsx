@@ -6,37 +6,16 @@ import SEO from "../components/SEO";
 import { PageSpinner } from "../components/Spinner";
 import { useInView } from "react-intersection-observer";
 import { Watch, Settings, Zap, Wrench, Phone } from "lucide-react";
+import VideoHeroBanner from "../components/VideoHeroBanner";
 
-// Sección Hero
-const HeroRelojes = () => {
-  return (
-    <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src="/maserati-acordeon3.jpg"
-          alt="Relojes de lujo"
-          className="object-cover w-full h-full"
-        />
-        <div className="absolute inset-0 bg-black/50"></div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 px-4 text-center text-white"
-      >
-        <h1 className="mb-4 text-5xl font-bold md:text-7xl">Relojería</h1>
-        <p className="max-w-2xl mx-auto mb-8 text-lg md:text-xl">
-          Precisión y diseño elegante en cada detalle.
-          <br />
-          Tenemos las mejores marcas de relojes con servicio técnico
-          especializado.
-        </p>
-      </motion.div>
-    </section>
-  );
-};
+// Sección Hero CON VIDEO (comentada la versión anterior)
+// const HeroRelojes = () => {
+//   return (
+//     <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
+//       {/* ... código anterior comentado ... */}
+//     </section>
+//   );
+// };
 
 // Servicios de relojería
 const ServiciosRelojes = () => {
@@ -601,8 +580,18 @@ export default function Relojes() {
       />
 
       <div className="min-h-screen bg-white">
-        {/* Hero */}
-        <HeroRelojes />
+        {/* Hero con Video */}
+        <VideoHeroBanner
+          videoSrc="/viceroy-video.mp4"
+          posterSrc="/viceroy-video-miniatura.png"
+          title="RELOJERÍA DE LUJO"
+          subtitle="Precisión y diseño atemporal en cada detalle. Descubre las mejores marcas con servicio técnico especializado."
+          ctaText="Ver relojes"
+          ctaLink="/catalogo/relojes?marca=viceroy"
+          secondaryCta={{ text: "Visítanos en tienda", link: "/contacto" }}
+          overlayOpacity="45"
+          height="h-screen"
+        />
 
         {/* Carrusel relojes Tous */}
         <CarruselRelojesTous />

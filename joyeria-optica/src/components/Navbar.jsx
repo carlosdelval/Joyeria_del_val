@@ -40,8 +40,12 @@ export default function Navbar() {
       href: "/joyeria",
     },
     {
-      label: "Gafas de vista",
+      label: "Óptica",
       href: "/optica",
+    },
+    {
+      label: "Relojería",
+      href: "/relojeria",
     },
     {
       label: "TOUS",

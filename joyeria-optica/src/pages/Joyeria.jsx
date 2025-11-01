@@ -7,36 +7,16 @@ import { PageSpinner } from "../components/Spinner";
 import { useInView } from "react-intersection-observer";
 import ColeccionesDestacadas from "../components/ColeccionesDestacadas";
 import { Gem, Sparkles, Heart, Crown, Phone } from "lucide-react";
+import VideoHeroBanner from "../components/VideoHeroBanner";
 
-// Sección Hero
-const HeroJoyeria = () => {
-  return (
-    <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src="/joyeria-acordeon2.jpg"
-          alt="Joyería de lujo"
-          className="object-cover w-full h-full"
-        />
-        <div className="absolute inset-0 bg-black/50"></div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 px-4 text-center text-white"
-      >
-        <h1 className="mb-4 text-5xl font-bold md:text-7xl">Joyería Del Val</h1>
-        <p className="max-w-2xl mx-auto mb-8 text-lg md:text-xl">
-          Descubre piezas únicas que cuentan tu historia.
-          <br />
-          Alta joyería de autor y diseños exclusivos para momentos especiales.
-        </p>
-      </motion.div>
-    </section>
-  );
-};
+// Sección Hero CON VIDEO (comentada la versión anterior)
+// const HeroJoyeria = () => {
+//   return (
+//     <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
+//       {/* ... código anterior comentado ... */}
+//     </section>
+//   );
+// };
 
 // Servicios/Categorías de joyería
 const CategoriasJoyeria = () => {
@@ -132,11 +112,7 @@ const CategoriasJoyeria = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              onClick={() => {
-                window.scrollTo(0, 0);
-                navigate(`/catalogo/${cat.categoria}`);
-              }}
-              className="relative p-8 transition-all duration-300 bg-white border-2 border-gray-200 cursor-pointer group hover:border-black"
+              className="relative p-8 transition-all duration-300 bg-white border-2 border-gray-200 group hover:border-black"
             >
               {/* Icono */}
               <div className="flex items-center justify-center w-16 h-16 mb-6 text-white transition-all duration-300 bg-black group-hover:scale-110">
@@ -435,8 +411,18 @@ export default function Joyeria() {
       />
 
       <div className="min-h-screen bg-white">
-        {/* Hero */}
-        <HeroJoyeria />
+        {/* Hero con Video */}
+        <VideoHeroBanner
+          videoSrc="/marinagarcia-video.mp4"
+          posterSrc="/marinagarcia-video-miniatura.png"
+          title="JOYERÍA DEL VAL"
+          subtitle="Piezas únicas que cuentan tu historia. Alta joyería de autor y diseños exclusivos para momentos especiales."
+          ctaText="Obtener información"
+          ctaLink="https://www.instagram.com/opticadelvaljoyeros?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+          secondaryCta={{ text: "Visítanos en tienda", link: "/contacto" }}
+          overlayOpacity="45"
+          height="h-screen"
+        />
 
         {/* Colecciones Destacadas */}
         <ColeccionesDestacadas />

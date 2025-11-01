@@ -8,7 +8,7 @@ const VerticalAccordion = () => {
   const [open, setOpen] = useState(items[0].id);
 
   return (
-    <div className="flex flex-col lg:flex-row h-fit lg:h-[450px] w-full max-w-6xl mx-auto shadow overflow-hidden">
+    <div className="flex flex-col lg:flex-row h-fit lg:h-[450px] w-full max-w-7xl mx-auto shadow overflow-hidden">
       {items.map((item) => {
         return (
           <Panel
@@ -167,7 +167,7 @@ const items = [
     id: 1,
     title: "La mejor selección en joyería",
     Icon: Gem,
-    imgSrc: "/salvatore-acordeon.jpg",
+    imgSrc: "/joyeria-acordeon3.jpg",
     description:
       "Encuentra joyas únicas y elegantes para cada ocasión. Desde anillos hasta collares, tenemos lo que buscas.",
     href: "/joyeria",
@@ -185,9 +185,9 @@ const items = [
     id: 3,
     title: "Relojería",
     Icon: Watch,
-    imgSrc: "/maserati-acordeon2.jpg",
+    imgSrc: "/relojeria-acordeon.jpg",
     description:
-      "Descubre nuestra amplia selección de relojes de lujo y moda. Encuentra el reloj perfecto para cada ocasión.",
+      "Amplia selección de relojes de caballero y señora.",
     href: "/relojeria",
   },
   {
