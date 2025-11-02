@@ -678,7 +678,7 @@ export default function Relojes() {
           );
         }}
         title="Contactar por WhatsApp"
-        message="Se abrirá WhatsApp para contactar con nosotros y obtener más información sobre servicio técnico de relojes."
+        message="Vamos a redirigirte a WhatsApp para obtener más información sobre servicio técnico de relojes."
         confirmText="Abrir WhatsApp"
         cancelText="Cancelar"
         type="info"

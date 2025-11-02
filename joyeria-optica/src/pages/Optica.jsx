@@ -12,6 +12,7 @@ import SEO from "../components/SEO";
 import { PageSpinner } from "../components/Spinner";
 import { useInView } from "react-intersection-observer";
 import ConfirmModal from "../components/ConfirmModal";
+import VideoHeroBanner from "../components/VideoHeroBanner";
 
 // Componente de imagen del acordeón (reutilizado de ContactCard)
 const AccordionImage = ({ image, isOpen, onToggle }) => {
@@ -94,36 +95,6 @@ const AccordionImage = ({ image, isOpen, onToggle }) => {
         <div className="absolute inset-0 transition-colors duration-300 bg-white/0 group-hover:bg-white/10" />
       )}
     </motion.div>
-  );
-};
-
-// Sección Hero
-const HeroOptica = () => {
-  return (
-    <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0">
-        <img
-          src="/gafas_acordeon.jpg"
-          alt="Óptica Del Val"
-          className="object-cover w-full h-full"
-        />
-        <div className="absolute inset-0 bg-black/50"></div>
-      </div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 px-4 text-center text-white"
-      >
-        <h1 className="mb-4 text-5xl font-bold md:text-7xl">Óptica Del Val</h1>
-        <p className="max-w-2xl mx-auto mb-8 text-lg md:text-xl">
-          Cuidamos de tu salud visual con profesionalidad y dedicación.
-          <br />
-          Servicios de optometría, graduación y personalización de monturas.
-        </p>
-      </motion.div>
-    </section>
   );
 };
 
@@ -495,7 +466,17 @@ export default function Optica() {
 
       <div className="min-h-screen bg-white">
         {/* Hero */}
-        <HeroOptica />
+        <VideoHeroBanner
+          videoSrc="/optica-video.mp4"
+          posterSrc="/optica-video-miniatura.jpg"
+          title="ÓPTICA DEL VAL"
+          subtitle="Cuidamos de tu salud visual con profesionalidad y dedicación. Servicios de optometría, graduación y personalización de monturas."
+          ctaText="Ver catálogo"
+          ctaLink="/catalogo/gafas"
+          secondaryCta={{ text: "Reservar cita", link: "/contacto" }}
+          overlayOpacity="45"
+          height="h-screen"
+        />
 
         {/* Servicios principales */}
         <ServiciosOptica />
@@ -571,7 +552,7 @@ export default function Optica() {
           );
         }}
         title="Reservar Cita"
-        message="Se abrirá WhatsApp para contactar con nosotros y reservar tu cita para graduación de vista."
+        message="Vamos a redirigirte a WhatsApp para reservar tu cita de graduación de vista."
         confirmText="Abrir WhatsApp"
         cancelText="Cancelar"
         type="info"

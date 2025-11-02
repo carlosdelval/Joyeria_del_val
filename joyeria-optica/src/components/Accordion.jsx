@@ -44,7 +44,7 @@ const VerticalAccordion = () => {
           );
         }}
         title="Reservar Cita"
-        message="Se abrirá WhatsApp para contactar con nosotros y reservar tu cita para graduación de vista."
+        message="Vamos a redirigirte a WhatsApp para reservar tu cita de graduación de vista."
         confirmText="Abrir WhatsApp"
         cancelText="Cancelar"
         type="info"

@@ -835,24 +835,24 @@ export default function PerfilUsuario() {
 
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
         {/* Hero Header */}
-        <div className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-black overflow-hidden">
+        <div className="relative bg-gradient-to-r text-white from-gray-900 via-black to-gray-900 overflow-hidden">
           {/* Subtle Pattern Overlay */}
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiI+PHBhdGggZD0iTTM2IDE2YzAtMi4yMDkgMS43OTEtNCAzLjk5OC00cy0xLjc5MSA0LTMuOTk4IDR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
 
           {/* White Accent Line */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
 
-          <div className="container mx-auto px-4 max-w-7xl relative z-10">
+          <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex flex-col md:flex-row md:items-center gap-6 py-12 md:py-16"
+              className="flex flex-col items-center text-center md:flex-row md:items-center md:text-left gap-4 sm:gap-6 py-8 sm:py-12 md:py-16"
             >
-              {/* Avatar con efecto de lujo */}
-              <div className="relative group">
+              {/* Avatar */}
+              <div className="relative group flex-shrink-0">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-white/20 to-white/30 rounded-full blur-xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
-                <div className="relative w-24 h-24 md:w-28 md:h-28 bg-gradient-to-br from-white to-gray-100 rounded-full flex items-center justify-center shadow-2xl border-4 border-white/10 backdrop-blur-sm">
-                  <span className="text-4xl md:text-5xl font-light bg-gradient-to-br from-gray-700 to-gray-900 bg-clip-text text-transparent">
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-gradient-to-br from-white to-gray-100 rounded-full flex items-center justify-center shadow-2xl border-4 border-white/10 backdrop-blur-sm">
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-light bg-gradient-to-br from-gray-700 to-gray-900 bg-clip-text text-transparent">
                     {user.displayName?.[0]?.toUpperCase() ||
                       user.email[0].toUpperCase()}
                   </span>
@@ -860,23 +860,24 @@ export default function PerfilUsuario() {
               </div>
 
               {/* Info del usuario */}
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 }}
+                  className="w-full"
                 >
-                  <h1 className="text-3xl md:text-5xl font-extralight tracking-[0.2em] text-white mb-3 uppercase">
+                  <h1 className="text-2xl sm:text-3xl md:text-5xl font-extralight tracking-[0.1em] sm:tracking-[0.15em] md:tracking-[0.2em] text-white mb-2 sm:mb-3 uppercase truncate">
                     {user.displayName || "Mi Cuenta"}
                   </h1>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
-                    <p className="text-gray-300 font-light flex items-center gap-2">
-                      <Mail className="w-4 h-4 text-white" />
-                      {user.email}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 md:gap-6">
+                    <p className="text-sm sm:text-base text-gray-300 font-light flex items-center justify-center md:justify-start gap-2 truncate">
+                      <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white flex-shrink-0" />
+                      <span className="truncate">{user.email}</span>
                     </p>
-                    <div className="hidden sm:block w-1 h-1 bg-white rounded-full"></div>
-                    <p className="text-gray-400 text-sm font-light flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-white" />
+                    <div className="hidden sm:block w-1 h-1 bg-white rounded-full flex-shrink-0"></div>
+                    <p className="text-xs sm:text-sm text-gray-400 font-light flex items-center justify-center md:justify-start gap-2">
+                      <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white flex-shrink-0" />
                       Cuenta verificada
                     </p>
                   </div>
