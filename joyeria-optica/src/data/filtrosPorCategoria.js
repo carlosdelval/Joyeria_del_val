@@ -5,7 +5,7 @@ export const filtrosPorCategoria = {
       type: "checkbox",
       options: [
         { value: "tous", label: "TOUS" },
-        { value: "tommy-hilfiger", label: "Tommy Hilfiger" },
+        { value: "tommy hilfiger", label: "Tommy Hilfiger" },
         { value: "seiko", label: "Seiko" },
         { value: "citizen", label: "Citizen" },
         { value: "lacoste", label: "Lacoste" },

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { href, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchProductos } from "../api/productos";
 import SEO from "../components/SEO";
@@ -158,48 +158,56 @@ const MarcasRelojes = () => {
       descripcion: "Estilo americano icónico y casual",
       imagen: "/tommy-banner.jpg",
       objectPosition: "object-right",
+      href: "/catalogo/relojes?marca=tommy+hilfiger"
     },
     {
       nombre: "Lacoste",
       descripcion: "Elegancia deportiva con el icónico cocodrilo",
       imagen: "/lacoste-banner.jpg",
       objectPosition: "object-right",
+      href: "/catalogo/relojes?marca=lacoste"
     },
     {
       nombre: "Viceroy",
       descripcion: "Elegancia española con carácter distintivo",
       imagen: "/viceroy-banner.jpg",
       objectPosition: "object-center",
+      href: "/catalogo/relojes?marca=viceroy"
     },
     {
       nombre: "Tous",
       descripcion: "Joyería y diseño en perfecta armonía",
       imagen: "/tous-banner.jpg",
       objectPosition: "object-center",
+      href: "/catalogo/relojes?marca=tous"
     },
     {
       nombre: "Citizen",
       descripcion: "Tecnología Eco-Drive japonesa desde 1918",
       imagen: "/citizen-banner.jpg",
       objectPosition: "object-left",
+      href: "/catalogo/relojes?marca=citizen"
     },
     {
       nombre: "Seiko",
       descripcion: "Precisión japonesa e innovación constante",
       imagen: "/seiko-banner.jpg",
       objectPosition: "object-center",
+      href: "/catalogo/relojes?marca=seiko"
     },
     {
       nombre: "Maserati",
       descripcion: "Potencia italiana y diseño deportivo",
       imagen: "/maserati-banner.jpg",
       objectPosition: "object-center",
+      href: "/catalogo/relojes?marca=maserati"
     },
     {
       nombre: "Orient",
       descripcion: "Manufactura japonesa de relojes mecánicos",
       imagen: "/orient-banner.jpg",
       objectPosition: "object-left",
+      href: "/catalogo/relojes?marca=orient"
     },
   ];
 
@@ -231,7 +239,8 @@ const MarcasRelojes = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.08 }}
-              className="relative overflow-hidden transition-all duration-300 bg-white border-2 border-gray-200 group hover:border-black"
+              onClick={() => { window.location.href = marca.href; }}
+              className="relative overflow-hidden transition-all duration-300 bg-white border-2 border-gray-200 group hover:border-black cursor-pointer"
             >
               {/* Imagen promocional */}
               <div className="relative w-full h-48 overflow-hidden bg-gray-100">
@@ -588,7 +597,7 @@ export default function Relojes() {
           posterSrc="/viceroy-video-miniatura.png"
           title="RELOJERÍA"
           subtitle="Precisión y diseño atemporal en cada detalle. Descubre las mejores marcas con servicio técnico especializado."
-          ctaText="Ver relojes"
+          ctaText="Ver colección Viceroy"
           ctaLink="/catalogo/relojes?marca=viceroy"
           secondaryCta={{ text: "Visítanos en tienda", link: "/contacto" }}
           overlayOpacity="45"

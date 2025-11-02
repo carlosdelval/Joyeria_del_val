@@ -37,7 +37,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm sm:text-base leading-relaxed text-gray-300 mb-6">
-              Cuatro generaciones de experiencia en óptica, joyería y relojería.
+              Más de tres generaciones de experiencia en óptica, joyería y relojería.
               Calidad, elegancia y atención personalizada en cada detalle.
             </p>
 

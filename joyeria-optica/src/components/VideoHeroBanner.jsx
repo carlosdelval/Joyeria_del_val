@@ -66,25 +66,25 @@ export default function VideoHeroBanner({
       </div>
 
       {/* Contenido */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center">
+      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 sm:px-6 text-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="max-w-4xl"
+          className="max-w-4xl w-full"
         >
           {/* Título principal */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight tracking-[0.3em] text-white mb-6 uppercase">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extralight tracking-[0.2em] md:tracking-[0.3em] text-white mb-6 uppercase px-2">
             {title}
           </h1>
 
           {/* Subtítulo */}
-          <p className="text-lg md:text-xl lg:text-2xl font-light text-white/90 mb-12 max-w-2xl mx-auto tracking-wide">
+          <p className="text-lg md:text-xl lg:text-2xl font-light text-white/90 mb-12 max-w-2xl mx-auto tracking-wide px-2">
             {subtitle}
           </p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch w-full max-w-2xl mx-auto">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch w-full max-w-2xl mx-auto px-2">
             {/* CTA Principal */}
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -93,11 +93,11 @@ export default function VideoHeroBanner({
             >
               <Link
                 to={ctaLink}
-                className="group relative w-full flex items-center justify-center text-center px-8 sm:px-12 py-4 bg-white text-black font-light tracking-widest uppercase text-sm overflow-hidden whitespace-nowrap"
+                className="group relative w-full flex items-center justify-center text-center px-6 sm:px-8 md:px-12 py-4 bg-white text-black font-light tracking-widest uppercase text-xs sm:text-sm overflow-hidden"
               >
                 {/* Efecto hover */}
                 <span className="absolute inset-0 bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                <span className="relative z-10 group-hover:text-white transition-colors duration-500">
+                <span className="relative z-10 group-hover:text-white transition-colors duration-500 break-words">
                   {ctaText}
                 </span>
               </Link>
@@ -112,9 +112,9 @@ export default function VideoHeroBanner({
               >
                 <Link
                   to={secondaryCta.link}
-                  className="group w-full flex items-center justify-center text-center px-8 sm:px-12 py-4 border-2 border-white text-white font-light tracking-widest uppercase text-sm hover:bg-white hover:text-black transition-all duration-300 whitespace-nowrap"
+                  className="group w-full flex items-center justify-center text-center px-6 sm:px-8 md:px-12 py-4 border-2 border-white text-white font-light tracking-widest uppercase text-xs sm:text-sm hover:bg-white hover:text-black transition-all duration-300"
                 >
-                  {secondaryCta.text}
+                  <span className="break-words">{secondaryCta.text}</span>
                 </Link>
               </motion.div>
             )}
