@@ -47,6 +47,7 @@ const Catalogo = () => {
   const [filtrosAdicionales, setFiltrosAdicionales] = useState({}); // Filtros adicionales del sidebar
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [loadingMore, setLoadingMore] = useState(false);
   const catalogoRef = useRef(null);
   const productosAntesDeCargarRef = useRef(0);
 
@@ -153,12 +154,23 @@ const Catalogo = () => {
 
   // Cargar más productos (Mobile)
   const cargarMas = () => {
-    if (paginaActual < totalPaginas) {
+    if (paginaActual < totalPaginas && !loadingMore) {
+      // Activar estado de carga
+      setLoadingMore(true);
+
       // Guardar el número de productos visibles ANTES de cargar más
       productosAntesDeCargarRef.current = productosVisibles.length;
 
-      // Cambiar página (esto disparará el re-render y actualizará productosVisibles)
-      cambiarPagina(paginaActual + 1);
+      // Pequeño delay para mostrar el loader (feedback visual)
+      setTimeout(() => {
+        // Cambiar página (esto disparará el re-render y actualizará productosVisibles)
+        cambiarPagina(paginaActual + 1);
+
+        // Desactivar loading después de que se carguen
+        setTimeout(() => {
+          setLoadingMore(false);
+        }, 400);
+      }, 300);
     }
   };
 
@@ -429,32 +441,122 @@ const Catalogo = () => {
                   transition={{ duration: 0.15 }}
                   className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                 >
-                  {productosVisibles.map((producto) => (
-                    <ProductoCard key={producto.slug} producto={producto} />
-                  ))}
+                  {productosVisibles.map((producto, index) => {
+                    // Detectar si es un producto recién cargado
+                    const esProductoNuevo =
+                      isMobile &&
+                      index >= productosAntesDeCargarRef.current &&
+                      productosAntesDeCargarRef.current > 0;
+
+                    return (
+                      <motion.div
+                        key={producto.slug}
+                        initial={
+                          esProductoNuevo
+                            ? { opacity: 0, y: 30 }
+                            : { opacity: 1, y: 0 }
+                        }
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 0.5,
+                          delay: esProductoNuevo
+                            ? (index - productosAntesDeCargarRef.current) * 0.08
+                            : 0,
+                          ease: [0.25, 0.46, 0.45, 0.94],
+                        }}
+                      >
+                        <ProductoCard producto={producto} />
+                      </motion.div>
+                    );
+                  })}
                 </motion.div>
               </AnimatePresence>
 
               {/* Paginación Desktop o Load More Mobile */}
               {productos.length > productosPorPagina && (
-                <div className="mt-8">
+                <div className="my-8">
                   {isMobile ? (
                     /* Mobile: Load More Button */
                     productosVisibles.length < productos.length && (
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="flex justify-center"
+                        className="flex flex-col items-center gap-3"
                       >
                         <button
                           onClick={cargarMas}
-                          className="group relative px-8 py-3 font-light tracking-wider text-sm uppercase bg-black text-white hover:bg-gray-900 transition-all duration-300 overflow-hidden"
+                          disabled={loadingMore}
+                          className="group relative px-8 py-3 font-light tracking-wider text-sm uppercase bg-black text-white hover:bg-gray-900 transition-all duration-300 overflow-hidden disabled:bg-gray-400 disabled:cursor-not-allowed min-w-[220px]"
                         >
-                          <span className="relative z-10">
-                            Cargar más productos
-                          </span>
-                          <span className="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left opacity-10" />
+                          {loadingMore ? (
+                            <span className="relative z-10 flex items-center justify-center gap-2">
+                              <svg
+                                className="animate-spin h-4 w-4 text-white"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                ></circle>
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                              </svg>
+                              Cargando...
+                            </span>
+                          ) : (
+                            <>
+                              <span className="relative z-10">
+                                Cargar más productos
+                              </span>
+                              <span className="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left opacity-10" />
+                            </>
+                          )}
                         </button>
+                        {loadingMore && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            className="flex gap-1.5"
+                          >
+                            <motion.div
+                              animate={{ y: [0, -8, 0] }}
+                              transition={{
+                                duration: 0.6,
+                                repeat: Infinity,
+                                delay: 0,
+                              }}
+                              className="w-2 h-2 bg-gray-400 rounded-full"
+                            />
+                            <motion.div
+                              animate={{ y: [0, -8, 0] }}
+                              transition={{
+                                duration: 0.6,
+                                repeat: Infinity,
+                                delay: 0.1,
+                              }}
+                              className="w-2 h-2 bg-gray-400 rounded-full"
+                            />
+                            <motion.div
+                              animate={{ y: [0, -8, 0] }}
+                              transition={{
+                                duration: 0.6,
+                                repeat: Infinity,
+                                delay: 0.2,
+                              }}
+                              className="w-2 h-2 bg-gray-400 rounded-full"
+                            />
+                          </motion.div>
+                        )}
                       </motion.div>
                     )
                   ) : (
