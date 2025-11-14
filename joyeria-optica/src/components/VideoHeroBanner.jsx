@@ -110,12 +110,21 @@ export default function VideoHeroBanner({
                 whileTap={{ scale: 0.95 }}
                 className="w-full sm:flex-1 flex"
               >
-                <Link
-                  to={secondaryCta.link}
-                  className="group w-full flex items-center justify-center text-center px-6 sm:px-8 md:px-12 py-4 border-2 border-white text-white font-light tracking-widest uppercase text-xs sm:text-sm hover:bg-white hover:text-black transition-all duration-300"
-                >
-                  <span className="break-words">{secondaryCta.text}</span>
-                </Link>
+                {secondaryCta.onClick ? (
+                  <button
+                    onClick={secondaryCta.onClick}
+                    className="group w-full flex items-center justify-center text-center px-6 sm:px-8 md:px-12 py-4 border-2 border-white text-white font-light tracking-widest uppercase text-xs sm:text-sm hover:bg-white hover:text-black transition-all duration-300"
+                  >
+                    <span className="break-words">{secondaryCta.text}</span>
+                  </button>
+                ) : (
+                  <Link
+                    to={secondaryCta.link}
+                    className="group w-full flex items-center justify-center text-center px-6 sm:px-8 md:px-12 py-4 border-2 border-white text-white font-light tracking-widest uppercase text-xs sm:text-sm hover:bg-white hover:text-black transition-all duration-300"
+                  >
+                    <span className="break-words">{secondaryCta.text}</span>
+                  </Link>
+                )}
               </motion.div>
             )}
           </div>

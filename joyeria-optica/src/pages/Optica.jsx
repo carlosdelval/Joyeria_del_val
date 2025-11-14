@@ -473,7 +473,10 @@ export default function Optica() {
           subtitle="Cuidamos de tu salud visual con profesionalidad y dedicación. Servicios de optometría, graduación y personalización de monturas."
           ctaText="Ver catálogo"
           ctaLink="/catalogo/gafas"
-          secondaryCta={{ text: "Reservar cita", link: "/contacto" }}
+          secondaryCta={{
+            text: "Reservar cita",
+            onClick: () => setShowWhatsAppModal(true),
+          }}
           overlayOpacity="45"
           height="h-screen"
         />
