@@ -25,8 +25,22 @@ export function useProductos(filtrosYParams = {}, dependencia = "") {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dependencia]);
 
+  // Función para recargar productos (útil después de cambios de stock)
+  const reloadProductos = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchProductos(filtrosYParams);
+      setProductos(data);
+    } catch (error) {
+      console.error("Error reloading productos:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     productos,
     loading,
+    reloadProductos,
   };
 }

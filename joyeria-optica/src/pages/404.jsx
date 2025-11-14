@@ -58,13 +58,13 @@ export default function NotFound() {
     },
     {
       icon: Watch,
-      title: "Relojes",
+      title: "Relojería",
       description: "Descubre marcas premium",
-      path: "/relojes",
+      path: "/relojeria",
     },
     {
       icon: Glasses,
-      title: "Gafas",
+      title: "Óptica",
       description: "Encuentra tu estilo",
       path: "/optica",
     },

@@ -123,8 +123,12 @@ class CheckoutService {
     const lineItems = [];
 
     for (const item of items) {
-      // Intentar obtener el variantId de diferentes fuentes
-      let variantId = item.variantId || item.variant?.id;
+      // Intentar obtener el variantId de diferentes fuentes (priorizar shopifyVariantId)
+      let variantId =
+        item.shopifyVariantId ||
+        item.variantId ||
+        item.variant?.id ||
+        item.variant?.shopifyId;
 
       // Si no hay variantId pero hay un shopify ID, construirlo
       if (!variantId && item.shopify?.variants?.[0]?.id) {

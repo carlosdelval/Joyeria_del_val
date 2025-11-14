@@ -1,9 +1,29 @@
 // src/api/productos.js
+import { shopifyService } from "../services/shopify.js";
 
-// Función para cargar los datos (compatible con producción y desarrollo)
+const USE_SHOPIFY = import.meta.env.VITE_USE_SHOPIFY === "true";
+
+// Función para cargar los datos (Shopify o JSON local)
 async function loadProductosData() {
   try {
-    // Ruta relativa desde la raíz del hosting
+    if (USE_SHOPIFY) {
+      console.log("🛍️ Cargando productos desde Shopify...");
+      const response = await shopifyService.getProducts({ first: 250 });
+
+      if (response.errors) {
+        console.error("Error de Shopify GraphQL:", response.errors);
+        throw new Error("Error al obtener productos de Shopify");
+      }
+
+      const products = response.data?.products?.edges || [];
+      console.log(`✅ ${products.length} productos cargados desde Shopify`);
+
+      // Transformar productos de Shopify al formato de la app
+      return products.map((edge) => shopifyService.transformProductData(edge));
+    }
+
+    // Fallback a JSON local
+    console.log("📁 Cargando productos desde JSON local...");
     const response = await fetch("/data/productos.json");
 
     if (!response.ok) {
@@ -12,7 +32,6 @@ async function loadProductosData() {
 
     const data = await response.json();
 
-    // Validación crítica de estructura
     if (!Array.isArray(data)) {
       console.error("Los datos no son un array válido:", data);
       return [];
@@ -21,7 +40,21 @@ async function loadProductosData() {
     return data;
   } catch (error) {
     console.error("Error cargando productos:", error);
-    return []; // Retorna array vacío como fallback
+
+    // Si Shopify falla, intentar JSON local como fallback
+    if (USE_SHOPIFY) {
+      console.warn("⚠️ Intentando fallback a JSON local...");
+      try {
+        const response = await fetch("/data/productos.json");
+        const data = await response.json();
+        return Array.isArray(data) ? data : [];
+      } catch (fallbackError) {
+        console.error("Error en fallback:", fallbackError);
+        return [];
+      }
+    }
+
+    return [];
   }
 }
 
@@ -326,13 +359,32 @@ export async function fetchProductos({
 
       // Filtro de array (selección múltiple)
       if (Array.isArray(valor) && valor.length > 0) {
+        // CASO ESPECIAL: género se busca en categorias, no en campo genero
+        if (clave === "genero") {
+          const categorias = producto.categorias || [];
+          const tieneGenero = valor.some((generoFiltro) =>
+            categorias.some(
+              (cat) =>
+                cat &&
+                String(cat).toLowerCase() === String(generoFiltro).toLowerCase()
+            )
+          );
+          if (!tieneGenero) return false;
+          continue; // Pasar al siguiente filtro
+        }
+
         const valorProducto = producto[clave];
+
+        // Si el valor del producto es null o undefined, no coincide
+        if (valorProducto === null || valorProducto === undefined) {
+          return false;
+        }
 
         // Si el producto tiene array de valores
         if (Array.isArray(valorProducto)) {
           const tieneCoincidencia = valor.some((v) =>
             valorProducto.some(
-              (vp) => String(vp).toLowerCase() === String(v).toLowerCase()
+              (vp) => vp && String(vp).toLowerCase() === String(v).toLowerCase()
             )
           );
           if (!tieneCoincidencia) return false;
@@ -340,6 +392,7 @@ export async function fetchProductos({
           // Si el producto tiene un solo valor
           const coincide = valor.some(
             (v) =>
+              valorProducto &&
               String(valorProducto).toLowerCase() === String(v).toLowerCase()
           );
           if (!coincide) return false;
@@ -361,13 +414,30 @@ export async function fetchProductos({
   });
 }
 
-// Versión segura de fetchProducto
+// Versión segura de fetchProducto con soporte Shopify
 export const fetchProducto = async (slug) => {
   try {
     if (!slug) throw new Error("Slug no proporcionado");
 
-    await new Promise((resolve) => setTimeout(resolve, 300)); // Simular latencia
+    if (USE_SHOPIFY) {
+      console.log(`🛍️ Buscando producto "${slug}" en Shopify...`);
+      const response = await shopifyService.getProduct(slug);
 
+      if (response.errors) {
+        console.error("Error de Shopify GraphQL:", response.errors);
+        throw new Error("Producto no encontrado en Shopify");
+      }
+
+      const product = response.data?.productByHandle;
+      if (!product) {
+        throw new Error("Producto no encontrado en Shopify");
+      }
+
+      return shopifyService.transformProductData(product);
+    }
+
+    // Fallback a JSON local
+    await new Promise((resolve) => setTimeout(resolve, 300));
     const productos = await fetchProductos({});
     const producto = productos.find(
       (p) => p.slug === slug || p.handle === slug || p.shopify?.handle === slug

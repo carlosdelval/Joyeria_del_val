@@ -285,7 +285,7 @@ const FavoritosPage = () => {
                     </div>
 
                     {/* Badge de descuento */}
-                    {item.precioAnterior && (
+                    {(item.precioAnterior ?? 0) > 0 && (
                       <div className="absolute px-2 py-1 text-xs font-medium text-white bg-red-600 rounded top-2 left-2">
                         -
                         {Math.round(
@@ -351,7 +351,7 @@ const FavoritosPage = () => {
                           minimumFractionDigits: 0,
                         })}
                       </span>
-                      {item.precioAnterior && (
+                      {(item.precioAnterior ?? 0) > 0 && (
                         <span className="text-sm text-gray-400 line-through">
                           {item.precioAnterior.toLocaleString("es-ES", {
                             style: "currency",

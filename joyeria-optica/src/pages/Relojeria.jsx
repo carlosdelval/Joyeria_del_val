@@ -158,56 +158,56 @@ const MarcasRelojes = () => {
       descripcion: "Estilo americano icónico y casual",
       imagen: "/tommy-banner.jpg",
       objectPosition: "object-right",
-      href: "/catalogo/relojes?marca=tommy+hilfiger"
+      href: "/catalogo/relojes?marca=tommy+hilfiger",
     },
     {
       nombre: "Lacoste",
       descripcion: "Elegancia deportiva con el icónico cocodrilo",
       imagen: "/lacoste-banner.jpg",
       objectPosition: "object-right",
-      href: "/catalogo/relojes?marca=lacoste"
+      href: "/catalogo/relojes?marca=lacoste",
     },
     {
       nombre: "Viceroy",
       descripcion: "Elegancia española con carácter distintivo",
       imagen: "/viceroy-banner.jpg",
       objectPosition: "object-center",
-      href: "/catalogo/relojes?marca=viceroy"
+      href: "/catalogo/relojes?marca=viceroy",
     },
     {
       nombre: "Tous",
       descripcion: "Joyería y diseño en perfecta armonía",
       imagen: "/tous-banner.jpg",
       objectPosition: "object-center",
-      href: "/catalogo/relojes?marca=tous"
+      href: "/catalogo/relojes?marca=tous",
     },
     {
       nombre: "Citizen",
       descripcion: "Tecnología Eco-Drive japonesa desde 1918",
       imagen: "/citizen-banner.jpg",
       objectPosition: "object-left",
-      href: "/catalogo/relojes?marca=citizen"
+      href: "/catalogo/relojes?marca=citizen",
     },
     {
       nombre: "Seiko",
       descripcion: "Precisión japonesa e innovación constante",
       imagen: "/seiko-banner.jpg",
       objectPosition: "object-center",
-      href: "/catalogo/relojes?marca=seiko"
+      href: "/catalogo/relojes?marca=seiko",
     },
     {
       nombre: "Maserati",
       descripcion: "Potencia italiana y diseño deportivo",
       imagen: "/maserati-banner.jpg",
       objectPosition: "object-center",
-      href: "/catalogo/relojes?marca=maserati"
+      href: "/catalogo/relojes?marca=maserati",
     },
     {
       nombre: "Orient",
       descripcion: "Manufactura japonesa de relojes mecánicos",
       imagen: "/orient-banner.jpg",
       objectPosition: "object-left",
-      href: "/catalogo/relojes?marca=orient"
+      href: "/catalogo/relojes?marca=orient",
     },
   ];
 
@@ -239,7 +239,9 @@ const MarcasRelojes = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: index * 0.08 }}
-              onClick={() => { window.location.href = marca.href; }}
+              onClick={() => {
+                window.location.href = marca.href;
+              }}
               className="relative overflow-hidden transition-all duration-300 bg-white border-2 border-gray-200 group hover:border-black cursor-pointer"
             >
               {/* Imagen promocional */}
@@ -403,7 +405,7 @@ const CarruselRelojesTous = () => {
           {/* Sección de texto */}
           <div className="w-full md:w-1/5">
             <h3 className="mb-3 text-2xl font-light tracking-wide text-black uppercase hidden sm:block">
-              Hasta 50% Descuento
+              Hasta 10% Descuento
             </h3>
             <p className="mb-6 text-sm font-light text-gray-600 hidden sm:block">
               Diseño exclusivo que combina elegancia y funcionalidad
@@ -450,14 +452,14 @@ const CarruselRelojesTous = () => {
                         alt={product.titulo}
                         className="object-contain w-full transition-transform duration-300 aspect-square group-hover:scale-105"
                       />
-                      {product.precioAnterior && (
-                        <span className="absolute px-2 py-1 text-xs font-light tracking-wider text-white uppercase bg-black top-2 right-2">
+                      {(product.precioAnterior ?? 0) > 0 && (
+                        <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-md top-2 right-2">
                           {`-${Math.round(
                             ((product.precioAnterior - product.precio) /
                               product.precioAnterior) *
                               100
                           )}%`}
-                        </span>
+                        </div>
                       )}
                     </div>
 
@@ -472,7 +474,7 @@ const CarruselRelojesTous = () => {
                           currency: "EUR",
                         })}
                       </p>
-                      {product.precioAnterior && (
+                      {(product.precioAnterior ?? 0) > 0 && (
                         <p className="text-xs font-light text-gray-400 line-through">
                           {product.precioAnterior.toLocaleString("es-ES", {
                             style: "currency",
@@ -494,7 +496,7 @@ const CarruselRelojesTous = () => {
               <>
                 <button
                   onClick={prevSlide}
-                  className="absolute left-0 z-10 hidden p-2 ml-2 text-white -translate-y-1/2 bg-black top-1/2 md:block hover:bg-gray-800"
+                  className="absolute left-0 z-10 hidden p-2 ml-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
                 >
                   <svg
                     className="w-6 h-6"
@@ -512,7 +514,7 @@ const CarruselRelojesTous = () => {
                 </button>
                 <button
                   onClick={nextSlide}
-                  className="absolute right-0 z-10 hidden p-2 mr-2 text-white -translate-y-1/2 bg-black top-1/2 md:block hover:bg-gray-800"
+                  className="absolute right-0 z-10 hidden p-2 mr-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
                 >
                   <svg
                     className="w-6 h-6"

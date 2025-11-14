@@ -22,12 +22,38 @@ const Catalogo = () => {
   const generoParam = searchParams.get("genero");
   const pageParam = parseInt(searchParams.get("page") || "1", 10);
 
+  // Construir filtros desde URL usando useMemo
+  const filtrosDesdeURL = useMemo(() => {
+    const newFiltros = {};
+
+    if (categoria === "tous") {
+      newFiltros.marca = ["tous"];
+    } else if (categoria === "rebajas") {
+      newFiltros.oferta = true;
+    }
+
+    if (marcaParam) {
+      newFiltros.marca = [marcaParam];
+    }
+
+    if (generoParam) {
+      newFiltros.genero = [generoParam];
+    }
+
+    return Object.keys(newFiltros).length > 0 ? newFiltros : {};
+  }, [categoria, marcaParam, generoParam]);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [filtros, setFiltros] = useState({});
+  const [filtrosAdicionales, setFiltrosAdicionales] = useState({}); // Filtros adicionales del sidebar
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const catalogoRef = useRef(null);
   const productosAntesDeCargarRef = useRef(0);
+
+  // Combinar filtros de URL con filtros adicionales del sidebar
+  const filtros = useMemo(() => {
+    return { ...filtrosDesdeURL, ...filtrosAdicionales };
+  }, [filtrosDesdeURL, filtrosAdicionales]);
 
   // Detectar cambios de tamaño de ventana
   useEffect(() => {
@@ -48,29 +74,19 @@ const Catalogo = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Aplicar filtros desde URL (se ejecuta al montar y cuando cambian params o categoría)
-  useEffect(() => {
-    const newFiltros = {};
-
-    if (marcaParam) {
-      newFiltros.marca = [marcaParam];
-    }
-
-    if (generoParam) {
-      newFiltros.genero = [generoParam];
-    }
-
-    // Siempre actualizar filtros, incluso si está vacío (para limpiar cuando no hay params)
-    setFiltros(Object.keys(newFiltros).length > 0 ? newFiltros : {});
-  }, [marcaParam, generoParam, categoria]);
-
   // Determinar qué categoría buscar
   const categoriasBusqueda = useMemo(() => {
     if (searchQuery) {
       // Si hay búsqueda, buscar en todas las categorías principales
       return ["relojes", "gafas", "bolsos", "gafas-sol"];
     }
-    if (categoria && categoria !== "todos") {
+    // Ignorar categorías especiales que son filtros (tous, rebajas)
+    if (
+      categoria &&
+      categoria !== "todos" &&
+      categoria !== "tous" &&
+      categoria !== "rebajas"
+    ) {
       return [categoria];
     }
     return [];
@@ -188,8 +204,10 @@ const Catalogo = () => {
     productos.forEach((producto) => {
       const cats = producto.categorias || [];
       cats.forEach((cat) => {
-        const catNormalizada = cat.toLowerCase().trim();
-        contadores[catNormalizada] = (contadores[catNormalizada] || 0) + 1;
+        if (cat) {
+          const catNormalizada = cat.toLowerCase().trim();
+          contadores[catNormalizada] = (contadores[catNormalizada] || 0) + 1;
+        }
       });
 
       // También contar la categoría principal
@@ -244,7 +262,7 @@ const Catalogo = () => {
   }, [productos, searchQuery, categoria]);
 
   const handleFiltroChange = (nuevosFiltros) => {
-    setFiltros(nuevosFiltros);
+    setFiltrosAdicionales(nuevosFiltros);
   };
 
   const toggleSidebar = () => {
@@ -252,7 +270,7 @@ const Catalogo = () => {
   };
 
   const limpiarFiltros = () => {
-    setFiltros({});
+    setFiltrosAdicionales({});
   };
 
   const tituloCategoria = useMemo(() => {

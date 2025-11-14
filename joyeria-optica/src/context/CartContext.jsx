@@ -48,14 +48,16 @@ function cartReducer(state, action) {
           {
             id: itemId,
             productId: product.id,
-            sku: product.sku, // SKU para Shopify
+            shopifyVariantId:
+              variant?.shopifyId || product.variantes?.[0]?.shopifyId || null, // ID de Shopify para checkout
+            sku: variant?.sku || product.sku || product.id,
             slug: product.slug,
             titulo: product.titulo,
             precio: variant ? variant.precio : product.precio,
             imagen: product.imagenes[0],
             quantity,
             variant: variant || null,
-            maxStock: variant ? variant.stock : product.stock || 99,
+            maxStock: variant ? variant.stock : product.stock || 0,
           },
         ],
       };

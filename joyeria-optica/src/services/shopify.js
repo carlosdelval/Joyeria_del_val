@@ -297,35 +297,196 @@ export class ShopifyService {
     return this.graphqlRequest(mutation, { input });
   }
 
-  // Convertir datos de Shopify al formato actual
+  // Convertir datos de Shopify al formato actual de la app
   transformProductData(shopifyProduct) {
     const product = shopifyProduct.node || shopifyProduct;
     const variant = product.variants?.edges[0]?.node;
     const images = product.images?.edges.map((edge) => edge.node.url) || [];
 
+    // Extraer categorías de tags (ignorar productType si es una marca)
+    const marcasConocidas = [
+      "tous",
+      "ray-ban",
+      "oakley",
+      "viceroy",
+      "casio",
+      "citizen",
+      "seiko",
+      "orient",
+      "festina",
+      "lotus",
+      "tissot",
+      "certina",
+      "hamilton",
+      "longines",
+    ];
+    const productTypeEsMarca = marcasConocidas.includes(
+      product.productType?.toLowerCase()
+    );
+
+    // Si productType no es una marca, incluirlo; si no, solo usar tags
+    const categorias = productTypeEsMarca
+      ? [...product.tags].filter(Boolean)
+      : [
+          product.productType,
+          ...product.tags.filter(
+            (tag) => tag?.toLowerCase() !== product.productType?.toLowerCase()
+          ),
+        ].filter(Boolean);
+
+    // Extraer marca del vendor, productType (si es marca) o de los tags
+    const marca =
+      product.vendor ||
+      (productTypeEsMarca ? product.productType : null) ||
+      product.tags.find(
+        (tag) => tag && marcasConocidas.includes(tag.toLowerCase())
+      ) ||
+      null;
+
     return {
-      id: product.id,
+      // IDs y referencias
+      id: product.handle, // Usar handle como ID para consistencia
       slug: product.handle,
+      shopifyId: product.id, // ID real de Shopify
+
+      // Información básica
       titulo: product.title,
+      nombre: product.title,
       descripcion: product.description,
+      descripcionHtml:
+        product.descriptionHtml || `<p>${product.description}</p>`,
+
+      // Precios (del primer variant)
       precio: parseFloat(product.priceRange.minVariantPrice.amount),
       precioAnterior: product.compareAtPriceRange?.minVariantPrice?.amount
         ? parseFloat(product.compareAtPriceRange.minVariantPrice.amount)
         : null,
+
+      // Imágenes
       imagenes: images,
-      categorias: [product.productType, ...product.tags],
+
+      // Categorías y etiquetas
+      categorias: categorias,
       etiquetas: product.tags,
+      categoria: product.productType,
+      marca: marca,
+
+      // Stock y disponibilidad (TIEMPO REAL desde Shopify)
       disponible: variant?.availableForSale || false,
       stock: variant?.quantityAvailable || 0,
+
+      // Variantes completas
       variantes:
         product.variants?.edges.map((edge) => ({
           id: edge.node.id,
+          shopifyId: edge.node.id,
           titulo: edge.node.title,
-          precio: parseFloat(edge.node.price.amount),
+          precio: edge.node.price?.amount
+            ? parseFloat(edge.node.price.amount)
+            : 0,
+          precioAnterior: edge.node.compareAtPrice?.amount
+            ? parseFloat(edge.node.compareAtPrice.amount)
+            : null,
           disponible: edge.node.availableForSale,
+          stock: edge.node.quantityAvailable, // STOCK EN TIEMPO REAL
           opciones: edge.node.selectedOptions,
         })) || [],
+
+      // Opciones de producto
+      opciones: product.options || [],
+
+      // Información adicional extraída
+      tipo: this.extractTipoFromTags(product.tags),
+      genero: this.extractGeneroFromTags(product.tags),
+      material: this.extractMaterialFromTags(product.tags),
+      estilo: this.extractEstiloFromTags(product.tags),
+
+      // Flags
+      novedad: product.tags.some((tag) => tag?.toLowerCase().includes("nuevo")),
+      oferta:
+        product.compareAtPriceRange?.minVariantPrice?.amount &&
+        product.priceRange?.minVariantPrice?.amount
+          ? parseFloat(product.compareAtPriceRange.minVariantPrice.amount) >
+            parseFloat(product.priceRange.minVariantPrice.amount)
+          : false,
     };
+  }
+
+  // Helpers para extraer información de tags
+  extractTipoFromTags(tags) {
+    const tipoMap = {
+      sol: "sol",
+      graduadas: "graduadas",
+      digital: "digital",
+      analogico: "analogico",
+      analógico: "analogico",
+      smartwatch: "smartwatch",
+    };
+
+    for (const tag of tags) {
+      if (tag) {
+        const tipo = tipoMap[tag.toLowerCase()];
+        if (tipo) return tipo;
+      }
+    }
+    return null;
+  }
+
+  extractGeneroFromTags(tags) {
+    const generoMap = {
+      mujer: "mujer",
+      hombre: "hombre",
+      niño: "infantil",
+      niña: "infantil",
+      niños: "infantil",
+      unisex: "unisex",
+    };
+
+    for (const tag of tags) {
+      if (tag) {
+        const genero = generoMap[tag.toLowerCase()];
+        if (genero) return genero;
+      }
+    }
+    return "unisex";
+  }
+
+  extractMaterialFromTags(tags) {
+    const materialMap = {
+      oro: "oro-18k",
+      "18k": "oro-18k",
+      plata: "plata-925",
+      acero: "acero-inox",
+      cuero: "cuero",
+      metal: "metal",
+    };
+
+    for (const tag of tags) {
+      if (tag) {
+        const material = materialMap[tag.toLowerCase()];
+        if (material) return material;
+      }
+    }
+    return null;
+  }
+
+  extractEstiloFromTags(tags) {
+    const estiloMap = {
+      clasico: "clasico",
+      clásico: "clasico",
+      elegante: "elegante",
+      minimalista: "minimalista",
+      vintage: "vintage",
+      deportivo: "deportivo",
+    };
+
+    for (const tag of tags) {
+      if (tag) {
+        const estilo = estiloMap[tag.toLowerCase()];
+        if (estilo) return estilo;
+      }
+    }
+    return "clasico";
   }
 }
 

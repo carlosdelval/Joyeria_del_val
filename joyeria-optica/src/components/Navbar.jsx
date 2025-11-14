@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Search, User, ShoppingBag, Heart } from "lucide-react";
+import { motion } from "framer-motion";
 import AnimatedHamburgerButton from "./HamburguerButton";
 import FlyoutLink from "./FlyoutLink";
 import { useNavigate, Link } from "react-router-dom";
@@ -16,10 +17,32 @@ export default function Navbar() {
   const [cartOpen, setCartOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [cartPulse, setCartPulse] = useState(false);
+  const [wishlistPulse, setWishlistPulse] = useState(false);
   const navigate = useNavigate();
   const { itemCount } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
   const { isAuthenticated, user, logout } = useAuth();
+  const prevItemCount = useRef(itemCount);
+  const prevWishlistCount = useRef(wishlistCount);
+
+  // Detectar cuando se añade algo al carrito
+  useEffect(() => {
+    if (itemCount > prevItemCount.current) {
+      setCartPulse(true);
+      setTimeout(() => setCartPulse(false), 600);
+    }
+    prevItemCount.current = itemCount;
+  }, [itemCount]);
+
+  // Detectar cuando se añade algo a favoritos
+  useEffect(() => {
+    if (wishlistCount > prevWishlistCount.current) {
+      setWishlistPulse(true);
+      setTimeout(() => setWishlistPulse(false), 600);
+    }
+    prevWishlistCount.current = wishlistCount;
+  }, [wishlistCount]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -222,8 +245,14 @@ export default function Navbar() {
             aria-label={`Ver favoritos (${wishlistCount} productos)`}
             className="relative p-1.5 sm:p-2 transition-colors rounded-md cursor-pointer hover:text-gray-600 focus:outline-none"
             title="Favoritos"
+            data-wishlist-icon
           >
-            <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
+            <motion.div
+              animate={wishlistPulse ? { scale: [1, 1.3, 1] } : {}}
+              transition={{ duration: 0.4 }}
+            >
+              <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
+            </motion.div>
             {wishlistCount > 0 && (
               <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-xs rounded-full px-1 sm:px-1.5 min-w-[1rem] sm:min-w-[1.25rem] h-4 sm:h-5 flex items-center justify-center">
                 {wishlistCount > 99 ? "99+" : wishlistCount}
@@ -238,8 +267,17 @@ export default function Navbar() {
             aria-expanded={cartOpen}
             className="relative p-1.5 sm:p-2 transition-colors rounded-md cursor-pointer hover:text-gray-600 focus:outline-none"
             title="Carrito de compras"
+            data-cart-icon
           >
-            <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
+            <motion.div
+              animate={cartPulse ? { scale: [1, 1.3, 1] } : {}}
+              transition={{ duration: 0.4 }}
+            >
+              <ShoppingBag
+                className="w-5 h-5 sm:w-6 sm:h-6"
+                aria-hidden="true"
+              />
+            </motion.div>
             {itemCount > 0 && (
               <span
                 className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white text-xs rounded-full px-1 sm:px-1.5 min-w-[1rem] sm:min-w-[1.25rem] h-4 sm:h-5 flex items-center justify-center"

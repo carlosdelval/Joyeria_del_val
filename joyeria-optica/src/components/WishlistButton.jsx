@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 import { useWishlist } from "../hooks/useWishlist";
+import { useFlyAnimation } from "../context/FlyAnimationContext";
 
 const WishlistButton = ({
   product,
@@ -9,12 +10,24 @@ const WishlistButton = ({
   className = "",
 }) => {
   const { isInWishlist, toggleWishlist } = useWishlist();
+  const { flyToWishlist } = useFlyAnimation();
   const inWishlist = isInWishlist(product.id);
 
   const handleClick = (e) => {
     e.preventDefault(); // Evitar navegación si está en un link
     e.stopPropagation();
+
+    const wasInWishlist = inWishlist;
     toggleWishlist(product);
+
+    // Solo animar cuando se añade (no cuando se elimina)
+    if (!wasInWishlist) {
+      flyToWishlist(
+        product.imagenes?.[0] || product.imagen,
+        product.titulo || product.nombre,
+        e.currentTarget
+      );
+    }
   };
 
   const sizes = {

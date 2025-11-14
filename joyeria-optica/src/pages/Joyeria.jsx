@@ -330,7 +330,7 @@ const ProductosDestacados = ({ categoria, titulo, marca }) => {
                   alt={prod.titulo}
                   className="object-contain w-full transition-transform duration-300 aspect-square group-hover:scale-105"
                 />
-                {prod.precioAnterior && (
+                {(prod.precioAnterior ?? 0) > 0 && (
                   <span className="absolute px-2 py-1 text-xs font-light tracking-wider text-white uppercase bg-black top-2 right-2">
                     {`-${Math.round(
                       ((prod.precioAnterior - prod.precio) /
@@ -352,7 +352,7 @@ const ProductosDestacados = ({ categoria, titulo, marca }) => {
                     currency: "EUR",
                   })}
                 </p>
-                {prod.precioAnterior && (
+                {(prod.precioAnterior ?? 0) > 0 && (
                   <p className="text-xs font-light text-gray-400 line-through">
                     {prod.precioAnterior.toLocaleString("es-ES", {
                       style: "currency",

@@ -56,8 +56,8 @@ const Promocion = () => {
             className="object-cover w-full h-full"
           />
           <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white bg-black/30">
-            <p className="text-xl tracking-widest">RELOJES TOUS HASTA</p>
-            <h2 className="text-6xl font-bold">50% DTO</h2>
+            <p className="text-xl tracking-widest">RELOJES TOUS</p>
+            <h2 className="text-6xl font-bold">10% DTO</h2>
             <p className="mt-2 text-sm tracking-widest">CALIDAD CERTIFICADA</p>
             <button
               onClick={goToCatalog}
@@ -97,7 +97,7 @@ const Promocion = () => {
                   currency: "EUR",
                 })}
               </p>
-              {prod.precioAnterior && (
+              {(prod.precioAnterior ?? 0) > 0 && (
                 <p className="text-sm text-gray-400 line-through">
                   {prod.precioAnterior.toLocaleString("es-ES", {
                     style: "currency",

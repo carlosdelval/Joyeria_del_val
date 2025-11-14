@@ -161,7 +161,7 @@ export default function ColeccionTous() {
                     loading="lazy"
                     className="object-cover w-full aspect-square"
                   />
-                  {product.precioAnterior && (
+                  {(product.precioAnterior ?? 0) > 0 && (
                     <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-md top-2 right-2">
                       {`-${Math.round(
                         ((product.precioAnterior - product.precio) /
@@ -180,7 +180,7 @@ export default function ColeccionTous() {
                         currency: "EUR",
                       })}
                     </span>
-                    {product.precioAnterior && (
+                    {(product.precioAnterior ?? 0) > 0 && (
                       <span className="ml-2 text-sm text-gray-500 line-through">
                         {product.precioAnterior.toLocaleString("es-ES", {
                           style: "currency",

@@ -8,6 +8,7 @@ import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import { ToastProvider } from "./context/ToastContext";
+import { FlyAnimationProvider } from "./context/FlyAnimationContext";
 import { PageSpinner } from "./components/Spinner";
 
 // Lazy loading de páginas - cargan solo cuando se navega a ellas
@@ -34,46 +35,48 @@ function App() {
         <WishlistProvider>
           <CartProvider>
             <ToastProvider>
-              <Router>
-                <div className="min-h-screen text-black bg-white">
-                  <Navbar />
-                  <CookieBanner />
-                  <Suspense fallback={<PageSpinner />}>
-                    <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/catalogo" element={<Catalogo />} />
-                      <Route
-                        path="/catalogo/:categoria"
-                        element={<Catalogo />}
-                      />
-                      <Route
-                        path="/producto/:slug"
-                        element={<ProductoPage />}
-                      />
-                      <Route path="/joyeria" element={<Joyeria />} />
-                      <Route path="/relojeria" element={<Relojes />} />
-                      <Route path="/optica" element={<Gafas />} />
-                      <Route path="/checkout" element={<CheckoutPage />} />
-                      <Route path="/favoritos" element={<Favoritos />} />
-                      <Route path="/perfil" element={<PerfilUsuario />} />
-                      <Route
-                        path="/terminos-legales"
-                        element={<TerminosLegales />}
-                      />
-                      <Route path="/contacto" element={<Contacto />} />
-                      <Route path="/privacidad" element={<Privacidad />} />
-                      <Route path="/aviso-legal" element={<AvisoLegal />} />
-                      <Route
-                        path="/envios-devoluciones"
-                        element={<PoliticaEnviosDevoluciones />}
-                      />
-                      {/* Ruta 404 - debe ir al final */}
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
-                  </Suspense>
-                  <Footer />
-                </div>
-              </Router>
+              <FlyAnimationProvider>
+                <Router>
+                  <div className="min-h-screen text-black bg-white">
+                    <Navbar />
+                    <CookieBanner />
+                    <Suspense fallback={<PageSpinner />}>
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/catalogo" element={<Catalogo />} />
+                        <Route
+                          path="/catalogo/:categoria"
+                          element={<Catalogo />}
+                        />
+                        <Route
+                          path="/producto/:slug"
+                          element={<ProductoPage />}
+                        />
+                        <Route path="/joyeria" element={<Joyeria />} />
+                        <Route path="/relojeria" element={<Relojes />} />
+                        <Route path="/optica" element={<Gafas />} />
+                        <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/favoritos" element={<Favoritos />} />
+                        <Route path="/perfil" element={<PerfilUsuario />} />
+                        <Route
+                          path="/terminos-legales"
+                          element={<TerminosLegales />}
+                        />
+                        <Route path="/contacto" element={<Contacto />} />
+                        <Route path="/privacidad" element={<Privacidad />} />
+                        <Route path="/aviso-legal" element={<AvisoLegal />} />
+                        <Route
+                          path="/envios-devoluciones"
+                          element={<PoliticaEnviosDevoluciones />}
+                        />
+                        {/* Ruta 404 - debe ir al final */}
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </Suspense>
+                    <Footer />
+                  </div>
+                </Router>
+              </FlyAnimationProvider>
             </ToastProvider>
           </CartProvider>
         </WishlistProvider>

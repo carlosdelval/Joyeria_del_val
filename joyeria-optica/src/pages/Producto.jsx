@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { fetchProducto } from "../api/productos";
 import { ShoppingBag, Check, Info } from "lucide-react";
 import { useCart } from "../hooks/useCart";
@@ -12,6 +12,7 @@ import SEO, {
 } from "../components/SEO";
 import WishlistButton from "../components/WishlistButton";
 import { PageSpinner, ButtonSpinner } from "../components/Spinner";
+import { useFlyAnimation } from "../context/FlyAnimationContext";
 
 const ProductoPage = () => {
   const { slug } = useParams();
@@ -22,14 +23,44 @@ const ProductoPage = () => {
   const [addedToCart, setAddedToCart] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
   const { addToCart, items: cartItems } = useCart();
+  const { flyToCart } = useFlyAnimation();
+  const addToCartButtonRef = useRef(null);
   const [imageIndex, setImageIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [imagePosition, setImagePosition] = useState({ x: 50, y: 50 });
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  const [descripcionAbierta, setDescripcionAbierta] = useState(false);
 
   // Distancia mínima para considerar un swipe (en px)
   const minSwipeDistance = 50;
+
+  // Detectar si es gafa de sol (ratio panorámico)
+  const isGafa =
+    producto &&
+    (producto.categorias?.some((cat) => cat.toLowerCase().includes("gafas")) ||
+      producto.marca?.toLowerCase().includes("ray-ban") ||
+      producto.titulo?.toLowerCase().includes("gafas"));
+
+  // Detectar si la imagen es panorámica (Ray-Ban CDN)
+  const isPanoramicImage =
+    imagenPrincipal?.includes("ray-ban.com") ||
+    imagenPrincipal?.includes("width=720");
+
+  // Elegir aspect ratio según tipo de producto
+  const aspectRatioClass =
+    isGafa || isPanoramicImage
+      ? "aspect-[4/3]" // Ratio 4:3 para gafas
+      : "aspect-square"; // Ratio 1:1 para relojes y joyería
+
+  // Elegir object-fit según tipo de imagen
+  const objectFitClass =
+    isGafa || isPanoramicImage
+      ? "object-contain" // Contener imagen completa
+      : "object-cover"; // Cubrir área
+
+  // Zoom sutil para gafas (elimina franjas sin recortar demasiado)
+  const imageScale = isGafa || isPanoramicImage ? "scale-110" : "";
 
   useEffect(() => {
     const cargarProducto = async () => {
@@ -119,8 +150,17 @@ const ProductoPage = () => {
     setImagePosition({ x: 50, y: 50 });
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (e) => {
     setIsAddingToCart(true);
+
+    // Disparar animación fly-to-cart
+    if (addToCartButtonRef.current) {
+      flyToCart(
+        producto.imagenes?.[0] || producto.imagen,
+        producto.titulo || producto.nombre,
+        addToCartButtonRef.current
+      );
+    }
 
     // Simular pequeño delay para mejor UX
     setTimeout(() => {
@@ -143,8 +183,9 @@ const ProductoPage = () => {
     );
   }
 
-  // Obtener stock del producto (con fallback a 99 si no está definido)
-  const stock = producto.stock || 99;
+  // Obtener stock del producto (tiempo real desde Shopify)
+  const stock = producto.stock ?? 0; // Usar 0 si no está definido
+  const disponible = producto.disponible ?? stock > 0;
 
   // Calcular cantidad en el carrito para este producto
   const itemInCart = cartItems?.find((item) => item.productId === producto.id);
@@ -152,18 +193,19 @@ const ProductoPage = () => {
 
   // Stock disponible = stock total - cantidad en carrito
   const availableStock = stock - quantityInCart;
-  const hasStock = availableStock > 0;
-  const isLowStock = availableStock > 0 && availableStock <= 5;
+  const hasStock = disponible && availableStock > 0;
+  const isLowStock = hasStock && availableStock <= 5;
   const stockPercentage = Math.min((availableStock / 10) * 100, 100); // Para barra visual (máx 10 = 100%)
 
-  // Calcular descuento si existe precio anterior
-  const descuento = producto.precioAnterior
-    ? Math.round(
-        ((producto.precioAnterior - producto.precio) /
-          producto.precioAnterior) *
-          100
-      )
-    : null;
+  // Calcular descuento si existe precio anterior válido
+  const descuento =
+    (producto.precioAnterior ?? 0) > 0
+      ? Math.round(
+          ((producto.precioAnterior - producto.precio) /
+            producto.precioAnterior) *
+            100
+        )
+      : null;
 
   // SEO dinámico para el producto
   const productUrl = `https://opticadelvaljoyeros.es/producto/${producto.slug}`;
@@ -227,58 +269,167 @@ const ProductoPage = () => {
           <div className="grid gap-6 sm:gap-8 lg:gap-12 md:grid-cols-2">
             {/* Galería de imágenes */}
             <div>
-              {/* Imagen principal con efecto zoom completo */}
-              <div
-                className="relative overflow-hidden bg-gray-50 aspect-square cursor-zoom-in"
-                onMouseMove={handleMouseMove}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-              >
-                <motion.img
-                  src={imagenPrincipal}
-                  alt={producto.titulo}
-                  className="w-full h-full object-cover select-none"
-                  initial={{ opacity: 0 }}
-                  animate={{
-                    opacity: 1,
-                    scale: isZoomed ? 1.5 : 1,
-                  }}
-                  style={{
-                    transformOrigin: `${imagePosition.x}% ${imagePosition.y}%`,
-                  }}
-                  transition={{
-                    opacity: { duration: 0.3 },
-                    scale: { duration: 0.3, ease: "easeOut" },
-                  }}
-                  draggable={false}
-                />
+              {/* MÓVIL: Carrusel horizontal con scroll */}
+              <div className="md:hidden">
+                <div className="relative">
+                  {/* Carrusel de imágenes */}
+                  <div className="relative overflow-hidden">
+                    <div
+                      className="flex transition-transform duration-300 ease-out"
+                      style={{ transform: `translateX(-${imageIndex * 100}%)` }}
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
+                    >
+                      {producto.imagenes.map((img, index) => (
+                        <div
+                          key={index}
+                          className={`w-full flex-shrink-0 ${aspectRatioClass} bg-gray-50`}
+                        >
+                          <img
+                            src={img}
+                            alt={`${producto.titulo} - Vista ${index + 1}`}
+                            className={`w-full h-full ${objectFitClass}`}
+                            loading={index === 0 ? "eager" : "lazy"}
+                          />
+                        </div>
+                      ))}
+                    </div>
 
-                {descuento && (
-                  <motion.div
-                    initial={{ scale: 1.2 }}
-                    animate={{ scale: 1.5 }}
-                    className="absolute px-3 py-1 text-xs font-light tracking-wider text-white bg-red-600 rounded top-4 right-4 pointer-events-none z-10"
-                  >
-                    -{descuento}%
-                  </motion.div>
-                )}
+                    {/* Badge de descuento */}
+                    {descuento && (
+                      <div className="absolute px-2 py-1 text-xs font-medium text-white bg-red-600 rounded top-3 right-3">
+                        -{descuento}%
+                      </div>
+                    )}
 
-                {/* Indicador de zoom */}
-                {!isZoomed && (
-                  <div className="hidden md:block absolute bottom-4 right-4 px-3 py-1 bg-black/70 text-white text-xs rounded-full pointer-events-none">
-                    Pasa el ratón para ampliar
+                    {/* Flechas de navegación */}
+                    {producto.imagenes.length > 1 && (
+                      <>
+                        <button
+                          onClick={() =>
+                            setImageIndex(Math.max(0, imageIndex - 1))
+                          }
+                          disabled={imageIndex === 0}
+                          className={`absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-white/90 rounded-full shadow-lg ${
+                            imageIndex === 0
+                              ? "opacity-30"
+                              : "opacity-90 active:scale-95"
+                          }`}
+                          aria-label="Imagen anterior"
+                        >
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 19l-7-7 7-7"
+                            />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() =>
+                            setImageIndex(
+                              Math.min(
+                                producto.imagenes.length - 1,
+                                imageIndex + 1
+                              )
+                            )
+                          }
+                          disabled={imageIndex === producto.imagenes.length - 1}
+                          className={`absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-white/90 rounded-full shadow-lg ${
+                            imageIndex === producto.imagenes.length - 1
+                              ? "opacity-30"
+                              : "opacity-90 active:scale-95"
+                          }`}
+                          aria-label="Imagen siguiente"
+                        >
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </button>
+                      </>
+                    )}
                   </div>
-                )}
+
+                  {/* Indicadores de página */}
+                  {producto.imagenes.length > 1 && (
+                    <div className="flex justify-center gap-1.5 mt-3">
+                      {producto.imagenes.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setImageIndex(index)}
+                          className={`h-1.5 rounded-full transition-all ${
+                            imageIndex === index
+                              ? "w-6 bg-black"
+                              : "w-1.5 bg-gray-300"
+                          }`}
+                          aria-label={`Ir a imagen ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Miniaturas */}
-              {producto.imagenes.length > 1 && (
-                <div className="mt-4">
-                  {/* Thumbnails: en desktop grid, en móvil carrusel horizontal */}
-                  <div className="hidden md:grid grid-cols-4 gap-2">
+              {/* DESKTOP: Galería con zoom */}
+              <div className="hidden md:block">
+                <div
+                  className={`relative overflow-hidden bg-gray-50 ${aspectRatioClass} cursor-zoom-in`}
+                  onMouseMove={handleMouseMove}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <motion.img
+                    src={imagenPrincipal}
+                    alt={producto.titulo}
+                    className={`w-full h-full ${objectFitClass} select-none`}
+                    initial={{ opacity: 0 }}
+                    animate={{
+                      opacity: 1,
+                      scale: isZoomed ? 1.5 : 1,
+                    }}
+                    style={{
+                      transformOrigin: `${imagePosition.x}% ${imagePosition.y}%`,
+                    }}
+                    transition={{
+                      opacity: { duration: 0.3 },
+                      scale: { duration: 0.3, ease: "easeOut" },
+                    }}
+                    draggable={false}
+                  />
+
+                  {descuento && (
+                    <div className="absolute px-3 py-1 text-xs font-light tracking-wider text-white bg-red-600 rounded top-4 right-4">
+                      -{descuento}%
+                    </div>
+                  )}
+
+                  {!isZoomed && (
+                    <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/70 text-white text-xs rounded-full">
+                      Pasa el ratón para ampliar
+                    </div>
+                  )}
+                </div>
+
+                {/* Miniaturas desktop */}
+                {producto.imagenes.length > 1 && (
+                  <div className="grid grid-cols-4 gap-2 mt-4">
                     {producto.imagenes.map((img, index) => (
                       <button
                         key={index}
@@ -286,7 +437,7 @@ const ProductoPage = () => {
                           setImagenPrincipal(img);
                           setImageIndex(index);
                         }}
-                        className={`aspect-square bg-gray-50 ${
+                        className={`${aspectRatioClass} bg-gray-50 ${
                           imagenPrincipal === img
                             ? "ring-2 ring-black"
                             : "hover:ring-1 hover:ring-gray-300"
@@ -294,71 +445,39 @@ const ProductoPage = () => {
                       >
                         <img
                           src={img}
-                          alt={`Vista ${index + 1} de ${producto.titulo}`}
+                          alt={`Vista ${index + 1}`}
                           loading="lazy"
-                          className="object-cover w-full h-full"
+                          className={`w-full h-full ${objectFitClass}`}
                         />
                       </button>
                     ))}
                   </div>
-
-                  {/* Mobile thumbnails scrollable */}
-                  <div className="md:hidden mt-2 -mx-2 overflow-x-auto">
-                    <div className="flex gap-2 px-2">
-                      {producto.imagenes.map((img, index) => (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            setImagenPrincipal(img);
-                            setImageIndex(index);
-                          }}
-                          className={`w-20 h-20 flex-shrink-0 bg-gray-50 rounded ${
-                            imagenPrincipal === img
-                              ? "ring-2 ring-black"
-                              : "hover:ring-1 hover:ring-gray-300"
-                          }`}
-                        >
-                          <img
-                            src={img}
-                            alt={`Vista ${index + 1} de ${producto.titulo}`}
-                            loading="lazy"
-                            className="object-cover w-full h-full"
-                          />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {/* Información del producto */}
             <div className="flex flex-col">
-              <motion.h1
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.1 }}
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-wider text-black"
-              >
+              <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-black leading-tight">
                 {producto.titulo}
-              </motion.h1>
+              </h1>
 
               {/* Precio */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="mt-3 sm:mt-4"
+                className="mt-2 sm:mt-4"
               >
                 <div className="flex items-center flex-wrap gap-2">
-                  <span className="text-2xl sm:text-3xl md:text-4xl font-medium text-black">
+                  <span className="text-xl sm:text-3xl md:text-4xl font-medium text-black">
                     {producto.precio.toLocaleString("es-ES", {
                       style: "currency",
                       currency: "EUR",
                       minimumFractionDigits: 0,
                     })}
                   </span>
-                  {producto.precioAnterior && (
+                  {(producto.precioAnterior ?? 0) > 0 && (
                     <span className="ml-2 text-base sm:text-lg text-gray-400 line-through">
                       {producto.precioAnterior.toLocaleString("es-ES", {
                         style: "currency",
@@ -375,27 +494,72 @@ const ProductoPage = () => {
                 )}
               </motion.div>
 
-              {/* Descripción */}
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="mt-4 sm:mt-6"
-              >
-                <h2 className="mb-2 text-xs sm:text-sm font-medium tracking-wider text-gray-700 uppercase">
-                  Descripción
-                </h2>
-                <p className="text-sm sm:text-base font-light text-gray-700 leading-relaxed">
-                  {producto.descripcion}
-                </p>
-              </motion.div>
+              {/* Descripción - Desplegable en móvil, siempre visible en desktop */}
+              {producto.descripcion && (
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="mt-3 sm:mt-6"
+                >
+                  {/* Desktop: descripción siempre visible */}
+                  <div className="hidden sm:block">
+                    <h2 className="mb-2 text-sm font-medium tracking-wider text-gray-700 uppercase">
+                      Descripción
+                    </h2>
+                    <p className="text-base font-light text-gray-700 leading-relaxed">
+                      {producto.descripcion}
+                    </p>
+                  </div>
 
-              {/* Categorías y etiquetas */}
+                  {/* Móvil: descripción desplegable */}
+                  <div className="sm:hidden">
+                    <button
+                      onClick={() => setDescripcionAbierta(!descripcionAbierta)}
+                      className="w-full flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg"
+                    >
+                      <h2 className="text-sm font-medium tracking-wider text-gray-700 uppercase">
+                        Descripción
+                      </h2>
+                      <motion.svg
+                        animate={{ rotate: descripcionAbierta ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="w-5 h-5 text-gray-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </motion.svg>
+                    </button>
+                    <motion.div
+                      initial={false}
+                      animate={{
+                        height: descripcionAbierta ? "auto" : 0,
+                        opacity: descripcionAbierta ? 1 : 0,
+                      }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <p className="p-3 text-sm font-light text-gray-700 leading-relaxed">
+                        {producto.descripcion}
+                      </p>
+                    </motion.div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Categorías - Más compactas en móvil */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="mt-4 sm:mt-6"
+                className="mt-3 sm:mt-6"
               >
                 <div className="flex flex-wrap gap-2">
                   {producto.categorias.map((cat, index) => (
@@ -415,10 +579,10 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="mt-6 sm:mt-8 space-y-4"
+                className="mt-4 sm:mt-8 space-y-3 sm:space-y-4"
               >
-                {/* Indicador de stock */}
-                <div className="p-3 sm:p-4 space-y-2 bg-gray-50 border border-gray-200 rounded-lg">
+                {/* Indicador de stock - Más compacto en móvil */}
+                <div className="p-2.5 sm:p-4 space-y-2 bg-gray-50 border border-gray-200 rounded-lg">
                   <div className="flex items-center justify-between text-xs sm:text-sm">
                     <div className="flex items-center gap-2">
                       <span className="font-medium text-gray-700">
@@ -475,8 +639,8 @@ const ProductoPage = () => {
                   )}
                 </div>
                 {/* Selector de cantidad */}
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <span className="text-xs sm:text-sm font-medium">
+                <div className="flex items-center gap-2 sm:gap-4">
+                  <span className="text-xs sm:text-sm font-medium whitespace-nowrap">
                     Cantidad:
                   </span>
                   <div className="flex items-center border border-gray-300 rounded">
@@ -521,10 +685,11 @@ const ProductoPage = () => {
                     )}
                 </div>
 
-                {/* Botones de acción */}
-                <div className="flex flex-col sm:flex-row gap-3">
+                {/* Botones de acción - Inline en móvil */}
+                <div className="flex gap-2 sm:gap-3">
                   {/* Botón de añadir al carrito */}
                   <motion.button
+                    ref={(el) => (addToCartButtonRef.current = el)}
                     onClick={
                       !hasStock || isAddingToCart ? undefined : handleAddToCart
                     }
@@ -532,7 +697,7 @@ const ProductoPage = () => {
                     whileTap={
                       !hasStock || isAddingToCart ? {} : { scale: 0.95 }
                     }
-                    className={`flex-1 flex items-center justify-center gap-2 px-4 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-light tracking-wider transition rounded-sm ${
+                    className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-light tracking-wider transition rounded-sm ${
                       !hasStock
                         ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-60"
                         : addedToCart
@@ -544,7 +709,7 @@ const ProductoPage = () => {
                     style={!hasStock ? { pointerEvents: "none" } : {}}
                   >
                     {!hasStock ? (
-                      <>SIN STOCK</>
+                      <span className="text-xs sm:text-base">SIN STOCK</span>
                     ) : isAddingToCart ? (
                       <ButtonSpinner
                         color="white"
@@ -561,10 +726,10 @@ const ProductoPage = () => {
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-1.5"
                       >
                         <Check className="w-4 h-4 sm:w-5 sm:h-5" />
-                        ¡AÑADIDO!
+                        <span className="text-xs sm:text-base">¡AÑADIDO!</span>
                       </motion.div>
                     ) : (
                       <>
@@ -572,19 +737,106 @@ const ProductoPage = () => {
                         <span className="hidden sm:inline">
                           AÑADIR AL CARRITO
                         </span>
-                        <span className="sm:hidden">AÑADIR</span>
+                        <span className="sm:hidden text-xs">AÑADIR</span>
                       </>
                     )}
                   </motion.button>
 
-                  {/* Botón de favoritos */}
+                  {/* Botón de favoritos - Mismo tamaño en móvil */}
                   <div className="flex-shrink-0">
-                    <WishlistButton product={producto} size="lg" />
+                    <WishlistButton
+                      product={producto}
+                      size="lg"
+                      className="h-full min-h-[48px] w-12 sm:w-auto"
+                    />
                   </div>
                 </div>
               </motion.div>
             </div>
           </div>
+
+          {/* Detalles adicionales del producto */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="mt-8 sm:mt-12 border-t pt-8 sm:pt-12"
+          >
+            <h2 className="text-xl sm:text-2xl font-light tracking-wider mb-4 sm:mb-6">
+              Detalles del producto
+            </h2>
+            <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
+              {producto.marca && (
+                <div className="flex items-start gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg">
+                  <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full flex-shrink-0">
+                    <svg
+                      className="w-5 h-5 text-gray-700"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      Marca
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-900 mt-0.5">
+                      {producto.marca}
+                    </p>
+                  </div>
+                </div>
+              )}
+              {producto.categorias && producto.categorias.length > 0 && (
+                <div className="flex items-start gap-3 p-3 sm:p-4 bg-gray-50 rounded-lg">
+                  <div className="w-10 h-10 flex items-center justify-center bg-white rounded-full flex-shrink-0">
+                    <svg
+                      className="w-5 h-5 text-gray-700"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider">
+                      Categoría
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-900 mt-0.5">
+                      {producto.categorias[0]}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Información adicional */}
+            <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-200">
+              <div className="flex items-start gap-3">
+                <Info className="w-5 h-5 text-gray-600 flex-shrink-0 mt-0.5" />
+                <div className="text-xs sm:text-sm text-gray-700 leading-relaxed space-y-2">
+                  <p className="font-medium">Información importante:</p>
+                  <ul className="list-disc list-inside space-y-1 text-gray-600">
+                    <li>Producto original de distribuidor oficial</li>
+                    <li>Envío asegurado y con seguimiento</li>
+                    <li>Atención personalizada en tienda física</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </motion.div>
     </>
