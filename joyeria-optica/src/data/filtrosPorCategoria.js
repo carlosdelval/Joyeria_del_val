@@ -57,6 +57,51 @@ export const filtrosPorCategoria = {
       priority: 1,
     },
   },
+  "black-friday": {
+    categoria: {
+      label: "Categoría",
+      type: "checkbox",
+      options: [
+        { value: "relojes", label: "Relojes" },
+        { value: "gafas", label: "Gafas" },
+        { value: "bolsos", label: "Bolsos" },
+      ],
+      priority: 1,
+    },
+    descuento: {
+      label: "Descuento",
+      type: "checkbox",
+      options: [
+        { value: "40", label: "Hasta 40% OFF" },
+        { value: "30", label: "Hasta 30% OFF" },
+        { value: "20", label: "Hasta 20% OFF" },
+      ],
+      priority: 2,
+    },
+    marca: {
+      label: "Marca",
+      type: "checkbox",
+      options: [
+        { value: "tous", label: "TOUS" },
+        { value: "ray-ban", label: "Ray-Ban" },
+        { value: "dolce-gabbana", label: "Dolce & Gabbana" },
+        { value: "tommy hilfiger", label: "Tommy Hilfiger" },
+        { value: "seiko", label: "Seiko" },
+        { value: "citizen", label: "Citizen" },
+      ],
+      priority: 3,
+    },
+    genero: {
+      label: "Género",
+      type: "checkbox",
+      options: [
+        { value: "hombre", label: "Caballero" },
+        { value: "mujer", label: "Señora" },
+        { value: "unisex", label: "Unisex" },
+      ],
+      priority: 4,
+    },
+  },
   todos: {},
   global: {
     precio: {

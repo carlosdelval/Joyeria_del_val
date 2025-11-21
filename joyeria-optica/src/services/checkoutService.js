@@ -160,10 +160,40 @@ class CheckoutService {
 
       console.log(`  ✅ ${item.titulo}: ${variantId} x${item.quantity}`);
 
-      lineItems.push({
+      // Construir el line item
+      const lineItem = {
         merchandiseId: variantId, // Cart API usa merchandiseId en lugar de variantId
         quantity: item.quantity,
-      });
+      };
+
+      // Añadir atributos personalizados (talla de gafas, etc.)
+      const attributes = [];
+
+      // Si hay talla seleccionada (gafas)
+      if (item.tallaSeleccionada) {
+        attributes.push({
+          key: "Talla",
+          value: item.tallaSeleccionada,
+        });
+        console.log(`    📏 Talla: ${item.tallaSeleccionada}`);
+      }
+
+      // Si hay customAttributes adicionales
+      if (item.customAttributes && Array.isArray(item.customAttributes)) {
+        item.customAttributes.forEach((attr) => {
+          // Evitar duplicados
+          if (!attributes.some((a) => a.key === attr.key)) {
+            attributes.push(attr);
+          }
+        });
+      }
+
+      // Añadir attributes si hay alguno
+      if (attributes.length > 0) {
+        lineItem.attributes = attributes;
+      }
+
+      lineItems.push(lineItem);
     }
 
     console.log("📝 Line items para Shopify:", lineItems);

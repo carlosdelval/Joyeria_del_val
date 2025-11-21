@@ -30,6 +30,8 @@ const Catalogo = () => {
       newFiltros.marca = ["tous"];
     } else if (categoria === "rebajas") {
       newFiltros.oferta = true;
+    } else if (categoria === "black-friday") {
+      newFiltros.blackFriday = true;
     }
 
     if (marcaParam) {
@@ -66,10 +68,30 @@ const Catalogo = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Scroll al inicio al cargar la página
+  useEffect(() => {
+    // Prevenir el scroll automático del navegador
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    // Forzar scroll al inicio inmediatamente
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+    return () => {
+      // Restaurar comportamiento por defecto al desmontar
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "auto";
+      }
+    };
+  }, []);
+
   // Loader inicial de la página
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsInitialLoading(false);
+      // Asegurar scroll al inicio después de cargar
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, 500);
 
     return () => clearTimeout(timer);
@@ -81,12 +103,13 @@ const Catalogo = () => {
       // Si hay búsqueda, buscar en todas las categorías principales
       return ["relojes", "gafas", "bolsos", "gafas-sol"];
     }
-    // Ignorar categorías especiales que son filtros (tous, rebajas)
+    // Ignorar categorías especiales que son filtros (tous, rebajas, black-friday)
     if (
       categoria &&
       categoria !== "todos" &&
       categoria !== "tous" &&
-      categoria !== "rebajas"
+      categoria !== "rebajas" &&
+      categoria !== "black-friday"
     ) {
       return [categoria];
     }
@@ -122,6 +145,22 @@ const Catalogo = () => {
       return productos.slice(inicio, fin);
     }
   }, [productos, paginaActual, productosPorPagina, isMobile]);
+
+  // Detectar si hay productos de múltiples categorías (para mostrar separadores)
+  const hayMultiplesCategorias = useMemo(() => {
+    if (productos.length === 0) return false;
+
+    const categoriasUnicas = new Set();
+    productos.forEach((p) => {
+      const cat = (p.categoria || p.categorias?.[0] || "").toLowerCase();
+      if (cat.includes("reloj")) categoriasUnicas.add("relojes");
+      else if (cat.includes("gafa")) categoriasUnicas.add("gafas");
+      else if (cat.includes("bolso")) categoriasUnicas.add("bolsos");
+      else categoriasUnicas.add(cat);
+    });
+
+    return categoriasUnicas.size > 1;
+  }, [productos]);
 
   // Scroll al inicio al cambiar de página (solo desktop)
   useEffect(() => {
@@ -298,6 +337,7 @@ const Catalogo = () => {
       gafas: "Gafas de Sol",
       "gafas-sol": "Gafas de Sol",
       bolsos: "Bolsos TOUS",
+      "black-friday": "BLACK FRIDAY - Ofertas Exclusivas",
       todos: "Todos los productos",
     };
 
@@ -337,6 +377,14 @@ const Catalogo = () => {
         description:
           "Bolsos TOUS auténticos con diseños exclusivos. Calidad premium y estilo único. Compra segura online.",
         keywords: "bolsos TOUS, bolsos mujer, complementos TOUS",
+      },
+      "black-friday": {
+        title:
+          "BLACK FRIDAY 2025 - Ofertas en Joyería, Relojes y Gafas | Óptica Del Val",
+        description:
+          "¡Aprovecha las mejores ofertas de Black Friday! Descuentos exclusivos en joyería TOUS, relojes y gafas Ray-Ban. Hasta 50% de descuento. ¡Stock limitado!",
+        keywords:
+          "Black Friday, ofertas joyería, descuentos relojes, gafas rebajas, TOUS ofertas, Ray-Ban descuento",
       },
       todos: {
         title: "Catálogo Completo - Joyería y Óptica | Óptica Del Val",
@@ -448,25 +496,80 @@ const Catalogo = () => {
                       index >= productosAntesDeCargarRef.current &&
                       productosAntesDeCargarRef.current > 0;
 
+                    // Detectar cambio de categoría para separador visual
+                    const productoAnterior =
+                      index > 0 ? productosVisibles[index - 1] : null;
+                    const categoriaActual = (
+                      producto.categoria ||
+                      producto.categorias?.[0] ||
+                      ""
+                    ).toLowerCase();
+                    const categoriaAnterior = productoAnterior
+                      ? (
+                          productoAnterior.categoria ||
+                          productoAnterior.categorias?.[0] ||
+                          ""
+                        ).toLowerCase()
+                      : "";
+
+                    const normalizarCategoria = (cat) => {
+                      if (cat.includes("reloj")) return "relojes";
+                      if (cat.includes("gafa")) return "gafas";
+                      if (cat.includes("bolso")) return "bolsos";
+                      return cat;
+                    };
+
+                    const categoriaNormalizada =
+                      normalizarCategoria(categoriaActual);
+                    const categoriaAnteriorNormalizada =
+                      normalizarCategoria(categoriaAnterior);
+
+                    const mostrarSeparador =
+                      hayMultiplesCategorias &&
+                      index > 0 &&
+                      categoriaNormalizada !== categoriaAnteriorNormalizada;
+
+                    const nombresCategorias = {
+                      relojes: "Relojes",
+                      gafas: "Gafas de Sol",
+                      bolsos: "Bolsos",
+                    };
+
                     return (
-                      <motion.div
-                        key={producto.slug}
-                        initial={
-                          esProductoNuevo
-                            ? { opacity: 0, y: 30 }
-                            : { opacity: 1, y: 0 }
-                        }
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{
-                          duration: 0.5,
-                          delay: esProductoNuevo
-                            ? (index - productosAntesDeCargarRef.current) * 0.08
-                            : 0,
-                          ease: [0.25, 0.46, 0.45, 0.94],
-                        }}
-                      >
-                        <ProductoCard producto={producto} />
-                      </motion.div>
+                      <React.Fragment key={producto.slug}>
+                        {mostrarSeparador && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="col-span-full my-4 flex items-center gap-4"
+                          >
+                            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-gray-300"></div>
+                            <h3 className="text-sm font-light tracking-wider text-gray-600 uppercase">
+                              {nombresCategorias[categoriaNormalizada] ||
+                                categoriaNormalizada}
+                            </h3>
+                            <div className="h-px flex-1 bg-gradient-to-l from-transparent via-gray-300 to-gray-300"></div>
+                          </motion.div>
+                        )}
+                        <motion.div
+                          initial={
+                            esProductoNuevo
+                              ? { opacity: 0, y: 30 }
+                              : { opacity: 1, y: 0 }
+                          }
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{
+                            duration: 0.5,
+                            delay: esProductoNuevo
+                              ? (index - productosAntesDeCargarRef.current) *
+                                0.08
+                              : 0,
+                            ease: [0.25, 0.46, 0.45, 0.94],
+                          }}
+                        >
+                          <ProductoCard producto={producto} />
+                        </motion.div>
+                      </React.Fragment>
                     );
                   })}
                 </motion.div>

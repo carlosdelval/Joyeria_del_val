@@ -36,6 +36,7 @@ function wishlistReducer(state, action) {
             marca: product.marca,
             disponible: product.disponible,
             stock: product.stock || 99, // Incluir stock del producto
+            categorias: product.categorias || [], // Incluir categorías para detectar Black Friday
             addedAt: new Date().toISOString(),
           },
         ],
@@ -73,6 +74,7 @@ function wishlistReducer(state, action) {
             marca: product.marca,
             disponible: product.disponible,
             stock: product.stock || 99, // Incluir stock del producto
+            categorias: product.categorias || [], // Incluir categorías para detectar Black Friday
             addedAt: new Date().toISOString(),
           },
         ],

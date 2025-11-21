@@ -284,16 +284,67 @@ const FavoritosPage = () => {
                       <WishlistButton product={item} size="sm" />
                     </div>
 
-                    {/* Badge de descuento */}
-                    {(item.precioAnterior ?? 0) > 0 && (
-                      <div className="absolute px-2 py-1 text-xs font-medium text-white bg-red-600 rounded top-2 left-2">
-                        -
-                        {Math.round(
-                          ((item.precioAnterior - item.precio) /
-                            item.precioAnterior) *
-                            100
+                    {/* Badges de Black Friday y Descuento */}
+                    {(item.categorias?.some(
+                      (cat) =>
+                        cat?.toLowerCase() === "black_friday" ||
+                        cat?.toLowerCase() === "black-friday"
+                    ) ||
+                      (item.precioAnterior ?? 0) > 0) && (
+                      <div className="absolute top-2 left-2 z-10 flex flex-col gap-1.5">
+                        {/* Badge de Black Friday */}
+                        {item.categorias?.some(
+                          (cat) =>
+                            cat?.toLowerCase() === "black_friday" ||
+                            cat?.toLowerCase() === "black-friday"
+                        ) && (
+                          <motion.div
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={{ scale: 1, rotate: 0 }}
+                            transition={{ type: "spring", stiffness: 200 }}
+                          >
+                            <motion.div
+                              animate={{
+                                boxShadow: [
+                                  "0 0 0px rgba(239, 68, 68, 0.4)",
+                                  "0 0 20px rgba(239, 68, 68, 0.8)",
+                                  "0 0 0px rgba(239, 68, 68, 0.4)",
+                                ],
+                              }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                              className="px-2 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-red-600 rounded shadow-lg"
+                            >
+                              BLACK FRIDAY
+                            </motion.div>
+                          </motion.div>
                         )}
-                        %
+                        {/* Badge de Descuento */}
+                        {(item.precioAnterior ?? 0) > 0 && (
+                          <motion.div
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{
+                              delay: item.categorias?.some(
+                                (cat) =>
+                                  cat?.toLowerCase() === "black_friday" ||
+                                  cat?.toLowerCase() === "black-friday"
+                              )
+                                ? 0.2
+                                : 0,
+                              type: "spring",
+                              stiffness: 200,
+                            }}
+                            className="px-2 py-1 text-[10px] font-bold tracking-wider text-white bg-black rounded shadow-lg"
+                          >
+                            -
+                            {Math.round(
+                              ((item.precioAnterior - item.precio) /
+                                item.precioAnterior) *
+                                100
+                            )}
+                            %
+                          </motion.div>
+                        )}
                       </div>
                     )}
 

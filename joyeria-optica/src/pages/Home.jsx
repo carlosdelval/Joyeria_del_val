@@ -14,6 +14,7 @@ import BannerInstagram from "../components/BannerInstagram";
 import BannerMarcasRelojes from "../components/BannerMarcasRelojes";
 import BannerRaybanMeta from "../components/BannerRaybanMeta";
 import VideoHeroBanner from "../components/VideoHeroBanner";
+import BannerBlackFriday from "../components/BannerBlackFriday";
 
 const AnimatedSection = ({ children, className = "" }) => {
   const [ref, inView] = useInView({
@@ -87,7 +88,12 @@ export default function Home() {
         structuredData={generateOrganizationSchema()}
       />
 
-      {/* Video Hero Banner - Pantalla Completa */}
+      {/* Banner Black Friday - Destacado */}
+      <AnimatedSection>
+        <BannerBlackFriday />
+      </AnimatedSection>
+
+      {/* Video Hero Banner - Pantalla Completa 
       <VideoHeroBanner
         videoSrc="/rayban-video.mp4"
         posterSrc="/rayban-video-miniatura.jpg"
@@ -101,7 +107,7 @@ export default function Home() {
         }}
         overlayOpacity="45"
         height="h-screen"
-      />
+      /> */}
 
       {/* Acordeón Hero */}
       <div className="container mx-auto block md:hidden sm:mt-20 md:mt-24 lg:mt-28">

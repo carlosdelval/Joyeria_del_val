@@ -13,6 +13,7 @@ import SEO, {
 import WishlistButton from "../components/WishlistButton";
 import { PageSpinner, ButtonSpinner } from "../components/Spinner";
 import { useFlyAnimation } from "../context/FlyAnimationContext";
+import ConfirmModal from "../components/ConfirmModal";
 
 const ProductoPage = () => {
   const { slug } = useParams();
@@ -31,9 +32,40 @@ const ProductoPage = () => {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [descripcionAbierta, setDescripcionAbierta] = useState(false);
+  const [tallaSeleccionada, setTallaSeleccionada] = useState("");
+  const [showGuiaTallas, setShowGuiaTallas] = useState(false);
+
+  // Tallas estándar para gafas (predefinidas)
+  const tallasGafas = [
+    { valor: "50-20-140", label: "50-20-140", tipo: "Pequeña" },
+    { valor: "52-20-145", label: "52-20-145", tipo: "Pequeña" },
+    { valor: "54-20-145", label: "54-20-145", tipo: "Mediana" },
+    { valor: "55-20-145", label: "55-20-145", tipo: "Mediana" },
+    { valor: "56-22-150", label: "56-22-150", tipo: "Grande" },
+    { valor: "58-22-150", label: "58-22-150", tipo: "Grande" },
+  ];
+
+  // Función para sanitizar categorías
+  const sanitizarCategoria = (categoria) => {
+    if (!categoria) return "";
+
+    return categoria
+      .replace(/[-_]/g, " ") // Reemplazar guiones y guiones bajos por espacios
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalizar cada palabra
+      .join(" ")
+      .trim();
+  };
 
   // Distancia mínima para considerar un swipe (en px)
   const minSwipeDistance = 50;
+
+  // Detectar si es producto de Black Friday
+  const isBlackFriday = producto?.categorias?.some(
+    (cat) =>
+      cat?.toLowerCase() === "black_friday" ||
+      cat?.toLowerCase() === "black-friday"
+  );
 
   // Detectar si es gafa de sol (ratio panorámico)
   const isGafa =
@@ -164,7 +196,16 @@ const ProductoPage = () => {
 
     // Simular pequeño delay para mejor UX
     setTimeout(() => {
-      addToCart(producto, quantity);
+      // Crear objeto de producto con talla como atributo personalizado
+      const productoConTalla = {
+        ...producto,
+        tallaSeleccionada: isGafa ? tallaSeleccionada : null,
+        customAttributes: isGafa
+          ? [{ key: "Talla", value: tallaSeleccionada }]
+          : [],
+      };
+
+      addToCart(productoConTalla, quantity);
       setIsAddingToCart(false);
       setAddedToCart(true);
       setTimeout(() => setAddedToCart(false), 2000);
@@ -191,7 +232,7 @@ const ProductoPage = () => {
   const itemInCart = cartItems?.find((item) => item.productId === producto.id);
   const quantityInCart = itemInCart ? itemInCart.quantity : 0;
 
-  // Stock disponible = stock total - cantidad en carrito
+  // Stock disponible
   const availableStock = stock - quantityInCart;
   const hasStock = disponible && availableStock > 0;
   const isLowStock = hasStock && availableStock <= 5;
@@ -231,9 +272,9 @@ const ProductoPage = () => {
       <SEO
         title={seoTitle}
         description={seoDescription}
-        keywords={`${producto.marca}, ${producto.categorias.join(
-          ", "
-        )}, comprar online`}
+        keywords={`${producto.marca}, ${producto.categorias
+          .map((cat) => sanitizarCategoria(cat))
+          .join(", ")}, comprar online`}
         image={productImage}
         url={productUrl}
         type="product"
@@ -457,18 +498,62 @@ const ProductoPage = () => {
             </div>
 
             {/* Información del producto */}
-            <div className="flex flex-col">
+            <div className="flex flex-col space-y-4 sm:space-y-6">
               <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-black leading-tight">
                 {producto.titulo}
               </h1>
 
-              {/* Precio */}
+              {/* Badges y Precio */}
               <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="mt-2 sm:mt-4"
+                className="space-y-3"
               >
+                {/* Badges de Black Friday y Descuento */}
+                {(isBlackFriday || descuento) && (
+                  <div className="flex flex-wrap gap-2">
+                    {/* Badge de Black Friday */}
+                    {isBlackFriday && (
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 200 }}
+                      >
+                        <motion.div
+                          animate={{
+                            boxShadow: [
+                              "0 0 0px rgba(239, 68, 68, 0.4)",
+                              "0 0 20px rgba(239, 68, 68, 0.8)",
+                              "0 0 0px rgba(239, 68, 68, 0.4)",
+                            ],
+                          }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="inline-flex px-4 py-2 text-xs sm:text-sm font-bold tracking-wider text-white uppercase bg-red-600 rounded shadow-lg"
+                        >
+                          BLACK FRIDAY
+                        </motion.div>
+                      </motion.div>
+                    )}
+                    {/* Badge de Descuento */}
+                    {descuento && (
+                      <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{
+                          delay: isBlackFriday ? 0.2 : 0,
+                          type: "spring",
+                          stiffness: 200,
+                        }}
+                        className="inline-flex px-4 py-2 text-xs sm:text-sm font-bold tracking-wider text-white bg-black rounded shadow-lg"
+                      >
+                        -{descuento}%
+                      </motion.div>
+                    )}
+                  </div>
+                )}
+
+                {/* Precio */}
                 <div className="flex items-center flex-wrap gap-2">
                   <span className="text-xl sm:text-3xl md:text-4xl font-medium text-black">
                     {producto.precio.toLocaleString("es-ES", {
@@ -488,7 +573,7 @@ const ProductoPage = () => {
                   )}
                 </div>
                 {descuento && (
-                  <p className="mt-1 sm:mt-2 text-sm sm:text-base text-red-600 font-medium">
+                  <p className="text-sm sm:text-base text-red-600 font-medium">
                     Ahorras {descuento}% en este artículo
                   </p>
                 )}
@@ -500,7 +585,6 @@ const ProductoPage = () => {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="mt-3 sm:mt-6"
                 >
                   {/* Desktop: descripción siempre visible */}
                   <div className="hidden sm:block">
@@ -559,16 +643,17 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="mt-3 sm:mt-6"
               >
                 <div className="flex flex-wrap gap-2">
                   {producto.categorias.map((cat, index) => (
                     <a
                       key={index}
-                      href={`/catalogo/${cat.toLowerCase()}`}
+                      href={`/catalogo/${cat
+                        .toLowerCase()
+                        .replace(/[_\s]/g, "-")}`}
                       className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm text-black bg-gray-100 rounded hover:bg-gray-200 transition-colors"
                     >
-                      {cat.toUpperCase()}
+                      {sanitizarCategoria(cat)}
                     </a>
                   ))}
                 </div>
@@ -579,8 +664,59 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="mt-4 sm:mt-8 space-y-3 sm:space-y-4"
+                className="space-y-4 sm:space-y-5"
               >
+                {/* Selector de talla (solo para gafas) */}
+                {isGafa && (
+                  <div className="p-3 sm:p-4 space-y-3 bg-white border-2 border-gray-200 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs sm:text-sm font-medium text-gray-900 tracking-wider uppercase">
+                        Talla{" "}
+                        {!tallaSeleccionada && (
+                          <span className="text-red-600">*</span>
+                        )}
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => setShowGuiaTallas(true)}
+                        className="cursor-pointer group flex items-center gap-1 text-xs text-gray-600 hover:text-gray-900 transition-colors"
+                        aria-label="Guía de tallas"
+                      >
+                        <Info className="w-4 h-4" />
+                        <span className="hidden sm:inline">Guía de tallas</span>
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {tallasGafas.map((talla) => {
+                        const isSelected = tallaSeleccionada === talla.valor;
+
+                        return (
+                          <button
+                            type="button"
+                            key={talla.valor}
+                            onClick={() => setTallaSeleccionada(talla.valor)}
+                            className={`
+                              px-2 py-3 text-sm cursor-pointer rounded transition-all font-light tracking-wide
+                              ${
+                                isSelected
+                                  ? "bg-black text-white border-2 border-black"
+                                  : "bg-white text-gray-900 border-2 border-gray-300 hover:border-gray-900"
+                              }
+                            `}
+                          >
+                            <div className="flex flex-col items-center">
+                              <span className="font-medium">{talla.label}</span>
+                              <span className="text-xs text-gray-500">
+                                {talla.tipo}
+                              </span>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
                 {/* Indicador de stock - Más compacto en móvil */}
                 <div className="p-2.5 sm:p-4 space-y-2 bg-gray-50 border border-gray-200 rounded-lg">
                   <div className="flex items-center justify-between text-xs sm:text-sm">
@@ -691,14 +827,28 @@ const ProductoPage = () => {
                   <motion.button
                     ref={(el) => (addToCartButtonRef.current = el)}
                     onClick={
-                      !hasStock || isAddingToCart ? undefined : handleAddToCart
+                      !hasStock ||
+                      isAddingToCart ||
+                      (isGafa && !tallaSeleccionada)
+                        ? undefined
+                        : handleAddToCart
                     }
-                    disabled={!hasStock || isAddingToCart}
+                    disabled={
+                      !hasStock ||
+                      isAddingToCart ||
+                      (isGafa && !tallaSeleccionada)
+                    }
                     whileTap={
-                      !hasStock || isAddingToCart ? {} : { scale: 0.95 }
+                      !hasStock ||
+                      isAddingToCart ||
+                      (isGafa && !tallaSeleccionada)
+                        ? {}
+                        : { scale: 0.95 }
                     }
                     className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-light tracking-wider transition rounded-sm ${
                       !hasStock
+                        ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-60"
+                        : isGafa && !tallaSeleccionada
                         ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-60"
                         : addedToCart
                         ? "bg-green-600 text-white"
@@ -706,10 +856,23 @@ const ProductoPage = () => {
                         ? "bg-gray-700 text-white cursor-wait"
                         : "bg-black text-white hover:bg-gray-800"
                     }`}
-                    style={!hasStock ? { pointerEvents: "none" } : {}}
+                    style={
+                      !hasStock || (isGafa && !tallaSeleccionada)
+                        ? { pointerEvents: "none" }
+                        : {}
+                    }
                   >
                     {!hasStock ? (
                       <span className="text-xs sm:text-base">SIN STOCK</span>
+                    ) : isGafa && !tallaSeleccionada ? (
+                      <>
+                        <span className="hidden sm:inline text-xs sm:text-base">
+                          SELECCIONA UNA TALLA
+                        </span>
+                        <span className="sm:hidden text-xs">
+                          SELECCIONA TALLA
+                        </span>
+                      </>
                     ) : isAddingToCart ? (
                       <ButtonSpinner
                         color="white"
@@ -747,7 +910,7 @@ const ProductoPage = () => {
                     <WishlistButton
                       product={producto}
                       size="lg"
-                      className="h-full min-h-[48px] w-12 sm:w-auto"
+                      className="h-full min-h-[48px] w-12 sm:w-14"
                     />
                   </div>
                 </div>
@@ -760,7 +923,7 @@ const ProductoPage = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="mt-8 sm:mt-12 border-t pt-8 sm:pt-12"
+            className="mt-12 sm:mt-16 border-t pt-8 sm:pt-12"
           >
             <h2 className="text-xl sm:text-2xl font-light tracking-wider mb-4 sm:mb-6">
               Detalles del producto
@@ -815,7 +978,7 @@ const ProductoPage = () => {
                       Categoría
                     </h3>
                     <p className="text-sm sm:text-base text-gray-900 mt-0.5">
-                      {producto.categorias[0]}
+                      {sanitizarCategoria(producto.categorias[0])}
                     </p>
                   </div>
                 </div>
@@ -839,6 +1002,72 @@ const ProductoPage = () => {
           </motion.div>
         </div>
       </motion.div>
+
+      {/* Modal de Guía de Tallas */}
+      <ConfirmModal
+        isOpen={showGuiaTallas}
+        onClose={() => setShowGuiaTallas(false)}
+        onConfirm={() => setShowGuiaTallas(false)}
+        title="Guía de Tallas"
+        message={
+          <div className="text-left space-y-3 max-h-[60vh] overflow-y-auto">
+            <div>
+              <p className="text-sm text-gray-700 mb-2">
+                Formato:{" "}
+                <strong className="text-gray-900">
+                  Calibre-Puente-Varilla
+                </strong>
+              </p>
+              <div className="bg-gray-50 p-2.5 rounded text-xs sm:text-sm space-y-1.5">
+                <div className="flex gap-2">
+                  <span className="font-semibold text-gray-900 min-w-[70px]">
+                    Calibre:
+                  </span>
+                  <span className="text-gray-700">Ancho lente (mm)</span>
+                </div>
+                <div className="flex gap-2">
+                  <span className="font-semibold text-gray-900 min-w-[70px]">
+                    Puente:
+                  </span>
+                  <span className="text-gray-700">Entre lentes (mm)</span>
+                </div>
+                <div className="flex gap-2">
+                  <span className="font-semibold text-gray-900 min-w-[70px]">
+                    Varilla:
+                  </span>
+                  <span className="text-gray-700">Largo patilla (mm)</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t pt-3">
+              <p className="text-sm font-semibold text-gray-900 mb-2">
+                Por tamaño de rostro:
+              </p>
+              <div className="text-xs sm:text-sm space-y-1.5">
+                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                  <span className="text-gray-700">Pequeño</span>
+                  <span className="font-medium text-gray-900">50-52mm</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                  <span className="text-gray-700">Mediano</span>
+                  <span className="font-medium text-gray-900">54-56mm</span>
+                </div>
+                <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                  <span className="text-gray-700">Grande</span>
+                  <span className="font-medium text-gray-900">58-60mm</span>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-gray-500 pt-2 border-t">
+              💡 Revisa la talla en el interior de tus gafas actuales
+            </p>
+          </div>
+        }
+        confirmText="Entendido"
+        type="info"
+      />
     </>
   );
 };

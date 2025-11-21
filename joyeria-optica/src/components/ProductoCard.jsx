@@ -6,6 +6,9 @@ import WishlistButton from "./WishlistButton";
 const ProductoCard = ({ producto }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [showSecondImage, setShowSecondImage] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
   const {
     titulo: nombre,
     imagenes,
@@ -20,6 +23,24 @@ const ProductoCard = ({ producto }) => {
   const descuento = precioAnterior
     ? Math.round(((precioAnterior - precio) / precioAnterior) * 100)
     : null;
+
+  // Detectar si es móvil
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Verificar si hay imagen secundaria
+  const hasSecondImage = imagenes && imagenes.length > 1 && imagenes[1];
+
+  // Detectar si es producto de Black Friday
+  const isBlackFriday = categorias.some(
+    (cat) =>
+      cat?.toLowerCase() === "black_friday" ||
+      cat?.toLowerCase() === "black-friday"
+  );
 
   // Detectar si es gafa de sol (ratio panorámico 16:9)
   const isGafa =
@@ -73,6 +94,10 @@ const ProductoCard = ({ producto }) => {
         className={`relative overflow-hidden ${aspectRatioClass} bg-gray-50`}
         role="img"
         aria-label={imageLoaded && !imageError ? nombre : "Cargando imagen"}
+        onMouseEnter={() =>
+          !isMobile && hasSecondImage && setShowSecondImage(true)
+        }
+        onMouseLeave={() => !isMobile && setShowSecondImage(false)}
       >
         {!imageLoaded && !imageError && (
           <div
@@ -89,20 +114,77 @@ const ProductoCard = ({ producto }) => {
             <span className="text-xs">Imagen no disponible</span>
           </div>
         ) : (
-          <motion.img
-            src={imagenes[0]}
-            alt={`Imagen de producto ${nombre}`}
-            className={`w-full h-full ${objectFitClass} ${imageScale}`}
-            loading="lazy"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: imageLoaded ? 1 : 0 }}
-            transition={{ duration: 0.3 }}
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageError(true)}
-          />
+          <>
+            {/* Imagen principal */}
+            <motion.img
+              src={imagenes[0]}
+              alt={`Imagen de producto ${nombre}`}
+              className={`w-full h-full ${objectFitClass} ${imageScale} absolute inset-0`}
+              loading="lazy"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: imageLoaded && !showSecondImage ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageError(true)}
+            />
+
+            {/* Imagen secundaria (hover/tap) */}
+            {hasSecondImage && (
+              <motion.img
+                src={imagenes[1]}
+                alt={`Imagen alternativa de ${nombre}`}
+                className={`w-full h-full ${objectFitClass} ${imageScale} absolute inset-0`}
+                loading="lazy"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: showSecondImage ? 1 : 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            )}
+          </>
         )}
 
-        {descuento && (
+        {/* Badge de Black Friday (prioridad) */}
+        {isBlackFriday && (
+          <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
+            <motion.div
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 200 }}
+            >
+              <motion.div
+                animate={{
+                  boxShadow: [
+                    "0 0 0px rgba(239, 68, 68, 0.4)",
+                    "0 0 20px rgba(239, 68, 68, 0.8)",
+                    "0 0 0px rgba(239, 68, 68, 0.4)",
+                  ],
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="px-3 py-1 text-xs font-bold tracking-wider text-white uppercase bg-red-600 rounded shadow-lg"
+                role="status"
+                aria-label="Oferta Black Friday"
+              >
+                BLACK FRIDAY
+              </motion.div>
+            </motion.div>
+            {/* Badge de descuento (debajo de Black Friday) */}
+            {descuento && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="px-3 py-1 text-xs font-bold tracking-wider text-white bg-black rounded shadow-lg"
+                role="status"
+                aria-label={`Descuento del ${descuento}%`}
+              >
+                -{descuento}%
+              </motion.div>
+            )}
+          </div>
+        )}
+
+        {/* Badge de descuento (solo si no es Black Friday) */}
+        {descuento && !isBlackFriday && (
           <motion.div
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}

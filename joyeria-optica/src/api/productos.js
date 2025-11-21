@@ -264,154 +264,249 @@ export async function fetchProductos({
   // Normalizar todos los productos al formato esperado
   const normalizedProducts = productosData.map(normalizeProduct);
 
-  return normalizedProducts.filter((producto) => {
-    // Validación de propiedades para evitar errores
-    if (!producto) return false;
+  return normalizedProducts
+    .filter((producto) => {
+      // Validación de propiedades para evitar errores
+      if (!producto) return false;
 
-    // 1. Filtro por categoría
-    if (categoria && categoria.length > 0) {
-      const categoriaValida = categoria.some((cat) => {
-        // Normalizar nombres de categoría
-        const catNormalizada = cat.toLowerCase().trim();
-        const prodCat = producto.categoria?.toLowerCase().trim();
-        const prodCats =
-          producto.categorias?.map((c) => c.toLowerCase().trim()) || [];
+      // 1. Filtro por categoría
+      if (categoria && categoria.length > 0) {
+        const categoriaValida = categoria.some((cat) => {
+          // Normalizar nombres de categoría
+          const catNormalizada = cat.toLowerCase().trim();
+          const prodCat = producto.categoria?.toLowerCase().trim();
+          const prodCats =
+            producto.categorias?.map((c) => c.toLowerCase().trim()) || [];
 
-        // Buscar coincidencias exactas y parciales
-        return (
-          prodCat === catNormalizada ||
-          prodCats.includes(catNormalizada) ||
-          prodCat?.includes(catNormalizada) ||
-          prodCats.some((c) => c.includes(catNormalizada))
-        );
-      });
-      if (!categoriaValida) return false;
-    }
-
-    // 2. Búsqueda por texto mejorada (búsqueda inteligente)
-    if (busqueda && busqueda.trim()) {
-      const textoBusqueda = busqueda.toLowerCase().trim();
-      const palabrasBusqueda = textoBusqueda.split(/\s+/); // Dividir en palabras
-
-      // Propiedades donde buscar
-      const camposBusqueda = [
-        producto.nombre,
-        producto.titulo,
-        producto.descripcion,
-        producto.slug,
-        producto.marca,
-        producto.material,
-        producto.tipo,
-        producto.genero,
-        producto.estilo,
-        producto.color,
-        producto.coleccion,
-        ...(producto.categorias || []),
-        ...(producto.etiquetas || []),
-      ]
-        .filter(Boolean)
-        .map((campo) => String(campo).toLowerCase());
-
-      const textoCompleto = camposBusqueda.join(" ");
-
-      // Verificar si todas las palabras de búsqueda están presentes
-      const coincide = palabrasBusqueda.every((palabra) =>
-        textoCompleto.includes(palabra)
-      );
-
-      if (!coincide) return false;
-    }
-
-    // 3. Filtro por precio (con valores por defecto seguros)
-    const precio = Number(producto.precio) || 0;
-
-    // Soportar tanto { precioMin, precioMax } como { precio: { min, max } }
-    let precioMin = 0;
-    let precioMax = Infinity;
-
-    if (filtros.precio && typeof filtros.precio === "object") {
-      // Si min es undefined o null, usar 0
-      precioMin =
-        filtros.precio.min !== undefined && filtros.precio.min !== null
-          ? Number(filtros.precio.min)
-          : 0;
-
-      // Si max es undefined o null, usar Infinity
-      precioMax =
-        filtros.precio.max !== undefined && filtros.precio.max !== null
-          ? Number(filtros.precio.max)
-          : Infinity;
-    } else {
-      precioMin = Number(filtros.precioMin) || 0;
-      precioMax = Number(filtros.precioMax) || Infinity;
-    }
-
-    if (precio < precioMin || precio > precioMax) return false;
-
-    // 4. Filtros específicos de categoría
-    for (const [clave, valor] of Object.entries(filtros)) {
-      if (["precioMin", "precioMax", "precio"].includes(clave)) continue;
-
-      // Filtro booleano (true/false)
-      if (valor === true) {
-        if (!producto[clave]) return false;
+          // Buscar coincidencias exactas y parciales
+          return (
+            prodCat === catNormalizada ||
+            prodCats.includes(catNormalizada) ||
+            prodCat?.includes(catNormalizada) ||
+            prodCats.some((c) => c.includes(catNormalizada))
+          );
+        });
+        if (!categoriaValida) return false;
       }
 
-      // Filtro de array (selección múltiple)
-      if (Array.isArray(valor) && valor.length > 0) {
-        // CASO ESPECIAL: género se busca en categorias, no en campo genero
-        if (clave === "genero") {
-          const categorias = producto.categorias || [];
-          const tieneGenero = valor.some((generoFiltro) =>
-            categorias.some(
+      // 2. Búsqueda por texto mejorada (búsqueda inteligente)
+      if (busqueda && busqueda.trim()) {
+        const textoBusqueda = busqueda.toLowerCase().trim();
+        const palabrasBusqueda = textoBusqueda.split(/\s+/); // Dividir en palabras
+
+        // Propiedades donde buscar
+        const camposBusqueda = [
+          producto.nombre,
+          producto.titulo,
+          producto.descripcion,
+          producto.slug,
+          producto.marca,
+          producto.material,
+          producto.tipo,
+          producto.genero,
+          producto.estilo,
+          producto.color,
+          producto.coleccion,
+          ...(producto.categorias || []),
+          ...(producto.etiquetas || []),
+        ]
+          .filter(Boolean)
+          .map((campo) => String(campo).toLowerCase());
+
+        const textoCompleto = camposBusqueda.join(" ");
+
+        // Verificar si todas las palabras de búsqueda están presentes
+        const coincide = palabrasBusqueda.every((palabra) =>
+          textoCompleto.includes(palabra)
+        );
+
+        if (!coincide) return false;
+      }
+
+      // 3. Filtro por precio (con valores por defecto seguros)
+      const precio = Number(producto.precio) || 0;
+
+      // Soportar tanto { precioMin, precioMax } como { precio: { min, max } }
+      let precioMin = 0;
+      let precioMax = Infinity;
+
+      if (filtros.precio && typeof filtros.precio === "object") {
+        // Si min es undefined o null, usar 0
+        precioMin =
+          filtros.precio.min !== undefined && filtros.precio.min !== null
+            ? Number(filtros.precio.min)
+            : 0;
+
+        // Si max es undefined o null, usar Infinity
+        precioMax =
+          filtros.precio.max !== undefined && filtros.precio.max !== null
+            ? Number(filtros.precio.max)
+            : Infinity;
+      } else {
+        precioMin = Number(filtros.precioMin) || 0;
+        precioMax = Number(filtros.precioMax) || Infinity;
+      }
+
+      if (precio < precioMin || precio > precioMax) return false;
+
+      // 4. Filtros específicos de categoría
+      for (const [clave, valor] of Object.entries(filtros)) {
+        if (["precioMin", "precioMax", "precio"].includes(clave)) continue;
+
+        // Filtro booleano (true/false)
+        if (valor === true) {
+          // Caso especial para Black Friday
+          if (clave === "blackFriday") {
+            const esBlackFriday = producto.categorias?.some(
               (cat) =>
                 cat &&
-                String(cat).toLowerCase() === String(generoFiltro).toLowerCase()
-            )
-          );
-          if (!tieneGenero) return false;
-          continue; // Pasar al siguiente filtro
+                (cat.toLowerCase() === "black_friday" ||
+                  cat.toLowerCase() === "black-friday")
+            );
+            if (!esBlackFriday) return false;
+            continue;
+          }
+
+          if (!producto[clave]) return false;
         }
 
-        const valorProducto = producto[clave];
+        // Filtro de array (selección múltiple)
+        if (Array.isArray(valor) && valor.length > 0) {
+          // CASO ESPECIAL: género se busca en categorias, no en campo genero
+          if (clave === "genero") {
+            const categorias = producto.categorias || [];
+            const tieneGenero = valor.some((generoFiltro) =>
+              categorias.some(
+                (cat) =>
+                  cat &&
+                  String(cat).toLowerCase() ===
+                    String(generoFiltro).toLowerCase()
+              )
+            );
+            if (!tieneGenero) return false;
+            continue; // Pasar al siguiente filtro
+          }
 
-        // Si el valor del producto es null o undefined, no coincide
-        if (valorProducto === null || valorProducto === undefined) {
-          return false;
+          // CASO ESPECIAL: filtro de categoría (busca en categoria y categorias[])
+          if (clave === "categoria") {
+            const categoriaPrincipal = (producto.categoria || "").toLowerCase();
+            const categoriasArray = (producto.categorias || []).map((c) =>
+              c.toLowerCase()
+            );
+
+            const tieneCategoria = valor.some((catFiltro) => {
+              const catBusqueda = String(catFiltro).toLowerCase();
+              return (
+                categoriaPrincipal.includes(catBusqueda) ||
+                categoriasArray.some((c) => c.includes(catBusqueda))
+              );
+            });
+
+            if (!tieneCategoria) return false;
+            continue; // Pasar al siguiente filtro
+          }
+
+          // CASO ESPECIAL: filtro de descuento (calcula porcentaje desde precio y precioAnterior)
+          if (clave === "descuento") {
+            if (!producto.precioAnterior || !producto.precio) return false;
+
+            const precioActual = Number(producto.precio);
+            const precioAnterior = Number(producto.precioAnterior);
+
+            if (precioAnterior <= precioActual) return false;
+
+            // Calcular porcentaje de descuento
+            const porcentajeDescuento = Math.round(
+              ((precioAnterior - precioActual) / precioAnterior) * 100
+            );
+
+            // Comprobar si el producto cumple con alguno de los rangos seleccionados
+            const cumpleDescuento = valor.some((descuentoFiltro) => {
+              const rangoDescuento = Number(descuentoFiltro);
+
+              // Lógica de rangos:
+              // "40" = 35% o más
+              // "30" = 25-34%
+              // "20" = 15-24%
+              if (rangoDescuento === 40) {
+                return porcentajeDescuento >= 35;
+              } else if (rangoDescuento === 30) {
+                return porcentajeDescuento >= 25 && porcentajeDescuento < 35;
+              } else if (rangoDescuento === 20) {
+                return porcentajeDescuento >= 15 && porcentajeDescuento < 25;
+              }
+              return false;
+            });
+
+            if (!cumpleDescuento) return false;
+            continue; // Pasar al siguiente filtro
+          }
+
+          const valorProducto = producto[clave];
+
+          // Si el valor del producto es null o undefined, no coincide
+          if (valorProducto === null || valorProducto === undefined) {
+            return false;
+          }
+
+          // Si el producto tiene array de valores
+          if (Array.isArray(valorProducto)) {
+            const tieneCoincidencia = valor.some((v) =>
+              valorProducto.some(
+                (vp) =>
+                  vp && String(vp).toLowerCase() === String(v).toLowerCase()
+              )
+            );
+            if (!tieneCoincidencia) return false;
+          } else {
+            // Si el producto tiene un solo valor
+            const coincide = valor.some(
+              (v) =>
+                valorProducto &&
+                String(valorProducto).toLowerCase() === String(v).toLowerCase()
+            );
+            if (!coincide) return false;
+          }
         }
 
-        // Si el producto tiene array de valores
-        if (Array.isArray(valorProducto)) {
-          const tieneCoincidencia = valor.some((v) =>
-            valorProducto.some(
-              (vp) => vp && String(vp).toLowerCase() === String(v).toLowerCase()
-            )
-          );
-          if (!tieneCoincidencia) return false;
-        } else {
-          // Si el producto tiene un solo valor
-          const coincide = valor.some(
-            (v) =>
-              valorProducto &&
-              String(valorProducto).toLowerCase() === String(v).toLowerCase()
-          );
-          if (!coincide) return false;
+        // Filtro de rango numérico
+        if (
+          typeof valor === "object" &&
+          (valor.min !== undefined || valor.max !== undefined)
+        ) {
+          const productValue = Number(producto[clave]) || 0;
+          if (valor.min && productValue < valor.min) return false;
+          if (valor.max && productValue > valor.max) return false;
         }
       }
 
-      // Filtro de rango numérico
-      if (
-        typeof valor === "object" &&
-        (valor.min !== undefined || valor.max !== undefined)
-      ) {
-        const productValue = Number(producto[clave]) || 0;
-        if (valor.min && productValue < valor.min) return false;
-        if (valor.max && productValue > valor.max) return false;
-      }
-    }
+      return true;
+    })
+    .sort((a, b) => {
+      // Ordenar productos por categoría para agruparlos visualmente
+      const ordenCategorias = {
+        relojes: 1,
+        reloj: 1,
+        gafas: 2,
+        "gafas-sol": 2,
+        "gafas de sol": 2,
+        bolsos: 3,
+        bolso: 3,
+      };
 
-    return true;
-  });
+      const catA = (a.categoria || a.categorias?.[0] || "").toLowerCase();
+      const catB = (b.categoria || b.categorias?.[0] || "").toLowerCase();
+
+      const ordenA = ordenCategorias[catA] || 999;
+      const ordenB = ordenCategorias[catB] || 999;
+
+      // Si son de la misma categoría, mantener orden original (por ID o nombre)
+      if (ordenA === ordenB) {
+        return (a.nombre || "").localeCompare(b.nombre || "");
+      }
+
+      return ordenA - ordenB;
+    });
 }
 
 // Versión segura de fetchProducto con soporte Shopify

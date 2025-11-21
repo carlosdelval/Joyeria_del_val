@@ -54,9 +54,19 @@ export default function Navbar() {
   };
 
   const categorias = [
+    // Promoción temporal Black Friday (comentar cuando acabe y descomentar REBAJAS)
     {
-      label: "REBAJAS ⚡",
-      href: "/catalogo/rebajas",
+      label: "BLACK FRIDAY ⚡",
+      href: "/catalogo/black-friday",
+    },
+    // Descomentar cuando acabe Black Friday:
+    // {
+    //   label: "REBAJAS ⚡",
+    //   href: "/catalogo/rebajas",
+    // },
+    {
+      label: "Inicio",
+      href: "/",
     },
     {
       label: "Joyería",
