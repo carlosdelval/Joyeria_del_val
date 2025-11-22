@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchProductos } from "../api/productos";
 import { useNavigate } from "react-router-dom";
+import { sanitizeProductTitle } from "../utils/helpers";
 
 const Promocion = () => {
   const [productos, setProductos] = useState([]);
@@ -12,16 +13,14 @@ const Promocion = () => {
       try {
         const data = await fetchProductos({
           categoria: ["relojes"],
-          marca: ["tous"], // Solo relojes TOUS
         });
-        // Priorizar productos con descuento, si no hay suficientes, mostrar todos
-        const productosConDescuento = data.filter(
-          (p) => p.precioAnterior && p.precioAnterior > p.precio
-        );
-        const productosAMostrar =
-          productosConDescuento.length >= 4 ? productosConDescuento : data;
 
-        setProductos(productosAMostrar.slice(0, 4)); // Mostrar solo 4 productos
+        // Filtrar solo relojes TOUS
+        const tousWatches = data.filter(
+          (product) => product.marca?.toLowerCase() === "tous"
+        );
+
+        setProductos(tousWatches.slice(0, 4)); // Mostrar solo 4 productos
       } catch (error) {
         console.error("Error loading products:", error);
       } finally {
@@ -39,77 +38,96 @@ const Promocion = () => {
 
   const goToCatalog = () => {
     window.scrollTo(0, 0);
-    navigate("/catalogo/relojes");
+    navigate("/catalogo/relojes?marca=tous");
   };
 
   if (loading)
     return <div className="py-12 text-center">Cargando promoción...</div>;
 
+  if (productos.length === 0) return null;
+
   return (
-    <section className="py-8">
-      <div className="grid items-center gap-8 lg:grid-cols-2">
+      <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-8">
         {/* Banner principal */}
-        <div className="relative w-full h-full min-h-[400px]">
+        <div className="relative w-full h-full min-h-[400px] lg:min-h-[500px] overflow-hidden rounded-lg shadow-lg group">
           <img
             src="/promoRelojTous.jpg"
-            alt="Promo Relojes"
-            className="object-cover w-full h-full"
+            alt="Promoción Relojes TOUS"
+            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white bg-black/30">
-            <p className="text-xl tracking-widest">RELOJES TOUS</p>
-            <h2 className="text-6xl font-bold">10% DTO</h2>
-            <p className="mt-2 text-sm tracking-widest">CALIDAD CERTIFICADA</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white bg-black/40">
+            <p className="mb-2 text-lg font-light tracking-widest uppercase sm:text-xl">
+              Relojes TOUS
+            </p>
+            <h2 className="mb-2 text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+              10% DTO
+            </h2>
+            <p className="mb-6 text-xs tracking-widest uppercase sm:text-sm">
+              Calidad Certificada
+            </p>
             <button
               onClick={goToCatalog}
-              className="px-6 py-2 mt-4 font-medium text-black transition duration-300 ease-in-out bg-white hover:bg-gray-200 cursor-pointer"
+              className="px-6 py-3 text-sm font-medium tracking-wide uppercase transition-all duration-300 bg-white border-2 border-white cursor-pointer sm:px-8 sm:py-3 text-black hover:bg-transparent hover:text-white"
             >
-              VER MÁS
+              Ver Colección
             </button>
           </div>
         </div>
 
-        {/* Productos en oferta */}
-        <div className="grid grid-cols-2 gap-4">
+        {/* Grid de productos en oferta */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
           {productos.map((prod) => (
             <div
               key={prod.id}
-              className="relative p-2 transition-transform bg-white border rounded cursor-pointer hover:shadow-lg hover:scale-[1.02]"
+              className="relative overflow-hidden transition-all duration-300 bg-white border border-gray-100 rounded-lg cursor-pointer group hover:shadow-lg hover:-translate-y-1"
               onClick={() => goToProduct(prod.slug)}
             >
-              <img
-                src={prod.imagenes[0]}
-                alt={prod.titulo}
-                className="object-contain w-full mb-2 aspect-square"
-              />
-              <span className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded top-2 right-2">
-                {prod.precioAnterior
-                  ? `-${Math.round(
+              <div className="relative overflow-hidden aspect-square bg-gray-50">
+                <img
+                  src={prod.imagenes[0]}
+                  alt={prod.titulo}
+                  className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                {prod.precioAnterior && (
+                  <span className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded top-2 right-2">
+                    -
+                    {Math.round(
                       ((prod.precioAnterior - prod.precio) /
                         prod.precioAnterior) *
                         100
-                    )}%`
-                  : "OFERTA"}
-              </span>
-              <p className="text-sm font-medium line-clamp-2">{prod.titulo}</p>
-              <p className="font-semibold text-red-600">
-                {prod.precio.toLocaleString("es-ES", {
-                  style: "currency",
-                  currency: "EUR",
-                })}
-              </p>
-              {(prod.precioAnterior ?? 0) > 0 && (
-                <p className="text-sm text-gray-400 line-through">
-                  {prod.precioAnterior.toLocaleString("es-ES", {
-                    style: "currency",
-                    currency: "EUR",
-                  })}
-                </p>
-              )}
+                    )}
+                    %
+                  </span>
+                )}
+              </div>
+              <div className="p-3 sm:p-4">
+                <h3 className="mb-2 text-xs font-light tracking-wide text-gray-700 sm:text-sm line-clamp-2">
+                  {sanitizeProductTitle(prod.titulo)}
+                </h3>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-sm font-medium text-black sm:text-base">
+                    {prod.precio.toLocaleString("es-ES", {
+                      style: "currency",
+                      currency: "EUR",
+                      minimumFractionDigits: 0,
+                    })}
+                  </p>
+                  {(prod.precioAnterior ?? 0) > 0 && (
+                    <p className="text-xs text-gray-400 line-through sm:text-sm">
+                      {prod.precioAnterior.toLocaleString("es-ES", {
+                        style: "currency",
+                        currency: "EUR",
+                        minimumFractionDigits: 0,
+                      })}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
         </div>
       </div>
-    </section>
   );
 };
 

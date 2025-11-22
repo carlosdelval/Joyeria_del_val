@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { fetchProducto } from "../api/productos";
 import { ShoppingBag, Check, Info } from "lucide-react";
 import { useCart } from "../hooks/useCart";
-import { analytics } from "../utils/helpers";
+import { analytics, sanitizeProductTitle } from "../utils/helpers";
 import SEO, {
   generateProductSchema,
   generateBreadcrumbSchema,
@@ -302,7 +302,7 @@ const ProductoPage = () => {
             </a>
             <span className="mx-2">/</span>
             <span className="text-black truncate max-w-[150px] sm:max-w-none">
-              {producto.titulo}
+              {sanitizeProductTitle(producto.titulo)}
             </span>
           </nav>
 
@@ -500,7 +500,7 @@ const ProductoPage = () => {
             {/* Información del producto */}
             <div className="flex flex-col space-y-4 sm:space-y-6">
               <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-black leading-tight">
-                {producto.titulo}
+                {sanitizeProductTitle(producto.titulo)}
               </h1>
 
               {/* Badges y Precio */}

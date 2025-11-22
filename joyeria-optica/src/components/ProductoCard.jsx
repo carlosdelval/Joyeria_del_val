@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import WishlistButton from "./WishlistButton";
+import { sanitizeProductTitle } from "../utils/helpers";
 
 const ProductoCard = ({ producto }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -15,7 +16,7 @@ const ProductoCard = ({ producto }) => {
     precio,
     precioAnterior,
     slug,
-    stock = 99,
+    stock,
     categorias = [],
     marca = "",
   } = producto;
@@ -207,7 +208,7 @@ const ProductoCard = ({ producto }) => {
           className="text-sm font-light tracking-wide text-gray-700 line-clamp-2"
           whileHover={{ color: "#000000" }}
         >
-          {nombre}
+          {sanitizeProductTitle(nombre)}
         </motion.h3>
 
         <div className="flex items-center justify-between mt-3">
@@ -239,7 +240,7 @@ const ProductoCard = ({ producto }) => {
           </div>
 
           {/* Indicador de stock */}
-          {stock !== undefined && (
+          {stock !== undefined && stock !== null && (
             <div className="flex items-center gap-1.5">
               {stock > 5 ? (
                 <span className="text-xs text-green-600 font-medium">

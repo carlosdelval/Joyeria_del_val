@@ -87,9 +87,8 @@ function normalizeProduct(producto) {
         id: producto.id ? `${producto.id}-v1` : `${producto.slug}-v1`,
         sku: producto.sku || null,
         price: producto.precio,
-        available: (producto.stock || Math.floor(Math.random() * 15) + 1) > 0,
-        inventory_quantity:
-          producto.stock || Math.floor(Math.random() * 15) + 1,
+        available: (producto.stock ?? 0) > 0,
+        inventory_quantity: producto.stock ?? 0,
       },
     ],
     options: ["Default Title"],
@@ -108,7 +107,7 @@ function normalizeProduct(producto) {
     tipo: extractTipoFromCategories(producto.categorias),
     // IMPORTANTE: Usar el campo marca directamente si existe, sino intentar extraerlo de etiquetas
     marca: producto.marca || extractMarcaFromTags(producto.etiquetas),
-    stock: producto.stock || shopifyLike.variants[0].inventory_quantity, // Simular stock si no existe
+    stock: producto.stock ?? shopifyLike.variants[0].inventory_quantity ?? 0, // Stock real de Shopify
     novedad: isNovedad(producto),
     oferta: hasOferta(producto),
     // Campos compatibles con Shopify exportados para futuras integraciones

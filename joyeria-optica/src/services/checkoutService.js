@@ -235,11 +235,19 @@ class CheckoutService {
     const cart = response.data.cartCreate.cart;
     console.log("✅ Cart creado:", cart.checkoutUrl);
 
+    // Modificar la URL del checkout para que use el dominio correcto
+    // Shopify usa myshopify.com por defecto, pero queremos mantener la marca
+    let checkoutUrl = cart.checkoutUrl;
+
+    // Opcional: Si quieres forzar que el checkout se vea con tu marca
+    // puedes añadir parámetros personalizados o simplemente usar la URL tal cual
+    // La URL de Shopify funcionará perfectamente para el checkout
+
     return {
       success: true,
-      checkoutUrl: cart.checkoutUrl,
+      checkoutUrl: checkoutUrl,
       id: cart.id,
-      url: cart.checkoutUrl,
+      url: checkoutUrl,
       subtotal: parseFloat(cart.cost.subtotalAmount.amount),
       tax: parseFloat(cart.cost.totalTaxAmount?.amount || 0),
       total: parseFloat(cart.cost.totalAmount.amount),

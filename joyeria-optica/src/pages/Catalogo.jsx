@@ -9,6 +9,7 @@ import SEO from "../components/SEO";
 import { SkeletonGrid } from "../components/Skeleton";
 import { PageSpinner } from "../components/Spinner";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { sanitizeProductTitle } from "../utils/helpers";
 
 const PRODUCTOS_POR_PAGINA_DESKTOP = 24;
 const PRODUCTOS_POR_PAGINA_MOBILE = 12;

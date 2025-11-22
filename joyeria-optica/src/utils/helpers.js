@@ -110,6 +110,40 @@ export const generateSlug = (title) => {
     .trim("-"); // Remover guiones al inicio/final
 };
 
+// Sanitizar título de producto para visualización
+export const sanitizeProductTitle = (title) => {
+  if (!title || typeof title !== "string") return "";
+
+  return (
+    title
+      // Normalizar espacios múltiples a uno solo
+      .replace(/\s+/g, " ")
+      // Eliminar espacios al inicio y final
+      .trim()
+      // Convertir primera letra de cada palabra a mayúscula (Title Case)
+      .toLowerCase()
+      .split(" ")
+      .map((word) => {
+        // Excepciones comunes que deben permanecer en minúsculas
+        const lowercase = ["de", "del", "la", "el", "en", "y", "con", "para"];
+        // Excepciones que deben permanecer en mayúsculas
+        const uppercase = ["mm", "cm", "ml", "uv"];
+
+        if (lowercase.includes(word.toLowerCase())) {
+          return word.toLowerCase();
+        }
+        if (uppercase.includes(word.toLowerCase())) {
+          return word.toUpperCase();
+        }
+        // Capitalizar primera letra
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      })
+      .join(" ")
+      // Capitalizar primera palabra siempre
+      .replace(/^./, (str) => str.toUpperCase())
+  );
+};
+
 // Storage helpers con compresión
 export const storage = {
   set: (key, value) => {
