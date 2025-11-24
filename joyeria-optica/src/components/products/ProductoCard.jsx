@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import WishlistButton from "./WishlistButton";
-import { sanitizeProductTitle } from "../utils/helpers";
+import { sanitizeProductTitle } from "../../utils/helpers";
 
 const ProductoCard = ({ producto }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -174,7 +174,7 @@ const ProductoCard = ({ producto }) => {
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                className="px-3 py-1 text-xs font-bold tracking-wider text-white bg-black rounded shadow-lg"
+                className="inline-block px-2 py-1 text-xs font-bold text-white bg-black rounded shadow-lg self-start"
                 role="status"
                 aria-label={`Descuento del ${descuento}%`}
               >

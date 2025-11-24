@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
-import { useWishlist } from "../hooks/useWishlist";
-import { useFlyAnimation } from "../context/FlyAnimationContext";
+import { useWishlist } from "../../hooks/useWishlist";
+import { useFlyAnimation } from "../../context/FlyAnimationContext";
 
 const WishlistButton = ({
   product,

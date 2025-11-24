@@ -2,8 +2,8 @@ import { Helmet } from "react-helmet-async";
 
 const SEO = ({
   title = "Óptica Del Val Joyeros - Joyería y Óptica en Puente Genil",
-  description = "Descubre nuestra selección de joyas, relojes y gafas de las mejores marcas: TOUS, Ray-Ban, Dolce & Gabbana. Envío gratis en pedidos +50€.",
-  keywords = "joyería, óptica, relojes, gafas, TOUS, Ray-Ban, Puente Genil, Córdoba",
+  description = "Descubre nuestra selección de joyas TOUS, relojes, gafas Ray-Ban, Dolce & Gabbana y más. Ofertas Black Friday hasta 50% DTO. Envío gratis en pedidos +50€. Tienda en Puente Genil, Córdoba.",
+  keywords = "joyería, óptica, relojes, gafas, TOUS, Ray-Ban, Black Friday, ofertas, descuentos, Dolce Gabbana, bolsos TOUS, Ray-Ban Meta, Puente Genil, Córdoba",
   image = "https://opticadelvaljoyeros.es/og-image.jpg",
   url = "https://opticadelvaljoyeros.es",
   type = "website",

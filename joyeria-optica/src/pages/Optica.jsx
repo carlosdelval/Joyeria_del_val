@@ -8,11 +8,11 @@ import {
   Phone,
   ChevronDown,
 } from "lucide-react";
-import SEO from "../components/SEO";
-import { PageSpinner } from "../components/Spinner";
+import SEO from "../components/common/SEO";
+import { PageSpinner } from "../components/ui/Spinner";
 import { useInView } from "react-intersection-observer";
-import ConfirmModal from "../components/ConfirmModal";
-import VideoHeroBanner from "../components/VideoHeroBanner";
+import ConfirmModal from "../components/modals/ConfirmModal";
+import VideoHeroBanner from "../components/banners/VideoHeroBanner";
 
 // Componente de imagen del acordeón (reutilizado de ContactCard)
 const AccordionImage = ({ image, isOpen, onToggle }) => {

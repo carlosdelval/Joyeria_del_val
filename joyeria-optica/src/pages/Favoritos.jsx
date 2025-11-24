@@ -5,9 +5,9 @@ import { useCart } from "../hooks/useCart";
 import { useToast } from "../context/ToastContext";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import SEO from "../components/SEO";
-import WishlistButton from "../components/WishlistButton";
-import ConfirmModal from "../components/ConfirmModal";
+import SEO from "../components/common/SEO";
+import WishlistButton from "../components/products/WishlistButton";
+import ConfirmModal from "../components/modals/ConfirmModal";
 
 const FavoritosPage = () => {
   const { items, clearWishlist, itemCount } = useWishlist();

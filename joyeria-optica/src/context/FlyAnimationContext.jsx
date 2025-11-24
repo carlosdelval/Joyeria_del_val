@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import FlyToAnimation from "../components/FlyToAnimation";
+import FlyToAnimation from "../components/cart/FlyToAnimation";
 
 const FlyAnimationContext = createContext();
 

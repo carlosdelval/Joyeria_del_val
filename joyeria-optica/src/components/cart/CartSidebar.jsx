@@ -1,8 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Minus, ShoppingBag, Truck } from "lucide-react";
-import { useCart } from "../hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CouponInput from "./CouponInput";
 
 const CartSidebar = ({ isOpen, onClose }) => {
@@ -25,6 +25,19 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Bloquear scroll del body cuando el carrito está abierto
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   const handleCheckout = async () => {
     // Si Shopify está activado, ir directo al checkout de Shopify

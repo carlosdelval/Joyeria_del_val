@@ -11,13 +11,13 @@ import {
   AlertCircle,
   CheckCircle,
 } from "lucide-react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import {
   validateField,
   validateForm,
   getPasswordStrength,
-} from "../utils/validators";
-import { ButtonSpinner } from "./Spinner";
+} from "../../utils/validators";
+import { ButtonSpinner } from "../ui/Spinner";
 
 const AuthModal = ({ isOpen, onClose, initialMode = "login" }) => {
   const [mode, setMode] = useState(initialMode); // 'login', 'register', 'forgot'

@@ -1,15 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import Footer from "./components/Footer";
-import Navbar from "./components/Navbar";
-import CookieBanner from "./components/CookieBanner";
-import ErrorBoundary from "./components/ErrorBoundary";
+import Footer from "./components/layout/Footer";
+import Navbar from "./components/layout/Navbar";
+import CookieBanner from "./components/modals/CookieBanner";
+import PromoModal from "./components/modals/PromoModal";
+import ErrorBoundary from "./components/common/ErrorBoundary";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { WishlistProvider } from "./context/WishlistContext";
 import { ToastProvider } from "./context/ToastContext";
 import { FlyAnimationProvider } from "./context/FlyAnimationContext";
-import { PageSpinner } from "./components/Spinner";
+import { PageSpinner } from "./components/ui/Spinner";
 
 // Lazy loading de páginas - cargan solo cuando se navega a ellas
 const Home = lazy(() => import("./pages/Home"));
@@ -40,6 +41,7 @@ function App() {
                   <div className="min-h-screen text-black bg-white">
                     <Navbar />
                     <CookieBanner />
+                    <PromoModal />
                     <Suspense fallback={<PageSpinner />}>
                       <Routes>
                         <Route path="/" element={<Home />} />

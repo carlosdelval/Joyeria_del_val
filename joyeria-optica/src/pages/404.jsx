@@ -10,8 +10,8 @@ import {
   Watch,
   ArrowRight,
 } from "lucide-react";
-import SEO from "../components/SEO";
-import { PageSpinner } from "../components/Spinner";
+import SEO from "../components/common/SEO";
+import { PageSpinner } from "../components/ui/Spinner";
 
 export default function NotFound() {
   const navigate = useNavigate();

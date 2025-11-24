@@ -12,9 +12,9 @@ import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { formatCurrency, analytics } from "../utils/helpers";
-import AuthModal from "../components/AuthModal";
+import AuthModal from "../components/modals/AuthModal";
 import { sendOrderConfirmation } from "../services/emailService";
-import { ButtonSpinner } from "../components/Spinner";
+import { ButtonSpinner } from "../components/ui/Spinner";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();

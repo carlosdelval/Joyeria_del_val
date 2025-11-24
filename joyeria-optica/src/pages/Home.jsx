@@ -2,19 +2,20 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import SEO, { generateOrganizationSchema } from "../components/SEO";
-import VerticalAccordion from "../components/Accordion";
-import GridArticulos from "../components/GridArticulos";
-import BannerMarcas from "../components/BannerMarcas";
-import ColeccionTous from "../components/ColeccionTous";
-import ColeccionesDestacadas from "../components/ColeccionesDestacadas";
-import Promocion from "../components/Promoción";
-import ContactoOptica from "../components/ContactCard";
-import BannerInstagram from "../components/BannerInstagram";
-import BannerMarcasRelojes from "../components/BannerMarcasRelojes";
-import BannerRaybanMeta from "../components/BannerRaybanMeta";
-import VideoHeroBanner from "../components/VideoHeroBanner";
-import BannerBlackFriday from "../components/BannerBlackFriday";
+import SEO, { generateOrganizationSchema } from "../components/common/SEO";
+import VerticalAccordion from "../components/ui/Accordion";
+import GridArticulos from "../components/products/GridArticulos";
+import BannerMarcas from "../components/banners/BannerMarcas";
+import ColeccionTous from "../components/products/ColeccionTous";
+import ColeccionesDestacadas from "../components/products/ColeccionesDestacadas";
+import Promocion from "../components/products/Promoción";
+import ContactoOptica from "../components/common/ContactCard";
+import BannerInstagram from "../components/banners/BannerInstagram";
+import BannerMarcasRelojes from "../components/banners/BannerMarcasRelojes";
+import BannerRaybanMeta from "../components/banners/BannerRaybanMeta";
+import VideoHeroBanner from "../components/banners/VideoHeroBanner";
+import BannerBlackFriday from "../components/banners/BannerBlackFriday";
+import BannerBlackFridayGafas from "../components/banners/BannerBlackFridayGafas";
 
 const AnimatedSection = ({ children, className = "" }) => {
   const [ref, inView] = useInView({
@@ -81,9 +82,9 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Óptica Del Val Joyeros - Joyería y Óptica en Puente Genil | TOUS, Ray-Ban"
-        description="Descubre nuestra exclusiva colección de joyas TOUS, relojes de diseño y gafas Ray-Ban en Puente Genil, Córdoba. Envío gratis en pedidos superiores a 50€. Visítanos en Calle Cristobal Castillo 13."
-        keywords="joyería Puente Genil, óptica Puente Genil, TOUS Córdoba, Ray-Ban, relojes mujer, gafas de sol, joyas, Dolce & Gabbana"
+        title="Black Friday 2025 - Óptica Del Val Joyeros | Ofertas TOUS, Ray-Ban y Relojes"
+        description="¡Black Friday 2025! Descuentos exclusivos en joyería TOUS, relojes de diseño, gafas Ray-Ban y más. Hasta 40% DTO. Envío gratis +50€. Ofertas limitadas en Puente Genil, Córdoba."
+        keywords="Black Friday 2025, ofertas joyería, descuentos TOUS, Ray-Ban ofertas, relojes descuento, gafas rebajas, joyería Puente Genil, óptica Córdoba, Dolce Gabbana, bolsos TOUS, Ray-Ban Meta"
         url="https://opticadelvaljoyeros.es"
         structuredData={generateOrganizationSchema()}
       />
@@ -139,8 +140,9 @@ export default function Home() {
         </AnimatedSection>
       </div>
 
-      {/* Banner Ray-Ban Meta (ancho completo) */}
+      {/* Banner Tom Ford Black Friday && Ray-Ban Meta (ancho completo) */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <BannerBlackFridayGafas />
         <BannerRaybanMeta />
       </AnimatedSection>
 

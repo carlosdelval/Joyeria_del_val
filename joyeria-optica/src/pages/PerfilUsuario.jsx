@@ -26,7 +26,7 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import { useWishlist } from "../hooks/useWishlist";
 import { useNavigate } from "react-router-dom";
-import SEO from "../components/SEO";
+import SEO from "../components/common/SEO";
 
 export default function PerfilUsuario() {
   const { user, logout } = useAuth();

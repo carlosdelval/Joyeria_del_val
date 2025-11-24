@@ -1,13 +1,13 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useProductos } from "../hooks/useProductos";
-import FiltroSidebar from "../components/FiltroSidebar";
+import FiltroSidebar from "../components/ui/FiltroSidebar";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
-import ProductoCard from "../components/ProductoCard";
-import SEO from "../components/SEO";
-import { SkeletonGrid } from "../components/Skeleton";
-import { PageSpinner } from "../components/Spinner";
+import ProductoCard from "../components/products/ProductoCard";
+import SEO from "../components/common/SEO";
+import { SkeletonGrid } from "../components/ui/Skeleton";
+import { PageSpinner } from "../components/ui/Spinner";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { sanitizeProductTitle } from "../utils/helpers";
 
@@ -381,11 +381,11 @@ const Catalogo = () => {
       },
       "black-friday": {
         title:
-          "BLACK FRIDAY 2025 - Ofertas en Joyería, Relojes y Gafas | Óptica Del Val",
+          "BLACK FRIDAY 2025 - Hasta 40% DTO en Joyería, Relojes y Gafas | Óptica Del Val",
         description:
-          "¡Aprovecha las mejores ofertas de Black Friday! Descuentos exclusivos en joyería TOUS, relojes y gafas Ray-Ban. Hasta 50% de descuento. ¡Stock limitado!",
+          "¡Black Friday 2025 en Óptica Del Val! Ofertas exclusivas hasta 40% de descuento en joyería TOUS, relojes de diseño, gafas Ray-Ban, Dolce & Gabbana y más. Envío gratis +50€. Stock limitado. Compra online o visítanos en Puente Genil, Córdoba.",
         keywords:
-          "Black Friday, ofertas joyería, descuentos relojes, gafas rebajas, TOUS ofertas, Ray-Ban descuento",
+          "Black Friday 2025, ofertas Black Friday, descuentos joyería, relojes rebajados, gafas ofertas, TOUS Black Friday, Ray-Ban descuento, Dolce Gabbana ofertas, bolsos TOUS rebajas, relojes mujer descuento, joyería Córdoba ofertas, óptica Puente Genil Black Friday",
       },
       todos: {
         title: "Catálogo Completo - Joyería y Óptica | Óptica Del Val",

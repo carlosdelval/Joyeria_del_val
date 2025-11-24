@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Mail, Phone, ChevronRight } from "lucide-react";
-import CookieSettings from "../components/CookieSettings";
+import CookieSettings from "../components/modals/CookieSettings";
 
 const PoliticaPrivacidad = () => {
   // Scroll al inicio al cargar la página

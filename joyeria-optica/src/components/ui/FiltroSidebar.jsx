@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
-import { filtrosPorCategoria } from "../data/filtrosPorCategoria";
+import { filtrosPorCategoria } from "../../data/filtrosPorCategoria";
 import PriceRangeSlider from "./PriceRangeSlider";
 
 // Iconos SVG simples
@@ -80,6 +80,19 @@ const FiltroSidebar = ({
 }) => {
   const [openSections, setOpenSections] = useState({});
   const [localFilters, setLocalFilters] = useState(filtros);
+
+  // Bloquear scroll del body cuando el sidebar está abierto en móvil
+  useEffect(() => {
+    if (isOpen && typeof window !== "undefined" && window.innerWidth < 1024) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   // Crear filtros básicos si no existen para la categoría
   const getFiltersForCategory = (cat) => {
@@ -444,12 +457,12 @@ const FiltroSidebar = ({
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -300 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 shadow-xl w-80 lg:relative lg:inset-auto lg:z-auto lg:w-full lg:shadow-none"
+            className="fixed inset-y-0 left-0 z-50 flex flex-col bg-white border-r border-gray-200 shadow-xl w-80 lg:relative lg:inset-auto lg:z-auto lg:w-full lg:shadow-none"
             role="region"
             aria-label="Panel de filtros de productos"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <div className="flex items-center justify-between flex-shrink-0 p-4 border-b border-gray-200">
               <div className="flex items-center space-x-2">
                 <FunnelIcon
                   className="w-5 h-5 text-gray-600"
@@ -490,7 +503,7 @@ const FiltroSidebar = ({
 
             {/* Results Summary */}
             <div
-              className="px-4 py-3 text-sm text-gray-600 border-b border-gray-200 bg-gray-50"
+              className="flex-shrink-0 px-4 py-3 text-sm text-gray-600 border-b border-gray-200 bg-gray-50"
               role="status"
               aria-live="polite"
             >
@@ -500,7 +513,7 @@ const FiltroSidebar = ({
             {/* Info sobre filtros detectados en búsqueda */}
             {esResultadoBusqueda && categoria !== "todos" && (
               <div
-                className="px-4 py-3 text-sm border-b border-gray-200 bg-blue-50"
+                className="flex-shrink-0 px-4 py-3 text-sm border-b border-gray-200 bg-blue-50"
                 role="status"
               >
                 <div className="flex items-start gap-2">
@@ -535,7 +548,7 @@ const FiltroSidebar = ({
             {/* Applied Filters */}
             {appliedFiltersDisplay.length > 0 && (
               <div
-                className="p-4 border-b border-gray-200"
+                className="flex-shrink-0 p-4 border-b border-gray-200"
                 role="region"
                 aria-label="Filtros aplicados actualmente"
               >
@@ -564,7 +577,7 @@ const FiltroSidebar = ({
             )}
 
             {/* Filter Content */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto overscroll-contain">
               <div className="p-4 space-y-6">
                 {/* Category Specific Filters */}
                 {sortedCategoryFilters.map(([key, filter]) => {

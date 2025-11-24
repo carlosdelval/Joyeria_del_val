@@ -9,11 +9,11 @@ import { analytics, sanitizeProductTitle } from "../utils/helpers";
 import SEO, {
   generateProductSchema,
   generateBreadcrumbSchema,
-} from "../components/SEO";
-import WishlistButton from "../components/WishlistButton";
-import { PageSpinner, ButtonSpinner } from "../components/Spinner";
+} from "../components/common/SEO";
+import WishlistButton from "../components/products/WishlistButton";
+import { PageSpinner, ButtonSpinner } from "../components/ui/Spinner";
 import { useFlyAnimation } from "../context/FlyAnimationContext";
-import ConfirmModal from "../components/ConfirmModal";
+import ConfirmModal from "../components/modals/ConfirmModal";
 
 const ProductoPage = () => {
   const { slug } = useParams();

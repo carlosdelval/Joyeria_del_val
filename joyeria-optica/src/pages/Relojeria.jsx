@@ -2,12 +2,12 @@ import { motion } from "framer-motion";
 import { href, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { fetchProductos } from "../api/productos";
-import SEO from "../components/SEO";
-import { PageSpinner } from "../components/Spinner";
+import SEO from "../components/common/SEO";
+import { PageSpinner } from "../components/ui/Spinner";
 import { useInView } from "react-intersection-observer";
 import { Watch, Settings, Zap, Wrench, Phone } from "lucide-react";
-import VideoHeroBanner from "../components/VideoHeroBanner";
-import ConfirmModal from "../components/ConfirmModal";
+import VideoHeroBanner from "../components/banners/VideoHeroBanner";
+import ConfirmModal from "../components/modals/ConfirmModal";
 
 // Sección Hero CON VIDEO (comentada la versión anterior)
 // const HeroRelojes = () => {

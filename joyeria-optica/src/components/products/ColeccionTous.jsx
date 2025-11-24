@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchProductos } from "../api/productos";
+import { fetchProductos } from "../../api/productos";
 import { useNavigate } from "react-router-dom"; // Importa useNavigate
 
 export default function ColeccionTous() {
@@ -12,15 +12,131 @@ export default function ColeccionTous() {
   const navigate = useNavigate();
   const [isNavigating, setIsNavigating] = useState(false);
 
+  // Función para calcular descuento
+  const calcularDescuento = (product) => {
+    if (!product.precioAnterior || product.precioAnterior <= product.precio)
+      return 0;
+    return Math.round(
+      ((product.precioAnterior - product.precio) / product.precioAnterior) * 100
+    );
+  };
+
+  // Función para detectar si es Black Friday
+  const esBlackFriday = (product) => {
+    return product.categorias?.some(
+      (cat) =>
+        cat?.toLowerCase() === "black_friday" ||
+        cat?.toLowerCase() === "black-friday"
+    );
+  };
+
+  // Función para priorizar productos
+  const priorizarProductos = (products) => {
+    return products.sort((a, b) => {
+      const aDescuento = calcularDescuento(a);
+      const bDescuento = calcularDescuento(b);
+      const aEsBlackFriday = esBlackFriday(a);
+      const bEsBlackFriday = esBlackFriday(b);
+
+      // 1. Black Friday con mayor descuento primero
+      if (aEsBlackFriday && !bEsBlackFriday) return -1;
+      if (!aEsBlackFriday && bEsBlackFriday) return 1;
+      if (aEsBlackFriday && bEsBlackFriday) {
+        return bDescuento - aDescuento; // Mayor descuento primero
+      }
+
+      // 2. Productos con mayor descuento (sin BF)
+      if (aDescuento > 0 && bDescuento > 0) {
+        return bDescuento - aDescuento;
+      }
+      if (aDescuento > 0 && bDescuento === 0) return -1;
+      if (aDescuento === 0 && bDescuento > 0) return 1;
+
+      // 3. Productos sin descuento - orden aleatorio para variedad
+      return Math.random() - 0.5;
+    });
+  };
+
+  // Función para añadir variedad visual (evitar colores/estilos repetidos)
+  const aplicarVariedadVisual = (products) => {
+    const result = [];
+    const used = new Set();
+    const remaining = [...products];
+
+    // Primer producto
+    if (remaining.length > 0) {
+      result.push(remaining[0]);
+      used.add(0);
+    }
+
+    // Resto: evitar productos muy similares consecutivamente
+    while (
+      result.length < products.length &&
+      remaining.length > result.length
+    ) {
+      const lastProduct = result[result.length - 1];
+      let bestIndex = -1;
+      let maxDifference = -1;
+
+      // Buscar el producto más diferente al último
+      for (let i = 0; i < remaining.length; i++) {
+        if (used.has(i)) continue;
+
+        const product = remaining[i];
+        let difference = 0;
+
+        // Diferencia por título (palabras diferentes)
+        const lastWords = lastProduct.titulo?.toLowerCase().split(" ") || [];
+        const currentWords = product.titulo?.toLowerCase().split(" ") || [];
+        const commonWords = lastWords.filter((w) =>
+          currentWords.includes(w)
+        ).length;
+        difference += lastWords.length + currentWords.length - 2 * commonWords;
+
+        // Diferencia por precio (rango diferente)
+        const priceDiff = Math.abs(lastProduct.precio - product.precio);
+        difference += priceDiff / 100;
+
+        if (difference > maxDifference) {
+          maxDifference = difference;
+          bestIndex = i;
+        }
+      }
+
+      if (bestIndex !== -1) {
+        result.push(remaining[bestIndex]);
+        used.add(bestIndex);
+      } else {
+        // Fallback: tomar el siguiente no usado
+        for (let i = 0; i < remaining.length; i++) {
+          if (!used.has(i)) {
+            result.push(remaining[i]);
+            used.add(i);
+            break;
+          }
+        }
+      }
+    }
+
+    return result;
+  };
+
   // Cargar bolsos TOUS
   useEffect(() => {
     const loadTousProducts = async () => {
       try {
         const allProducts = await fetchProductos({ categoria: ["bolsos"] });
         // Filtrar solo bolsos de la marca TOUS
-        const tousBags = allProducts.filter(
+        let tousBags = allProducts.filter(
           (product) => product.marca?.toLowerCase() === "tous"
         );
+
+        // Aplicar priorización inteligente
+        tousBags = priorizarProductos(tousBags);
+
+        // Aplicar variedad visual
+        tousBags = aplicarVariedadVisual(tousBags);
+
         setProducts(tousBags);
       } catch (error) {
         console.error("Error cargando bolsos TOUS:", error);
@@ -161,15 +277,46 @@ export default function ColeccionTous() {
                     loading="lazy"
                     className="object-cover w-full aspect-square"
                   />
-                  {(product.precioAnterior ?? 0) > 0 && (
-                    <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-md top-2 right-2">
-                      {`-${Math.round(
-                        ((product.precioAnterior - product.precio) /
-                          product.precioAnterior) *
-                          100
-                      )}%`}
+                  {/* Badge de Black Friday (prioridad) */}
+                  {product.categorias?.some(
+                    (cat) =>
+                      cat?.toLowerCase() === "black_friday" ||
+                      cat?.toLowerCase() === "black-friday"
+                  ) && (
+                    <div className="absolute top-2 right-2 z-10 flex flex-col gap-1.5 items-end">
+                      <div className="px-2 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-red-600 rounded shadow-md">
+                        BLACK FRIDAY
+                      </div>
+                      {(product.precioAnterior ?? 0) > 0 && (
+                        <div className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-white bg-black rounded shadow-md">
+                          -
+                          {Math.round(
+                            ((product.precioAnterior - product.precio) /
+                              product.precioAnterior) *
+                              100
+                          )}
+                          %
+                        </div>
+                      )}
                     </div>
                   )}
+                  {/* Badge de descuento (solo si no es Black Friday) */}
+                  {(product.precioAnterior ?? 0) > 0 &&
+                    !product.categorias?.some(
+                      (cat) =>
+                        cat?.toLowerCase() === "black_friday" ||
+                        cat?.toLowerCase() === "black-friday"
+                    ) && (
+                      <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-md top-2 right-2">
+                        -
+                        {Math.round(
+                          ((product.precioAnterior - product.precio) /
+                            product.precioAnterior) *
+                            100
+                        )}
+                        %
+                      </div>
+                    )}
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold">{product.titulo}</h3>

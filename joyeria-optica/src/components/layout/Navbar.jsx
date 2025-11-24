@@ -3,13 +3,13 @@ import { useState, useEffect, useRef } from "react";
 import { Search, User, ShoppingBag, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import AnimatedHamburgerButton from "./HamburguerButton";
-import FlyoutLink from "./FlyoutLink";
+import FlyoutLink from "../ui/FlyoutLink";
 import { useNavigate, Link } from "react-router-dom";
-import { useCart } from "../hooks/useCart";
-import { useAuth } from "../hooks/useAuth";
-import { useWishlist } from "../hooks/useWishlist";
-import CartSidebar from "./CartSidebar";
-import AuthModal from "./AuthModal";
+import { useCart } from "../../hooks/useCart";
+import { useAuth } from "../../hooks/useAuth";
+import { useWishlist } from "../../hooks/useWishlist";
+import CartSidebar from "../cart/CartSidebar";
+import AuthModal from "../modals/AuthModal";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);

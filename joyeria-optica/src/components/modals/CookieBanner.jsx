@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X, Shield, Eye } from "lucide-react";
 import Cookies from "js-cookie";
-import { useWishlist } from "../hooks/useWishlist";
+import { useWishlist } from "../../hooks/useWishlist";
 
 export default function CookieBanner() {
   const [isVisible, setIsVisible] = useState(false);

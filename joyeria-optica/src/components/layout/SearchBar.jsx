@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { productService } from "../services/productService";
+import { productService } from "../../services/productService";
 import { useNavigate } from "react-router-dom";
 
 const SearchBar = ({ className = "" }) => {

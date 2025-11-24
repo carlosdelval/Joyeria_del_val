@@ -255,7 +255,7 @@ export default function BannerRaybanMeta() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.8 }}
+              transition={{ duration: 0.4, delay: 0.4 }}
               className="flex flex-col gap-3 sm:gap-4 pt-2 sm:pt-4 sm:flex-row"
             >
               <button
@@ -283,13 +283,13 @@ export default function BannerRaybanMeta() {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 1 }}
+              transition={{ duration: 0.4, delay: 0.5 }}
               className="flex items-start gap-3 pt-4 sm:pt-6 border-t border-white/10"
             >
               <MapPin className="flex-shrink-0 w-5 h-5 text-blue-400" />
               <div>
                 <p className="text-sm font-medium text-white">
-                  Ven a probarlas en nuestro local
+                  Ven a probarlas a nuestro local
                 </p>
                 <p className="text-sm text-gray-400">
                   C/ Cristobal Castillo, 13 - Puente Genil, Córdoba

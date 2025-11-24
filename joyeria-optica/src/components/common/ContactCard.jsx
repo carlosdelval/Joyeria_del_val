@@ -146,6 +146,7 @@ const ContactoOptica = () => {
 
   return (
     <motion.section
+      id="contactooptica"
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}

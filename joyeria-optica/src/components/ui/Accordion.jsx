@@ -1,9 +1,9 @@
 import { Glasses, Gem, Watch, Eye, Church } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useWindowSize } from "./useWindowSize";
+import { useWindowSize } from "../common/useWindowSize";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ConfirmModal from "./ConfirmModal";
+import ConfirmModal from "../modals/ConfirmModal";
 
 const VerticalAccordion = () => {
   const [open, setOpen] = useState(items[0].id);
