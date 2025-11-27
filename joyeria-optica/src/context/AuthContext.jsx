@@ -1,19 +1,19 @@
 // Context para autenticación de usuarios
-import { createContext, useReducer, useEffect } from 'react';
-import { storage } from '../utils/helpers';
+import { createContext, useReducer, useEffect } from "react";
+import { storage } from "../utils/helpers";
 
 // Acciones de autenticación
 const AUTH_ACTIONS = {
-  LOGIN_START: 'LOGIN_START',
-  LOGIN_SUCCESS: 'LOGIN_SUCCESS',
-  LOGIN_ERROR: 'LOGIN_ERROR',
-  LOGOUT: 'LOGOUT',
-  REGISTER_START: 'REGISTER_START',
-  REGISTER_SUCCESS: 'REGISTER_SUCCESS',
-  REGISTER_ERROR: 'REGISTER_ERROR',
-  UPDATE_PROFILE: 'UPDATE_PROFILE',
-  LOAD_USER: 'LOAD_USER',
-  RESET_ERROR: 'RESET_ERROR'
+  LOGIN_START: "LOGIN_START",
+  LOGIN_SUCCESS: "LOGIN_SUCCESS",
+  LOGIN_ERROR: "LOGIN_ERROR",
+  LOGOUT: "LOGOUT",
+  REGISTER_START: "REGISTER_START",
+  REGISTER_SUCCESS: "REGISTER_SUCCESS",
+  REGISTER_ERROR: "REGISTER_ERROR",
+  UPDATE_PROFILE: "UPDATE_PROFILE",
+  LOAD_USER: "LOAD_USER",
+  RESET_ERROR: "RESET_ERROR",
 };
 
 // Reducer de autenticación
@@ -24,7 +24,7 @@ function authReducer(state, action) {
       return {
         ...state,
         loading: true,
-        error: null
+        error: null,
       };
 
     case AUTH_ACTIONS.LOGIN_SUCCESS:
@@ -35,7 +35,7 @@ function authReducer(state, action) {
         isAuthenticated: true,
         user: action.payload.user,
         token: action.payload.token,
-        error: null
+        error: null,
       };
 
     case AUTH_ACTIONS.LOGIN_ERROR:
@@ -46,7 +46,7 @@ function authReducer(state, action) {
         isAuthenticated: false,
         user: null,
         token: null,
-        error: action.payload.error
+        error: action.payload.error,
       };
 
     case AUTH_ACTIONS.LOGOUT:
@@ -55,25 +55,25 @@ function authReducer(state, action) {
         isAuthenticated: false,
         user: null,
         token: null,
-        error: null
+        error: null,
       };
 
     case AUTH_ACTIONS.UPDATE_PROFILE:
       return {
         ...state,
-        user: { ...state.user, ...action.payload }
+        user: { ...state.user, ...action.payload },
       };
 
     case AUTH_ACTIONS.LOAD_USER:
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
 
     case AUTH_ACTIONS.RESET_ERROR:
       return {
         ...state,
-        error: null
+        error: null,
       };
 
     default:
@@ -87,7 +87,7 @@ const initialState = {
   user: null,
   token: null,
   loading: false,
-  error: null
+  error: null,
 };
 
 // Context
@@ -96,8 +96,8 @@ const AuthContext = createContext();
 // Servicio de autenticación (adaptable a Shopify Customer API)
 class AuthService {
   constructor() {
-    this.baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
-    this.useShopify = import.meta.env.VITE_USE_SHOPIFY === 'true';
+    this.baseUrl = import.meta.env.VITE_API_URL || "http://localhost:3001";
+    this.useShopify = import.meta.env.VITE_USE_SHOPIFY === "true";
   }
 
   // Login local o Shopify
@@ -125,31 +125,38 @@ class AuthService {
       }
     `;
 
-    const response = await fetch(`https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2023-10/graphql.json`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
-      },
-      body: JSON.stringify({
-        query: mutation,
-        variables: {
-          input: { email, password }
-        }
-      })
-    });
+    const response = await fetch(
+      `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2023-10/graphql.json`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Storefront-Access-Token": import.meta.env
+            .VITE_SHOPIFY_STOREFRONT_TOKEN,
+        },
+        body: JSON.stringify({
+          query: mutation,
+          variables: {
+            input: { email, password },
+          },
+        }),
+      }
+    );
 
     const data = await response.json();
-    
+
     if (data.data?.customerAccessTokenCreate?.customerUserErrors?.length > 0) {
-      throw new Error(data.data.customerAccessTokenCreate.customerUserErrors[0].message);
+      throw new Error(
+        data.data.customerAccessTokenCreate.customerUserErrors[0].message
+      );
     }
 
-    const { accessToken } = data.data.customerAccessTokenCreate.customerAccessToken;
-    
+    const { accessToken } =
+      data.data.customerAccessTokenCreate.customerAccessToken;
+
     // Obtener datos del cliente
     const customer = await this.getShopifyCustomer(accessToken);
-    
+
     return {
       user: {
         id: customer.id,
@@ -158,33 +165,33 @@ class AuthService {
         lastName: customer.lastName,
         displayName: `${customer.firstName} ${customer.lastName}`.trim(),
         phone: customer.phone,
-        addresses: customer.addresses?.edges.map(edge => edge.node) || [],
-        shopifyToken: accessToken // Guardar token para consultas posteriores
+        addresses: customer.addresses?.edges.map((edge) => edge.node) || [],
+        shopifyToken: accessToken, // Guardar token para consultas posteriores
       },
-      token: accessToken
+      token: accessToken,
     };
   }
 
   // Login local (simulado)
   async loginLocal(email, password) {
     // Simular API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    if (email === 'test@opticadelval.com' && password === 'password') {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    if (email === "test@opticadelval.com" && password === "password") {
       return {
         user: {
-          id: '1',
-          email: 'test@opticadelval.com',
-          firstName: 'Usuario',
-          lastName: 'Prueba',
-          phone: '+34 600 000 000',
-          addresses: []
+          id: "1",
+          email: "test@opticadelval.com",
+          firstName: "Usuario",
+          lastName: "Prueba",
+          phone: "+34 600 000 000",
+          addresses: [],
         },
-        token: 'local-token-' + Date.now()
+        token: "local-token-" + Date.now(),
       };
     }
-    
-    throw new Error('Credenciales incorrectas');
+
+    throw new Error("Credenciales incorrectas");
   }
 
   // Registro
@@ -215,20 +222,24 @@ class AuthService {
       }
     `;
 
-    const response = await fetch(`https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2023-10/graphql.json`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
-      },
-      body: JSON.stringify({
-        query: mutation,
-        variables: { input: userData }
-      })
-    });
+    const response = await fetch(
+      `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2023-10/graphql.json`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Storefront-Access-Token": import.meta.env
+            .VITE_SHOPIFY_STOREFRONT_TOKEN,
+        },
+        body: JSON.stringify({
+          query: mutation,
+          variables: { input: userData },
+        }),
+      }
+    );
 
     const data = await response.json();
-    
+
     if (data.data?.customerCreate?.customerUserErrors?.length > 0) {
       throw new Error(data.data.customerCreate.customerUserErrors[0].message);
     }
@@ -239,18 +250,18 @@ class AuthService {
 
   // Registro local
   async registerLocal(userData) {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     return {
       user: {
         id: Date.now().toString(),
         email: userData.email,
         firstName: userData.firstName,
         lastName: userData.lastName,
-        phone: userData.phone || '',
-        addresses: []
+        phone: userData.phone || "",
+        addresses: [],
       },
-      token: 'local-token-' + Date.now()
+      token: "local-token-" + Date.now(),
     };
   }
 
@@ -299,17 +310,21 @@ class AuthService {
       }
     `;
 
-    const response = await fetch(`https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2023-10/graphql.json`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
-      },
-      body: JSON.stringify({
-        query,
-        variables: { customerAccessToken: accessToken }
-      })
-    });
+    const response = await fetch(
+      `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2023-10/graphql.json`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Shopify-Storefront-Access-Token": import.meta.env
+            .VITE_SHOPIFY_STOREFRONT_TOKEN,
+        },
+        body: JSON.stringify({
+          query,
+          variables: { customerAccessToken: accessToken },
+        }),
+      }
+    );
 
     const data = await response.json();
     return data.data.customer;
@@ -324,15 +339,15 @@ export function AuthProvider({ children }) {
 
   // Cargar usuario desde localStorage al iniciar
   useEffect(() => {
-    const savedAuth = storage.get('optica-del-val-auth');
+    const savedAuth = storage.get("optica-del-val-auth");
     if (savedAuth && savedAuth.token) {
-      dispatch({ 
-        type: AUTH_ACTIONS.LOAD_USER, 
+      dispatch({
+        type: AUTH_ACTIONS.LOAD_USER,
         payload: {
           isAuthenticated: true,
           user: savedAuth.user,
-          token: savedAuth.token
-        }
+          token: savedAuth.token,
+        },
       });
     }
   }, []);
@@ -340,12 +355,12 @@ export function AuthProvider({ children }) {
   // Guardar en localStorage cuando cambie el estado
   useEffect(() => {
     if (state.isAuthenticated && state.user && state.token) {
-      storage.set('optica-del-val-auth', {
+      storage.set("optica-del-val-auth", {
         user: state.user,
-        token: state.token
+        token: state.token,
       });
     } else {
-      storage.remove('optica-del-val-auth');
+      storage.remove("optica-del-val-auth");
     }
   }, [state.isAuthenticated, state.user, state.token]);
 
@@ -354,15 +369,15 @@ export function AuthProvider({ children }) {
     dispatch({ type: AUTH_ACTIONS.LOGIN_START });
     try {
       const result = await authService.login(email, password);
-      dispatch({ 
-        type: AUTH_ACTIONS.LOGIN_SUCCESS, 
-        payload: result 
+      dispatch({
+        type: AUTH_ACTIONS.LOGIN_SUCCESS,
+        payload: result,
       });
       return result;
     } catch (error) {
-      dispatch({ 
-        type: AUTH_ACTIONS.LOGIN_ERROR, 
-        payload: { error: error.message }
+      dispatch({
+        type: AUTH_ACTIONS.LOGIN_ERROR,
+        payload: { error: error.message },
       });
       throw error;
     }
@@ -372,15 +387,15 @@ export function AuthProvider({ children }) {
     dispatch({ type: AUTH_ACTIONS.REGISTER_START });
     try {
       const result = await authService.register(userData);
-      dispatch({ 
-        type: AUTH_ACTIONS.REGISTER_SUCCESS, 
-        payload: result 
+      dispatch({
+        type: AUTH_ACTIONS.REGISTER_SUCCESS,
+        payload: result,
       });
       return result;
     } catch (error) {
-      dispatch({ 
-        type: AUTH_ACTIONS.REGISTER_ERROR, 
-        payload: { error: error.message }
+      dispatch({
+        type: AUTH_ACTIONS.REGISTER_ERROR,
+        payload: { error: error.message },
       });
       throw error;
     }
@@ -391,9 +406,9 @@ export function AuthProvider({ children }) {
   };
 
   const updateProfile = (userData) => {
-    dispatch({ 
-      type: AUTH_ACTIONS.UPDATE_PROFILE, 
-      payload: userData 
+    dispatch({
+      type: AUTH_ACTIONS.UPDATE_PROFILE,
+      payload: userData,
     });
   };
 
@@ -408,20 +423,16 @@ export function AuthProvider({ children }) {
     token: state.token,
     loading: state.loading,
     error: state.error,
-    
+
     // Acciones
     login,
     register,
     logout,
     updateProfile,
-    resetError
+    resetError,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export { AuthContext };

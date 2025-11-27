@@ -72,7 +72,10 @@ export default function PerfilUsuario() {
     if (user) {
       setProfileData({
         firstName: user.firstName || user.displayName?.split(" ")[0] || "",
-        lastName: user.lastName || user.displayName?.split(" ").slice(1).join(" ") || "",
+        lastName:
+          user.lastName ||
+          user.displayName?.split(" ").slice(1).join(" ") ||
+          "",
         email: user.email || "",
         phone: user.phone || "",
       });
@@ -161,13 +164,15 @@ export default function PerfilUsuario() {
           `;
 
           const response = await fetch(
-            `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2024-10/graphql.json`,
+            `https://${
+              import.meta.env.VITE_SHOPIFY_DOMAIN
+            }/api/2024-10/graphql.json`,
             {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                "X-Shopify-Storefront-Access-Token":
-                  import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
+                "X-Shopify-Storefront-Access-Token": import.meta.env
+                  .VITE_SHOPIFY_STOREFRONT_TOKEN,
               },
               body: JSON.stringify({
                 query,
@@ -182,12 +187,15 @@ export default function PerfilUsuario() {
             const shopifyOrders = data.data.customer.orders.edges.map(
               (edge) => {
                 const node = edge.node;
-                
+
                 // Mapear estado de fulfillment
                 let status = "processing";
                 if (node.fulfillmentStatus === "FULFILLED") {
                   status = "fulfilled";
-                } else if (node.fulfillmentStatus === "IN_TRANSIT" || node.fulfillmentStatus === "PARTIAL") {
+                } else if (
+                  node.fulfillmentStatus === "IN_TRANSIT" ||
+                  node.fulfillmentStatus === "PARTIAL"
+                ) {
                   status = "in_transit";
                 } else if (node.fulfillmentStatus === "UNFULFILLED") {
                   status = "processing";
@@ -205,11 +213,17 @@ export default function PerfilUsuario() {
                     (sum, item) => sum + item.node.quantity,
                     0
                   ),
-                  lineItems: node.lineItems.edges.map(edge => ({
+                  lineItems: node.lineItems.edges.map((edge) => ({
                     title: edge.node.title,
                     quantity: edge.node.quantity,
-                    image: edge.node.variant?.image?.url || edge.node.variant?.product?.featuredImage?.url || null,
-                    imageAlt: edge.node.variant?.image?.altText || edge.node.variant?.product?.featuredImage?.altText || edge.node.title
+                    image:
+                      edge.node.variant?.image?.url ||
+                      edge.node.variant?.product?.featuredImage?.url ||
+                      null,
+                    imageAlt:
+                      edge.node.variant?.image?.altText ||
+                      edge.node.variant?.product?.featuredImage?.altText ||
+                      edge.node.title,
                   })),
                   shippingAddress: node.shippingAddress || {
                     address1: "No disponible",
@@ -313,13 +327,15 @@ export default function PerfilUsuario() {
       `;
 
       const response = await fetch(
-        `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2024-10/graphql.json`,
+        `https://${
+          import.meta.env.VITE_SHOPIFY_DOMAIN
+        }/api/2024-10/graphql.json`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Shopify-Storefront-Access-Token":
-              import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
+            "X-Shopify-Storefront-Access-Token": import.meta.env
+              .VITE_SHOPIFY_STOREFRONT_TOKEN,
           },
           body: JSON.stringify({
             query: mutation,
@@ -338,29 +354,38 @@ export default function PerfilUsuario() {
       const data = await response.json();
 
       if (data.data?.customerUpdate?.customerUserErrors?.length > 0) {
-        console.error("Error actualizando perfil:", data.data.customerUpdate.customerUserErrors);
+        console.error(
+          "Error actualizando perfil:",
+          data.data.customerUpdate.customerUserErrors
+        );
         alert("Error al actualizar el perfil");
       } else {
         console.log("✅ Perfil actualizado correctamente");
-        
+
         // Actualizar el contexto de usuario con los nuevos datos
         const updatedUser = {
           ...user,
           firstName: profileData.firstName,
           lastName: profileData.lastName,
-          displayName: `${profileData.firstName} ${profileData.lastName}`.trim(),
-          phone: profileData.phone
+          displayName:
+            `${profileData.firstName} ${profileData.lastName}`.trim(),
+          phone: profileData.phone,
         };
-        
+
         // Actualizar localStorage
-        const savedAuth = JSON.parse(localStorage.getItem('optica-del-val-auth') || '{}');
-        localStorage.setItem('optica-del-val-auth', JSON.stringify({
-          ...savedAuth,
-          user: updatedUser
-        }));
-        
+        const savedAuth = JSON.parse(
+          localStorage.getItem("optica-del-val-auth") || "{}"
+        );
+        localStorage.setItem(
+          "optica-del-val-auth",
+          JSON.stringify({
+            ...savedAuth,
+            user: updatedUser,
+          })
+        );
+
         setEditingProfile(false);
-        
+
         // Recargar la página para reflejar cambios
         window.location.reload();
       }
@@ -393,13 +418,15 @@ export default function PerfilUsuario() {
       `;
 
       const response = await fetch(
-        `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2024-10/graphql.json`,
+        `https://${
+          import.meta.env.VITE_SHOPIFY_DOMAIN
+        }/api/2024-10/graphql.json`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Shopify-Storefront-Access-Token":
-              import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
+            "X-Shopify-Storefront-Access-Token": import.meta.env
+              .VITE_SHOPIFY_STOREFRONT_TOKEN,
           },
           body: JSON.stringify({
             query: mutation,
@@ -423,7 +450,10 @@ export default function PerfilUsuario() {
       const data = await response.json();
 
       if (data.data?.customerAddressCreate?.customerUserErrors?.length > 0) {
-        console.error("Error actualizando dirección:", data.data.customerAddressCreate.customerUserErrors);
+        console.error(
+          "Error actualizando dirección:",
+          data.data.customerAddressCreate.customerUserErrors
+        );
         alert("Error al actualizar la dirección");
       } else {
         console.log("✅ Dirección guardada correctamente");
@@ -467,13 +497,15 @@ export default function PerfilUsuario() {
       `;
 
       const loginResponse = await fetch(
-        `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2024-10/graphql.json`,
+        `https://${
+          import.meta.env.VITE_SHOPIFY_DOMAIN
+        }/api/2024-10/graphql.json`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-Shopify-Storefront-Access-Token":
-              import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
+            "X-Shopify-Storefront-Access-Token": import.meta.env
+              .VITE_SHOPIFY_STOREFRONT_TOKEN,
           },
           body: JSON.stringify({
             query: loginMutation,
@@ -490,7 +522,8 @@ export default function PerfilUsuario() {
       const loginData = await loginResponse.json();
 
       if (
-        loginData.data?.customerAccessTokenCreate?.customerUserErrors?.length > 0
+        loginData.data?.customerAccessTokenCreate?.customerUserErrors?.length >
+        0
       ) {
         setDeleteError("Contraseña incorrecta");
         setIsDeleting(false);
@@ -501,12 +534,12 @@ export default function PerfilUsuario() {
       // Nota: Shopify no permite eliminar cuentas desde Storefront API
       // En producción, deberías enviar una solicitud al backend o Admin API
       console.log("⚠️ Solicitud de eliminación de cuenta para:", user.email);
-      
+
       // Por ahora, solo cerrar sesión y mostrar mensaje
       alert(
         "Tu solicitud de eliminación de cuenta ha sido registrada. Nuestro equipo la procesará en las próximas 24-48 horas. Se te enviará un email de confirmación."
       );
-      
+
       logout();
       navigate("/");
     } catch (error) {
@@ -1120,7 +1153,7 @@ export default function PerfilUsuario() {
           Una vez eliminada tu cuenta, no podrás recuperarla. Esta acción es
           permanente.
         </p>
-        <button 
+        <button
           onClick={() => setShowDeleteModal(true)}
           className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors font-medium"
         >
