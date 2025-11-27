@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { fetchProductos } from "../../api/productos";
 import { useNavigate } from "react-router-dom";
 
-export default function ColeccionTous() {
+export default function ColeccionSalvatorePlata() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
@@ -121,31 +121,31 @@ export default function ColeccionTous() {
     return result;
   }, []);
 
-  // Cargar bolsos TOUS
+  // Cargar joyería Salvatore Plata
   useEffect(() => {
-    const loadTousProducts = async () => {
+    const loadSalvatorePlataProducts = async () => {
       try {
-        const allProducts = await fetchProductos({ categoria: ["bolsos"] });
-        // Filtrar solo bolsos de la marca TOUS
-        let tousBags = allProducts.filter(
-          (product) => product.marca?.toLowerCase() === "tous"
+        const allProducts = await fetchProductos({ categoria: ["joyeria"] });
+        // Filtrar solo joyería de la marca Salvatore Plata
+        let salvatoreProducts = allProducts.filter(
+          (product) => product.marca?.toLowerCase() === "salvatore plata"
         );
 
         // Aplicar priorización inteligente
-        tousBags = priorizarProductos(tousBags);
+        salvatoreProducts = priorizarProductos(salvatoreProducts);
 
         // Aplicar variedad visual
-        tousBags = aplicarVariedadVisual(tousBags);
+        salvatoreProducts = aplicarVariedadVisual(salvatoreProducts);
 
-        setProducts(tousBags);
+        setProducts(salvatoreProducts);
       } catch (error) {
-        console.error("Error cargando bolsos TOUS:", error);
+        console.error("Error cargando joyería Salvatore Plata:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    loadTousProducts();
+    loadSalvatorePlataProducts();
   }, []);
 
   // Ajustar slides según tamaño de pantalla
@@ -204,7 +204,7 @@ export default function ColeccionTous() {
   // Navegar al catálogo
   const goToCatalog = () => {
     window.scrollTo(0, 0);
-    navigate("/catalogo/bolsos?marca=Tous");
+    navigate("/catalogo/joyeria?marca=salvatore+plata");
   };
 
   // Preload images on mount and when currentIndex changes
@@ -248,9 +248,9 @@ export default function ColeccionTous() {
     <div className="flex flex-col w-full gap-6 md:flex-row">
       {/* Sección de texto */}
       <div className="w-full md:w-1/5">
-        <h2 className="mb-3 text-3xl font-bold text-black">Bolsos TOUS</h2>
+        <h2 className="mb-3 text-3xl font-bold text-black">Salvatore Plata</h2>
         <p className="text-gray-600">
-          Descubre nuestra exclusiva selección de bolsos TOUS.
+          Descubre nuestra exclusiva selección de joyería Salvatore Plata.
         </p>
         <div className="mt-4">
           <button
@@ -270,7 +270,7 @@ export default function ColeccionTous() {
           }`}
           style={{
             transform: `translateX(-${currentIndex * (100 / slidesToShow)}%)`,
-            pointerEvents: isNavigating ? "none" : "auto", // Deshabilita interacciones
+            pointerEvents: isNavigating ? "none" : "auto",
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}

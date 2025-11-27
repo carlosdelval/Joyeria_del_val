@@ -1,6 +1,7 @@
 // Context para wishlist/favoritos
 import { createContext, useReducer, useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { trackAddToWishlist } from "../utils/analytics";
 
 // Acciones del wishlist
 const WISHLIST_ACTIONS = {
@@ -184,6 +185,8 @@ export function WishlistProvider({ children }) {
       type: WISHLIST_ACTIONS.ADD_ITEM,
       payload: { product },
     });
+    // Track analytics
+    trackAddToWishlist(product);
   };
 
   const removeFromWishlist = (itemId) => {

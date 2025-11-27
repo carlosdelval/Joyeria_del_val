@@ -6,21 +6,43 @@ export class ShopifyService {
     this.adminToken = import.meta.env.VITE_SHOPIFY_ADMIN_TOKEN;
   }
 
-  // Configuración GraphQL para Shopify Storefront API
-  async graphqlRequest(query, variables = {}) {
-    const response = await fetch(
-      `https://${this.domain}/api/2024-10/graphql.json`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Shopify-Storefront-Access-Token": this.storefrontToken,
-        },
-        body: JSON.stringify({ query, variables }),
-      }
-    );
+  // Configuración GraphQL para Shopify Storefront API con retry logic
+  async graphqlRequest(query, variables = {}, retries = 3) {
+    try {
+      const response = await fetch(
+        `https://${this.domain}/api/2024-10/graphql.json`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Shopify-Storefront-Access-Token": this.storefrontToken,
+          },
+          body: JSON.stringify({ query, variables }),
+        }
+      );
 
-    return response.json();
+      if (!response.ok && retries > 0) {
+        console.warn(
+          `⚠️ Shopify request failed, retrying... (${retries} attempts left)`
+        );
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return this.graphqlRequest(query, variables, retries - 1);
+      }
+
+      return response.json();
+    } catch (error) {
+      if (
+        retries > 0 &&
+        (error.message.includes("network") || error.message.includes("fetch"))
+      ) {
+        console.warn(
+          `⚠️ Network error, retrying... (${retries} attempts left)`
+        );
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return this.graphqlRequest(query, variables, retries - 1);
+      }
+      throw error;
+    }
   }
 
   // Obtener productos con paginación
@@ -303,45 +325,43 @@ export class ShopifyService {
     const variant = product.variants?.edges[0]?.node;
     const images = product.images?.edges.map((edge) => edge.node.url) || [];
 
-    // Extraer categorías de tags (ignorar productType si es una marca)
-    const marcasConocidas = [
-      "tous",
-      "ray-ban",
-      "oakley",
-      "viceroy",
-      "casio",
-      "citizen",
-      "seiko",
-      "orient",
-      "festina",
-      "lotus",
-      "tissot",
-      "certina",
-      "hamilton",
-      "longines",
+    // Categorías genéricas conocidas
+    const categoriasGenericas = [
+      "joyeria",
+      "joyería",
+      "gafas",
+      "relojes",
+      "bolsos",
     ];
-    const productTypeEsMarca = marcasConocidas.includes(
-      product.productType?.toLowerCase()
-    );
 
-    // Si productType no es una marca, incluirlo; si no, solo usar tags
-    const categorias = productTypeEsMarca
-      ? [...product.tags].filter(Boolean)
-      : [
-          product.productType,
-          ...product.tags.filter(
-            (tag) => tag?.toLowerCase() !== product.productType?.toLowerCase()
-          ),
-        ].filter(Boolean);
+    // Normalizar productType
+    const productTypeLower = product.productType?.toLowerCase()?.trim() || "";
 
-    // Extraer marca del vendor, productType (si es marca) o de los tags
-    const marca =
-      product.vendor ||
-      (productTypeEsMarca ? product.productType : null) ||
-      product.tags.find(
-        (tag) => tag && marcasConocidas.includes(tag.toLowerCase())
-      ) ||
-      null;
+    // Si productType NO es una categoría genérica, entonces es una marca
+    const productTypeEsMarca =
+      productTypeLower && !categoriasGenericas.includes(productTypeLower);
+
+    // Extraer categorías desde tags
+    const categorias = [...product.tags].filter(Boolean);
+
+    // Extraer marca del productType (si no es categoría genérica) o del vendor
+    // Normalizar: eliminar acentos y convertir a minúsculas
+    let marca = null;
+    if (productTypeEsMarca) {
+      marca = product.productType
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "") // Eliminar acentos
+        .toLowerCase()
+        .trim();
+    } else {
+      marca = product.vendor
+        ? product.vendor
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .trim()
+        : null;
+    }
 
     return {
       // IDs y referencias
@@ -394,6 +414,9 @@ export class ShopifyService {
 
       // Opciones de producto
       opciones: product.options || [],
+
+      // Extraer tallas disponibles (para anillos y otros productos con variantes de talla)
+      tallas: this.extractTallas(product.variants, product.options),
 
       // Información adicional extraída
       tipo: this.extractTipoFromTags(product.tags),
@@ -487,6 +510,337 @@ export class ShopifyService {
       }
     }
     return "clasico";
+  }
+
+  // Extraer tallas desde las variantes de producto
+  extractTallas(variants, options) {
+    if (!variants || !options) return [];
+
+    // Buscar si hay una opción llamada "Talla", "Size", "Tamaño"
+    const tallaOption = options.find(
+      (opt) =>
+        opt.name &&
+        (opt.name.toLowerCase() === "talla" ||
+          opt.name.toLowerCase() === "size" ||
+          opt.name.toLowerCase() === "tamaño")
+    );
+
+    if (!tallaOption) return [];
+
+    // Extraer tallas únicas de las variantes disponibles
+    const tallasDisponibles = variants.edges
+      .map((edge) => {
+        const variant = edge.node;
+        // Buscar la opción de talla en selectedOptions
+        const tallaOption = variant.selectedOptions?.find(
+          (opt) =>
+            opt.name &&
+            (opt.name.toLowerCase() === "talla" ||
+              opt.name.toLowerCase() === "size" ||
+              opt.name.toLowerCase() === "tamaño")
+        );
+
+        if (tallaOption && variant.availableForSale) {
+          return {
+            valor: tallaOption.value,
+            label: tallaOption.value,
+            disponible: variant.availableForSale,
+            stock: variant.quantityAvailable || 0,
+            variantId: variant.id,
+          };
+        }
+        return null;
+      })
+      .filter(Boolean);
+
+    // Eliminar duplicados y ordenar numéricamente si son números
+    const tallasUnicas = Array.from(
+      new Map(tallasDisponibles.map((t) => [t.valor, t])).values()
+    ).sort((a, b) => {
+      const numA = parseFloat(a.valor);
+      const numB = parseFloat(b.valor);
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return numA - numB;
+      }
+      return a.valor.localeCompare(b.valor);
+    });
+
+    return tallasUnicas;
+  }
+
+  // ========== CUSTOMER API METHODS ==========
+
+  // Obtener datos completos del cliente
+  async getCustomer(customerAccessToken) {
+    const query = `
+      query getCustomer($customerAccessToken: String!) {
+        customer(customerAccessToken: $customerAccessToken) {
+          id
+          email
+          firstName
+          lastName
+          phone
+          displayName
+          acceptsMarketing
+          defaultAddress {
+            id
+            firstName
+            lastName
+            company
+            address1
+            address2
+            city
+            province
+            country
+            zip
+            phone
+          }
+          addresses(first: 10) {
+            edges {
+              node {
+                id
+                firstName
+                lastName
+                company
+                address1
+                address2
+                city
+                province
+                country
+                zip
+                phone
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await this.graphqlRequest(query, { customerAccessToken });
+
+    if (response.errors) {
+      throw new Error(response.errors[0].message);
+    }
+
+    return response.data.customer;
+  }
+
+  // Obtener pedidos del cliente
+  async getCustomerOrders(customerAccessToken, first = 20, after = null) {
+    const query = `
+      query getCustomerOrders($customerAccessToken: String!, $first: Int!, $after: String) {
+        customer(customerAccessToken: $customerAccessToken) {
+          orders(first: $first, after: $after, sortKey: PROCESSED_AT, reverse: true) {
+            edges {
+              node {
+                id
+                name
+                orderNumber
+                processedAt
+                financialStatus
+                fulfillmentStatus
+                totalPrice {
+                  amount
+                  currencyCode
+                }
+                subtotalPrice {
+                  amount
+                  currencyCode
+                }
+                totalShippingPrice {
+                  amount
+                  currencyCode
+                }
+                lineItems(first: 100) {
+                  edges {
+                    node {
+                      quantity
+                      title
+                      variant {
+                        id
+                        title
+                        image {
+                          url
+                          altText
+                        }
+                        price {
+                          amount
+                          currencyCode
+                        }
+                      }
+                    }
+                  }
+                }
+                shippingAddress {
+                  firstName
+                  lastName
+                  address1
+                  address2
+                  city
+                  province
+                  country
+                  zip
+                  phone
+                }
+                successfulFulfillments(first: 10) {
+                  trackingCompany
+                  trackingInfo {
+                    number
+                    url
+                  }
+                }
+                statusUrl
+              }
+            }
+            pageInfo {
+              hasNextPage
+              endCursor
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await this.graphqlRequest(query, {
+      customerAccessToken,
+      first,
+      after,
+    });
+
+    if (response.errors) {
+      throw new Error(response.errors[0].message);
+    }
+
+    return response.data.customer.orders;
+  }
+
+  // Actualizar información del cliente
+  async updateCustomer(customerAccessToken, customerData) {
+    const mutation = `
+      mutation customerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {
+        customerUpdate(customerAccessToken: $customerAccessToken, customer: $customer) {
+          customer {
+            id
+            email
+            firstName
+            lastName
+            phone
+            acceptsMarketing
+          }
+          customerUserErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const response = await this.graphqlRequest(mutation, {
+      customerAccessToken,
+      customer: customerData,
+    });
+
+    if (response.data?.customerUpdate?.customerUserErrors?.length > 0) {
+      throw new Error(
+        response.data.customerUpdate.customerUserErrors[0].message
+      );
+    }
+
+    return response.data.customerUpdate.customer;
+  }
+
+  // Actualizar dirección del cliente
+  async updateCustomerAddress(customerAccessToken, addressId, address) {
+    const mutation = `
+      mutation customerAddressUpdate($customerAccessToken: String!, $id: ID!, $address: MailingAddressInput!) {
+        customerAddressUpdate(customerAccessToken: $customerAccessToken, id: $id, address: $address) {
+          customerAddress {
+            id
+          }
+          customerUserErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const response = await this.graphqlRequest(mutation, {
+      customerAccessToken,
+      id: addressId,
+      address,
+    });
+
+    if (response.data?.customerAddressUpdate?.customerUserErrors?.length > 0) {
+      throw new Error(
+        response.data.customerAddressUpdate.customerUserErrors[0].message
+      );
+    }
+
+    return response.data.customerAddressUpdate.customerAddress;
+  }
+
+  // Crear nueva dirección
+  async createCustomerAddress(customerAccessToken, address) {
+    const mutation = `
+      mutation customerAddressCreate($customerAccessToken: String!, $address: MailingAddressInput!) {
+        customerAddressCreate(customerAccessToken: $customerAccessToken, address: $address) {
+          customerAddress {
+            id
+          }
+          customerUserErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const response = await this.graphqlRequest(mutation, {
+      customerAccessToken,
+      address,
+    });
+
+    if (response.data?.customerAddressCreate?.customerUserErrors?.length > 0) {
+      throw new Error(
+        response.data.customerAddressCreate.customerUserErrors[0].message
+      );
+    }
+
+    return response.data.customerAddressCreate.customerAddress;
+  }
+
+  // Establecer dirección por defecto
+  async setDefaultAddress(customerAccessToken, addressId) {
+    const mutation = `
+      mutation customerDefaultAddressUpdate($customerAccessToken: String!, $addressId: ID!) {
+        customerDefaultAddressUpdate(customerAccessToken: $customerAccessToken, addressId: $addressId) {
+          customer {
+            id
+          }
+          customerUserErrors {
+            field
+            message
+          }
+        }
+      }
+    `;
+
+    const response = await this.graphqlRequest(mutation, {
+      customerAccessToken,
+      addressId,
+    });
+
+    if (
+      response.data?.customerDefaultAddressUpdate?.customerUserErrors?.length >
+      0
+    ) {
+      throw new Error(
+        response.data.customerDefaultAddressUpdate.customerUserErrors[0].message
+      );
+    }
+
+    return response.data.customerDefaultAddressUpdate.customer;
   }
 }
 

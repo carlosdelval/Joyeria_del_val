@@ -17,6 +17,15 @@ const FavoritosPage = () => {
   const [addedToCart, setAddedToCart] = useState({});
   const [showClearModal, setShowClearModal] = useState(false);
   const [cartKey, setCartKey] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  // Simular carga inicial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Forzar re-render cuando cambie el carrito
   useEffect(() => {
@@ -159,6 +168,50 @@ const FavoritosPage = () => {
     clearWishlist();
     showInfo("Lista de favoritos limpiada", 3000);
   };
+
+  // Mostrar loading skeleton
+  if (loading) {
+    return (
+      <>
+        <SEO
+          title="Mis Favoritos - Óptica Del Val Joyeros"
+          description="Guarda tus productos favoritos y compra más tarde. Lista de deseos de joyas, relojes y gafas."
+          url="https://opticadelvaljoyeros.es/favoritos"
+        />
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 pb-16">
+          <div className="bg-black text-white py-12">
+            <div className="container mx-auto px-4">
+              <div className="max-w-4xl mx-auto text-center">
+                <div className="h-12 bg-white/10 rounded w-48 mx-auto mb-4 animate-pulse"></div>
+                <div className="h-6 bg-white/10 rounded w-64 mx-auto animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+          <div className="container mx-auto px-4 py-8 max-w-7xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-lg shadow-md overflow-hidden"
+                >
+                  <div className="aspect-square bg-gray-200 animate-pulse"></div>
+                  <div className="p-4 space-y-3">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                    <div className="h-6 bg-gray-200 rounded w-20 animate-pulse"></div>
+                    <div className="flex gap-2 mt-4">
+                      <div className="flex-1 h-10 bg-gray-200 rounded animate-pulse"></div>
+                      <div className="w-10 h-10 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   if (items.length === 0) {
     return (

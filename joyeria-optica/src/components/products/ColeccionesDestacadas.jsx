@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const colecciones = [
   {
@@ -10,6 +11,7 @@ const colecciones = [
     titulo: "Salvatore PLATA",
     img: "/salvatore-banner.jpg",
     slug: "Plata de ley",
+    href: "/catalogo/joyeria?marca=salvatore+plata",
   },
   {
     titulo: "Nomination Italy",
@@ -24,11 +26,27 @@ const colecciones = [
 ];
 
 const ColeccionesDestacadas = () => {
+  const navigate = useNavigate();
+
+  // Navegar al catálogo
+  const goToCatalog = (href) => {
+    if (href) {
+      window.scrollTo(0, 0);
+      navigate(href);
+    }
+  };
+
   return (
     <section>
       <div className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-4">
         {colecciones.map((coleccion, index) => (
-          <div key={index} className="relative block overflow-hidden group">
+          <div
+            key={index}
+            className={`relative block overflow-hidden group ${
+              coleccion.href ? "cursor-pointer" : ""
+            }`}
+            onClick={() => goToCatalog(coleccion.href)}
+          >
             <img
               src={coleccion.img}
               alt={coleccion.titulo}

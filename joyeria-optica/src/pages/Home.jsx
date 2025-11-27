@@ -7,6 +7,7 @@ import VerticalAccordion from "../components/ui/Accordion";
 import GridArticulos from "../components/products/GridArticulos";
 import BannerMarcas from "../components/banners/BannerMarcas";
 import ColeccionTous from "../components/products/ColeccionTous";
+import ColeccionSalvatorePlata from "../components/products/ColeccionSalvatorePlata";
 import ColeccionesDestacadas from "../components/products/ColeccionesDestacadas";
 import Promocion from "../components/products/Promoción";
 import ContactoOptica from "../components/common/ContactCard";
@@ -127,6 +128,11 @@ export default function Home() {
         {/* Colección TOUS */}
         <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
           <ColeccionTous />
+        </AnimatedSection>
+
+        {/* Colección Salvatore Plata */}
+        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+          <ColeccionSalvatorePlata />
         </AnimatedSection>
 
         {/* Promoción */}

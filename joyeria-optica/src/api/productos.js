@@ -3,23 +3,54 @@ import { shopifyService } from "../services/shopify.js";
 
 const USE_SHOPIFY = import.meta.env.VITE_USE_SHOPIFY === "true";
 
+// Sistema de caché en memoria para productos
+const productCache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
+
 // Función para cargar los datos (Shopify o JSON local)
 async function loadProductosData() {
   try {
     if (USE_SHOPIFY) {
       console.log("🛍️ Cargando productos desde Shopify...");
-      const response = await shopifyService.getProducts({ first: 250 });
 
-      if (response.errors) {
-        console.error("Error de Shopify GraphQL:", response.errors);
-        throw new Error("Error al obtener productos de Shopify");
+      // Cargar todos los productos con paginación
+      let allProducts = [];
+      let hasNextPage = true;
+      let cursor = null;
+      let pageCount = 0;
+
+      while (hasNextPage) {
+        const response = await shopifyService.getProducts({
+          first: 250,
+          after: cursor,
+        });
+
+        if (response.errors) {
+          console.error("Error de Shopify GraphQL:", response.errors);
+          throw new Error("Error al obtener productos de Shopify");
+        }
+
+        const edges = response.data?.products?.edges || [];
+        const pageInfo = response.data?.products?.pageInfo || {};
+
+        allProducts = allProducts.concat(edges);
+        hasNextPage = pageInfo.hasNextPage;
+        cursor = pageInfo.endCursor;
+        pageCount++;
+
+        console.log(
+          `📄 Página ${pageCount}: ${edges.length} productos cargados`
+        );
       }
 
-      const products = response.data?.products?.edges || [];
-      console.log(`✅ ${products.length} productos cargados desde Shopify`);
+      console.log(
+        `✅ Total: ${allProducts.length} productos cargados desde Shopify`
+      );
 
       // Transformar productos de Shopify al formato de la app
-      return products.map((edge) => shopifyService.transformProductData(edge));
+      return allProducts.map((edge) =>
+        shopifyService.transformProductData(edge)
+      );
     }
 
     // Fallback a JSON local
@@ -104,7 +135,10 @@ function normalizeProduct(producto) {
     // IMPORTANTE: Usar el campo genero directamente si existe, sino intentar extraerlo de etiquetas
     genero: producto.genero || extractGeneroFromTags(producto.etiquetas),
     estilo: extractEstiloFromTags(producto.etiquetas),
-    tipo: extractTipoFromCategories(producto.categorias),
+    tipo:
+      producto.tipo ||
+      extractTipoFromCategories(producto.categorias) ||
+      extractTipoJoyaFromTags(producto.etiquetas),
     // IMPORTANTE: Usar el campo marca directamente si existe, sino intentar extraerlo de etiquetas
     marca: producto.marca || extractMarcaFromTags(producto.etiquetas),
     stock: producto.stock ?? shopifyLike.variants[0].inventory_quantity ?? 0, // Stock real de Shopify
@@ -118,23 +152,237 @@ function normalizeProduct(producto) {
   return normalized;
 }
 
+// Función helper para normalizar texto (eliminar acentos y convertir a minúsculas)
+function normalizeText(text) {
+  if (!text) return "";
+  return text
+    .toString()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Eliminar acentos
+    .toLowerCase()
+    .trim();
+}
+
+// Diccionario de sinónimos y variaciones para búsqueda inteligente
+const searchSynonyms = {
+  // Joyería y variaciones
+  joya: ["joya", "joyas", "joyeria", "joyería", "alhaja", "alhajas"],
+  joyas: ["joya", "joyas", "joyeria", "joyería", "alhaja", "alhajas"],
+  joyeria: ["joya", "joyas", "joyeria", "joyería", "alhaja", "alhajas"],
+
+  // Anillos y sortijas
+  anillo: ["anillo", "anillos", "sortija", "sortijas", "aro", "aros"],
+  anillos: ["anillo", "anillos", "sortija", "sortijas", "aro", "aros"],
+  sortija: ["anillo", "anillos", "sortija", "sortijas", "aro", "aros"],
+  sortijas: ["anillo", "anillos", "sortija", "sortijas", "aro", "aros"],
+
+  // Pulseras y brazaletes
+  pulsera: [
+    "pulsera",
+    "pulseras",
+    "brazalete",
+    "brazaletes",
+    "manilla",
+    "manillas",
+  ],
+  pulseras: [
+    "pulsera",
+    "pulseras",
+    "brazalete",
+    "brazaletes",
+    "manilla",
+    "manillas",
+  ],
+  brazalete: [
+    "pulsera",
+    "pulseras",
+    "brazalete",
+    "brazaletes",
+    "manilla",
+    "manillas",
+  ],
+
+  // Collares y cadenas
+  collar: [
+    "collar",
+    "collares",
+    "cadena",
+    "cadenas",
+    "gargantilla",
+    "gargantillas",
+  ],
+  collares: [
+    "collar",
+    "collares",
+    "cadena",
+    "cadenas",
+    "gargantilla",
+    "gargantillas",
+  ],
+  cadena: [
+    "collar",
+    "collares",
+    "cadena",
+    "cadenas",
+    "gargantilla",
+    "gargantillas",
+  ],
+
+  // Pendientes y aretes
+  pendiente: [
+    "pendiente",
+    "pendientes",
+    "arete",
+    "aretes",
+    "zarcillo",
+    "zarcillos",
+    "aros",
+  ],
+  pendientes: [
+    "pendiente",
+    "pendientes",
+    "arete",
+    "aretes",
+    "zarcillo",
+    "zarcillos",
+    "aros",
+  ],
+  arete: [
+    "pendiente",
+    "pendientes",
+    "arete",
+    "aretes",
+    "zarcillo",
+    "zarcillos",
+  ],
+  aretes: [
+    "pendiente",
+    "pendientes",
+    "arete",
+    "aretes",
+    "zarcillo",
+    "zarcillos",
+  ],
+
+  // Relojes
+  reloj: ["reloj", "relojes", "cronometro", "cronografo"],
+  relojes: ["reloj", "relojes", "cronometro", "cronografo"],
+
+  // Gafas
+  gafa: ["gafa", "gafas", "lente", "lentes", "anteojos", "sol"],
+  gafas: ["gafa", "gafas", "lente", "lentes", "anteojos", "sol"],
+  lente: ["gafa", "gafas", "lente", "lentes", "anteojos"],
+  lentes: ["gafa", "gafas", "lente", "lentes", "anteojos"],
+
+  // Bolsos
+  bolso: ["bolso", "bolsos", "cartera", "carteras", "bolsa", "bolsas"],
+  bolsos: ["bolso", "bolsos", "cartera", "carteras", "bolsa", "bolsas"],
+  cartera: ["bolso", "bolsos", "cartera", "carteras", "bolsa", "bolsas"],
+
+  // Materiales comunes
+  oro: ["oro", "dorado", "gold"],
+  plata: ["plata", "plateado", "silver"],
+  acero: ["acero", "steel", "inoxidable"],
+
+  // Géneros
+  mujer: ["mujer", "mujeres", "dama", "damas", "señora", "femenino", "ella"],
+  hombre: ["hombre", "hombres", "caballero", "caballeros", "masculino", "el"],
+};
+
+// Función para expandir búsqueda con sinónimos y variaciones
+function expandSearchTerms(searchText) {
+  const normalized = normalizeText(searchText);
+  const words = normalized.split(/\s+/);
+  const expandedTerms = new Set();
+
+  words.forEach((word) => {
+    // Añadir la palabra original
+    expandedTerms.add(word);
+
+    // Añadir sinónimos si existen
+    if (searchSynonyms[word]) {
+      searchSynonyms[word].forEach((synonym) => {
+        expandedTerms.add(normalizeText(synonym));
+      });
+    }
+
+    // Manejar plurales simples (quitar/añadir 's')
+    if (word.endsWith("s") && word.length > 3) {
+      expandedTerms.add(word.slice(0, -1)); // singular
+    } else if (word.length > 2) {
+      expandedTerms.add(word + "s"); // plural
+    }
+
+    // Variaciones comunes de errores ortográficos
+    if (word.length > 3) {
+      // Variación con/sin 'h' inicial
+      if (word.startsWith("h")) {
+        expandedTerms.add(word.substring(1));
+      } else {
+        expandedTerms.add("h" + word);
+      }
+
+      // Variaciones ll/y (sortija/sortiya, joya/jolla)
+      if (word.includes("ll")) {
+        expandedTerms.add(word.replace(/ll/g, "y"));
+      }
+      if (word.includes("y")) {
+        expandedTerms.add(word.replace(/y/g, "ll"));
+      }
+    }
+  });
+
+  return Array.from(expandedTerms);
+}
+
 // Funciones auxiliares para extraer información de las etiquetas y categorías existentes
 function extractCategoryFromCategories(categorias) {
   if (!categorias || !Array.isArray(categorias)) return null;
 
   const mainCategories = [
     "anillos",
+    "anillo",
+    "gemelos",
     "pendientes",
     "pulseras",
+    "pulsera",
+    "collares",
+    "collar",
     "colgantes",
     "gafas",
     "relojes",
+    "joyeria",
+    "bolsos",
   ];
-  return (
-    mainCategories.find((cat) => categorias.includes(cat)) || categorias[0]
-  );
-}
 
+  // Normalizar categorías para comparación
+  const normalizedCats = categorias.map(normalizeText);
+
+  // Buscar coincidencia exacta
+  const found = mainCategories.find((cat) =>
+    normalizedCats.includes(normalizeText(cat))
+  );
+
+  // Si es una subcategoría de joyería (anillo, pendientes, etc), también marcar como joyería
+  if (
+    found &&
+    [
+      "anillos",
+      "anillo",
+      "pendientes",
+      "pulseras",
+      "pulsera",
+      "collares",
+      "collar",
+      "colgantes",
+      "gemelos",
+    ].includes(found)
+  ) {
+    return found;
+  }
+
+  return found || categorias[0];
+}
 function extractMaterialFromTags(etiquetas, categorias) {
   if (!etiquetas || !Array.isArray(etiquetas)) return null;
 
@@ -222,6 +470,27 @@ function extractTipoFromCategories(categorias) {
   return null;
 }
 
+// Extraer tipo de joya desde etiquetas (anillo, pendientes, collar, pulsera, gemelos)
+function extractTipoJoyaFromTags(etiquetas) {
+  if (!etiquetas || !Array.isArray(etiquetas)) return null;
+
+  const tiposJoya = ["anillo", "pendientes", "collar", "pulsera", "gemelos"];
+
+  for (const tag of etiquetas) {
+    const tagNormalizado = normalizeText(tag);
+    // Buscar coincidencias exactas o plurales
+    const tipoEncontrado = tiposJoya.find(
+      (tipo) =>
+        tagNormalizado === tipo ||
+        tagNormalizado === tipo + "s" ||
+        tagNormalizado.includes(tipo)
+    );
+    if (tipoEncontrado) return tipoEncontrado;
+  }
+
+  return null;
+}
+
 function extractMarcaFromTags(etiquetas) {
   if (!etiquetas || !Array.isArray(etiquetas)) return null;
 
@@ -236,7 +505,8 @@ function extractMarcaFromTags(etiquetas) {
   ];
 
   for (const tag of etiquetas) {
-    const marca = marcas.find((m) => tag.toLowerCase().includes(m));
+    const tagLower = tag.toLowerCase().trim();
+    const marca = marcas.find((m) => tagLower.includes(m) || tagLower === m);
     if (marca) return marca;
   }
 
@@ -258,6 +528,15 @@ export async function fetchProductos({
   busqueda = "",
   ...filtros
 }) {
+  // Verificar caché primero
+  const cacheKey = JSON.stringify({ categoria, busqueda, filtros });
+  const cached = productCache.get(cacheKey);
+
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    console.log("📦 Productos cargados desde caché");
+    return cached.data;
+  }
+
   const productosData = await loadProductosData();
 
   // Normalizar todos los productos al formato esperado
@@ -271,55 +550,203 @@ export async function fetchProductos({
       // 1. Filtro por categoría
       if (categoria && categoria.length > 0) {
         const categoriaValida = categoria.some((cat) => {
-          // Normalizar nombres de categoría
-          const catNormalizada = cat.toLowerCase().trim();
-          const prodCat = producto.categoria?.toLowerCase().trim();
-          const prodCats =
-            producto.categorias?.map((c) => c.toLowerCase().trim()) || [];
+          // Normalizar nombres de categoría (sin acentos)
+          const catNormalizada = normalizeText(cat);
+          const prodCat = normalizeText(producto.categoria);
+          const prodCats = producto.categorias?.map(normalizeText) || [];
+          const prodTags = producto.etiquetas?.map(normalizeText) || [];
 
-          // Buscar coincidencias exactas y parciales
+          // Buscar coincidencias exactas y parciales en categorías y etiquetas
           return (
             prodCat === catNormalizada ||
             prodCats.includes(catNormalizada) ||
+            prodTags.includes(catNormalizada) ||
             prodCat?.includes(catNormalizada) ||
-            prodCats.some((c) => c.includes(catNormalizada))
+            prodCats.some((c) => c.includes(catNormalizada)) ||
+            prodTags.some((t) => t.includes(catNormalizada))
           );
         });
         if (!categoriaValida) return false;
       }
 
-      // 2. Búsqueda por texto mejorada (búsqueda inteligente)
+      // 2. Búsqueda por texto mejorada (búsqueda inteligente con sinónimos y variaciones)
       if (busqueda && busqueda.trim()) {
-        const textoBusqueda = busqueda.toLowerCase().trim();
-        const palabrasBusqueda = textoBusqueda.split(/\s+/); // Dividir en palabras
+        // Expandir términos de búsqueda con sinónimos, plurales y variaciones
+        const terminosExpandidos = expandSearchTerms(busqueda);
 
-        // Propiedades donde buscar
-        const camposBusqueda = [
-          producto.nombre,
-          producto.titulo,
-          producto.descripcion,
-          producto.slug,
-          producto.marca,
-          producto.material,
-          producto.tipo,
-          producto.genero,
-          producto.estilo,
-          producto.color,
-          producto.coleccion,
-          ...(producto.categorias || []),
-          ...(producto.etiquetas || []),
-        ]
-          .filter(Boolean)
-          .map((campo) => String(campo).toLowerCase());
+        // Detectar si la búsqueda es de una categoría principal
+        const categoriasPrincipales = {
+          joyeria: ["joya", "joyas", "joyeria", "alhaja", "alhajas"],
+          anillo: ["anillo", "anillos", "sortija", "sortijas", "aro"],
+          pulsera: [
+            "pulsera",
+            "pulseras",
+            "brazalete",
+            "brazaletes",
+            "manilla",
+          ],
+          collar: ["collar", "collares", "cadena", "gargantilla"],
+          pendiente: ["pendiente", "pendientes", "arete", "aretes", "zarcillo"],
+          reloj: ["reloj", "relojes", "cronometro", "cronografo"],
+          gafa: ["gafa", "gafas", "lente", "lentes", "anteojos"],
+          bolso: ["bolso", "bolsos", "cartera", "bolsa"],
+        };
 
-        const textoCompleto = camposBusqueda.join(" ");
+        // Materiales típicos de joyería que deben priorizar productos de joyería
+        const materialesJoyeria = [
+          "oro",
+          "plata",
+          "diamante",
+          "brillante",
+          "esmeralda",
+          "rubi",
+          "zafiro",
+          "perla",
+          "platino",
+          "titanio",
+          "circonita",
+          "topacio",
+          "amatista",
+          "aguamarina",
+          "granate",
+          "turquesa",
+          "coral",
+          "jade",
+          "onix",
+          "dorado",
+          "plateado",
+          "gold",
+          "silver",
+          "diamond",
+        ];
 
-        // Verificar si todas las palabras de búsqueda están presentes
-        const coincide = palabrasBusqueda.every((palabra) =>
-          textoCompleto.includes(palabra)
-        );
+        // Verificar si la búsqueda corresponde a una categoría principal
+        let categoriaBuscada = null;
+        let esMaterialJoyeria = false;
+        const textoBusquedaNormalizado = normalizeText(busqueda);
 
-        if (!coincide) return false;
+        for (const [categoria, terminos] of Object.entries(
+          categoriasPrincipales
+        )) {
+          if (
+            terminos.some((termino) =>
+              textoBusquedaNormalizado.includes(normalizeText(termino))
+            )
+          ) {
+            categoriaBuscada = categoria;
+            break;
+          }
+        }
+
+        // Verificar si busca un material típico de joyería
+        if (!categoriaBuscada) {
+          esMaterialJoyeria = materialesJoyeria.some((material) =>
+            textoBusquedaNormalizado.includes(normalizeText(material))
+          );
+          if (esMaterialJoyeria) {
+            categoriaBuscada = "joyeria"; // Tratar como búsqueda de joyería
+          }
+        }
+
+        // Si se busca una categoría específica, filtrar SOLO por categoría/tipo (no descripción)
+        if (categoriaBuscada && !esMaterialJoyeria) {
+          // Búsqueda de categoría pura (joyería, anillo, reloj, etc.)
+          const camposCategoria = [
+            producto.categoria,
+            producto.tipo,
+            ...(producto.categorias || []),
+            ...(producto.etiquetas || []),
+          ]
+            .filter(Boolean)
+            .map((campo) => normalizeText(campo));
+
+          const textoCategorias = camposCategoria.join(" ");
+
+          const coincideCategoria = terminosExpandidos.some((termino) =>
+            textoCategorias.includes(termino)
+          );
+
+          if (!coincideCategoria) return false;
+        } else if (esMaterialJoyeria) {
+          // Búsqueda de material de joyería: filtrar por categoría joyería Y material
+          const esJoyeria =
+            [
+              producto.categoria,
+              producto.tipo,
+              ...(producto.categorias || []),
+              ...(producto.etiquetas || []),
+            ]
+              .filter(Boolean)
+              .map((campo) => normalizeText(campo))
+              .join(" ")
+              .includes("joyeria") ||
+            [
+              "anillo",
+              "pulsera",
+              "collar",
+              "pendiente",
+              "gemelos",
+              "colgante",
+            ].some((cat) =>
+              [
+                producto.categoria,
+                producto.tipo,
+                ...(producto.categorias || []),
+              ]
+                .filter(Boolean)
+                .map((campo) => normalizeText(campo))
+                .join(" ")
+                .includes(cat)
+            );
+
+          if (!esJoyeria) return false;
+
+          // Verificar que el material coincida
+          const camposMaterial = [
+            producto.material,
+            producto.titulo,
+            producto.nombre,
+            producto.descripcion,
+            ...(producto.etiquetas || []),
+          ]
+            .filter(Boolean)
+            .map((campo) => normalizeText(campo));
+
+          const textoMaterial = camposMaterial.join(" ");
+
+          const coincideMaterial = terminosExpandidos.some((termino) =>
+            textoMaterial.includes(termino)
+          );
+
+          if (!coincideMaterial) return false;
+        } else {
+          // Búsqueda general: buscar en todos los campos
+          const camposBusqueda = [
+            producto.nombre,
+            producto.titulo,
+            producto.descripcion,
+            producto.slug,
+            producto.marca,
+            producto.material,
+            producto.tipo,
+            producto.genero,
+            producto.estilo,
+            producto.color,
+            producto.coleccion,
+            ...(producto.categorias || []),
+            ...(producto.etiquetas || []),
+          ]
+            .filter(Boolean)
+            .map((campo) => normalizeText(campo));
+
+          const textoCompleto = camposBusqueda.join(" ");
+
+          const coincide = terminosExpandidos.some((termino) =>
+            textoCompleto.includes(termino)
+          );
+
+          if (!coincide) return false;
+        }
       }
 
       // 3. Filtro por precio (con valores por defecto seguros)
@@ -491,21 +918,50 @@ export async function fetchProductos({
         "gafas de sol": 2,
         bolsos: 3,
         bolso: 3,
+        // Subcategorías de joyería
+        anillo: 4,
+        anillos: 4,
+        pendientes: 5,
+        collar: 6,
+        collares: 6,
+        pulsera: 7,
+        pulseras: 7,
+        gemelos: 8,
+        joyeria: 9,
       };
 
-      const catA = (a.categoria || a.categorias?.[0] || "").toLowerCase();
-      const catB = (b.categoria || b.categorias?.[0] || "").toLowerCase();
+      // Obtener categoría o tipo de joya para ordenamiento
+      const catA = (
+        a.tipo ||
+        a.categoria ||
+        a.categorias?.[0] ||
+        ""
+      ).toLowerCase();
+      const catB = (
+        b.tipo ||
+        b.categoria ||
+        b.categorias?.[0] ||
+        ""
+      ).toLowerCase();
 
       const ordenA = ordenCategorias[catA] || 999;
       const ordenB = ordenCategorias[catB] || 999;
 
-      // Si son de la misma categoría, mantener orden original (por ID o nombre)
+      // Si son de la misma categoría/tipo, mantener orden original (por ID o nombre)
       if (ordenA === ordenB) {
         return (a.nombre || "").localeCompare(b.nombre || "");
       }
 
       return ordenA - ordenB;
     });
+
+  // Guardar resultado en caché
+  productCache.set(cacheKey, {
+    data: normalizedProducts,
+    timestamp: Date.now(),
+  });
+
+  return normalizedProducts;
 }
 
 // Versión segura de fetchProducto con soporte Shopify

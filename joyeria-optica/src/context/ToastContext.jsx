@@ -50,6 +50,14 @@ export const ToastProvider = ({ children }) => {
     [addToast]
   );
 
+  // M\u00e9todo gen\u00e9rico para mostrar toast
+  const showToast = useCallback(
+    (message, type = "success", duration) => {
+      return addToast({ message, type, duration });
+    },
+    [addToast]
+  );
+
   return (
     <ToastContext.Provider
       value={{
@@ -59,6 +67,7 @@ export const ToastProvider = ({ children }) => {
         showError,
         showWarning,
         showInfo,
+        showToast,
       }}
     >
       {children}

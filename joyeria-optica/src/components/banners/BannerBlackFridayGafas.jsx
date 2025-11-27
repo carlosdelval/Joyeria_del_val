@@ -72,7 +72,12 @@ const BannerBlackFridayGafas = () => {
   const handleCTAClick = () => {
     const contactoSection = document.getElementById("contactooptica");
     if (contactoSection) {
-      contactoSection.scrollIntoView({ behavior: "smooth", block: "center" });
+      const yOffset = -20; // Pequeño margen superior
+      const y =
+        contactoSection.getBoundingClientRect().top +
+        window.pageYOffset +
+        yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 

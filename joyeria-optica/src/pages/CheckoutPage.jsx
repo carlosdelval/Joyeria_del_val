@@ -12,6 +12,7 @@ import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { formatCurrency, analytics } from "../utils/helpers";
+import { trackBeginCheckout } from "../utils/analytics";
 import AuthModal from "../components/modals/AuthModal";
 import { sendOrderConfirmation } from "../services/emailService";
 import { ButtonSpinner } from "../components/ui/Spinner";
@@ -96,6 +97,7 @@ const CheckoutPage = () => {
     } else if (items.length > 0) {
       // Track inicio de checkout
       analytics.trackBeginCheckout(items, total);
+      trackBeginCheckout(items, total);
     }
   }, [items.length, navigate, orderComplete, items, total]);
 

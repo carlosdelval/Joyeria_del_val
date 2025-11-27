@@ -57,6 +57,138 @@ export const filtrosPorCategoria = {
       priority: 1,
     },
   },
+  tous: {
+    categoria: {
+      label: "Producto",
+      type: "checkbox",
+      options: [
+        { value: "bolsos", label: "Bolsos" },
+        { value: "relojes", label: "Relojes" },
+        { value: "gafas", label: "Gafas" },
+      ],
+      priority: 1,
+    },
+  },
+  joyeria: {
+    tipo: {
+      label: "Tipo de Joya",
+      type: "checkbox",
+      options: [
+        { value: "anillo", label: "Anillos" },
+        { value: "pendientes", label: "Pendientes" },
+        { value: "collar", label: "Collares" },
+        { value: "pulsera", label: "Pulseras" },
+        { value: "gemelos", label: "Gemelos" },
+      ],
+      priority: 1,
+    },
+    marca: {
+      label: "Marca",
+      type: "checkbox",
+      options: [{ value: "salvatore plata", label: "Salvatore Plata" }],
+      priority: 2,
+    },
+    genero: {
+      label: "Género",
+      type: "checkbox",
+      options: [
+        { value: "hombre", label: "Caballero" },
+        { value: "mujer", label: "Señora" },
+        { value: "unisex", label: "Unisex" },
+      ],
+      priority: 3,
+    },
+  },
+  anillos: {
+    marca: {
+      label: "Marca",
+      type: "checkbox",
+      options: [{ value: "salvatore plata", label: "Salvatore Plata" }],
+      priority: 1,
+    },
+    genero: {
+      label: "Género",
+      type: "checkbox",
+      options: [
+        { value: "hombre", label: "Caballero" },
+        { value: "mujer", label: "Señora" },
+        { value: "unisex", label: "Unisex" },
+      ],
+      priority: 2,
+    },
+  },
+  pendientes: {
+    marca: {
+      label: "Marca",
+      type: "checkbox",
+      options: [{ value: "salvatore plata", label: "Salvatore Plata" }],
+      priority: 1,
+    },
+    genero: {
+      label: "Género",
+      type: "checkbox",
+      options: [
+        { value: "hombre", label: "Caballero" },
+        { value: "mujer", label: "Señora" },
+        { value: "unisex", label: "Unisex" },
+      ],
+      priority: 2,
+    },
+  },
+  collares: {
+    marca: {
+      label: "Marca",
+      type: "checkbox",
+      options: [{ value: "salvatore plata", label: "Salvatore Plata" }],
+      priority: 1,
+    },
+    genero: {
+      label: "Género",
+      type: "checkbox",
+      options: [
+        { value: "hombre", label: "Caballero" },
+        { value: "mujer", label: "Señora" },
+        { value: "unisex", label: "Unisex" },
+      ],
+      priority: 2,
+    },
+  },
+  pulseras: {
+    marca: {
+      label: "Marca",
+      type: "checkbox",
+      options: [{ value: "salvatore plata", label: "Salvatore Plata" }],
+      priority: 1,
+    },
+    genero: {
+      label: "Género",
+      type: "checkbox",
+      options: [
+        { value: "hombre", label: "Caballero" },
+        { value: "mujer", label: "Señora" },
+        { value: "unisex", label: "Unisex" },
+      ],
+      priority: 2,
+    },
+  },
+  gemelos: {
+    marca: {
+      label: "Marca",
+      type: "checkbox",
+      options: [{ value: "salvatore plata", label: "Salvatore Plata" }],
+      priority: 1,
+    },
+    genero: {
+      label: "Género",
+      type: "checkbox",
+      options: [
+        { value: "hombre", label: "Caballero" },
+        { value: "mujer", label: "Señora" },
+        { value: "unisex", label: "Unisex" },
+      ],
+      priority: 2,
+    },
+  },
   "black-friday": {
     categoria: {
       label: "Categoría",

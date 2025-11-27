@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, lazy } from "react";
 // eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 
+// Mapa de rutas a componentes lazy para prefetch
+const routePrefetchMap = {
+  "/catalogo": () => import("../../pages/Catalogo"),
+  "/joyeria": () => import("../../pages/Joyeria"),
+  "/optica": () => import("../../pages/Optica"),
+  "/relojeria": () => import("../../pages/Relojeria"),
+};
+
 /**
- * FlyoutLink: enlace con dropdown animado
+ * FlyoutLink: enlace con dropdown animado con prefetch
  *
  * @param {string} href - El destino del enlace
  * @param {ReactNode} children - El texto del enlace
@@ -11,12 +19,27 @@ import { AnimatePresence, motion } from "framer-motion";
  */
 const FlyoutLink = ({ href = "#", children, FlyoutContent, classes }) => {
   const [open, setOpen] = useState(false);
+  const [prefetched, setPrefetched] = useState(false);
+
+  // Prefetch route on hover
+  const handleMouseEnter = () => {
+    setOpen(true);
+    if (!prefetched) {
+      // Extract base path from href
+      const basePath = href.split("?")[0].split("/").slice(0, 2).join("/");
+      const prefetchFn = routePrefetchMap[basePath];
+      if (prefetchFn) {
+        prefetchFn().catch(() => {});
+        setPrefetched(true);
+      }
+    }
+  };
 
   const showFlyout = FlyoutContent && open;
 
   return (
     <div
-      onMouseEnter={() => setOpen(true)}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={() => setOpen(false)}
       className={`relative w-fit h-fit ${classes}`}
     >

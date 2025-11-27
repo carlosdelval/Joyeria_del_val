@@ -74,12 +74,12 @@ export default function GridArticulos() {
       </a>
 
       <a
-        href="/joyeria"
+        href="/catalogo/joyeria"
         className="group transition-transform duration-300 ease-in-out hover:scale-105 hover:text-yellow-500"
       >
         <div className="flex justify-center">
           <img
-            src="https://st3.depositphotos.com/29384342/33684/i/450/depositphotos_336844190-stock-photo-high-angle-view-couple-hand.jpg"
+            src="/joyeria.jpg"
             alt="Oferta joyería"
             className="object-cover rounded-full w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 lg:w-44 lg:h-44 shadow-md group-hover:shadow-xl transition-shadow"
           />

@@ -6,6 +6,7 @@ import SEO from "../components/common/SEO";
 import { PageSpinner } from "../components/ui/Spinner";
 import { useInView } from "react-intersection-observer";
 import ColeccionesDestacadas from "../components/products/ColeccionesDestacadas";
+import ColeccionSalvatorePlata from "../components/products/ColeccionSalvatorePlata";
 import { Gem, Sparkles, Heart, Crown, Phone } from "lucide-react";
 import VideoHeroBanner from "../components/banners/VideoHeroBanner";
 import ConfirmModal from "../components/modals/ConfirmModal";
@@ -372,6 +373,277 @@ const ProductosDestacados = ({ categoria, titulo, marca }) => {
   );
 };
 
+// Carrusel de Salvatore Plata
+const CarruselSalvatore = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const [slidesToShow, setSlidesToShow] = useState(1);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  // Cargar relojes Salvatore
+  useEffect(() => {
+    const loadSalvatoreProducts = async () => {
+      try {
+        const allProducts = await fetchProductos({ categoria: ["joyeria"] });
+        const salvatore = allProducts.filter(
+          (product) => product.marca?.toLowerCase() === "salvatore plata"
+        );
+        setProducts(salvatore);
+      } catch (error) {
+        console.error("Error cargando productos Salvatore:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSalvatoreProducts();
+  }, []);
+
+  // Ajustar slides según tamaño de pantalla
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setSlidesToShow(4);
+      } else if (window.innerWidth >= 768) {
+        setSlidesToShow(2);
+      } else {
+        setSlidesToShow(1);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Navegación entre slides
+  const nextSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex >= products.length - slidesToShow ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? products.length - slidesToShow : prevIndex - 1
+    );
+  };
+
+  // Handlers para touch (móvil)
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > 50) nextSlide();
+    if (touchStart - touchEnd < -50) prevSlide();
+  };
+
+  // Navegar a página de producto
+  const goToProduct = (slug) => {
+    setIsNavigating(true);
+    window.scrollTo(0, 0);
+    navigate(`/producto/${slug}`);
+  };
+
+  // Navegar al catálogo
+  const goToCatalog = () => {
+    window.scrollTo(0, 0);
+    navigate("/catalogo/joyeria?marca=salvatore+plata");
+  };
+
+  // Auto-rotación
+  useEffect(() => {
+    if (products.length === 0) return;
+
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [currentIndex, slidesToShow, products]);
+
+  if (loading || products.length === 0) return null;
+
+  return (
+    <section className="py-16 bg-white sm:py-24">
+      <div className="container px-4 mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mb-12 text-center"
+        >
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div className="w-12 h-px bg-gray-300"></div>
+            <h2 className="text-2xl font-light tracking-widest text-black uppercase sm:text-3xl">
+              Salvatore Plata
+            </h2>
+            <div className="w-12 h-px bg-gray-300"></div>
+          </div>
+          <p className="max-w-2xl mx-auto mt-4 mb-8 text-base font-light text-gray-600">
+            Descubre nuestra exclusiva colección de Salvatore Plata
+          </p>
+        </motion.div>
+
+        <div className="flex flex-col gap-6 md:flex-row">
+          {/* Sección de texto */}
+          <div className="w-full md:w-1/5">
+            <h3 className="mb-3 text-2xl font-light tracking-wide text-black uppercase hidden sm:block">
+              Hasta 10% Descuento
+            </h3>
+            <p className="mb-6 text-sm font-light text-gray-600 hidden sm:block">
+              Diseño exclusivo que combina elegancia y calidad en cada pieza.
+            </p>
+            <button
+              onClick={goToCatalog}
+              className="w-full px-6 py-4 text-base font-light tracking-wide text-white transition-all duration-300 bg-black border-2 border-black hover:bg-gray-900"
+            >
+              Ver Colección
+            </button>
+          </div>
+
+          {/* Carrusel */}
+          <div className="relative w-full overflow-hidden md:w-4/5">
+            <div
+              className={`flex transition-transform duration-300 ease-in-out ${
+                isNavigating ? "opacity-90" : ""
+              }`}
+              style={{
+                transform: `translateX(-${
+                  currentIndex * (100 / slidesToShow)
+                }%)`,
+                pointerEvents: isNavigating ? "none" : "auto",
+              }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  className="flex-shrink-0 md:px-2"
+                  style={{ width: `${100 / slidesToShow}%` }}
+                >
+                  <div
+                    className="relative h-full p-3 transition-all duration-300 bg-white border-2 border-gray-200 cursor-pointer group hover:border-black"
+                    onClick={() => goToProduct(product.slug)}
+                  >
+                    <div className="relative mb-3 overflow-hidden">
+                      <img
+                        src={
+                          product.imagenes?.[0] || "/placeholder-product.jpg"
+                        }
+                        alt={product.titulo}
+                        className="object-contain w-full transition-transform duration-300 aspect-square group-hover:scale-105"
+                      />
+                      {(product.precioAnterior ?? 0) > 0 && (
+                        <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-500 rounded-md top-2 right-2">
+                          {`-${Math.round(
+                            ((product.precioAnterior - product.precio) /
+                              product.precioAnterior) *
+                              100
+                          )}%`}
+                        </div>
+                      )}
+                    </div>
+
+                    <p className="mb-2 text-sm font-light text-black line-clamp-2">
+                      {product.titulo}
+                    </p>
+
+                    <div className="flex items-center gap-2">
+                      <p className="text-base font-light text-black">
+                        {product.precio.toLocaleString("es-ES", {
+                          style: "currency",
+                          currency: "EUR",
+                        })}
+                      </p>
+                      {(product.precioAnterior ?? 0) > 0 && (
+                        <p className="text-xs font-light text-gray-400 line-through">
+                          {product.precioAnterior.toLocaleString("es-ES", {
+                            style: "currency",
+                            currency: "EUR",
+                          })}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Línea decorativa inferior */}
+                    <div className="absolute bottom-0 left-0 w-full h-0.5 bg-black transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Flechas de navegación */}
+            {products.length > slidesToShow && (
+              <>
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-0 z-10 hidden p-2 ml-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-0 z-10 hidden p-2 mr-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </>
+            )}
+
+            {/* Indicadores para móvil */}
+            <div className="flex justify-center mt-4 space-x-2 md:hidden">
+              {products.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentIndex(index)}
+                  className={`w-2 h-2 ${
+                    currentIndex === index ? "bg-black" : "bg-gray-300"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default function Joyeria() {
   const [isLoading, setIsLoading] = useState(true);
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
@@ -428,6 +700,9 @@ export default function Joyeria() {
 
         {/* Colecciones Destacadas */}
         <ColeccionesDestacadas />
+
+        {/* Promoción Salvatore Plata */}
+        <CarruselSalvatore />
 
         {/* Categorías/Colecciones */}
         <CategoriasJoyeria />

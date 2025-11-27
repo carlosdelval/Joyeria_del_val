@@ -18,7 +18,7 @@ const PROMO_CONFIG = {
   active: true, // ← Cambiar a false para desactivar el modal
   storageKey: "tomford_bf_2024_seen", // Identificador único de esta promoción
   delayMs: 2000, // Tiempo de espera antes de mostrar (2 segundos)
-  expiryDays: 3, // Días hasta que vuelva a mostrarse si se cierra
+  expiryDays: 1, // Días hasta que vuelva a mostrarse si se cierra
 };
 
 const PromoModal = () => {

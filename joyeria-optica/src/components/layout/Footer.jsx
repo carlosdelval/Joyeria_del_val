@@ -21,7 +21,7 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <div className="flex items-center gap-3 mb-4">
               <img
-                src="/logo.jpg"
+                src="/logo-bg.jpg"
                 alt="Logo Óptica Del Val Joyeros"
                 className="object-contain h-12 sm:h-14 rounded-lg shadow-lg"
               />

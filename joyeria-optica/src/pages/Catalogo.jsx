@@ -101,8 +101,8 @@ const Catalogo = () => {
   // Determinar qué categoría buscar
   const categoriasBusqueda = useMemo(() => {
     if (searchQuery) {
-      // Si hay búsqueda, buscar en todas las categorías principales
-      return ["relojes", "gafas", "bolsos", "gafas-sol"];
+      // Si hay búsqueda, buscar en TODAS las categorías principales incluida joyería
+      return ["relojes", "gafas", "bolsos", "gafas-sol", "joyeria"];
     }
     // Ignorar categorías especiales que son filtros (tous, rebajas, black-friday)
     if (

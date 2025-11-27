@@ -8,6 +8,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
 import { useWishlist } from "../../hooks/useWishlist";
+import { trackSearch } from "../../utils/analytics";
 import CartSidebar from "../cart/CartSidebar";
 import AuthModal from "../modals/AuthModal";
 
@@ -47,6 +48,7 @@ export default function Navbar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
+      trackSearch(searchTerm);
       window.scrollTo(0, 0);
       navigate(`/catalogo?q=${encodeURIComponent(searchTerm)}`);
       setSearchTerm("");
@@ -85,6 +87,10 @@ export default function Navbar() {
       href: "/catalogo/tous",
     },
     {
+      label: "Salvatore Plata",
+      href: "/catalogo/joyeria?marca=salvatore+plata",
+    },
+    {
       label: "Relojes caballero",
       href: "/catalogo/relojes?genero=hombre",
     },
@@ -93,17 +99,13 @@ export default function Navbar() {
       href: "/catalogo/relojes?genero=mujer",
     },
     {
-      label: "Gafas de sol caballero",
-      href: "/catalogo/gafas?genero=hombre",
-    },
-    {
-      label: "Gafas de sol señora",
-      href: "/catalogo/gafas?genero=mujer",
+      label: "Gafas de sol",
+      href: "/catalogo/gafas",
     },
   ];
 
   return (
-    <header className="w-full">
+    <header className="sticky top-0 z-50 w-full bg-white shadow-sm md:relative md:shadow-none">
       {/* Top bar */}
       <div className="flex items-center justify-between px-3 py-3 sm:px-4 md:py-4 lg:px-6 xl:px-8 md:grid md:grid-cols-3">
         {/* Izquierda - Mobile: Hamburguesa + Logo, Desktop: Buscador */}
@@ -342,20 +344,36 @@ export default function Navbar() {
         }`}
       >
         <nav className="grid gap-2 px-4 py-4 border-t border-gray-200">
-          {categorias.map(({ label, href }, index) => (
-            <Link
-              key={`mobile-${label}`}
-              to={href}
-              onClick={() => setMenuOpen(false)}
-              className={`${
-                index === 0
-                  ? "text-red-700 hover:text-red-500 font-semibold"
-                  : "text-gray-800 hover:text-black"
-              } text-sm border-b pb-1 no-underline transition-colors duration-400`}
-            >
-              {label}
-            </Link>
-          ))}
+          {categorias.map(({ label, href }, index) => {
+            // Prefetch map for common routes
+            const prefetchMap = {
+              "/joyeria": () => import("../../pages/Joyeria"),
+              "/optica": () => import("../../pages/Optica"),
+              "/relojeria": () => import("../../pages/Relojeria"),
+            };
+
+            return (
+              <Link
+                key={`mobile-${label}`}
+                to={href}
+                onClick={() => setMenuOpen(false)}
+                onMouseEnter={() => {
+                  const basePath = href.split("?")[0];
+                  const prefetchFn = prefetchMap[basePath];
+                  if (prefetchFn) {
+                    prefetchFn().catch(() => {});
+                  }
+                }}
+                className={`${
+                  index === 0
+                    ? "text-red-700 hover:text-red-500 font-semibold"
+                    : "text-gray-800 hover:text-black"
+                } text-sm border-b pb-1 no-underline transition-colors duration-400`}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
 

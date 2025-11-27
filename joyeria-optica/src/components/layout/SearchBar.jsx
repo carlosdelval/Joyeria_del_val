@@ -3,6 +3,7 @@ import { Search, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { productService } from "../../services/productService";
 import { useNavigate } from "react-router-dom";
+import { trackSearch } from "../../utils/analytics";
 
 const SearchBar = ({ className = "" }) => {
   const [query, setQuery] = useState("");
@@ -52,6 +53,7 @@ const SearchBar = ({ className = "" }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (query.trim()) {
+      trackSearch(query);
       window.scrollTo(0, 0);
       navigate(`/catalogo?q=${encodeURIComponent(query)}`);
       setIsOpen(false);

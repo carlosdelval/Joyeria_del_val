@@ -6,6 +6,7 @@ import { fetchProducto } from "../api/productos";
 import { ShoppingBag, Check, Info } from "lucide-react";
 import { useCart } from "../hooks/useCart";
 import { analytics, sanitizeProductTitle } from "../utils/helpers";
+import { trackViewItem, trackAddToCart } from "../utils/analytics";
 import SEO, {
   generateProductSchema,
   generateBreadcrumbSchema,
@@ -14,6 +15,7 @@ import WishlistButton from "../components/products/WishlistButton";
 import { PageSpinner, ButtonSpinner } from "../components/ui/Spinner";
 import { useFlyAnimation } from "../context/FlyAnimationContext";
 import ConfirmModal from "../components/modals/ConfirmModal";
+import ImageZoomModal from "../components/modals/ImageZoomModal";
 
 const ProductoPage = () => {
   const { slug } = useParams();
@@ -34,6 +36,7 @@ const ProductoPage = () => {
   const [descripcionAbierta, setDescripcionAbierta] = useState(false);
   const [tallaSeleccionada, setTallaSeleccionada] = useState("");
   const [showGuiaTallas, setShowGuiaTallas] = useState(false);
+  const [showImageZoom, setShowImageZoom] = useState(false);
 
   // Tallas estándar para gafas (predefinidas)
   const tallasGafas = [
@@ -44,6 +47,13 @@ const ProductoPage = () => {
     { valor: "56-22-150", label: "56-22-150", tipo: "Grande" },
     { valor: "58-22-150", label: "58-22-150", tipo: "Grande" },
   ];
+
+  // Detectar si es un anillo
+  const isAnillo =
+    producto &&
+    (producto.categorias?.some((cat) => cat.toLowerCase().includes("anillo")) ||
+      producto.etiquetas?.some((tag) => tag.toLowerCase().includes("anillo")) ||
+      producto.tipo?.toLowerCase() === "anillo");
 
   // Función para sanitizar categorías
   const sanitizarCategoria = (categoria) => {
@@ -111,6 +121,7 @@ const ProductoPage = () => {
 
         // Track visualización de producto
         analytics.trackViewProduct(data);
+        trackViewItem(data);
       } catch (error) {
         console.error("Error cargando producto:", error);
       } finally {
@@ -199,13 +210,15 @@ const ProductoPage = () => {
       // Crear objeto de producto con talla como atributo personalizado
       const productoConTalla = {
         ...producto,
-        tallaSeleccionada: isGafa ? tallaSeleccionada : null,
-        customAttributes: isGafa
-          ? [{ key: "Talla", value: tallaSeleccionada }]
-          : [],
+        tallaSeleccionada: isGafa || isAnillo ? tallaSeleccionada : null,
+        customAttributes:
+          isGafa || isAnillo
+            ? [{ key: "Talla", value: tallaSeleccionada }]
+            : [],
       };
 
       addToCart(productoConTalla, quantity);
+      trackAddToCart(producto, quantity);
       setIsAddingToCart(false);
       setAddedToCart(true);
       setTimeout(() => setAddedToCart(false), 2000);
@@ -325,7 +338,8 @@ const ProductoPage = () => {
                       {producto.imagenes.map((img, index) => (
                         <div
                           key={index}
-                          className={`w-full flex-shrink-0 ${aspectRatioClass} bg-gray-50`}
+                          className={`w-full flex-shrink-0 ${aspectRatioClass} bg-gray-50 cursor-pointer active:opacity-90`}
+                          onClick={() => setShowImageZoom(true)}
                         >
                           <img
                             src={img}
@@ -333,6 +347,23 @@ const ProductoPage = () => {
                             className={`w-full h-full ${objectFitClass}`}
                             loading={index === 0 ? "eager" : "lazy"}
                           />
+                          {/* Indicador de zoom */}
+                          <div className="absolute flex items-center gap-1 px-2 py-1 text-xs text-white rounded-lg shadow-lg bottom-3 right-3 bg-black/50 backdrop-blur-sm">
+                            <svg
+                              className="w-3 h-3"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"
+                              />
+                            </svg>
+                            <span>Toca para ampliar</span>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -666,7 +697,7 @@ const ProductoPage = () => {
                 transition={{ delay: 0.6 }}
                 className="space-y-4 sm:space-y-5"
               >
-                {/* Selector de talla (solo para gafas) */}
+                {/* Selector de talla para gafas */}
                 {isGafa && (
                   <div className="p-3 sm:p-4 space-y-3 bg-white border-2 border-gray-200 rounded-lg">
                     <div className="flex items-center gap-2">
@@ -714,6 +745,52 @@ const ProductoPage = () => {
                         );
                       })}
                     </div>
+                  </div>
+                )}
+
+                {/* Selector de talla para anillos */}
+                {isAnillo && producto.tallas && producto.tallas.length > 0 && (
+                  <div className="p-3 sm:p-4 space-y-3 bg-white border-2 border-gray-200 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs sm:text-sm font-medium text-gray-900 tracking-wider uppercase">
+                        Talla{" "}
+                        {!tallaSeleccionada && (
+                          <span className="text-red-600">*</span>
+                        )}
+                      </label>
+                    </div>
+                    <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                      {producto.tallas.map((talla) => {
+                        const isSelected = tallaSeleccionada === talla.valor;
+                        const isAvailable = talla.disponible && talla.stock > 0;
+
+                        return (
+                          <button
+                            type="button"
+                            key={talla.valor}
+                            onClick={() =>
+                              isAvailable && setTallaSeleccionada(talla.valor)
+                            }
+                            disabled={!isAvailable}
+                            className={`
+                              px-2 py-3 text-sm rounded transition-all font-medium
+                              ${
+                                !isAvailable
+                                  ? "bg-gray-100 text-gray-300 cursor-not-allowed line-through"
+                                  : isSelected
+                                  ? "bg-black text-white border-2 border-black"
+                                  : "bg-white text-gray-900 border-2 border-gray-300 hover:border-gray-900 cursor-pointer"
+                              }
+                            `}
+                          >
+                            {talla.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <p className="text-xs text-gray-500">
+                      💡 Selecciona tu talla de anillo
+                    </p>
                   </div>
                 )}
 
@@ -836,19 +913,19 @@ const ProductoPage = () => {
                     disabled={
                       !hasStock ||
                       isAddingToCart ||
-                      (isGafa && !tallaSeleccionada)
+                      ((isGafa || isAnillo) && !tallaSeleccionada)
                     }
                     whileTap={
                       !hasStock ||
                       isAddingToCart ||
-                      (isGafa && !tallaSeleccionada)
+                      ((isGafa || isAnillo) && !tallaSeleccionada)
                         ? {}
                         : { scale: 0.95 }
                     }
                     className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-light tracking-wider transition rounded-sm ${
                       !hasStock
                         ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-60"
-                        : isGafa && !tallaSeleccionada
+                        : (isGafa || isAnillo) && !tallaSeleccionada
                         ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-60"
                         : addedToCart
                         ? "bg-green-600 text-white"
@@ -857,14 +934,14 @@ const ProductoPage = () => {
                         : "bg-black text-white hover:bg-gray-800"
                     }`}
                     style={
-                      !hasStock || (isGafa && !tallaSeleccionada)
+                      !hasStock || ((isGafa || isAnillo) && !tallaSeleccionada)
                         ? { pointerEvents: "none" }
                         : {}
                     }
                   >
                     {!hasStock ? (
                       <span className="text-xs sm:text-base">SIN STOCK</span>
-                    ) : isGafa && !tallaSeleccionada ? (
+                    ) : (isGafa || isAnillo) && !tallaSeleccionada ? (
                       <>
                         <span className="hidden sm:inline text-xs sm:text-base">
                           SELECCIONA UNA TALLA
@@ -1067,6 +1144,15 @@ const ProductoPage = () => {
         }
         confirmText="Entendido"
         type="info"
+      />
+
+      {/* Modal de zoom de imagen para móvil */}
+      <ImageZoomModal
+        isOpen={showImageZoom}
+        onClose={() => setShowImageZoom(false)}
+        images={producto?.imagenes || []}
+        initialIndex={imageIndex}
+        productTitle={producto?.titulo || ""}
       />
     </>
   );
