@@ -156,8 +156,10 @@ class AuthService {
         email: customer.email,
         firstName: customer.firstName,
         lastName: customer.lastName,
+        displayName: `${customer.firstName} ${customer.lastName}`.trim(),
         phone: customer.phone,
-        addresses: customer.addresses?.edges.map(edge => edge.node) || []
+        addresses: customer.addresses?.edges.map(edge => edge.node) || [],
+        shopifyToken: accessToken // Guardar token para consultas posteriores
       },
       token: accessToken
     };

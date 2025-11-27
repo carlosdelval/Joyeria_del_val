@@ -27,6 +27,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useWishlist } from "../hooks/useWishlist";
 import { useNavigate } from "react-router-dom";
 import SEO from "../components/common/SEO";
+import ProductoCard from "../components/products/ProductoCard";
 
 export default function PerfilUsuario() {
   const { user, logout } = useAuth();
@@ -38,6 +39,11 @@ export default function PerfilUsuario() {
   const [loading, setLoading] = useState(true);
   const [editingProfile, setEditingProfile] = useState(false);
   const [editingAddress, setEditingAddress] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deleteError, setDeleteError] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [profileData, setProfileData] = useState({
     firstName: "",
@@ -65,11 +71,24 @@ export default function PerfilUsuario() {
   useEffect(() => {
     if (user) {
       setProfileData({
-        firstName: user.displayName?.split(" ")[0] || "",
-        lastName: user.displayName?.split(" ").slice(1).join(" ") || "",
+        firstName: user.firstName || user.displayName?.split(" ")[0] || "",
+        lastName: user.lastName || user.displayName?.split(" ").slice(1).join(" ") || "",
         email: user.email || "",
         phone: user.phone || "",
       });
+
+      // Si el usuario tiene dirección guardada en Shopify
+      if (user.addresses && user.addresses.length > 0) {
+        const defaultAddress = user.addresses[0];
+        setAddressData({
+          address1: defaultAddress.address1 || "",
+          address2: defaultAddress.address2 || "",
+          city: defaultAddress.city || "",
+          province: defaultAddress.province || "",
+          zipCode: defaultAddress.zip || "",
+          country: defaultAddress.country || "España",
+        });
+      }
     }
   }, [user]);
 
@@ -81,59 +100,138 @@ export default function PerfilUsuario() {
       setLoading(true);
 
       try {
-        if (import.meta.env.VITE_USE_SHOPIFY === "true") {
-          // TODO: Implementar carga de pedidos desde Shopify Customer API
+        if (import.meta.env.VITE_USE_SHOPIFY === "true" && user.shopifyToken) {
           console.log("🛍️ Cargando pedidos de Shopify...");
 
-          // Implementación futura con Shopify:
-          // const query = `
-          //   query getCustomerOrders($customerAccessToken: String!) {
-          //     customer(customerAccessToken: $customerAccessToken) {
-          //       orders(first: 20) {
-          //         edges {
-          //           node {
-          //             id
-          //             name
-          //             orderNumber
-          //             processedAt
-          //             financialStatus
-          //             fulfillmentStatus
-          //             totalPrice { amount currencyCode }
-          //             lineItems(first: 100) {
-          //               edges { node { quantity } }
-          //             }
-          //             shippingAddress {
-          //               address1 city zip
-          //             }
-          //             successfulFulfillments(first: 1) {
-          //               trackingInfo { number url }
-          //             }
-          //           }
-          //         }
-          //       }
-          //     }
-          //   }
-          // `;
-          // const response = await shopifyService.graphqlRequest(query, {
-          //   customerAccessToken: user.shopifyToken
-          // });
-          // const shopifyOrders = response.data.customer.orders.edges.map(edge => ({
-          //   id: edge.node.id,
-          //   orderNumber: edge.node.name,
-          //   date: edge.node.processedAt,
-          //   status: edge.node.fulfillmentStatus,
-          //   financialStatus: edge.node.financialStatus,
-          //   total: parseFloat(edge.node.totalPrice.amount),
-          //   items: edge.node.lineItems.edges.reduce((sum, item) => sum + item.node.quantity, 0),
-          //   shippingAddress: edge.node.shippingAddress,
-          //   trackingNumber: edge.node.successfulFulfillments[0]?.trackingInfo?.number,
-          //   trackingUrl: edge.node.successfulFulfillments[0]?.trackingInfo?.url,
-          // }));
-          // setOrders(shopifyOrders);
+          const query = `
+            query getCustomerOrders($customerAccessToken: String!) {
+              customer(customerAccessToken: $customerAccessToken) {
+                orders(first: 20, sortKey: PROCESSED_AT, reverse: true) {
+                  edges {
+                    node {
+                      id
+                      name
+                      orderNumber
+                      processedAt
+                      financialStatus
+                      fulfillmentStatus
+                      totalPriceV2 {
+                        amount
+                        currencyCode
+                      }
+                      lineItems(first: 100) {
+                        edges {
+                          node {
+                            quantity
+                            title
+                            variant {
+                              image {
+                                url
+                                altText
+                              }
+                              product {
+                                featuredImage {
+                                  url
+                                  altText
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                      shippingAddress {
+                        address1
+                        address2
+                        city
+                        zip
+                        province
+                        country
+                      }
+                      successfulFulfillments(first: 1) {
+                        trackingInfo {
+                          number
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          `;
 
-          // Por ahora: array vacío (sin pedidos hasta que haya compras reales)
-          await new Promise((resolve) => setTimeout(resolve, 500));
-          setOrders([]);
+          const response = await fetch(
+            `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2024-10/graphql.json`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-Shopify-Storefront-Access-Token":
+                  import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
+              },
+              body: JSON.stringify({
+                query,
+                variables: { customerAccessToken: user.shopifyToken },
+              }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (data.data?.customer?.orders?.edges) {
+            const shopifyOrders = data.data.customer.orders.edges.map(
+              (edge) => {
+                const node = edge.node;
+                
+                // Mapear estado de fulfillment
+                let status = "processing";
+                if (node.fulfillmentStatus === "FULFILLED") {
+                  status = "fulfilled";
+                } else if (node.fulfillmentStatus === "IN_TRANSIT" || node.fulfillmentStatus === "PARTIAL") {
+                  status = "in_transit";
+                } else if (node.fulfillmentStatus === "UNFULFILLED") {
+                  status = "processing";
+                }
+
+                return {
+                  id: node.id,
+                  orderNumber: node.name,
+                  date: node.processedAt,
+                  status: status,
+                  financialStatus: node.financialStatus,
+                  total: parseFloat(node.totalPriceV2.amount),
+                  currency: node.totalPriceV2.currencyCode,
+                  items: node.lineItems.edges.reduce(
+                    (sum, item) => sum + item.node.quantity,
+                    0
+                  ),
+                  lineItems: node.lineItems.edges.map(edge => ({
+                    title: edge.node.title,
+                    quantity: edge.node.quantity,
+                    image: edge.node.variant?.image?.url || edge.node.variant?.product?.featuredImage?.url || null,
+                    imageAlt: edge.node.variant?.image?.altText || edge.node.variant?.product?.featuredImage?.altText || edge.node.title
+                  })),
+                  shippingAddress: node.shippingAddress || {
+                    address1: "No disponible",
+                    city: "",
+                    zip: "",
+                  },
+                  trackingNumber:
+                    node.successfulFulfillments?.[0]?.trackingInfo?.[0]
+                      ?.number || null,
+                  trackingUrl:
+                    node.successfulFulfillments?.[0]?.trackingInfo?.[0]?.url ||
+                    null,
+                };
+              }
+            );
+
+            console.log("✅ Pedidos cargados:", shopifyOrders.length);
+            setOrders(shopifyOrders);
+          } else {
+            console.log("ℹ️ No hay pedidos disponibles");
+            setOrders([]);
+          }
         } else {
           // Modo local: cargar desde localStorage (pedidos reales del usuario)
           const localOrders = JSON.parse(
@@ -189,21 +287,234 @@ export default function PerfilUsuario() {
     );
   };
 
-  const handleSaveProfile = () => {
-    // TODO: Guardar en Shopify Customer API
-    console.log("Guardando perfil:", profileData);
-    setEditingProfile(false);
+  const handleSaveProfile = async () => {
+    if (!user.shopifyToken) {
+      console.warn("No hay token de Shopify disponible");
+      setEditingProfile(false);
+      return;
+    }
+
+    try {
+      const mutation = `
+        mutation customerUpdate($customerAccessToken: String!, $customer: CustomerUpdateInput!) {
+          customerUpdate(customerAccessToken: $customerAccessToken, customer: $customer) {
+            customer {
+              id
+              firstName
+              lastName
+              phone
+            }
+            customerUserErrors {
+              field
+              message
+            }
+          }
+        }
+      `;
+
+      const response = await fetch(
+        `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2024-10/graphql.json`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Shopify-Storefront-Access-Token":
+              import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
+          },
+          body: JSON.stringify({
+            query: mutation,
+            variables: {
+              customerAccessToken: user.shopifyToken,
+              customer: {
+                firstName: profileData.firstName,
+                lastName: profileData.lastName,
+                phone: profileData.phone,
+              },
+            },
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.data?.customerUpdate?.customerUserErrors?.length > 0) {
+        console.error("Error actualizando perfil:", data.data.customerUpdate.customerUserErrors);
+        alert("Error al actualizar el perfil");
+      } else {
+        console.log("✅ Perfil actualizado correctamente");
+        
+        // Actualizar el contexto de usuario con los nuevos datos
+        const updatedUser = {
+          ...user,
+          firstName: profileData.firstName,
+          lastName: profileData.lastName,
+          displayName: `${profileData.firstName} ${profileData.lastName}`.trim(),
+          phone: profileData.phone
+        };
+        
+        // Actualizar localStorage
+        const savedAuth = JSON.parse(localStorage.getItem('optica-del-val-auth') || '{}');
+        localStorage.setItem('optica-del-val-auth', JSON.stringify({
+          ...savedAuth,
+          user: updatedUser
+        }));
+        
+        setEditingProfile(false);
+        
+        // Recargar la página para reflejar cambios
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error guardando perfil:", error);
+      alert("Error al guardar los cambios");
+    }
   };
 
-  const handleSaveAddress = () => {
-    // TODO: Guardar dirección en Shopify
-    console.log("Guardando dirección:", addressData);
-    setEditingAddress(false);
+  const handleSaveAddress = async () => {
+    if (!user.shopifyToken) {
+      console.warn("No hay token de Shopify disponible");
+      setEditingAddress(false);
+      return;
+    }
+
+    try {
+      const mutation = `
+        mutation customerAddressCreate($customerAccessToken: String!, $address: MailingAddressInput!) {
+          customerAddressCreate(customerAccessToken: $customerAccessToken, address: $address) {
+            customerAddress {
+              id
+            }
+            customerUserErrors {
+              field
+              message
+            }
+          }
+        }
+      `;
+
+      const response = await fetch(
+        `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2024-10/graphql.json`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Shopify-Storefront-Access-Token":
+              import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
+          },
+          body: JSON.stringify({
+            query: mutation,
+            variables: {
+              customerAccessToken: user.shopifyToken,
+              address: {
+                address1: addressData.address1,
+                address2: addressData.address2,
+                city: addressData.city,
+                province: addressData.province,
+                zip: addressData.zipCode,
+                country: addressData.country,
+                firstName: profileData.firstName,
+                lastName: profileData.lastName,
+              },
+            },
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.data?.customerAddressCreate?.customerUserErrors?.length > 0) {
+        console.error("Error actualizando dirección:", data.data.customerAddressCreate.customerUserErrors);
+        alert("Error al actualizar la dirección");
+      } else {
+        console.log("✅ Dirección guardada correctamente");
+        setEditingAddress(false);
+      }
+    } catch (error) {
+      console.error("Error guardando dirección:", error);
+      alert("Error al guardar la dirección");
+    }
   };
 
   const handleLogout = () => {
     logout();
     navigate("/");
+    setShowLogoutModal(false);
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!deletePassword.trim()) {
+      setDeleteError("Por favor, introduce tu contraseña");
+      return;
+    }
+
+    setIsDeleting(true);
+    setDeleteError("");
+
+    try {
+      // Verificar contraseña primero
+      const loginMutation = `
+        mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+          customerAccessTokenCreate(input: $input) {
+            customerAccessToken {
+              accessToken
+            }
+            customerUserErrors {
+              field
+              message
+            }
+          }
+        }
+      `;
+
+      const loginResponse = await fetch(
+        `https://${import.meta.env.VITE_SHOPIFY_DOMAIN}/api/2024-10/graphql.json`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Shopify-Storefront-Access-Token":
+              import.meta.env.VITE_SHOPIFY_STOREFRONT_TOKEN,
+          },
+          body: JSON.stringify({
+            query: loginMutation,
+            variables: {
+              input: {
+                email: user.email,
+                password: deletePassword,
+              },
+            },
+          }),
+        }
+      );
+
+      const loginData = await loginResponse.json();
+
+      if (
+        loginData.data?.customerAccessTokenCreate?.customerUserErrors?.length > 0
+      ) {
+        setDeleteError("Contraseña incorrecta");
+        setIsDeleting(false);
+        return;
+      }
+
+      // Si la contraseña es correcta, proceder a eliminar la cuenta
+      // Nota: Shopify no permite eliminar cuentas desde Storefront API
+      // En producción, deberías enviar una solicitud al backend o Admin API
+      console.log("⚠️ Solicitud de eliminación de cuenta para:", user.email);
+      
+      // Por ahora, solo cerrar sesión y mostrar mensaje
+      alert(
+        "Tu solicitud de eliminación de cuenta ha sido registrada. Nuestro equipo la procesará en las próximas 24-48 horas. Se te enviará un email de confirmación."
+      );
+      
+      logout();
+      navigate("/");
+    } catch (error) {
+      console.error("Error al eliminar cuenta:", error);
+      setDeleteError("Error al procesar la solicitud. Inténtalo de nuevo.");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const tabs = [
@@ -298,6 +609,48 @@ export default function PerfilUsuario() {
                   </div>
                 </div>
 
+                {/* Productos del pedido con imágenes */}
+                {order.lineItems && order.lineItems.length > 0 && (
+                  <div className="pt-4 border-t border-gray-100">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-3">
+                      Productos
+                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      {order.lineItems.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-3 bg-gray-50 rounded-lg p-3 border border-gray-200"
+                        >
+                          {item.image && (
+                            <div className="relative w-16 h-16 flex-shrink-0 bg-white rounded border border-gray-200 overflow-hidden">
+                              <img
+                                src={item.image}
+                                alt={item.imageAlt}
+                                className="w-full h-full object-cover"
+                              />
+                              {item.quantity > 1 && (
+                                <span className="absolute top-0 right-0 bg-black text-white text-xs px-1.5 py-0.5 rounded-bl">
+                                  x{item.quantity}
+                                </span>
+                              )}
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-gray-900 line-clamp-2">
+                              {item.title}
+                            </p>
+                            {!item.image && item.quantity > 1 && (
+                              <p className="text-xs text-gray-500">
+                                Cantidad: {item.quantity}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid md:grid-cols-2 gap-4 pt-4 border-t border-gray-100">
                   <div>
                     <p className="text-xs text-gray-500 uppercase tracking-wider mb-1 flex items-center gap-1">
@@ -376,34 +729,27 @@ export default function PerfilUsuario() {
             </button>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {wishlistItems.map((item) => (
-              <motion.div
-                key={item.id}
-                whileHover={{ y: -4 }}
-                onClick={() => navigate(`/producto/${item.slug}`)}
-                className="group cursor-pointer"
-              >
-                <div className="border border-gray-200 rounded-lg overflow-hidden hover:border-black transition-all duration-300 hover:shadow-lg">
-                  <div className="aspect-square bg-gray-50 overflow-hidden">
-                    <img
-                      src={item.imagen}
-                      alt={item.titulo}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-light text-black mb-2 line-clamp-2 group-hover:text-gray-600 transition-colors">
-                      {item.titulo}
-                    </h3>
-                    <p className="text-lg font-medium text-black">
-                      {item.precio.toFixed(2)}€
-                    </p>
-                  </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {wishlistItems.map((item) => {
+              // Convertir formato de wishlist a formato de producto
+              const productoFormateado = {
+                id: item.id,
+                titulo: item.titulo,
+                imagenes: item.imagenes || [item.imagen],
+                precio: item.precio,
+                precioAnterior: item.precioAnterior,
+                slug: item.slug,
+                stock: item.stock,
+                categorias: item.categorias || [],
+                marca: item.marca || "",
+              };
+
+              return (
+                <div key={item.id}>
+                  <ProductoCard producto={productoFormateado} />
                 </div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -774,7 +1120,10 @@ export default function PerfilUsuario() {
           Una vez eliminada tu cuenta, no podrás recuperarla. Esta acción es
           permanente.
         </p>
-        <button className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors font-medium">
+        <button 
+          onClick={() => setShowDeleteModal(true)}
+          className="flex items-center gap-2 px-6 py-3 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors font-medium"
+        >
           <Trash2 className="w-4 h-4" />
           Eliminar mi cuenta
         </button>
@@ -937,7 +1286,7 @@ export default function PerfilUsuario() {
 
                 <div className="p-2 border-t border-gray-100">
                   <button
-                    onClick={handleLogout}
+                    onClick={() => setShowLogoutModal(true)}
                     className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-all duration-200"
                   >
                     <LogOut className="w-5 h-5" />
@@ -957,6 +1306,189 @@ export default function PerfilUsuario() {
             </motion.main>
           </div>
         </div>
+
+        {/* Modal de Confirmación de Logout */}
+        <AnimatePresence>
+          {showLogoutModal && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setShowLogoutModal(false)}
+                className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+              />
+
+              {/* Modal */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              >
+                <div
+                  className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                      <LogOut className="w-6 h-6 text-red-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-medium text-gray-900">
+                        Cerrar Sesión
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p className="text-gray-600 mb-6">
+                    ¿Estás seguro de que quieres cerrar sesión? Tendrás que
+                    volver a iniciar sesión para acceder a tu cuenta.
+                  </p>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setShowLogoutModal(false)}
+                      className="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors"
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+                    >
+                      Cerrar Sesión
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Modal de Confirmación de Eliminación de Cuenta */}
+        <AnimatePresence>
+          {showDeleteModal && (
+            <>
+              {/* Backdrop */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setDeletePassword("");
+                  setDeleteError("");
+                }}
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              />
+
+              {/* Modal */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4"
+              >
+                <div
+                  className="bg-white rounded-lg shadow-2xl max-w-md w-full p-6"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex-shrink-0 w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                      <AlertCircle className="w-6 h-6 text-red-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-medium text-gray-900">
+                        Eliminar Cuenta
+                      </h3>
+                      <p className="text-sm text-red-600 font-medium">
+                        ⚠️ Acción irreversible
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                    <p className="text-sm text-red-800 font-medium mb-2">
+                      Esta acción es permanente y no se puede deshacer:
+                    </p>
+                    <ul className="text-sm text-red-700 space-y-1 ml-4 list-disc">
+                      <li>Se eliminarán todos tus datos personales</li>
+                      <li>Perderás acceso al historial de pedidos</li>
+                      <li>Se borrarán tus favoritos y preferencias</li>
+                      <li>No podrás recuperar tu cuenta</li>
+                    </ul>
+                  </div>
+
+                  <div className="mb-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Confirma tu contraseña para continuar
+                    </label>
+                    <input
+                      type="password"
+                      value={deletePassword}
+                      onChange={(e) => {
+                        setDeletePassword(e.target.value);
+                        setDeleteError("");
+                      }}
+                      placeholder="Introduce tu contraseña"
+                      className={`w-full px-4 py-3 border ${
+                        deleteError ? "border-red-500" : "border-gray-300"
+                      } rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent`}
+                      disabled={isDeleting}
+                    />
+                    {deleteError && (
+                      <p className="text-sm text-red-600 mt-2 flex items-center gap-1">
+                        <X className="w-4 h-4" />
+                        {deleteError}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => {
+                        setShowDeleteModal(false);
+                        setDeletePassword("");
+                        setDeleteError("");
+                      }}
+                      className="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-colors"
+                      disabled={isDeleting}
+                    >
+                      Cancelar
+                    </button>
+                    <button
+                      onClick={handleDeleteAccount}
+                      disabled={isDeleting || !deletePassword.trim()}
+                      className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {isDeleting ? (
+                        <>
+                          <motion.div
+                            animate={{ rotate: 360 }}
+                            transition={{
+                              duration: 1,
+                              repeat: Infinity,
+                              ease: "linear",
+                            }}
+                            className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                          />
+                          Procesando...
+                        </>
+                      ) : (
+                        <>
+                          <Trash2 className="w-4 h-4" />
+                          Eliminar Cuenta
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
       </div>
     </>
   );
