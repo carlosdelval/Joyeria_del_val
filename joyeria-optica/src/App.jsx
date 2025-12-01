@@ -41,7 +41,7 @@ function App() {
                   <div className="min-h-screen text-black bg-white">
                     <Navbar />
                     <CookieBanner />
-                    <PromoModal />
+                    {/*<PromoModal />*/}
                     <Suspense fallback={<PageSpinner />}>
                       <Routes>
                         <Route path="/" element={<Home />} />

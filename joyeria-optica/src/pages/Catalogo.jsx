@@ -30,7 +30,7 @@ const Catalogo = () => {
     if (categoria === "tous") {
       newFiltros.marca = ["tous"];
     } else if (categoria === "rebajas") {
-      newFiltros.oferta = true;
+      newFiltros.descuentoMinimo = 10; // Descuento superior al 10%
     } else if (categoria === "black-friday") {
       newFiltros.blackFriday = true;
     }

@@ -83,19 +83,19 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="Black Friday 2025 - Óptica Del Val Joyeros | Ofertas TOUS, Ray-Ban y Relojes"
-        description="¡Black Friday 2025! Descuentos exclusivos en joyería TOUS, relojes de diseño, gafas Ray-Ban y más. Hasta 40% DTO. Envío gratis +50€. Ofertas limitadas en Puente Genil, Córdoba."
-        keywords="Black Friday 2025, ofertas joyería, descuentos TOUS, Ray-Ban ofertas, relojes descuento, gafas rebajas, joyería Puente Genil, óptica Córdoba, Dolce Gabbana, bolsos TOUS, Ray-Ban Meta"
+        title="Óptica Del Val Joyeros | TOUS, Ray-Ban, Salvatore Plata y más"
+        description="Descuentos exclusivos en joyería TOUS y Salvatore Plata, relojes de diseño, gafas Ray-Ban y más. Hasta 10% DTO. Envío gratis +50€. Ofertas limitadas en Puente Genil, Córdoba."
+        keywords="Ofertas joyería, descuentos TOUS, Ray-Ban ofertas, relojes descuento, gafas rebajas, joyería Puente Genil, óptica Córdoba, Dolce Gabbana, bolsos TOUS, Ray-Ban Meta"
         url="https://opticadelvaljoyeros.es"
         structuredData={generateOrganizationSchema()}
       />
 
-      {/* Banner Black Friday - Destacado */}
+      {/* Banner Black Friday - Destacado 
       <AnimatedSection>
         <BannerBlackFriday />
-      </AnimatedSection>
+      </AnimatedSection> */}
 
-      {/* Video Hero Banner - Pantalla Completa 
+      {/* Video Hero Banner - Pantalla Completa */}
       <VideoHeroBanner
         videoSrc="/rayban-video.mp4"
         posterSrc="/rayban-video-miniatura.jpg"
@@ -109,7 +109,7 @@ export default function Home() {
         }}
         overlayOpacity="45"
         height="h-screen"
-      /> */}
+      />
 
       {/* Acordeón Hero */}
       <div className="container mx-auto block md:hidden sm:mt-20 md:mt-24 lg:mt-28">
@@ -146,9 +146,8 @@ export default function Home() {
         </AnimatedSection>
       </div>
 
-      {/* Banner Tom Ford Black Friday && Ray-Ban Meta (ancho completo) */}
+      {/* Banner Ray-Ban Meta (ancho completo) */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-        <BannerBlackFridayGafas />
         <BannerRaybanMeta />
       </AnimatedSection>
 

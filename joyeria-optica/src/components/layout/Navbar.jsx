@@ -56,16 +56,10 @@ export default function Navbar() {
   };
 
   const categorias = [
-    // Promoción temporal Black Friday (comentar cuando acabe y descomentar REBAJAS)
     {
-      label: "BLACK FRIDAY ⚡",
-      href: "/catalogo/black-friday",
+      label: "OFERTAS ⚡",
+      href: "/catalogo/rebajas",
     },
-    // Descomentar cuando acabe Black Friday:
-    // {
-    //   label: "REBAJAS ⚡",
-    //   href: "/catalogo/rebajas",
-    // },
     {
       label: "Inicio",
       href: "/",

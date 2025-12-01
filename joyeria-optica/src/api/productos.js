@@ -775,9 +775,32 @@ export async function fetchProductos({
 
       if (precio < precioMin || precio > precioMax) return false;
 
+      // 3.5. Filtro de descuento mínimo (para /catalogo/rebajas)
+      if (filtros.descuentoMinimo !== undefined) {
+        if (!producto.precioAnterior || !producto.precio) return false;
+
+        const precioActual = Number(producto.precio);
+        const precioAnterior = Number(producto.precioAnterior);
+
+        if (precioAnterior <= precioActual) return false;
+
+        // Calcular porcentaje de descuento real
+        const porcentajeDescuento = Math.round(
+          ((precioAnterior - precioActual) / precioAnterior) * 100
+        );
+
+        // Filtrar productos con descuento SUPERIOR al mínimo (10% excluido = > 10%)
+        if (porcentajeDescuento <= filtros.descuentoMinimo) return false;
+      }
+
       // 4. Filtros específicos de categoría
       for (const [clave, valor] of Object.entries(filtros)) {
-        if (["precioMin", "precioMax", "precio"].includes(clave)) continue;
+        if (
+          ["precioMin", "precioMax", "precio", "descuentoMinimo"].includes(
+            clave
+          )
+        )
+          continue;
 
         // Filtro booleano (true/false)
         if (valor === true) {
