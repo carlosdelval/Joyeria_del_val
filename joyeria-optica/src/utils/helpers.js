@@ -86,10 +86,29 @@ export const formatCurrency = (amount, currency = "EUR", locale = "es-ES") => {
   }).format(amount);
 };
 
-// Calcular descuento
+// Redondear descuento a múltiplos de 10 de forma inteligente
+// Solo redondea hacia arriba si está a 1-2 puntos del siguiente múltiplo de 10
+// Ejemplo: 8% o 9% -> 10%, pero 7% -> 10%, 13% -> 10% (redondeo normal)
+export const roundDiscountUp = (percentage) => {
+  if (!percentage || percentage <= 0) return 0;
+  
+  const rounded = Math.round(percentage / 10) * 10;
+  const decimal = percentage % 10;
+  
+  // Si está entre 8-9.99 (falta 1-2 puntos para el siguiente múltiplo), redondear hacia arriba
+  if (decimal >= 8) {
+    return Math.ceil(percentage / 10) * 10;
+  }
+  
+  // En otros casos, usar redondeo normal
+  return rounded;
+};
+
+// Calcular descuento (redondeado a múltiplos de 10)
 export const calculateDiscount = (originalPrice, salePrice) => {
   if (!originalPrice || !salePrice || salePrice >= originalPrice) return 0;
-  return Math.round(((originalPrice - salePrice) / originalPrice) * 100);
+  const rawPercentage = ((originalPrice - salePrice) / originalPrice) * 100;
+  return roundDiscountUp(rawPercentage);
 };
 
 // Validador de email

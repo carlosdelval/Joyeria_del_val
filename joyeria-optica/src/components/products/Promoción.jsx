@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchProductos } from "../../api/productos";
 import { useNavigate } from "react-router-dom";
-import { sanitizeProductTitle } from "../../utils/helpers";
+import { sanitizeProductTitle, calculateDiscount } from "../../utils/helpers";
 
 const Promocion = () => {
   const [productos, setProductos] = useState([]);
@@ -12,9 +12,7 @@ const Promocion = () => {
   const calcularDescuento = (product) => {
     if (!product.precioAnterior || product.precioAnterior <= product.precio)
       return 0;
-    return Math.round(
-      ((product.precioAnterior - product.precio) / product.precioAnterior) * 100
-    );
+    return calculateDiscount(product.precioAnterior, product.precio);
   };
 
   // Función para detectar si es Black Friday
@@ -196,11 +194,7 @@ const Promocion = () => {
                   {prod.precioAnterior && (
                     <div className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-white bg-black rounded shadow-md">
                       -
-                      {Math.round(
-                        ((prod.precioAnterior - prod.precio) /
-                          prod.precioAnterior) *
-                          100
-                      )}
+                      {calcularDescuento(prod)}
                       %
                     </div>
                   )}
@@ -215,11 +209,7 @@ const Promocion = () => {
                 ) && (
                   <span className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded top-2 right-2">
                     -
-                    {Math.round(
-                      ((prod.precioAnterior - prod.precio) /
-                        prod.precioAnterior) *
-                        100
-                    )}
+                    {calcularDescuento(prod)}
                     %
                   </span>
                 )}

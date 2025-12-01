@@ -599,8 +599,8 @@ export default function Relojes() {
           posterSrc="/viceroy-video-miniatura.png"
           title="RELOJERÍA"
           subtitle="Precisión y diseño atemporal en cada detalle. Descubre las mejores marcas con servicio técnico especializado."
-          ctaText="Ver colección Viceroy"
-          ctaLink="/catalogo/relojes?marca=viceroy"
+          ctaText="Ver catálogo"
+          ctaLink="/catalogo/relojes"
           secondaryCta={{ text: "Visítanos en tienda", link: "/contacto" }}
           overlayOpacity="45"
           height="h-screen"

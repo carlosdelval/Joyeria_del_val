@@ -691,8 +691,8 @@ export default function Joyeria() {
           posterSrc="/marinagarcia-video-miniatura.webp"
           title="JOYERÍA DEL VAL"
           subtitle="Piezas únicas que cuentan tu historia. Alta joyería de autor y diseños exclusivos para momentos especiales."
-          ctaText="Obtener información"
-          ctaLink="https://www.instagram.com/opticadelvaljoyeros?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+          ctaText="Ver catálogo"
+          ctaLink="/catalogo/joyeria"
           secondaryCta={{ text: "Visítanos en tienda", link: "/contacto" }}
           overlayOpacity="45"
           height="h-screen"

@@ -1,5 +1,6 @@
 // src/api/productos.js
 import { shopifyService } from "../services/shopify.js";
+import { calculateDiscount } from "../utils/helpers.js";
 
 const USE_SHOPIFY = import.meta.env.VITE_USE_SHOPIFY === "true";
 
@@ -784,10 +785,8 @@ export async function fetchProductos({
 
         if (precioAnterior <= precioActual) return false;
 
-        // Calcular porcentaje de descuento real
-        const porcentajeDescuento = Math.round(
-          ((precioAnterior - precioActual) / precioAnterior) * 100
-        );
+        // Calcular porcentaje de descuento real (redondeado a múltiplos de 10)
+        const porcentajeDescuento = calculateDiscount(precioAnterior, precioActual);
 
         // Filtrar productos con descuento SUPERIOR al mínimo (10% excluido = > 10%)
         if (porcentajeDescuento <= filtros.descuentoMinimo) return false;
@@ -864,10 +863,8 @@ export async function fetchProductos({
 
             if (precioAnterior <= precioActual) return false;
 
-            // Calcular porcentaje de descuento
-            const porcentajeDescuento = Math.round(
-              ((precioAnterior - precioActual) / precioAnterior) * 100
-            );
+            // Calcular porcentaje de descuento (redondeado a múltiplos de 10)
+            const porcentajeDescuento = calculateDiscount(precioAnterior, precioActual);
 
             // Comprobar si el producto cumple con alguno de los rangos seleccionados
             const cumpleDescuento = valor.some((descuentoFiltro) => {

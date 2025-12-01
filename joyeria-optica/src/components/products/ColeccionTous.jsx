@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { fetchProductos } from "../../api/productos";
 import { useNavigate } from "react-router-dom";
+import { calculateDiscount } from "../../utils/helpers";
 
 export default function ColeccionTous() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -16,9 +17,7 @@ export default function ColeccionTous() {
   const calcularDescuento = (product) => {
     if (!product.precioAnterior || product.precioAnterior <= product.precio)
       return 0;
-    return Math.round(
-      ((product.precioAnterior - product.precio) / product.precioAnterior) * 100
-    );
+    return calculateDiscount(product.precioAnterior, product.precio);
   };
 
   // Función para detectar si es Black Friday
@@ -308,11 +307,7 @@ export default function ColeccionTous() {
                       {(product.precioAnterior ?? 0) > 0 && (
                         <div className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-white bg-black rounded shadow-md">
                           -
-                          {Math.round(
-                            ((product.precioAnterior - product.precio) /
-                              product.precioAnterior) *
-                              100
-                          )}
+                          {calcularDescuento(product)}
                           %
                         </div>
                       )}
@@ -327,11 +322,7 @@ export default function ColeccionTous() {
                     ) && (
                       <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-md top-2 right-2">
                         -
-                        {Math.round(
-                          ((product.precioAnterior - product.precio) /
-                            product.precioAnterior) *
-                            100
-                        )}
+                        {calcularDescuento(product)}
                         %
                       </div>
                     )}

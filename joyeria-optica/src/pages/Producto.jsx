@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { fetchProducto } from "../api/productos";
 import { ShoppingBag, Check, Info } from "lucide-react";
 import { useCart } from "../hooks/useCart";
-import { analytics, sanitizeProductTitle } from "../utils/helpers";
+import { analytics, sanitizeProductTitle, calculateDiscount } from "../utils/helpers";
 import { trackViewItem, trackAddToCart } from "../utils/analytics";
 import SEO, {
   generateProductSchema,
@@ -254,11 +254,7 @@ const ProductoPage = () => {
   // Calcular descuento si existe precio anterior válido
   const descuento =
     (producto.precioAnterior ?? 0) > 0
-      ? Math.round(
-          ((producto.precioAnterior - producto.precio) /
-            producto.precioAnterior) *
-            100
-        )
+      ? calculateDiscount(producto.precioAnterior, producto.precio)
       : null;
 
   // SEO dinámico para el producto

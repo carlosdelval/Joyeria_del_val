@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 import WishlistButton from "./WishlistButton";
-import { sanitizeProductTitle } from "../../utils/helpers";
+import { sanitizeProductTitle, calculateDiscount } from "../../utils/helpers";
 
 const ProductoCard = ({ producto }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -22,7 +22,7 @@ const ProductoCard = ({ producto }) => {
   } = producto;
 
   const descuento = precioAnterior
-    ? Math.round(((precioAnterior - precio) / precioAnterior) * 100)
+    ? calculateDiscount(precioAnterior, precio)
     : null;
 
   // Detectar si es móvil

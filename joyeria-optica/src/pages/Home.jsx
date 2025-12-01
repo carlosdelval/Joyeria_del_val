@@ -97,12 +97,12 @@ export default function Home() {
 
       {/* Video Hero Banner - Pantalla Completa */}
       <VideoHeroBanner
-        videoSrc="/rayban-video.mp4"
-        posterSrc="/rayban-video-miniatura.jpg"
-        title="RAY-BAN"
-        subtitle="Descubre nuestra colección exclusiva. Estilo, calidad y protección certificada."
-        ctaText="Ver colección Ray-Ban"
-        ctaLink="/catalogo/gafas?marca=ray-ban"
+        videoSrc="/salvatore-plata-video.webm"
+        posterSrc="/salvatore-plata-miniatura.jpg"
+        title="SALVATORE PLATA"
+        subtitle="Joyas con Estilo"
+        ctaText="Ver colección Salvatore Plata"
+        ctaLink="/catalogo/joyeria?marca=salvatore+plata"
         secondaryCta={{
           text: "Visítanos en tienda",
           link: "/contacto",
