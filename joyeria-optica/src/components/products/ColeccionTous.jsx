@@ -306,9 +306,7 @@ export default function ColeccionTous() {
                       </div>
                       {(product.precioAnterior ?? 0) > 0 && (
                         <div className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-white bg-black rounded shadow-md">
-                          -
-                          {calcularDescuento(product)}
-                          %
+                          -{calcularDescuento(product)}%
                         </div>
                       )}
                     </div>
@@ -321,9 +319,7 @@ export default function ColeccionTous() {
                         cat?.toLowerCase() === "black-friday"
                     ) && (
                       <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-md top-2 right-2">
-                        -
-                        {calcularDescuento(product)}
-                        %
+                        -{calcularDescuento(product)}%
                       </div>
                     )}
                 </div>

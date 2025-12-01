@@ -91,15 +91,15 @@ export const formatCurrency = (amount, currency = "EUR", locale = "es-ES") => {
 // Ejemplo: 8% o 9% -> 10%, pero 7% -> 10%, 13% -> 10% (redondeo normal)
 export const roundDiscountUp = (percentage) => {
   if (!percentage || percentage <= 0) return 0;
-  
+
   const rounded = Math.round(percentage / 10) * 10;
   const decimal = percentage % 10;
-  
+
   // Si está entre 8-9.99 (falta 1-2 puntos para el siguiente múltiplo), redondear hacia arriba
   if (decimal >= 8) {
     return Math.ceil(percentage / 10) * 10;
   }
-  
+
   // En otros casos, usar redondeo normal
   return rounded;
 };

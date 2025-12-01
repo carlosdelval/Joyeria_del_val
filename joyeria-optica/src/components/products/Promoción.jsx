@@ -193,9 +193,7 @@ const Promocion = () => {
                   </div>
                   {prod.precioAnterior && (
                     <div className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-white bg-black rounded shadow-md">
-                      -
-                      {calcularDescuento(prod)}
-                      %
+                      -{calcularDescuento(prod)}%
                     </div>
                   )}
                 </div>
@@ -208,9 +206,7 @@ const Promocion = () => {
                     cat?.toLowerCase() === "black-friday"
                 ) && (
                   <span className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded top-2 right-2">
-                    -
-                    {calcularDescuento(prod)}
-                    %
+                    -{calcularDescuento(prod)}%
                   </span>
                 )}
             </div>

@@ -5,7 +5,11 @@ import { useEffect, useState, useRef } from "react";
 import { fetchProducto } from "../api/productos";
 import { ShoppingBag, Check, Info } from "lucide-react";
 import { useCart } from "../hooks/useCart";
-import { analytics, sanitizeProductTitle, calculateDiscount } from "../utils/helpers";
+import {
+  analytics,
+  sanitizeProductTitle,
+  calculateDiscount,
+} from "../utils/helpers";
 import { trackViewItem, trackAddToCart } from "../utils/analytics";
 import SEO, {
   generateProductSchema,
