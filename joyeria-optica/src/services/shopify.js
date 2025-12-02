@@ -167,6 +167,10 @@ export class ShopifyService {
                   name
                   value
                 }
+                image {
+                  url
+                  altText
+                }
               }
             }
           }
@@ -410,6 +414,7 @@ export class ShopifyService {
           disponible: edge.node.availableForSale,
           stock: edge.node.quantityAvailable, // STOCK EN TIEMPO REAL
           opciones: edge.node.selectedOptions,
+          imagen: edge.node.image?.url || null, // Imagen específica de la variante
         })) || [],
 
       // Opciones de producto

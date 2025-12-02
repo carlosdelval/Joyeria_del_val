@@ -2,7 +2,8 @@
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { fetchProducto } from "../api/productos";
+import { fetchProducto, fetchProductVariants } from "../api/productos";
+import VariantSelector from "../components/products/VariantSelector";
 import { ShoppingBag, Check, Info } from "lucide-react";
 import { useCart } from "../hooks/useCart";
 import {
@@ -41,6 +42,8 @@ const ProductoPage = () => {
   const [tallaSeleccionada, setTallaSeleccionada] = useState("");
   const [showGuiaTallas, setShowGuiaTallas] = useState(false);
   const [showImageZoom, setShowImageZoom] = useState(false);
+  const [variants, setVariants] = useState([]);
+  const [loadingVariants, setLoadingVariants] = useState(false);
 
   // Tallas estándar para gafas (predefinidas)
   const tallasGafas = [
@@ -126,6 +129,18 @@ const ProductoPage = () => {
         // Track visualización de producto
         analytics.trackViewProduct(data);
         trackViewItem(data);
+
+        // Cargar variantes del producto
+        setLoadingVariants(true);
+        try {
+          const productVariants = await fetchProductVariants(data);
+          setVariants(productVariants);
+        } catch (variantError) {
+          console.error("Error cargando variantes:", variantError);
+          setVariants([data]); // Al menos mostrar el producto actual
+        } finally {
+          setLoadingVariants(false);
+        }
       } catch (error) {
         console.error("Error cargando producto:", error);
       } finally {
@@ -610,6 +625,24 @@ const ProductoPage = () => {
                 )}
               </motion.div>
 
+              {/* Selector de Variantes */}
+              {!loadingVariants && variants.length > 1 && (
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.25 }}
+                  className="border-t border-b border-gray-200 py-4"
+                >
+                  <VariantSelector
+                    variants={variants}
+                    currentProduct={producto}
+                    onVariantChange={(variant) => {
+                      console.log("Variante seleccionada:", variant);
+                    }}
+                  />
+                </motion.div>
+              )}
+
               {/* Descripción - Desplegable en móvil, siempre visible en desktop */}
               {producto.descripcion && (
                 <motion.div
@@ -676,17 +709,23 @@ const ProductoPage = () => {
                 transition={{ delay: 0.4 }}
               >
                 <div className="flex flex-wrap gap-2">
-                  {producto.categorias.map((cat, index) => (
-                    <a
-                      key={index}
-                      href={`/catalogo/${cat
-                        .toLowerCase()
-                        .replace(/[_\s]/g, "-")}`}
-                      className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm text-black bg-gray-100 rounded hover:bg-gray-200 transition-colors"
-                    >
-                      {sanitizarCategoria(cat)}
-                    </a>
-                  ))}
+                  {producto.categorias
+                    .filter((cat) => {
+                      // Filtrar tags de variantes (variante:)
+                      const catLower = cat.toLowerCase();
+                      return !catLower.startsWith('variante:');
+                    })
+                    .map((cat, index) => (
+                      <a
+                        key={index}
+                        href={`/catalogo/${cat
+                          .toLowerCase()
+                          .replace(/[_\s]/g, "-")}`}
+                        className="px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm text-black bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+                      >
+                        {sanitizarCategoria(cat)}
+                      </a>
+                    ))}
                 </div>
               </motion.div>
 

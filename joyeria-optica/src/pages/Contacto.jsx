@@ -220,7 +220,7 @@ const Contacto = () => {
                 >
                   He leído y acepto la{" "}
                   <a
-                    href="/politica-privacidad"
+                    href="/privacidad"
                     className="text-black underline hover:text-gray-600"
                   >
                     Política de Privacidad
