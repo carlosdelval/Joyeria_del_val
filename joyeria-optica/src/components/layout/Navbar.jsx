@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { useState, useEffect, useRef } from "react";
-import { Search, User, ShoppingBag, Heart } from "lucide-react";
+import { User, ShoppingBag, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import AnimatedHamburgerButton from "./HamburguerButton";
 import FlyoutLink from "../ui/FlyoutLink";
@@ -8,13 +8,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../../hooks/useCart";
 import { useAuth } from "../../hooks/useAuth";
 import { useWishlist } from "../../hooks/useWishlist";
-import { trackSearch } from "../../utils/analytics";
 import CartSidebar from "../cart/CartSidebar";
 import AuthModal from "../modals/AuthModal";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -44,16 +43,6 @@ export default function Navbar() {
     }
     prevWishlistCount.current = wishlistCount;
   }, [wishlistCount]);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      trackSearch(searchTerm);
-      window.scrollTo(0, 0);
-      navigate(`/catalogo?q=${encodeURIComponent(searchTerm)}`);
-      setSearchTerm("");
-    }
-  };
 
   const categorias = [
     {
@@ -122,21 +111,7 @@ export default function Navbar() {
 
           {/* Buscador solo en desktop */}
           <div className="relative hidden w-56 lg:w-64 xl:w-72 lg:block">
-            <form onSubmit={handleSearch}>
-              <input
-                type="text"
-                placeholder="Búsqueda en catálogo"
-                className="w-full px-4 py-2 pl-10 text-sm transition-all bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button
-                type="submit"
-                className="absolute transition-colors transform -translate-y-1/2 left-3 top-1/2 hover:text-gray-600"
-              >
-                <Search className="w-4 h-4" />
-              </button>
-            </form>
+            <SearchBar />
           </div>
         </div>
 
@@ -322,21 +297,7 @@ export default function Navbar() {
       >
         {/* Mobile search dentro del menú */}
         <div className="px-4 pt-4 pb-3 border-t border-gray-200">
-          <form onSubmit={handleSearch} className="relative">
-            <input
-              type="text"
-              placeholder="Búsqueda en catálogo"
-              className="w-full px-4 py-2 pl-10 text-sm bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="absolute transition-colors transform -translate-y-1/2 left-3 top-1/2 hover:text-gray-600"
-            >
-              <Search className="w-4 h-4" />
-            </button>
-          </form>
+          <SearchBar onSearch={() => setMenuOpen(false)} />
         </div>
 
         <nav className="grid gap-2 px-4 py-4 border-t border-gray-200">

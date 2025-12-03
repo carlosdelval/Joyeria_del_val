@@ -84,6 +84,7 @@ export class ShopifyService {
                 edges {
                   node {
                     id
+                    sku
                     availableForSale
                     quantityAvailable
                   }
@@ -153,6 +154,7 @@ export class ShopifyService {
               node {
                 id
                 title
+                sku
                 availableForSale
                 quantityAvailable
                 price {
@@ -372,6 +374,7 @@ export class ShopifyService {
       id: product.handle, // Usar handle como ID para consistencia
       slug: product.handle,
       shopifyId: product.id, // ID real de Shopify
+      sku: variant?.sku || null, // SKU del primer variant
 
       // Información básica
       titulo: product.title,
@@ -404,6 +407,7 @@ export class ShopifyService {
         product.variants?.edges.map((edge) => ({
           id: edge.node.id,
           shopifyId: edge.node.id,
+          sku: edge.node.sku,
           titulo: edge.node.title,
           precio: edge.node.price?.amount
             ? parseFloat(edge.node.price.amount)

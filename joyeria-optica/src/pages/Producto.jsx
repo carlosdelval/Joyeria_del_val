@@ -74,6 +74,27 @@ const ProductoPage = () => {
       .trim();
   };
 
+  // Función para sanitizar marca
+  const sanitizarMarca = (marca) => {
+    if (!marca) return "";
+
+    return marca
+      .normalize("NFD") // Normalizar acentos
+      .replace(/[\u0300-\u036f]/g, "") // Eliminar marcas diacríticas
+      .replace(/[-_]/g, " ") // Reemplazar guiones y guiones bajos por espacios
+      .trim()
+      .split(" ")
+      .map((word) => {
+        // Mantener siglas en mayúsculas (ej: RAY-BAN)
+        if (word.toUpperCase() === word && word.length <= 4) {
+          return word.toUpperCase();
+        }
+        // Capitalizar primera letra de cada palabra
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join(" ");
+  };
+
   // Distancia mínima para considerar un swipe (en px)
   const minSwipeDistance = 50;
 
@@ -545,9 +566,16 @@ const ProductoPage = () => {
 
             {/* Información del producto */}
             <div className="flex flex-col space-y-4 sm:space-y-6">
-              <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-black leading-tight">
-                {sanitizeProductTitle(producto.titulo)}
-              </h1>
+              <div>
+                <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-black leading-tight">
+                  {sanitizeProductTitle(producto.titulo)}
+                </h1>
+                {producto.sku && (
+                  <p className="mt-2 text-xs sm:text-sm text-gray-500">
+                    SKU: <span className="font-medium">{producto.sku}</span>
+                  </p>
+                )}
+              </div>
 
               {/* Badges y Precio */}
               <motion.div
@@ -1067,7 +1095,7 @@ const ProductoPage = () => {
                       Marca
                     </h3>
                     <p className="text-sm sm:text-base text-gray-900 mt-0.5">
-                      {producto.marca}
+                      {sanitizarMarca(producto.marca)}
                     </p>
                   </div>
                 </div>

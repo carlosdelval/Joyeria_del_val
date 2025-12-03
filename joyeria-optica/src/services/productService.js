@@ -79,17 +79,21 @@ class ProductService {
   // Método para búsqueda con autocompletado
   async searchProducts(query, limit = 10) {
     try {
+      if (!query || !query.trim()) {
+        return [];
+      }
+
       const products = await this.fetchProductos({
-        busqueda: query,
-        first: limit,
+        busqueda: query.trim(),
       });
 
+      // Filtrar y mapear los productos limitando el resultado
       return products.slice(0, limit).map((product) => ({
         id: product.id,
-        titulo: product.titulo,
+        titulo: product.titulo || product.nombre,
         slug: product.slug,
         precio: product.precio,
-        imagen: product.imagenes[0],
+        imagen: product.imagenes?.[0] || product.imagen,
       }));
     } catch (error) {
       console.error("Error searching products:", error);
