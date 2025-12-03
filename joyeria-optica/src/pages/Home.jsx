@@ -163,16 +163,9 @@ export default function Home() {
         </AnimatedSection>
       </div>
 
-      {/* Banner Instagram (ancho completo) */}
+      {/* Banner Instagram && Colecciones Destacadas (ancho completo) */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
         <BannerInstagram />
-      </AnimatedSection>
-
-      {/* Colecciones Destacadas (ancho completo) */}
-      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-        <h2 className="mb-6 font-bold hidden sm:block text-center sm:mb-8 text-3xl">
-          La mejor selección de joyería disponible en tienda
-        </h2>
         <ColeccionesDestacadas />
       </AnimatedSection>
 

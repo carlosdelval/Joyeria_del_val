@@ -155,7 +155,7 @@ const ContactoOptica = () => {
     >
       <div className="max-w-6xl mx-auto">
         <h2 className="mb-6 text-2xl font-bold text-center sm:mb-8 md:mb-12 sm:text-3xl md:text-4xl">
-          ¡Visítanos en nuestra óptica!
+          ¡Visita nuestra óptica!
         </h2>
 
         <div className="space-y-6 sm:space-y-8">

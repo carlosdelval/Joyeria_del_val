@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * VideoHeroBanner - Hero banner con video de fondo en autoplay loop
@@ -27,6 +28,94 @@ export default function VideoHeroBanner({
   height = "h-screen",
   secondaryCta = null, // { text: "Ver más", link: "/about" }
 }) {
+  const videoRef = useRef(null);
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+
+  // Función para intentar reproducir el video
+  const playVideo = async () => {
+    if (videoRef.current) {
+      try {
+        // Resetear el video si está pausado
+        if (videoRef.current.paused) {
+          videoRef.current.currentTime = 0;
+          await videoRef.current.play();
+        }
+      } catch (error) {
+        // Silenciar errores de autoplay (normal en algunos navegadores)
+        console.debug("Video autoplay prevented:", error);
+      }
+    }
+  };
+
+  // Efecto para manejar la carga y reproducción del video
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Handler cuando el video puede reproducirse
+    const handleCanPlay = () => {
+      setIsVideoLoaded(true);
+      playVideo();
+    };
+
+    // Handler cuando el video está cargado
+    const handleLoadedData = () => {
+      playVideo();
+    };
+
+    // Agregar listeners
+    video.addEventListener("canplay", handleCanPlay);
+    video.addEventListener("loadeddata", handleLoadedData);
+
+    // Intentar cargar y reproducir inmediatamente
+    video.load();
+    playVideo();
+
+    return () => {
+      video.removeEventListener("canplay", handleCanPlay);
+      video.removeEventListener("loadeddata", handleLoadedData);
+    };
+  }, [videoSrcMp4, videoSrc]);
+
+  // Efecto para manejar visibilidad de la página
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        playVideo();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  // Efecto para reintentar reproducción cuando el componente está en viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            playVideo();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, []);
+
   const scrollToContent = () => {
     window.scrollTo({
       top: window.innerHeight,
@@ -37,16 +126,33 @@ export default function VideoHeroBanner({
   return (
     <section className={`relative ${height} w-full overflow-hidden`}>
       {/* Video de fondo */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      <div className="absolute inset-0 w-full h-full overflow-hidden bg-black">
+        {/* Imagen de poster siempre visible como fondo */}
+        {posterSrc && (
+          <img
+            src={posterSrc}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="eager"
+          />
+        )}
+
         {/* Video con soporte completo iOS/Android */}
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
           playsInline
           poster={posterSrc}
-          className="absolute inset-0 w-full h-full object-cover"
-          preload="auto"
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+            isVideoLoaded ? "opacity-100" : "opacity-0"
+          }`}
+          preload="metadata"
+          disablePictureInPicture
+          disableRemotePlayback
+          controlsList="nodownload nofullscreen noremoteplayback"
+          style={{ pointerEvents: "none" }}
         >
           {/* MP4 primero para iOS/Safari */}
           {videoSrcMp4 && <source src={videoSrcMp4} type="video/mp4" />}
