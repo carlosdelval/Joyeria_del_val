@@ -98,9 +98,10 @@ export default function Home() {
       {/* Video Hero Banner - Pantalla Completa */}
       <VideoHeroBanner
         videoSrc="/salvatore-plata-video.webm"
+        videoSrcMp4="/salvatore-plata-video.mp4"
         posterSrc="/salvatore-plata-miniatura.jpg"
         title="SALVATORE PLATA"
-        subtitle="Joyas con Estilo"
+        subtitle="Plata de Ley"
         ctaText="Ver colección Salvatore Plata"
         ctaLink="/catalogo/joyeria?marca=salvatore+plata"
         secondaryCta={{

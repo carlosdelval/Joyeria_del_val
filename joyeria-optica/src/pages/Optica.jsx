@@ -545,7 +545,7 @@ export default function Optica() {
         isOpen={showWhatsAppModal}
         onClose={() => setShowWhatsAppModal(false)}
         onConfirm={() => {
-          const phoneNumber = "664146433";
+          const phoneNumber = "957602123"; // Número de teléfono de la joyería
           const message = encodeURIComponent(
             "Hola, me gustaría reservar cita para graduarme la vista."
           );

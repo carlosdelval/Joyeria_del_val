@@ -713,7 +713,7 @@ const ProductoPage = () => {
                     .filter((cat) => {
                       // Filtrar tags de variantes (variante:)
                       const catLower = cat.toLowerCase();
-                      return !catLower.startsWith('variante:');
+                      return !catLower.startsWith("variante:");
                     })
                     .map((cat, index) => (
                       <a

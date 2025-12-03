@@ -237,7 +237,7 @@ const BannerBlackFridayGafas = () => {
                 Visítanos en Tienda
               </button>
               <a
-                href="tel:+34664146433"
+                href="tel:+34957602123"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold tracking-wide text-white uppercase transition-all duration-300 border-2 border-white rounded-lg hover:bg-white hover:text-black focus:outline-none focus:ring-4 focus:ring-white/50"
               >
                 <span>Llamar Ahora</span>

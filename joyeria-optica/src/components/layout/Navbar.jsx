@@ -295,24 +295,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      {/* Mobile search */}
-      <div className="px-3 pb-3 border-b border-gray-200 sm:px-4 lg:hidden">
-        <form onSubmit={handleSearch} className="relative">
-          <input
-            type="text"
-            placeholder="Búsqueda en catálogo"
-            className="w-full px-4 py-2 pl-10 text-sm bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <button
-            type="submit"
-            className="absolute transition-colors transform -translate-y-1/2 left-3 top-1/2 hover:text-gray-600"
-          >
-            <Search className="w-4 h-4" />
-          </button>
-        </form>
-      </div>
+
       {/* Desktop nav */}
       <nav className="justify-center hidden py-3 space-x-4 border-t border-gray-200 lg:space-x-6 xl:space-x-8 lg:flex">
         {categorias.map(({ label, href, content: Content }, index) => (
@@ -334,9 +317,28 @@ export default function Navbar() {
       {/* Mobile menu animado */}
       <div
         className={`overflow-hidden transition-all duration-300 ease-in-out lg:hidden ${
-          menuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+          menuOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
+        {/* Mobile search dentro del menú */}
+        <div className="px-4 pt-4 pb-3 border-t border-gray-200">
+          <form onSubmit={handleSearch} className="relative">
+            <input
+              type="text"
+              placeholder="Búsqueda en catálogo"
+              className="w-full px-4 py-2 pl-10 text-sm bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="absolute transition-colors transform -translate-y-1/2 left-3 top-1/2 hover:text-gray-600"
+            >
+              <Search className="w-4 h-4" />
+            </button>
+          </form>
+        </div>
+
         <nav className="grid gap-2 px-4 py-4 border-t border-gray-200">
           {categorias.map(({ label, href }, index) => {
             // Prefetch map for common routes

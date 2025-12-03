@@ -786,7 +786,10 @@ export async function fetchProductos({
         if (precioAnterior <= precioActual) return false;
 
         // Calcular porcentaje de descuento real (redondeado a múltiplos de 10)
-        const porcentajeDescuento = calculateDiscount(precioAnterior, precioActual);
+        const porcentajeDescuento = calculateDiscount(
+          precioAnterior,
+          precioActual
+        );
 
         // Filtrar productos con descuento SUPERIOR al mínimo (10% excluido = > 10%)
         if (porcentajeDescuento <= filtros.descuentoMinimo) return false;
@@ -864,7 +867,10 @@ export async function fetchProductos({
             if (precioAnterior <= precioActual) return false;
 
             // Calcular porcentaje de descuento (redondeado a múltiplos de 10)
-            const porcentajeDescuento = calculateDiscount(precioAnterior, precioActual);
+            const porcentajeDescuento = calculateDiscount(
+              precioAnterior,
+              precioActual
+            );
 
             // Comprobar si el producto cumple con alguno de los rangos seleccionados
             const cumpleDescuento = valor.some((descuentoFiltro) => {
@@ -1027,11 +1033,11 @@ export const fetchProductVariants = async (producto) => {
     if (!producto) return [];
 
     const allProducts = await fetchProductos({});
-    
+
     // Buscar por tag "variante:" en Shopify
     // Los productos del mismo grupo deben tener un tag como "variante:anillo-oro-diamantes"
-    const variantGroupTag = producto.etiquetas?.find(tag => 
-      tag.toLowerCase().startsWith('variante:')
+    const variantGroupTag = producto.etiquetas?.find((tag) =>
+      tag.toLowerCase().startsWith("variante:")
     );
 
     if (!variantGroupTag) {
@@ -1042,11 +1048,11 @@ export const fetchProductVariants = async (producto) => {
     // Si tiene tag de grupo, buscar todos los productos con el mismo tag
     const variants = allProducts.filter((p) => {
       if (p.id === producto.id || p.slug === producto.slug) return false;
-      return p.etiquetas?.some(tag => 
-        tag.toLowerCase() === variantGroupTag.toLowerCase()
+      return p.etiquetas?.some(
+        (tag) => tag.toLowerCase() === variantGroupTag.toLowerCase()
       );
     });
-    
+
     if (variants.length === 0) {
       // No se encontraron variantes con el mismo tag
       return [producto];

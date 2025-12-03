@@ -34,7 +34,7 @@ const VerticalAccordion = () => {
         isOpen={showWhatsAppModal}
         onClose={() => setShowWhatsAppModal(false)}
         onConfirm={() => {
-          const phoneNumber = "664146433";
+          const phoneNumber = "957602123"; // Número de teléfono de la joyería
           const message = encodeURIComponent(
             "Hola, me gustaría reservar una cita para graduación de vista."
           );
@@ -214,7 +214,7 @@ const items = [
     id: 4,
     title: "Graduación de vista",
     Icon: Eye,
-    imgSrc: "/cartelGraduacion.svg",
-    description: "¡Clicka y reserva cita!",
+    imgSrc: "/cartelGraduacion.png",
+    description: "¡Reserva tu cita con un click!",
   },
 ];

@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 /**
  * VideoHeroBanner - Hero banner con video de fondo en autoplay loop
  *
- * @param {string} videoSrc - URL del video (MP4, WebM)
+ * @param {string} videoSrc - URL del video WebM (para desktop)
+ * @param {string} videoSrcMp4 - URL del video MP4 (para iOS/Safari - requerido para móvil)
  * @param {string} posterSrc - Imagen placeholder mientras carga el video
  * @param {string} title - Título principal
  * @param {string} subtitle - Subtítulo/descripción
@@ -16,6 +17,7 @@ import { Link } from "react-router-dom";
  */
 export default function VideoHeroBanner({
   videoSrc,
+  videoSrcMp4,
   posterSrc,
   title = "COLECCIÓN EXCLUSIVA",
   subtitle = "Descubre las últimas tendencias en joyería y relojería",
@@ -35,24 +37,25 @@ export default function VideoHeroBanner({
   return (
     <section className={`relative ${height} w-full overflow-hidden`}>
       {/* Video de fondo */}
-      <div className="absolute inset-0 w-full h-full flex items-center justify-center overflow-hidden bg-black">
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        {/* Video con soporte completo iOS/Android */}
         <video
           autoPlay
           loop
           muted
           playsInline
           poster={posterSrc}
-          className="md:min-w-full md:min-h-full w-auto h-full md:h-auto max-w-none"
-          style={{
-            objectFit: "contain",
-            objectPosition: "center center",
-          }}
-          preload="metadata"
-          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover"
+          preload="auto"
         >
-          <source src={videoSrc} type="video/mp4" />
-          {/* Fallback: imagen si el video no carga */}
-          Tu navegador no soporta videos HTML5.
+          {/* MP4 primero para iOS/Safari */}
+          {videoSrcMp4 && <source src={videoSrcMp4} type="video/mp4" />}
+          {/* WebM como alternativa para navegadores que lo soporten */}
+          {videoSrc && <source src={videoSrc} type="video/webm" />}
+          {/* Fallback si no hay MP4 */}
+          {!videoSrcMp4 && videoSrc && (
+            <source src={videoSrc} type="video/mp4" />
+          )}
         </video>
 
         {/* Overlay oscuro para mejorar legibilidad */}

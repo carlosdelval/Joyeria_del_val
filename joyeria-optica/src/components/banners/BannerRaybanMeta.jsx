@@ -270,7 +270,7 @@ export default function BannerRaybanMeta() {
               </button>
 
               <a
-                href="tel:+34957600293"
+                href="tel:+34957602193"
                 className="flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wider text-white uppercase transition-all duration-300 border border-white/30 bg-white/5 backdrop-blur-sm hover:bg-white/10 hover:border-white/50"
               >
                 <Phone className="w-4 h-4" />
