@@ -12,7 +12,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { sanitizeProductTitle } from "../utils/helpers";
 
 const PRODUCTOS_POR_PAGINA_DESKTOP = 24;
-const PRODUCTOS_POR_PAGINA_MOBILE = 12;
+const PRODUCTOS_POR_PAGINA_MOBILE = 24;
 
 const Catalogo = () => {
   const { categoria } = useParams();

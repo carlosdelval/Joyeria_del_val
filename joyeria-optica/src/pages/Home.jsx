@@ -15,6 +15,9 @@ import BannerInstagram from "../components/banners/BannerInstagram";
 import BannerMarcasRelojes from "../components/banners/BannerMarcasRelojes";
 import BannerRaybanMeta from "../components/banners/BannerRaybanMeta";
 import VideoHeroBanner from "../components/banners/VideoHeroBanner";
+import BentoGrid from "../components/products/BentoGrid";
+import TimelineMarcas from "../components/banners/TimelineMarcas";
+import HeroCarousel from "../components/banners/HeroCarousel";
 import BannerBlackFriday from "../components/banners/BannerBlackFriday";
 import BannerBlackFridayGafas from "../components/banners/BannerBlackFridayGafas";
 
@@ -96,21 +99,7 @@ export default function Home() {
       </AnimatedSection> */}
 
       {/* Video Hero Banner - Pantalla Completa */}
-      <VideoHeroBanner
-        videoSrc="/salvatore-plata-video.webm"
-        videoSrcMp4="/salvatore-plata-video.mp4"
-        posterSrc="/salvatore-plata-miniatura.jpg"
-        title="SALVATORE PLATA"
-        subtitle="Plata de Ley"
-        ctaText="Ver colección Salvatore Plata"
-        ctaLink="/catalogo/joyeria?marca=salvatore+plata"
-        secondaryCta={{
-          text: "Visítanos en tienda",
-          link: "/contacto",
-        }}
-        overlayOpacity="45"
-        height="h-screen"
-      />
+      <HeroCarousel />
 
       {/* Acordeón Hero */}
       <div className="container mx-auto block md:hidden sm:mt-20 md:mt-24 lg:mt-28">
@@ -122,7 +111,7 @@ export default function Home() {
       {/* Secciones con contenedor y padding consistente */}
       <div className="container mx-auto px-5 sm:px-4">
         {/* Grid de artículos */}
-        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28 hidden md:block">
           <GridArticulos />
         </AnimatedSection>
 

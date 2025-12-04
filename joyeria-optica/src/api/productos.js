@@ -226,6 +226,8 @@ const searchSynonyms = {
     "cadenas",
     "gargantilla",
     "gargantillas",
+    "colgante",
+    "colgantes",
   ],
   collares: [
     "collar",
@@ -234,6 +236,8 @@ const searchSynonyms = {
     "cadenas",
     "gargantilla",
     "gargantillas",
+    "colgante",
+    "colgantes",
   ],
   cadena: [
     "collar",
@@ -242,6 +246,28 @@ const searchSynonyms = {
     "cadenas",
     "gargantilla",
     "gargantillas",
+    "colgante",
+    "colgantes",
+  ],
+  colgante: [
+    "collar",
+    "collares",
+    "cadena",
+    "cadenas",
+    "gargantilla",
+    "gargantillas",
+    "colgante",
+    "colgantes",
+  ],
+  colgantes: [
+    "collar",
+    "collares",
+    "cadena",
+    "cadenas",
+    "gargantilla",
+    "gargantillas",
+    "colgante",
+    "colgantes",
   ],
 
   // Pendientes y aretes
@@ -796,7 +822,6 @@ export async function fetchProductos({
                   producto.material,
                   producto.titulo,
                   producto.nombre,
-                  producto.descripcion,
                   ...(producto.etiquetas || []),
                 ]
                   .filter(Boolean)
@@ -810,11 +835,10 @@ export async function fetchProductos({
 
                 if (!coincideMaterial) return false;
               } else {
-                // Búsqueda general: buscar en todos los campos
+                // Búsqueda general: buscar en campos específicos (sin descripción)
                 const camposBusqueda = [
                   producto.nombre,
                   producto.titulo,
-                  producto.descripcion,
                   producto.slug,
                   producto.marca,
                   producto.material,

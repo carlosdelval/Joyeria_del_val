@@ -19,12 +19,37 @@ export default function Navbar() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [cartPulse, setCartPulse] = useState(false);
   const [wishlistPulse, setWishlistPulse] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const navigate = useNavigate();
   const { itemCount } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
   const { isAuthenticated, user, logout } = useAuth();
   const prevItemCount = useRef(itemCount);
   const prevWishlistCount = useRef(wishlistCount);
+
+  // Control de visibilidad del navbar con scroll
+  useEffect(() => {
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scroll hacia abajo y pasado 100px - ocultar
+        setIsVisible(false);
+      } else {
+        // Scroll hacia arriba - mostrar
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", controlNavbar, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", controlNavbar);
+    };
+  }, [lastScrollY]);
 
   // Detectar cuando se añade algo al carrito
   useEffect(() => {
@@ -54,18 +79,6 @@ export default function Navbar() {
       href: "/",
     },
     {
-      label: "Joyería",
-      href: "/joyeria",
-    },
-    {
-      label: "Óptica",
-      href: "/optica",
-    },
-    {
-      label: "Relojería",
-      href: "/relojeria",
-    },
-    {
       label: "TOUS",
       href: "/catalogo/tous",
     },
@@ -85,10 +98,27 @@ export default function Navbar() {
       label: "Gafas de sol",
       href: "/catalogo/gafas",
     },
+    {
+      label: "Joyería",
+      href: "/joyeria",
+    },
+    {
+      label: "Relojería",
+      href: "/relojeria",
+    },
+    {
+      label: "Óptica",
+      href: "/optica",
+    },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white shadow-sm md:relative md:shadow-none">
+    <motion.header
+      className="sticky top-0 z-50 w-full bg-white shadow-sm"
+      initial={{ y: 0 }}
+      animate={{ y: isVisible ? 0 : "-100%" }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+    >
       {/* Top bar */}
       <div className="flex items-center justify-between px-3 py-3 sm:px-4 md:py-4 lg:px-6 xl:px-8 md:grid md:grid-cols-3">
         {/* Izquierda - Mobile: Hamburguesa + Logo, Desktop: Buscador */}
@@ -343,6 +373,6 @@ export default function Navbar() {
         onClose={() => setAuthModalOpen(false)}
         initialMode="login"
       />
-    </header>
+    </motion.header>
   );
 }
