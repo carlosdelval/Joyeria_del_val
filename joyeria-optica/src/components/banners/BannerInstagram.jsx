@@ -9,7 +9,7 @@ return (
                 <h2 className="text-2xl font-bold leading-tight tracking-wide md:text-4xl lg:text-5xl">
                     ¡SÍGUENOS EN INSTAGRAM PARA NO PERDERTE LAS NOVEDADES!
                 </h2>
-                <p className="text-lg font-medium opacity-90 md:text-xl lg:text-2xl">
+                <p className="text-sm font-medium opacity-90 md:text-xl lg:text-2xl">
                     PARTICIPA EN SORTEOS Y MANTENTE AL DÍA
                 </p>
             </div>

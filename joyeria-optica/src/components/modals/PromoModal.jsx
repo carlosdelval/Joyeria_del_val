@@ -49,6 +49,19 @@ const PromoModal = () => {
     return () => clearInterval(interval);
   }, [isVisible, carouselImages.length, carouselKey]);
 
+  // Bloquear scroll del body cuando el modal está abierto
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isVisible]);
+
   const handleManualChange = (index) => {
     setCurrentImageIndex(index);
     setCarouselKey((prevKey) => prevKey + 1);

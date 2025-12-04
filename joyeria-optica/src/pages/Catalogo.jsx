@@ -668,7 +668,6 @@ const Catalogo = () => {
                         </React.Fragment>
                       );
                     })}
-                    }
                   </motion.div>
                 </AnimatePresence>
               </div>

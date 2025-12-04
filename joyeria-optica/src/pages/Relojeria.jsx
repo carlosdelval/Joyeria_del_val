@@ -596,7 +596,7 @@ export default function Relojes() {
         {/* Hero con Video */}
         <VideoHeroBanner
           videoSrc="/viceroy-video.mp4"
-          posterSrc="/viceroy-video-miniatura.png"
+          posterSrc="/viceroy-video-miniatura.jpg"
           title="RELOJERÍA"
           subtitle="Precisión y diseño atemporal en cada detalle. Descubre las mejores marcas con servicio técnico especializado."
           ctaText="Ver catálogo"

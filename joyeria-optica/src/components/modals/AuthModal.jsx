@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   X,
@@ -34,6 +34,19 @@ const AuthModal = ({ isOpen, onClose, initialMode = "login" }) => {
   const [touchedFields, setTouchedFields] = useState({});
 
   const { login, register, loading, error, resetError } = useAuth();
+
+  // Bloquear scroll del body cuando el modal está abierto
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

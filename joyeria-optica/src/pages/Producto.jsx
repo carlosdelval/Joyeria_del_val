@@ -339,9 +339,9 @@ const ProductoPage = () => {
         className="min-h-screen bg-white"
       >
         {/* Contenedor principal */}
-        <div className="container px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 md:py-12 mx-auto max-w-7xl">
+        <div className="container px-3 sm:px-4 md:px-6 lg:px-8 py-3 sm:py-6 md:py-12 mx-auto max-w-7xl">
           {/* Ruta de navegación */}
-          <nav className="flex mb-4 sm:mb-6 text-xs sm:text-sm text-gray-500">
+          <nav className="flex mb-3 sm:mb-6 text-xs sm:text-sm text-gray-500">
             <a href="/" className="hover:underline">
               Inicio
             </a>
@@ -356,11 +356,11 @@ const ProductoPage = () => {
           </nav>
 
           {/* Grid de producto */}
-          <div className="grid gap-6 sm:gap-8 lg:gap-12 md:grid-cols-2">
+          <div className="grid gap-4 sm:gap-8 lg:gap-12 md:grid-cols-2">
             {/* Galería de imágenes */}
             <div>
               {/* MÓVIL: Carrusel horizontal con scroll */}
-              <div className="md:hidden">
+              <div className="md:hidden -mx-3 sm:mx-0">
                 <div className="relative">
                   {/* Carrusel de imágenes */}
                   <div className="relative overflow-hidden">
@@ -477,7 +477,7 @@ const ProductoPage = () => {
 
                   {/* Indicadores de página */}
                   {producto.imagenes.length > 1 && (
-                    <div className="flex justify-center gap-1.5 mt-3">
+                    <div className="flex justify-center gap-1.5 mt-2 px-3 sm:px-0">
                       {producto.imagenes.map((_, index) => (
                         <button
                           key={index}
@@ -565,13 +565,13 @@ const ProductoPage = () => {
             </div>
 
             {/* Información del producto */}
-            <div className="flex flex-col space-y-4 sm:space-y-6">
+            <div className="flex flex-col space-y-3 sm:space-y-6">
               <div>
-                <h1 className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-black leading-tight">
+                <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-light tracking-wide text-black leading-tight">
                   {sanitizeProductTitle(producto.titulo)}
                 </h1>
                 {producto.sku && (
-                  <p className="mt-2 text-xs sm:text-sm text-gray-500">
+                  <p className="mt-1.5 text-xs sm:text-sm text-gray-500">
                     SKU: <span className="font-medium">{producto.sku}</span>
                   </p>
                 )}
@@ -582,54 +582,11 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="space-y-3"
+                className="space-y-2"
               >
-                {/* Badges de Black Friday y Descuento */}
-                {(isBlackFriday || descuento) && (
-                  <div className="flex flex-wrap gap-2">
-                    {/* Badge de Black Friday */}
-                    {isBlackFriday && (
-                      <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ type: "spring", stiffness: 200 }}
-                      >
-                        <motion.div
-                          animate={{
-                            boxShadow: [
-                              "0 0 0px rgba(239, 68, 68, 0.4)",
-                              "0 0 20px rgba(239, 68, 68, 0.8)",
-                              "0 0 0px rgba(239, 68, 68, 0.4)",
-                            ],
-                          }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="inline-flex px-4 py-2 text-xs sm:text-sm font-bold tracking-wider text-white uppercase bg-red-600 rounded shadow-lg"
-                        >
-                          BLACK FRIDAY
-                        </motion.div>
-                      </motion.div>
-                    )}
-                    {/* Badge de Descuento */}
-                    {descuento && (
-                      <motion.div
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{
-                          delay: isBlackFriday ? 0.2 : 0,
-                          type: "spring",
-                          stiffness: 200,
-                        }}
-                        className="inline-flex px-4 py-2 text-xs sm:text-sm font-bold tracking-wider text-white bg-black rounded shadow-lg"
-                      >
-                        -{descuento}%
-                      </motion.div>
-                    )}
-                  </div>
-                )}
-
                 {/* Precio */}
                 <div className="flex items-center flex-wrap gap-2">
-                  <span className="text-xl sm:text-3xl md:text-4xl font-light text-black">
+                  <span className="text-3xl sm:text-4xl md:text-5xl font-normal text-black">
                     {producto.precio.toLocaleString("es-ES", {
                       style: "currency",
                       currency: "EUR",
@@ -637,7 +594,7 @@ const ProductoPage = () => {
                     })}
                   </span>
                   {(producto.precioAnterior ?? 0) > 0 && (
-                    <span className="ml-2 text-base sm:text-lg text-gray-400 line-through">
+                    <span className="ml-2 text-lg sm:text-xl text-gray-400 line-through font-light">
                       {producto.precioAnterior.toLocaleString("es-ES", {
                         style: "currency",
                         currency: "EUR",
@@ -646,11 +603,90 @@ const ProductoPage = () => {
                     </span>
                   )}
                 </div>
-                {descuento && (
-                  <p className="text-sm sm:text-base text-red-600 font-light">
-                    Ahorras {descuento}% en este artículo
-                  </p>
-                )}
+              </motion.div>
+
+              {/* Botón de añadir al carrito - Solo móvil, justo después del precio */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.25 }}
+                className="md:hidden flex gap-2"
+              >
+                <motion.button
+                  ref={(el) => (addToCartButtonRef.current = el)}
+                  onClick={
+                    !hasStock ||
+                    isAddingToCart ||
+                    ((isGafa || isAnillo) && !tallaSeleccionada)
+                      ? undefined
+                      : handleAddToCart
+                  }
+                  disabled={
+                    !hasStock ||
+                    isAddingToCart ||
+                    ((isGafa || isAnillo) && !tallaSeleccionada)
+                  }
+                  whileTap={
+                    !hasStock ||
+                    isAddingToCart ||
+                    ((isGafa || isAnillo) && !tallaSeleccionada)
+                      ? {}
+                      : { scale: 0.95 }
+                  }
+                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-light tracking-wider transition rounded-sm ${
+                    !hasStock
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-60"
+                      : (isGafa || isAnillo) && !tallaSeleccionada
+                      ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-60"
+                      : addedToCart
+                      ? "bg-green-600 text-white"
+                      : isAddingToCart
+                      ? "bg-gray-700 text-white cursor-wait"
+                      : "bg-black text-white hover:bg-gray-800"
+                  }`}
+                  style={
+                    !hasStock || ((isGafa || isAnillo) && !tallaSeleccionada)
+                      ? { pointerEvents: "none" }
+                      : {}
+                  }
+                >
+                  {!hasStock ? (
+                    quantityInCart > 0 ? (
+                      <>
+                        <Check className="w-5 h-5" />
+                        <span>EN EL CARRITO</span>
+                      </>
+                    ) : (
+                      <span>SIN STOCK</span>
+                    )
+                  ) : (isGafa || isAnillo) && !tallaSeleccionada ? (
+                    <span>SELECCIONA TALLA</span>
+                  ) : isAddingToCart ? (
+                    <ButtonSpinner color="white" label="AÑADIENDO..." />
+                  ) : addedToCart ? (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="flex items-center gap-1.5"
+                    >
+                      <Check className="w-5 h-5" />
+                      <span>¡AÑADIDO!</span>
+                    </motion.div>
+                  ) : (
+                    <>
+                      <ShoppingBag className="w-5 h-5" />
+                      <span>AÑADIR AL CARRITO</span>
+                    </>
+                  )}
+                </motion.button>
+
+                <div className="flex-shrink-0">
+                  <WishlistButton
+                    product={producto}
+                    size="lg"
+                    className="h-full w-12"
+                  />
+                </div>
               </motion.div>
 
               {/* Selector de Variantes */}
@@ -762,7 +798,7 @@ const ProductoPage = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="space-y-4 sm:space-y-5"
+                className="space-y-3 sm:space-y-5"
               >
                 {/* Selector de talla para gafas */}
                 {isGafa && (
@@ -861,119 +897,14 @@ const ProductoPage = () => {
                   </div>
                 )}
 
-                {/* Indicador de stock - Más compacto en móvil */}
-                <div className="p-2.5 sm:p-4 space-y-2 bg-gray-50 border border-gray-200 rounded-lg">
-                  <div className="flex items-center justify-between text-xs sm:text-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-700">
-                        Disponibilidad:
-                      </span>
-                      <div className="group relative">
-                        <Info className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 cursor-help" />
-                        <div className="absolute left-0 bottom-full mb-2 hidden group-hover:block w-40 sm:w-48 p-2 bg-gray-900 text-white text-xs rounded shadow-lg z-10">
-                          Stock actualizado en tiempo real. La cantidad máxima
-                          que puedes añadir al carrito está limitada por la
-                          disponibilidad.
-                        </div>
-                      </div>
-                    </div>
-                    <span
-                      className={`font-semibold flex items-center gap-2 ${
-                        isLowStock ? "text-orange-600" : "text-green-600"
-                      }`}
-                    >
-                      <span
-                        className={`w-2 h-2 rounded-full ${
-                          isLowStock ? "bg-orange-600" : "bg-green-600"
-                        } animate-pulse`}
-                      ></span>
-                      {isLowStock
-                        ? `¡Solo ${availableStock} ${
-                            availableStock === 1 ? "unidad" : "unidades"
-                          }!`
-                        : availableStock < 99
-                        ? `${availableStock} disponibles`
-                        : "En stock"}
-                    </span>
-                  </div>
-
-                  {/* Barra de stock visual (solo si stock < 99) */}
-                  {availableStock < 99 && (
-                    <div className="space-y-1">
-                      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <motion.div
-                          initial={{ width: 0 }}
-                          animate={{ width: `${stockPercentage}%` }}
-                          transition={{ duration: 0.5, delay: 0.7 }}
-                          className={`h-full ${
-                            isLowStock
-                              ? "bg-gradient-to-r from-orange-500 to-red-500"
-                              : "bg-gradient-to-r from-green-500 to-emerald-500"
-                          }`}
-                        />
-                      </div>
-                      <p className="text-xs text-gray-500 text-right">
-                        {isLowStock ? "Stock limitado" : "Buena disponibilidad"}
-                      </p>
-                    </div>
-                  )}
-                </div>
-                {/* Selector de cantidad */}
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <span className="text-xs sm:text-sm font-medium whitespace-nowrap">
-                    Cantidad:
-                  </span>
-                  <div className="flex items-center border border-gray-300 rounded">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      disabled={quantity <= 1 || !hasStock}
-                      className={`px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg transition ${
-                        quantity <= 1 || !hasStock
-                          ? "text-gray-300 cursor-not-allowed bg-gray-50"
-                          : "hover:bg-gray-100 text-gray-700"
-                      }`}
-                      aria-label="Disminuir cantidad"
-                    >
-                      -
-                    </button>
-                    <span className="px-3 sm:px-4 py-1 sm:py-2 border-x border-gray-300 min-w-[2.5rem] sm:min-w-[3rem] text-center text-sm sm:text-base">
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={() =>
-                        setQuantity(Math.min(availableStock, quantity + 1))
-                      }
-                      disabled={quantity >= availableStock || !hasStock}
-                      className={`px-2 sm:px-3 py-1 sm:py-2 text-base sm:text-lg transition ${
-                        quantity >= availableStock || !hasStock
-                          ? "text-gray-300 cursor-not-allowed bg-gray-50"
-                          : "hover:bg-gray-100 text-gray-700"
-                      }`}
-                      aria-label="Aumentar cantidad"
-                    >
-                      +
-                    </button>
-                  </div>
-
-                  {/* Aviso si alcanza el máximo */}
-                  {quantity >= availableStock &&
-                    availableStock < 99 &&
-                    hasStock && (
-                      <span className="text-xs sm:text-sm text-orange-600 font-medium">
-                        Máximo disponible
-                      </span>
-                    )}
-                </div>
-
-                {/* Botones de acción - Inline en móvil */}
-                <div className="flex gap-2 sm:gap-3">
+                {/* Botones de acción - Solo Desktop */}
+                <div className="hidden md:flex gap-3">
                   {/* Botón de añadir al carrito */}
                   <motion.button
-                    ref={(el) => (addToCartButtonRef.current = el)}
                     onClick={
                       !hasStock ||
                       isAddingToCart ||
-                      (isGafa && !tallaSeleccionada)
+                      ((isGafa || isAnillo) && !tallaSeleccionada)
                         ? undefined
                         : handleAddToCart
                     }
@@ -989,7 +920,7 @@ const ProductoPage = () => {
                         ? {}
                         : { scale: 0.95 }
                     }
-                    className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-3 sm:py-4 text-sm sm:text-base font-light tracking-wider transition rounded-sm ${
+                    className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 text-base font-light tracking-wider transition rounded-sm ${
                       !hasStock
                         ? "bg-gray-400 text-gray-600 cursor-not-allowed opacity-60"
                         : (isGafa || isAnillo) && !tallaSeleccionada
@@ -1007,54 +938,41 @@ const ProductoPage = () => {
                     }
                   >
                     {!hasStock ? (
-                      <span className="text-xs sm:text-base">SIN STOCK</span>
+                      quantityInCart > 0 ? (
+                        <>
+                          <Check className="w-5 h-5" />
+                          <span>EN EL CARRITO</span>
+                        </>
+                      ) : (
+                        <span>SIN STOCK</span>
+                      )
                     ) : (isGafa || isAnillo) && !tallaSeleccionada ? (
-                      <>
-                        <span className="hidden sm:inline text-xs sm:text-base">
-                          SELECCIONA UNA TALLA
-                        </span>
-                        <span className="sm:hidden text-xs">
-                          SELECCIONA TALLA
-                        </span>
-                      </>
+                      <span>SELECCIONA UNA TALLA</span>
                     ) : isAddingToCart ? (
-                      <ButtonSpinner
-                        color="white"
-                        label={
-                          <>
-                            <span className="hidden sm:inline">
-                              AÑADIENDO...
-                            </span>
-                            <span className="sm:hidden">...</span>
-                          </>
-                        }
-                      />
+                      <ButtonSpinner color="white" label="AÑADIENDO..." />
                     ) : addedToCart ? (
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         className="flex items-center gap-1.5"
                       >
-                        <Check className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <span className="text-xs sm:text-base">¡AÑADIDO!</span>
+                        <Check className="w-5 h-5" />
+                        <span>¡AÑADIDO!</span>
                       </motion.div>
                     ) : (
                       <>
-                        <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
-                        <span className="hidden sm:inline">
-                          AÑADIR AL CARRITO
-                        </span>
-                        <span className="sm:hidden text-xs">AÑADIR</span>
+                        <ShoppingBag className="w-5 h-5" />
+                        <span>AÑADIR AL CARRITO</span>
                       </>
                     )}
                   </motion.button>
 
-                  {/* Botón de favoritos - Mismo tamaño en móvil */}
+                  {/* Botón de favoritos */}
                   <div className="flex-shrink-0">
                     <WishlistButton
                       product={producto}
                       size="lg"
-                      className="h-full min-h-[48px] w-12 sm:w-14"
+                      className="h-full w-14"
                     />
                   </div>
                 </div>
@@ -1067,9 +985,9 @@ const ProductoPage = () => {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="mt-12 sm:mt-16 border-t pt-8 sm:pt-12"
+            className="mt-6 sm:mt-16 border-t pt-4 sm:pt-12"
           >
-            <h2 className="text-xl sm:text-2xl font-light tracking-wider mb-4 sm:mb-6">
+            <h2 className="text-lg sm:text-2xl font-light tracking-wider mb-3 sm:mb-6">
               Detalles del producto
             </h2>
             <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
@@ -1130,7 +1048,7 @@ const ProductoPage = () => {
             </div>
 
             {/* Información adicional */}
-            <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-200">
+            <div className="mt-4 sm:mt-8 p-3 sm:p-6 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-200">
               <div className="flex items-start gap-3">
                 <Info className="w-5 h-5 text-gray-600 flex-shrink-0 mt-0.5" />
                 <div className="text-xs sm:text-sm text-gray-700 leading-relaxed space-y-2">

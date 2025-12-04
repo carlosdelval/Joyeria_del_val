@@ -1,8 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
-import OptimizedImage from "../common/OptimizedImage";
 
 /**
  * HeroCarousel - Carrusel hero full width con transiciones cinematográficas
@@ -42,26 +41,25 @@ export default function HeroCarousel({
   const [slideActual, setSlideActual] = useState(0);
   const [direccion, setDireccion] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+  const [lastInteraction, setLastInteraction] = useState(Date.now());
 
   // Slides por defecto si no se pasan
   const slidesDefault = [
     {
-      tipo: "video",
-      videoSrc: "/salvatore-plata-video.mp4",
-      videoSrcWebm: "/salvatore-plata-video.webm",
-      poster: "/salvatore-plata-miniatura.jpg",
+      tipo: "imagen",
+      imagenSrc: "/salvatore-plata-banner.jpg", // Imagen para desktop
       titulo: "SALVATORE PLATA",
       subtitulo: "Plata de Ley 925",
       cta: {
-        text: "Ver colección",
+        text: "Ver Colección",
         link: "/catalogo/joyeria?marca=salvatore+plata",
       },
-      overlayOpacity: 45,
     },
     {
       tipo: "imagen",
       imagenSrc: "/tous-bolsos-banner.jpg", // Imagen para desktop
-      imagenSrcMobile: "/tous-bolsos-banner.jpg", // Imagen para móvil (cambiar por tu imagen)
       titulo: "TOUS",
       subtitulo: "Relojería y accesorios de lujo",
       cta: {
@@ -71,12 +69,12 @@ export default function HeroCarousel({
       objectPosition: "object-top md:object-center",
     },
     {
-      tipo: "video",
-      videoSrc: "/rayban-video.mp4",
-      poster: "/rayban-miniatura.jpg",
+      tipo: "imagen",
+      imagenSrc: "/rayban-banner.jpg",
+      imagenSrcMobile: "/rayban-banner-movil.jpg",
       titulo: "RAY-BAN",
       subtitulo: "Gafas de sol icónicas",
-      cta: { text: "Ir a Ray-Ban", link: "/catalogo/gafas?marca=ray-ban" },
+      cta: { text: "Ir a catálogo", link: "/catalogo/gafas?marca=ray-ban" },
       overlayOpacity: 40,
     },
   ];
@@ -109,7 +107,14 @@ export default function HeroCarousel({
 
     const timer = setInterval(siguienteSlide, intervalo);
     return () => clearInterval(timer);
-  }, [autoplay, isPaused, intervalo, siguienteSlide, slidesAMostrar.length]);
+  }, [
+    autoplay,
+    isPaused,
+    intervalo,
+    siguienteSlide,
+    slidesAMostrar.length,
+    lastInteraction,
+  ]);
 
   // Scroll suave hacia abajo
   const scrollToContent = () => {
@@ -117,6 +122,34 @@ export default function HeroCarousel({
       top: window.innerHeight,
       behavior: "smooth",
     });
+  };
+
+  // Handlers para swipe en móvil
+  const minSwipeDistance = 50;
+
+  const handleTouchStart = (e) => {
+    setTouchEnd(0);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      siguienteSlide();
+      setLastInteraction(Date.now()); // Resetear contador de autoplay
+    } else if (isRightSwipe) {
+      anteriorSlide();
+      setLastInteraction(Date.now()); // Resetear contador de autoplay
+    }
   };
 
   // Variantes de animación para transiciones cinematográficas
@@ -140,6 +173,9 @@ export default function HeroCarousel({
       className={`relative ${height} w-full overflow-hidden`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Slides */}
       <AnimatePresence initial={false} custom={direccion} mode="sync">
@@ -163,38 +199,28 @@ export default function HeroCarousel({
       {/* Controles de navegación */}
       {slidesAMostrar.length > 1 && (
         <>
-          {/* Flechas laterales */}
+          {/* Flechas laterales - Solo desktop */}
           <button
-            onClick={anteriorSlide}
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 md:p-4 rounded-full transition-all duration-300 group"
+            onClick={() => {
+              anteriorSlide();
+              setLastInteraction(Date.now());
+            }}
+            className="hidden md:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 md:p-4 rounded-full transition-all duration-300 group items-center justify-center"
             aria-label="Slide anterior"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 transform group-hover:-translate-x-1 transition-transform" />
           </button>
 
           <button
-            onClick={siguienteSlide}
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 md:p-4 rounded-full transition-all duration-300 group"
+            onClick={() => {
+              siguienteSlide();
+              setLastInteraction(Date.now());
+            }}
+            className="hidden md:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 md:p-4 rounded-full transition-all duration-300 group items-center justify-center"
             aria-label="Siguiente slide"
           >
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6 transform group-hover:translate-x-1 transition-transform" />
           </button>
-
-          {/* Indicadores de dots */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-3">
-            {slidesAMostrar.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => irASlide(index)}
-                className={`transition-all duration-300 rounded-full ${
-                  index === slideActual
-                    ? "w-12 bg-white"
-                    : "w-3 bg-white/40 hover:bg-white/60"
-                } h-3`}
-                aria-label={`Ir a slide ${index + 1}`}
-              />
-            ))}
-          </div>
         </>
       )}
 
@@ -205,7 +231,6 @@ export default function HeroCarousel({
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/70 hover:text-white transition-colors cursor-pointer z-10 hidden md:block"
-        style={{ bottom: slidesAMostrar.length > 1 ? "4rem" : "2rem" }}
         aria-label="Scroll hacia abajo"
       >
         <motion.div
@@ -222,9 +247,24 @@ export default function HeroCarousel({
 // Componente para renderizar el contenido de cada slide
 function SlideContent({ slide }) {
   const { tipo, overlayOpacity = 40 } = slide;
+  const navigate = useNavigate();
+
+  // Handler para hacer todo el slide clickable en móvil
+  const handleMobileClick = (e) => {
+    // Solo en móvil (< 768px)
+    if (window.innerWidth < 768 && slide.cta?.link) {
+      // Si el click no fue en el botón CTA, navegar
+      if (!e.target.closest("a")) {
+        navigate(slide.cta.link);
+      }
+    }
+  };
 
   return (
-    <div className="relative w-full h-full">
+    <div
+      className="relative w-full h-full md:cursor-default cursor-pointer"
+      onClick={handleMobileClick}
+    >
       {/* Fondo: Video o Imagen */}
       <div className="absolute inset-0 w-full h-full">
         {tipo === "video" ? (
@@ -352,36 +392,32 @@ function ImageBackground({ slide }) {
   // Si no hay imagen móvil, mostrar la misma en todos los tamaños
   if (!slide.imagenSrcMobile) {
     return (
-      <OptimizedImage
+      <img
         src={slide.imagenSrc}
         alt={slide.titulo}
-        className={`w-full h-full object-cover ${
+        loading="eager"
+        decoding="async"
+        className={`absolute inset-0 w-full h-full object-cover ${
           slide.objectPosition || "object-center"
         }`}
       />
     );
   }
 
-  // Si hay imagen móvil, mostrar versiones diferentes
+  // Si hay imagen móvil, usar picture para carga condicional
   return (
-    <>
-      {/* Imagen para móvil */}
-      <OptimizedImage
-        src={slide.imagenSrcMobile}
-        alt={slide.titulo}
-        className={`w-full h-full object-cover md:hidden ${
-          slide.objectPosition || "object-center"
-        }`}
-      />
-
-      {/* Imagen para desktop */}
-      <OptimizedImage
+    <picture>
+      <source media="(max-width: 767px)" srcSet={slide.imagenSrcMobile} />
+      <source media="(min-width: 768px)" srcSet={slide.imagenSrc} />
+      <img
         src={slide.imagenSrc}
         alt={slide.titulo}
-        className={`w-full h-full object-cover hidden md:block ${
+        loading="eager"
+        decoding="async"
+        className={`absolute inset-0 w-full h-full object-cover ${
           slide.objectPosition || "object-center"
         }`}
       />
-    </>
+    </picture>
   );
 }

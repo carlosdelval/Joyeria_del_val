@@ -28,6 +28,19 @@ export default function Navbar() {
   const prevItemCount = useRef(itemCount);
   const prevWishlistCount = useRef(wishlistCount);
 
+  // Bloquear scroll del body cuando el menú está abierto
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [menuOpen]);
+
   // Control de visibilidad del navbar con scroll
   useEffect(() => {
     const controlNavbar = () => {
@@ -321,8 +334,8 @@ export default function Navbar() {
 
       {/* Mobile menu animado */}
       <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out lg:hidden ${
-          menuOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
+        className={`fixed inset-x-0 top-[calc(var(--navbar-height,4rem))] bottom-0 bg-white overflow-y-auto transition-all duration-300 ease-in-out lg:hidden z-40 ${
+          menuOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
         }`}
       >
         {/* Mobile search dentro del menú */}
