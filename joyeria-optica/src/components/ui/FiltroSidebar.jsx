@@ -111,13 +111,19 @@ const FiltroSidebar = ({
   useEffect(() => {
     if (categoria) {
       const categoryFilters = getFiltersForCategory(categoria);
+      const globalFilters = filtrosPorCategoria.global || {};
       const initialOpenSections = {};
 
+      // Open category filters with priority 1-3
       Object.entries(categoryFilters).forEach(([key, filter]) => {
-        // Open filters with priority 1-3 by default
         if (filter.priority <= 3) {
           initialOpenSections[key] = true;
         }
+      });
+
+      // Open all global filters by default
+      Object.keys(globalFilters).forEach((key) => {
+        initialOpenSections[key] = true;
       });
 
       setOpenSections(initialOpenSections);
@@ -243,6 +249,57 @@ const FiltroSidebar = ({
           </div>
         );
 
+      case "radio": {
+        const currentValue = Array.isArray(currentValues)
+          ? currentValues[0]
+          : currentValues;
+
+        return (
+          <div className="space-y-2">
+            {filter.options.map((option) => {
+              const optionValue =
+                typeof option === "string" ? option : option.value;
+              const optionLabel =
+                typeof option === "string" ? option : option.label;
+              const isSelected = currentValue === optionValue;
+
+              return (
+                <label
+                  key={optionValue}
+                  className="flex items-center justify-between p-2 transition-colors rounded cursor-pointer hover:bg-gray-50"
+                >
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      name={key}
+                      checked={isSelected}
+                      onChange={() => {
+                        const newFilters = { ...localFilters };
+                        newFilters[key] = [optionValue];
+                        setLocalFilters(newFilters);
+                        onFiltroChange(newFilters);
+                      }}
+                      className="w-4 h-4 border-gray-300 text-amber-600 focus:ring-amber-500"
+                      aria-label={optionLabel}
+                    />
+                    <span
+                      className={`text-sm ${
+                        isSelected
+                          ? "font-medium text-gray-900"
+                          : "text-gray-700"
+                      }`}
+                      aria-hidden="true"
+                    >
+                      {optionLabel}
+                    </span>
+                  </div>
+                </label>
+              );
+            })}
+          </div>
+        );
+      }
+
       case "range": {
         const currentRange = currentValues;
 
@@ -356,22 +413,28 @@ const FiltroSidebar = ({
     const appliedFilters = [];
 
     Object.entries(localFilters).forEach(([key, value]) => {
+      // Obtener label desde filtros de categoría o filtros globales
+      const label =
+        filtrosPorCategoria[categoria]?.[key]?.label ||
+        filtrosPorCategoria.global?.[key]?.label ||
+        key;
+
       if (Array.isArray(value) && value.length > 0) {
         appliedFilters.push({
           key,
-          label: filtrosPorCategoria[categoria]?.[key]?.label || key,
+          label,
           count: value.length,
         });
       } else if (typeof value === "object" && (value.min || value.max)) {
         appliedFilters.push({
           key,
-          label: filtrosPorCategoria[categoria]?.[key]?.label || key,
+          label,
           count: 1,
         });
       } else if (value === true) {
         appliedFilters.push({
           key,
-          label: filtrosPorCategoria[categoria]?.[key]?.label || key,
+          label,
           count: 1,
         });
       }

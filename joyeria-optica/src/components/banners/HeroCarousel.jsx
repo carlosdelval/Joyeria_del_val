@@ -60,8 +60,8 @@ export default function HeroCarousel({
     },
     {
       tipo: "imagen",
-      imagenSrc: "/tous-amaia.jpg", // Imagen para desktop
-      imagenSrcMobile: "/amaia-tous.jpg", // Imagen para móvil (cambiar por tu imagen)
+      imagenSrc: "/tous-bolsos-banner.jpg", // Imagen para desktop
+      imagenSrcMobile: "/tous-bolsos-banner.jpg", // Imagen para móvil (cambiar por tu imagen)
       titulo: "TOUS",
       subtitulo: "Relojería y accesorios de lujo",
       cta: {

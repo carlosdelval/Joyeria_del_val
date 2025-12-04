@@ -214,7 +214,7 @@ const ProductoCard = ({ producto }) => {
         <div className="flex items-center justify-between mt-3">
           <div className="flex items-center">
             <motion.span
-              className="text-sm font-medium text-black"
+              className="text-sm font-light text-black"
               whileHover={{ scale: 1.05 }}
             >
               {precio.toLocaleString("es-ES", {
@@ -226,7 +226,7 @@ const ProductoCard = ({ producto }) => {
 
             {(precioAnterior ?? 0) > 0 && (
               <motion.span
-                className="ml-2 text-xs text-gray-400 line-through"
+                className="ml-2 text-xs font-light text-gray-400 line-through"
                 initial={{ opacity: 0.8 }}
                 whileHover={{ opacity: 1 }}
               >
@@ -243,11 +243,11 @@ const ProductoCard = ({ producto }) => {
           {stock !== undefined && stock !== null && (
             <div className="flex items-center gap-1.5">
               {stock > 5 ? (
-                <span className="text-xs text-green-600 font-medium">
+                <span className="text-xs text-green-600 font-light">
                   Disponible
                 </span>
               ) : stock > 0 ? (
-                <span className="text-xs text-amber-600 font-medium">
+                <span className="text-xs text-amber-600 font-light">
                   Últimas {stock}
                 </span>
               ) : (

@@ -629,7 +629,7 @@ const ProductoPage = () => {
 
                 {/* Precio */}
                 <div className="flex items-center flex-wrap gap-2">
-                  <span className="text-xl sm:text-3xl md:text-4xl font-medium text-black">
+                  <span className="text-xl sm:text-3xl md:text-4xl font-light text-black">
                     {producto.precio.toLocaleString("es-ES", {
                       style: "currency",
                       currency: "EUR",
@@ -647,7 +647,7 @@ const ProductoPage = () => {
                   )}
                 </div>
                 {descuento && (
-                  <p className="text-sm sm:text-base text-red-600 font-medium">
+                  <p className="text-sm sm:text-base text-red-600 font-light">
                     Ahorras {descuento}% en este artículo
                   </p>
                 )}
@@ -680,7 +680,7 @@ const ProductoPage = () => {
                 >
                   {/* Desktop: descripción siempre visible */}
                   <div className="hidden sm:block">
-                    <h2 className="mb-2 text-sm font-medium tracking-wider text-gray-700 uppercase">
+                    <h2 className="mb-2 text-sm font-light tracking-wide text-gray-700 uppercase">
                       Descripción
                     </h2>
                     <p className="text-base font-light text-gray-700 leading-relaxed">
@@ -694,7 +694,7 @@ const ProductoPage = () => {
                       onClick={() => setDescripcionAbierta(!descripcionAbierta)}
                       className="w-full flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg"
                     >
-                      <h2 className="text-sm font-medium tracking-wider text-gray-700 uppercase">
+                      <h2 className="text-sm font-light tracking-wide text-gray-700 uppercase">
                         Descripción
                       </h2>
                       <motion.svg
@@ -768,7 +768,7 @@ const ProductoPage = () => {
                 {isGafa && (
                   <div className="p-3 sm:p-4 space-y-3 bg-white border-2 border-gray-200 rounded-lg">
                     <div className="flex items-center gap-2">
-                      <label className="text-xs sm:text-sm font-medium text-gray-900 tracking-wider uppercase">
+                      <label className="text-xs sm:text-sm font-light text-gray-900 tracking-wide uppercase">
                         Talla{" "}
                         {!tallaSeleccionada && (
                           <span className="text-red-600">*</span>
@@ -819,7 +819,7 @@ const ProductoPage = () => {
                 {isAnillo && producto.tallas && producto.tallas.length > 0 && (
                   <div className="p-3 sm:p-4 space-y-3 bg-white border-2 border-gray-200 rounded-lg">
                     <div className="flex items-center gap-2">
-                      <label className="text-xs sm:text-sm font-medium text-gray-900 tracking-wider uppercase">
+                      <label className="text-xs sm:text-sm font-light text-gray-900 tracking-wide uppercase">
                         Talla{" "}
                         {!tallaSeleccionada && (
                           <span className="text-red-600">*</span>

@@ -30,7 +30,7 @@
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-weight: 300; /* font-light por defecto */
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -40,4 +40,38 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Configuración de tipografía base para toda la aplicación */
+body {
+  font-weight: 300; /* font-light */
+  letter-spacing: 0.025em; /* tracking-wide */
+}
+
+/* Títulos principales */
+h1 {
+  font-weight: 300; /* font-light */
+  letter-spacing: 0.1em; /* tracking-widest */
+  text-transform: uppercase;
+}
+
+/* Subtítulos y títulos secundarios */
+h2,
+h3 {
+  font-weight: 300; /* font-light */
+  letter-spacing: 0.05em; /* tracking-wide */
+  text-transform: uppercase;
+}
+
+/* Botones y enlaces de acción */
+button,
+.btn {
+  font-weight: 300; /* font-light */
+  letter-spacing: 0.05em; /* tracking-wider */
+}
+
+/* Precios y números importantes */
+.price,
+[class*="precio"] {
+  font-weight: 300; /* font-light */
 }

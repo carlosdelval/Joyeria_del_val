@@ -51,6 +51,7 @@ const Catalogo = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [loadingOrdenacion, setLoadingOrdenacion] = useState(false);
   const catalogoRef = useRef(null);
   const productosAntesDeCargarRef = useRef(0);
 
@@ -58,6 +59,12 @@ const Catalogo = () => {
   const filtros = useMemo(() => {
     return { ...filtrosDesdeURL, ...filtrosAdicionales };
   }, [filtrosDesdeURL, filtrosAdicionales]);
+
+  // Separar filtros de búsqueda (para backend) de filtros de ordenación (solo frontend)
+  const filtrosBusqueda = useMemo(() => {
+    const { ordenarPor, ...restoFiltros } = filtros;
+    return restoFiltros;
+  }, [filtros]);
 
   // Detectar cambios de tamaño de ventana
   useEffect(() => {
@@ -68,6 +75,17 @@ const Catalogo = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  // Simular carga al cambiar ordenación
+  useEffect(() => {
+    if (filtros.ordenarPor && filtros.ordenarPor[0] !== "relevancia") {
+      setLoadingOrdenacion(true);
+      const timer = setTimeout(() => {
+        setLoadingOrdenacion(false);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [filtros.ordenarPor]);
 
   // Scroll al inicio al cargar la página
   useEffect(() => {
@@ -121,9 +139,9 @@ const Catalogo = () => {
     {
       categoria: categoriasBusqueda.length > 0 ? categoriasBusqueda : undefined,
       busqueda: searchQuery || "",
-      ...filtros,
+      ...filtrosBusqueda,
     },
-    `${categoria}-${searchQuery}-${JSON.stringify(filtros)}`
+    `${categoria}-${searchQuery}-${JSON.stringify(filtrosBusqueda)}`
   );
 
   // Paginación
@@ -131,28 +149,64 @@ const Catalogo = () => {
     ? PRODUCTOS_POR_PAGINA_MOBILE
     : PRODUCTOS_POR_PAGINA_DESKTOP;
 
-  const totalPaginas = Math.ceil(productos.length / productosPorPagina);
+  // Ordenar productos según el filtro seleccionado
+  const productosOrdenados = useMemo(() => {
+    const ordenarPor = filtros.ordenarPor?.[0];
+
+    if (!ordenarPor || ordenarPor === "relevancia") {
+      return productos;
+    }
+
+    const productosOrdenables = [...productos];
+
+    switch (ordenarPor) {
+      case "precio-asc":
+        return productosOrdenables.sort((a, b) => a.precio - b.precio);
+
+      case "precio-desc":
+        return productosOrdenables.sort((a, b) => b.precio - a.precio);
+
+      case "descuento": {
+        return productosOrdenables.sort((a, b) => {
+          const descuentoA = a.precioAnterior
+            ? ((a.precioAnterior - a.precio) / a.precioAnterior) * 100
+            : 0;
+          const descuentoB = b.precioAnterior
+            ? ((b.precioAnterior - b.precio) / b.precioAnterior) * 100
+            : 0;
+          return descuentoB - descuentoA;
+        });
+      }
+
+      default:
+        return productosOrdenables;
+    }
+  }, [productos, filtros.ordenarPor]);
+
+  const totalPaginas = Math.ceil(
+    productosOrdenados.length / productosPorPagina
+  );
   const paginaActual = Math.min(Math.max(1, pageParam), totalPaginas || 1);
 
   // Productos de la página actual (Desktop) o acumulados (Mobile)
   const productosVisibles = useMemo(() => {
     if (isMobile) {
       // Mobile: Mostrar productos acumulados hasta la página actual
-      return productos.slice(0, paginaActual * productosPorPagina);
+      return productosOrdenados.slice(0, paginaActual * productosPorPagina);
     } else {
       // Desktop: Mostrar solo productos de la página actual
       const inicio = (paginaActual - 1) * productosPorPagina;
       const fin = inicio + productosPorPagina;
-      return productos.slice(inicio, fin);
+      return productosOrdenados.slice(inicio, fin);
     }
-  }, [productos, paginaActual, productosPorPagina, isMobile]);
+  }, [productosOrdenados, paginaActual, productosPorPagina, isMobile]);
 
   // Detectar si hay productos de múltiples categorías (para mostrar separadores)
   const hayMultiplesCategorias = useMemo(() => {
-    if (productos.length === 0) return false;
+    if (productosOrdenados.length === 0) return false;
 
     const categoriasUnicas = new Set();
-    productos.forEach((p) => {
+    productosOrdenados.forEach((p) => {
       const cat = (p.categoria || p.categorias?.[0] || "").toLowerCase();
       if (cat.includes("reloj")) categoriasUnicas.add("relojes");
       else if (cat.includes("gafa")) categoriasUnicas.add("gafas");
@@ -161,7 +215,7 @@ const Catalogo = () => {
     });
 
     return categoriasUnicas.size > 1;
-  }, [productos]);
+  }, [productosOrdenados]);
 
   // Scroll al inicio al cambiar de página (solo desktop)
   useEffect(() => {
@@ -247,13 +301,13 @@ const Catalogo = () => {
 
   // Detectar categoría predominante en los resultados de búsqueda
   const categoriaPredominante = useMemo(() => {
-    if (!searchQuery || productos.length === 0) {
+    if (!searchQuery || productosOrdenados.length === 0) {
       return categoria || "todos";
     }
 
     // Contar productos por categoría
     const contadores = {};
-    productos.forEach((producto) => {
+    productosOrdenados.forEach((producto) => {
       const cats = producto.categorias || [];
       cats.forEach((cat) => {
         if (cat) {
@@ -301,7 +355,7 @@ const Catalogo = () => {
       .map(([cat]) => cat);
 
     // Si hay una categoría clara (>60% de productos), usarla
-    const totalProductos = productos.length;
+    const totalProductos = productosOrdenados.length;
     const porcentajeDominante =
       categoriasPrincipales[categoriaDominante] / totalProductos;
 
@@ -311,7 +365,7 @@ const Catalogo = () => {
 
     // Si hay mezcla, mantener 'todos'
     return "todos";
-  }, [productos, searchQuery, categoria]);
+  }, [productosOrdenados, searchQuery, categoria]);
 
   const handleFiltroChange = (nuevosFiltros) => {
     setFiltrosAdicionales(nuevosFiltros);
@@ -427,7 +481,7 @@ const Catalogo = () => {
             onFiltroChange={handleFiltroChange}
             isOpen={true}
             onToggle={() => {}}
-            totalProducts={productos.length}
+            totalProducts={productosOrdenados.length}
             esResultadoBusqueda={!!searchQuery}
           />
         </div>
@@ -442,7 +496,7 @@ const Catalogo = () => {
               onFiltroChange={handleFiltroChange}
               isOpen={isSidebarOpen}
               onToggle={toggleSidebar}
-              totalProducts={productos.length}
+              totalProducts={productosOrdenados.length}
               esResultadoBusqueda={!!searchQuery}
             />
           </div>
@@ -451,137 +505,180 @@ const Catalogo = () => {
             ref={catalogoRef}
             className="flex flex-col justify-between gap-3 mb-4 sm:flex-row sm:items-center sm:mb-6"
           >
-            <h1 className="text-xl font-semibold tracking-wide text-gray-900 sm:text-2xl lg:text-3xl">
+            <h1 className="text-xl font-light tracking-widest uppercase text-gray-900 sm:text-2xl lg:text-3xl">
               {tituloCategoria}
             </h1>
-            <div className="text-sm text-gray-500 sm:text-base">
-              {isMobile && productosVisibles.length < productos.length
-                ? `Mostrando ${productosVisibles.length} de ${productos.length} productos`
-                : `${productos.length} producto${
-                    productos.length !== 1 ? "s" : ""
+            <div className="text-sm font-light text-gray-500 sm:text-base">
+              {isMobile && productosVisibles.length < productosOrdenados.length
+                ? `Mostrando ${productosVisibles.length} de ${productosOrdenados.length} productos`
+                : `${productosOrdenados.length} producto${
+                    productosOrdenados.length !== 1 ? "s" : ""
                   }`}
             </div>
           </div>
 
           {loading ? (
             <SkeletonGrid count={8} />
-          ) : productos.length === 0 ? (
+          ) : productosOrdenados.length === 0 ? (
             <div className="px-4 py-12 text-center">
-              <p className="mb-4 text-sm text-gray-500 sm:text-base">
+              <p className="mb-4 text-sm font-light text-gray-500 sm:text-base">
                 {searchQuery
                   ? `No se encontraron productos para "${searchQuery}"`
                   : "No se encontraron productos que coincidan con los filtros seleccionados."}
               </p>
               <button
                 onClick={limpiarFiltros}
-                className="px-4 py-2 text-sm font-medium transition-colors rounded-md sm:text-base text-amber-600 hover:text-amber-700 hover:bg-amber-50"
+                className="px-4 py-2 text-sm font-light transition-colors rounded-md sm:text-base text-amber-600 hover:text-amber-700 hover:bg-amber-50"
               >
                 Limpiar filtros
               </button>
             </div>
           ) : (
             <>
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={`productos-${paginaActual}-${productosVisibles.length}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.15 }}
-                  className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                >
-                  {productosVisibles.map((producto, index) => {
-                    // Detectar si es un producto recién cargado
-                    const esProductoNuevo =
-                      isMobile &&
-                      index >= productosAntesDeCargarRef.current &&
-                      productosAntesDeCargarRef.current > 0;
-
-                    // Detectar cambio de categoría para separador visual
-                    const productoAnterior =
-                      index > 0 ? productosVisibles[index - 1] : null;
-                    const categoriaActual = (
-                      producto.categoria ||
-                      producto.categorias?.[0] ||
-                      ""
-                    ).toLowerCase();
-                    const categoriaAnterior = productoAnterior
-                      ? (
-                          productoAnterior.categoria ||
-                          productoAnterior.categorias?.[0] ||
-                          ""
-                        ).toLowerCase()
-                      : "";
-
-                    const normalizarCategoria = (cat) => {
-                      if (cat.includes("reloj")) return "relojes";
-                      if (cat.includes("gafa")) return "gafas";
-                      if (cat.includes("bolso")) return "bolsos";
-                      return cat;
-                    };
-
-                    const categoriaNormalizada =
-                      normalizarCategoria(categoriaActual);
-                    const categoriaAnteriorNormalizada =
-                      normalizarCategoria(categoriaAnterior);
-
-                    const mostrarSeparador =
-                      hayMultiplesCategorias &&
-                      index > 0 &&
-                      categoriaNormalizada !== categoriaAnteriorNormalizada;
-
-                    const nombresCategorias = {
-                      relojes: "Relojes",
-                      gafas: "Gafas de Sol",
-                      bolsos: "Bolsos",
-                    };
-
-                    return (
-                      <React.Fragment key={producto.slug}>
-                        {mostrarSeparador && (
-                          <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="col-span-full my-4 flex items-center gap-4"
-                          >
-                            <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-gray-300"></div>
-                            <h3 className="text-sm font-light tracking-wider text-gray-600 uppercase">
-                              {nombresCategorias[categoriaNormalizada] ||
-                                categoriaNormalizada}
-                            </h3>
-                            <div className="h-px flex-1 bg-gradient-to-l from-transparent via-gray-300 to-gray-300"></div>
-                          </motion.div>
-                        )}
-                        <motion.div
-                          initial={
-                            esProductoNuevo
-                              ? { opacity: 0, y: 30 }
-                              : { opacity: 1, y: 0 }
-                          }
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{
-                            duration: 0.5,
-                            delay: esProductoNuevo
-                              ? (index - productosAntesDeCargarRef.current) *
-                                0.08
-                              : 0,
-                            ease: [0.25, 0.46, 0.45, 0.94],
-                          }}
+              <div className="relative">
+                {/* Overlay de carga al ordenar */}
+                <AnimatePresence>
+                  {loadingOrdenacion && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm"
+                    >
+                      <div className="flex flex-col items-center gap-3">
+                        <svg
+                          className="w-8 h-8 text-black animate-spin"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
                         >
-                          <ProductoCard producto={producto} />
-                        </motion.div>
-                      </React.Fragment>
-                    );
-                  })}
-                </motion.div>
-              </AnimatePresence>
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        <span className="text-sm text-gray-600">
+                          Ordenando productos...
+                        </span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={`productos-${paginaActual}-${
+                      productosVisibles.length
+                    }-${filtros.ordenarPor?.[0] || "default"}`}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: loadingOrdenacion ? 0.3 : 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.15 }}
+                    className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                  >
+                    {productosVisibles.map((producto, index) => {
+                      // Detectar si es un producto recién cargado
+                      const esProductoNuevo =
+                        isMobile &&
+                        index >= productosAntesDeCargarRef.current &&
+                        productosAntesDeCargarRef.current > 0;
+
+                      // Detectar cambio de categoría para separador visual
+                      const productoAnterior =
+                        index > 0 ? productosVisibles[index - 1] : null;
+                      const categoriaActual = (
+                        producto.categoria ||
+                        producto.categorias?.[0] ||
+                        ""
+                      ).toLowerCase();
+                      const categoriaAnterior = productoAnterior
+                        ? (
+                            productoAnterior.categoria ||
+                            productoAnterior.categorias?.[0] ||
+                            ""
+                          ).toLowerCase()
+                        : "";
+
+                      const normalizarCategoria = (cat) => {
+                        if (cat.includes("reloj")) return "relojes";
+                        if (cat.includes("gafa")) return "gafas";
+                        if (cat.includes("bolso")) return "bolsos";
+                        return cat;
+                      };
+
+                      const categoriaNormalizada =
+                        normalizarCategoria(categoriaActual);
+                      const categoriaAnteriorNormalizada =
+                        normalizarCategoria(categoriaAnterior);
+
+                      const mostrarSeparador =
+                        hayMultiplesCategorias &&
+                        index > 0 &&
+                        categoriaNormalizada !== categoriaAnteriorNormalizada;
+
+                      const nombresCategorias = {
+                        relojes: "Relojes",
+                        gafas: "Gafas de Sol",
+                        bolsos: "Bolsos",
+                      };
+
+                      return (
+                        <React.Fragment key={producto.slug}>
+                          {mostrarSeparador && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="col-span-full my-4 flex items-center gap-4"
+                            >
+                              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-300 to-gray-300"></div>
+                              <h3 className="text-sm font-light tracking-wider text-gray-600 uppercase">
+                                {nombresCategorias[categoriaNormalizada] ||
+                                  categoriaNormalizada}
+                              </h3>
+                              <div className="h-px flex-1 bg-gradient-to-l from-transparent via-gray-300 to-gray-300"></div>
+                            </motion.div>
+                          )}
+                          <motion.div
+                            initial={
+                              esProductoNuevo
+                                ? { opacity: 0, y: 30 }
+                                : { opacity: 1, y: 0 }
+                            }
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                              duration: 0.5,
+                              delay: esProductoNuevo
+                                ? (index - productosAntesDeCargarRef.current) *
+                                  0.08
+                                : 0,
+                              ease: [0.25, 0.46, 0.45, 0.94],
+                            }}
+                          >
+                            <ProductoCard producto={producto} />
+                          </motion.div>
+                        </React.Fragment>
+                      );
+                    })}
+                    }
+                  </motion.div>
+                </AnimatePresence>
+              </div>
 
               {/* Paginación Desktop o Load More Mobile */}
-              {productos.length > productosPorPagina && (
+              {productosOrdenados.length > productosPorPagina && (
                 <div className="my-8">
                   {isMobile ? (
                     /* Mobile: Load More Button */
-                    productosVisibles.length < productos.length && (
+                    productosVisibles.length < productosOrdenados.length && (
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -740,10 +837,10 @@ const Paginacion = ({
   return (
     <div className="space-y-4">
       {/* Información de productos mostrados */}
-      <div className="text-center text-sm text-gray-600">
-        Mostrando <span className="font-medium text-gray-900">{inicio}</span> -{" "}
-        <span className="font-medium text-gray-900">{fin}</span> de{" "}
-        <span className="font-medium text-gray-900">{totalProductos}</span>{" "}
+      <div className="text-center text-sm font-light text-gray-600">
+        Mostrando <span className="font-normal text-gray-900">{inicio}</span> -{" "}
+        <span className="font-normal text-gray-900">{fin}</span> de{" "}
+        <span className="font-normal text-gray-900">{totalProductos}</span>{" "}
         productos
       </div>
 

@@ -37,8 +37,9 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-sm sm:text-base leading-relaxed text-gray-300 mb-6">
-              Más de tres generaciones de experiencia en óptica, joyería y relojería.
-              Calidad, elegancia y atención personalizada en cada detalle.
+              Más de tres generaciones de experiencia en óptica, joyería y
+              relojería. Calidad, elegancia y atención personalizada en cada
+              detalle.
             </p>
 
             {/* Redes sociales */}
@@ -82,7 +83,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 gap-6 sm:gap-8 lg:col-span-5 lg:grid-cols-2">
             {/* Columna 2: Enlaces rápidos */}
             <div>
-              <h3 className="mb-4 sm:mb-5 text-base sm:text-lg font-semibold tracking-wide">
+              <h3 className="mb-4 sm:mb-5 text-base sm:text-lg font-light tracking-widest uppercase">
                 Explora
               </h3>
               <ul className="space-y-2.5 text-sm sm:text-base">
@@ -133,9 +134,9 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Columna 4: Contacto e info */}
+          {/* Columna 4: Contacto */}
           <div className="lg:col-span-3">
-            <h3 className="mb-4 sm:mb-5 text-base sm:text-lg font-semibold tracking-wide">
+            <h3 className="mb-4 sm:mb-5 text-base sm:text-lg font-light tracking-widest uppercase">
               Contacto
             </h3>
             <ul className="space-y-4 text-sm sm:text-base">
@@ -144,7 +145,7 @@ export default function Footer() {
                 <div>
                   <a
                     href="tel:957602123"
-                    className="font-medium hover:text-white transition-colors"
+                    className="font-light hover:text-white transition-colors"
                   >
                     957 60 21 23
                   </a>
@@ -155,7 +156,7 @@ export default function Footer() {
                 <div>
                   <a
                     href="mailto:opticadelvaljoyeros@gmail.com"
-                    className="font-medium hover:text-white transition-colors break-all"
+                    className="font-light hover:text-white transition-colors break-all"
                   >
                     opticadelvaljoyeros@gmail.com
                   </a>
@@ -164,7 +165,7 @@ export default function Footer() {
               <li className="flex items-center gap-3 text-gray-300">
                 <MapPin className="w-5 h-5 text-white flex-shrink-0" />
                 <div>
-                  <p className="font-medium">
+                  <p className="font-light">
                     C/ Cristóbal Castillo, 13
                     <br />
                     14500 Puente Genil, Córdoba
@@ -174,7 +175,7 @@ export default function Footer() {
               <li className="flex items-center gap-3 text-gray-300">
                 <Clock className="w-5 h-5 text-white flex-shrink-0" />
                 <div>
-                  <p className="font-medium text-sm leading-relaxed">
+                  <p className="font-light text-sm leading-relaxed">
                     Lun-Vie: 10:00 - 14:00 / 17:30 - 20:30
                     <br />
                     Sábado: 10:00 - 14:00

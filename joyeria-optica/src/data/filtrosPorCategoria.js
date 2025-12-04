@@ -236,6 +236,17 @@ export const filtrosPorCategoria = {
   },
   todos: {},
   global: {
+    ordenarPor: {
+      label: "Ordenar por",
+      type: "radio",
+      options: [
+        { value: "relevancia", label: "Relevancia" },
+        { value: "precio-asc", label: "Precio: Menor a Mayor" },
+        { value: "precio-desc", label: "Precio: Mayor a Menor" },
+        { value: "descuento", label: "Mayor Descuento" },
+      ],
+      priority: 1,
+    },
     precio: {
       label: "Precio",
       type: "range",

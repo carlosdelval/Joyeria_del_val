@@ -41,11 +41,13 @@ const Contacto = () => {
           transition={{ duration: 0.4 }}
           className="mb-8 sm:mb-12 text-center"
         >
-          <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-wider text-black">
+          <h1 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-light tracking-widest uppercase text-black">
             CONTACTO
           </h1>
           <div className="w-24 h-px mx-auto bg-gray-300"></div>
-          <p className="mt-4 text-gray-600">Estamos aquí para ayudarte</p>
+          <p className="mt-4 font-light text-gray-600">
+            Estamos aquí para ayudarte
+          </p>
         </motion.header>
 
         {/* Contenido principal */}
@@ -57,20 +59,20 @@ const Contacto = () => {
             transition={{ delay: 0.1 }}
             className="p-6 border border-gray-100 rounded-sm"
           >
-            <h2 className="flex items-center pb-2 mb-4 sm:mb-6 text-lg sm:text-xl font-light tracking-wider text-black border-b">
+            <h2 className="flex items-center pb-2 mb-4 sm:mb-6 text-lg sm:text-xl font-light tracking-wide uppercase text-black border-b">
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-red-600" />
               Información de contacto
             </h2>
 
-            <div className="space-y-4 text-xs sm:text-sm text-gray-700">
+            <div className="space-y-4 text-xs sm:text-sm font-light text-gray-700">
               <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
                 <div className="flex items-start">
                   <MapPin className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 mt-0.5 mr-2 sm:mr-3 text-red-600" />
                   <div>
-                    <h3 className="font-medium text-sm sm:text-base">
+                    <h3 className="font-normal text-sm sm:text-base">
                       Dirección
                     </h3>
-                    <p className="mt-1 text-gray-600">
+                    <p className="mt-1 font-light text-gray-600">
                       Calle Cristobal Castillo 13
                       <br />
                       14500 Puente Genil, Córdoba
@@ -83,8 +85,8 @@ const Contacto = () => {
                 <div className="flex items-start">
                   <Phone className="flex-shrink-0 w-5 h-5 mt-0.5 mr-3 text-red-600" />
                   <div>
-                    <h3 className="font-medium">Teléfono</h3>
-                    <p className="mt-1 text-gray-600">
+                    <h3 className="font-normal">Teléfono</h3>
+                    <p className="mt-1 font-light text-gray-600">
                       <a
                         href="tel:957602123"
                         className="underline hover:text-black"
@@ -101,8 +103,8 @@ const Contacto = () => {
                 <div className="flex items-start">
                   <Mail className="flex-shrink-0 w-5 h-5 mt-0.5 mr-3 text-red-600" />
                   <div>
-                    <h3 className="font-medium">Email</h3>
-                    <p className="mt-1 text-gray-600">
+                    <h3 className="font-normal">Email</h3>
+                    <p className="mt-1 font-light text-gray-600">
                       <a
                         href="mailto:opticadelvaljoyeros@gmail.com"
                         className="underline hover:text-black"
@@ -116,8 +118,8 @@ const Contacto = () => {
                 <div className="flex items-start">
                   <Clock className="flex-shrink-0 w-5 h-5 mt-0.5 mr-3 text-red-600" />
                   <div>
-                    <h3 className="font-medium">Horario comercial</h3>
-                    <p className="mt-1 text-gray-600">
+                    <h3 className="font-normal">Horario comercial</h3>
+                    <p className="mt-1 font-light text-gray-600">
                       Lunes a Viernes: 10:00-14:00 y 17:00-21:00
                       <br />
                       Sábados: 10:00-14:00
@@ -135,7 +137,7 @@ const Contacto = () => {
             transition={{ delay: 0.2 }}
             className="p-6 border border-gray-100 rounded-sm"
           >
-            <h2 className="flex items-center pb-2 mb-6 text-xl font-light tracking-wider text-black border-b">
+            <h2 className="flex items-center pb-2 mb-6 text-xl font-light tracking-wide uppercase text-black border-b">
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               Envíanos un mensaje
             </h2>
@@ -145,7 +147,7 @@ const Contacto = () => {
                 <div>
                   <label
                     htmlFor="nombre"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-light text-gray-700"
                   >
                     Nombre *
                   </label>
@@ -160,7 +162,7 @@ const Contacto = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-light text-gray-700"
                   >
                     Email *
                   </label>
@@ -177,7 +179,7 @@ const Contacto = () => {
               <div>
                 <label
                   htmlFor="asunto"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-light text-gray-700"
                 >
                   Asunto *
                 </label>
@@ -193,7 +195,7 @@ const Contacto = () => {
               <div>
                 <label
                   htmlFor="mensaje"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-light text-gray-700"
                 >
                   Mensaje *
                 </label>
@@ -231,7 +233,7 @@ const Contacto = () => {
 
               <button
                 type="submit"
-                className="px-6 py-2 text-sm font-medium text-white bg-black border border-black rounded-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
+                className="px-6 py-2 text-sm font-light tracking-wider uppercase text-white bg-black border border-black rounded-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600"
               >
                 Enviar mensaje
               </button>
@@ -261,7 +263,7 @@ const Contacto = () => {
             transition={{ delay: 0.4 }}
             className="p-6 text-center border border-gray-100 rounded-sm"
           >
-            <h2 className="flex items-center justify-center pb-2 mb-6 text-xl font-light tracking-wider text-black border-b">
+            <h2 className="flex items-center justify-center pb-2 mb-6 text-xl font-light tracking-wide uppercase text-black border-b">
               <ChevronRight className="w-5 h-5 mr-2 text-red-600" />
               Síguenos en redes sociales
             </h2>

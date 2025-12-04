@@ -12,6 +12,16 @@ export default {
           "100%": { transform: "translateX(100%)" },
         },
       },
+      fontWeight: {
+        light: "300", // Peso por defecto
+        normal: "400",
+        medium: "500",
+      },
+      letterSpacing: {
+        wide: "0.05em",
+        wider: "0.05em",
+        widest: "0.1em",
+      },
     },
   },
   plugins: [],
