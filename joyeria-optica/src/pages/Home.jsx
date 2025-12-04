@@ -102,66 +102,54 @@ export default function Home() {
       <HeroCarousel />
 
       {/* Acordeón Hero */}
-      <div className="container mx-auto block md:hidden sm:mt-20 md:mt-24 lg:mt-28">
-        <AnimatedSection>
-          <VerticalAccordion />
-        </AnimatedSection>
-      </div>
+      <AnimatedSection className="block md:hidden">
+        <VerticalAccordion />
+      </AnimatedSection>
 
-      {/* Secciones con contenedor y padding consistente */}
-      <div className="container mx-auto px-5 sm:px-4">
-        {/* Grid de artículos */}
-        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28 hidden md:block">
-          <GridArticulos />
-        </AnimatedSection>
+      {/* Colección TOUS */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <ColeccionTous />
+      </AnimatedSection>
 
-        {/* Colección TOUS */}
-        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-          <ColeccionTous />
-        </AnimatedSection>
+      {/* Colección Salvatore Plata */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <ColeccionSalvatorePlata />
+      </AnimatedSection>
 
-        {/* Colección Salvatore Plata */}
-        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-          <ColeccionSalvatorePlata />
-        </AnimatedSection>
+      {/* Promoción */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <Promocion />
+      </AnimatedSection>
 
-        {/* Promoción */}
-        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-          <Promocion />
-        </AnimatedSection>
+      {/* Banner Marcas Relojes */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <BannerMarcasRelojes />
+      </AnimatedSection>
 
-        {/* Banner Marcas Relojes */}
-        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-          <BannerMarcasRelojes />
-        </AnimatedSection>
-      </div>
-
-      {/* Banner Ray-Ban Meta (ancho completo) */}
+      {/* Banner Ray-Ban Meta */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
         <BannerRaybanMeta />
       </AnimatedSection>
 
       {/* Banner Marcas Óptica */}
-      <div className="container mx-auto px-5 sm:px-4">
-        <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-          <BannerMarcas
-            titulo="Tenemos tus marcas favoritas en gafas de sol"
-            marcas={marcasOptica}
-            categoriaBase="gafas"
-          />
-        </AnimatedSection>
-      </div>
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <BannerMarcas
+          titulo="Tus marcas favoritas en gafas de sol"
+          marcas={marcasOptica}
+          categoriaBase="gafas"
+        />
+      </AnimatedSection>
 
-      {/* Banner Instagram && Colecciones Destacadas (ancho completo) */}
+      {/* Banner Instagram && Colecciones Destacadas */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
         <BannerInstagram />
         <ColeccionesDestacadas />
       </AnimatedSection>
 
-      {/* Contacto (ancho completo, sin AnimatedSection para evitar doble animación) */}
-      <section className="mt-16 sm:mt-20 md:mt-24 lg:mt-28 mb-0">
+      {/* Contacto */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28 mb-0">
         <ContactoOptica />
-      </section>
+      </AnimatedSection>
     </>
   );
 }

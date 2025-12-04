@@ -29,22 +29,26 @@ export default function BannerMarcas({
   };
 
   return (
-    <div className="container mx-auto">
-      {/* Header */}
-      <div>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="hidden mb-6 text-3xl font-bold text-left sm:text-center sm:mb-8 md:block"
-        >
-          {titulo}
-        </motion.h2>
-      </div>
+    <div className="px-4 sm:px-6 lg:px-8">
+      {/* Título de sección */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mb-12 text-center"
+      >
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="w-12 h-px bg-gray-300"></div>
+          <h2 className="text-2xl font-light tracking-widest text-black uppercase sm:text-3xl">
+            {titulo}
+          </h2>
+          <div className="w-12 h-px bg-gray-300"></div>
+        </div>
+      </motion.div>
 
       {/* Grid de marcas - 2x2 */}
-      <div className="grid grid-cols-1 gap-4 mb-8 md:grid-cols-2 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
         {marcas.map((marca, index) => {
           const isImageLoaded = loadedImages[marca.slug];
 
@@ -63,7 +67,7 @@ export default function BannerMarcas({
                 ease: "easeOut",
               }}
               onClick={() => handleClickMarca(marca)}
-              className="relative overflow-hidden transition-all duration-500 bg-gray-100 rounded-lg shadow-md cursor-pointer group h-72 md:h-80 hover:shadow-2xl"
+              className="relative overflow-hidden transition-all duration-300 bg-white border-2 border-gray-200 cursor-pointer group h-72 md:h-80 hover:border-black"
             >
               {/* Imagen de fondo */}
               <div className="absolute inset-0">
@@ -71,7 +75,7 @@ export default function BannerMarcas({
                   src={marca.imagen}
                   alt={`${marca.nombre} ${marca.descripcion || ""}`}
                   loading="lazy"
-                  className={`object-cover w-full h-full transition-all duration-700 group-hover:scale-110 ${
+                  className={`object-cover w-full h-full transition-all duration-500 group-hover:scale-105 ${
                     marca.objectPosition || ""
                   } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
                   onLoad={() => {
@@ -91,25 +95,25 @@ export default function BannerMarcas({
               </div>
 
               {/* Overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
 
               {/* Contenido */}
               <div className="relative z-10 flex flex-col justify-end h-full p-6">
                 <div>
-                  <h3 className="mb-2 text-3xl font-bold text-white transition-transform duration-300 md:text-4xl group-hover:scale-105">
+                  <h3 className="mb-2 text-3xl font-light tracking-wide text-white uppercase transition-transform duration-300 md:text-4xl group-hover:translate-x-1">
                     {marca.nombre}
                   </h3>
 
                   {/* Descripción opcional */}
                   {marca.descripcion && (
-                    <p className="mb-3 text-sm text-white/80">
+                    <p className="mb-3 text-sm font-light text-white/90">
                       {marca.descripcion}
                     </p>
                   )}
 
                   {/* Botón ver más */}
                   <div className="flex items-center text-white transition-transform duration-300 group-hover:translate-x-2">
-                    <span className="mr-2 text-sm font-medium">
+                    <span className="mr-2 text-sm font-light tracking-wide">
                       Explorar colección
                     </span>
                     <svg
@@ -128,9 +132,6 @@ export default function BannerMarcas({
                   </div>
                 </div>
               </div>
-
-              {/* Línea decorativa en hover */}
-              <div className="absolute bottom-0 left-0 w-full h-1 transition-all duration-500 scale-x-0 bg-gradient-to-r from-transparent via-white to-transparent group-hover:scale-x-100"></div>
             </motion.div>
           );
         })}

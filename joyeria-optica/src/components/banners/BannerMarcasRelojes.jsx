@@ -34,7 +34,7 @@ export default function BannerMarcasRelojes() {
 
   return (
     <BannerMarcas
-      titulo="Trabajamos con las mejores marcas relojeras"
+      titulo="Nuestras Marcas de Relojes"
       marcas={marcas}
       categoriaBase="relojes"
     />

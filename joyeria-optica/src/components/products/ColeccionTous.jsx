@@ -136,6 +136,9 @@ export default function ColeccionTous() {
         // Aplicar variedad visual
         tousBags = aplicarVariedadVisual(tousBags);
 
+        // Limitar a 10 productos para el carrusel
+        tousBags = tousBags.slice(0, 10);
+
         setProducts(tousBags);
       } catch (error) {
         console.error("Error cargando bolsos TOUS:", error);
@@ -244,161 +247,186 @@ export default function ColeccionTous() {
     );
 
   return (
-    <div className="flex flex-col w-full gap-6 md:flex-row">
-      {/* Sección de texto */}
-      <div className="w-full md:w-1/5">
-        <h2 className="mb-3 text-3xl font-bold text-black">Bolsos TOUS</h2>
-        <p className="text-gray-600">
-          Descubre nuestra exclusiva selección de bolsos TOUS.
-        </p>
-        <div className="mt-4">
-          <button
-            onClick={goToCatalog}
-            className="w-full px-3 py-4 text-lg transition duration-300 border border-black hover:bg-black hover:text-white cursor-pointer"
-          >
-            Ver colección
-          </button>
+    <div className="px-4 sm:px-6 lg:px-8">
+      {/* Título de sección */}
+      <div className="mb-12 text-center">
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="w-12 h-px bg-gray-300"></div>
+          <h2 className="text-2xl font-light tracking-widest text-black uppercase sm:text-3xl">
+            Bolsos TOUS
+          </h2>
+          <div className="w-12 h-px bg-gray-300"></div>
         </div>
+        <p className="max-w-2xl mx-auto text-base font-light text-gray-600">
+          Descubre nuestra exclusiva selección de bolsos TOUS
+        </p>
       </div>
 
-      {/* Carrusel */}
-      <div className="relative w-full overflow-hidden md:w-4/5">
-        <div
-          className={`flex transition-transform duration-300 ease-in-out ${
-            isNavigating ? "opacity-90" : ""
-          }`}
-          style={{
-            transform: `translateX(-${currentIndex * (100 / slidesToShow)}%)`,
-            pointerEvents: isNavigating ? "none" : "auto", // Deshabilita interacciones
-          }}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="flex-shrink-0 md:px-2"
-              style={{ width: `${100 / slidesToShow}%` }}
-            >
+      <div className="flex flex-col w-full gap-6 md:flex-row">
+        {/* Sección de texto */}
+        <div className="w-full md:w-1/5">
+          <h3 className="mb-3 text-2xl font-light tracking-wide text-black uppercase hidden sm:block">
+            Hasta 10% Descuento
+          </h3>
+          <p className="mb-6 text-sm font-light text-gray-600 hidden sm:block">
+            Diseño exclusivo que combina elegancia y funcionalidad
+          </p>
+          <button
+            onClick={goToCatalog}
+            className="w-full px-6 py-4 text-base font-light tracking-wide text-white transition-all duration-300 bg-black border-2 border-black cursor-pointer hover:bg-gray-900"
+          >
+            Ver Colección
+          </button>
+        </div>
+
+        {/* Carrusel */}
+        <div className="relative w-full overflow-hidden md:w-4/5">
+          <div
+            className={`flex transition-transform duration-300 ease-in-out ${
+              isNavigating ? "opacity-90" : ""
+            }`}
+            style={{
+              transform: `translateX(-${currentIndex * (100 / slidesToShow)}%)`,
+              pointerEvents: isNavigating ? "none" : "auto", // Deshabilita interacciones
+            }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {products.map((product) => (
               <div
-                className={`h-full overflow-hidden bg-white rounded-lg shadow-md cursor-pointer md:shadow-none hover:shadow-lg transition-opacity ${
-                  isNavigating ? "opacity-90" : ""
-                }`}
-                onClick={() => goToProduct(product.slug)}
+                key={product.id}
+                className="flex-shrink-0 md:px-2"
+                style={{ width: `${100 / slidesToShow}%` }}
               >
-                <div className="relative">
-                  <img
-                    src={product.imagenes?.[0] || "/placeholder-product.jpg"}
-                    alt={product.titulo}
-                    loading="lazy"
-                    className="object-cover w-full aspect-square"
-                  />
-                  {/* Badge de Black Friday (prioridad) */}
-                  {product.categorias?.some(
-                    (cat) =>
-                      cat?.toLowerCase() === "black_friday" ||
-                      cat?.toLowerCase() === "black-friday"
-                  ) && (
-                    <div className="absolute top-2 right-2 z-10 flex flex-col gap-1.5 items-end">
-                      <div className="px-2 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-red-600 rounded shadow-md">
-                        BLACK FRIDAY
-                      </div>
-                      {(product.precioAnterior ?? 0) > 0 && (
-                        <div className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-white bg-black rounded shadow-md">
-                          -{calcularDescuento(product)}%
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  {/* Badge de descuento (solo si no es Black Friday) */}
-                  {(product.precioAnterior ?? 0) > 0 &&
-                    !product.categorias?.some(
+                <div
+                  className={`relative h-full p-3 transition-all duration-300 bg-white border-2 border-gray-200 cursor-pointer group hover:border-black ${
+                    isNavigating ? "opacity-90" : ""
+                  }`}
+                  onClick={() => goToProduct(product.slug)}
+                >
+                  <div className="relative mb-3 overflow-hidden">
+                    <img
+                      src={product.imagenes?.[0] || "/placeholder-product.jpg"}
+                      alt={product.titulo}
+                      loading="lazy"
+                      className="object-contain w-full transition-transform duration-300 aspect-square group-hover:scale-105"
+                    />
+                    {/* Badge de Black Friday (prioridad) */}
+                    {product.categorias?.some(
                       (cat) =>
                         cat?.toLowerCase() === "black_friday" ||
                         cat?.toLowerCase() === "black-friday"
                     ) && (
-                      <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-md top-2 right-2">
-                        -{calcularDescuento(product)}%
+                      <div className="absolute top-2 right-2 z-10 flex flex-col gap-1.5 items-end">
+                        <div className="px-2 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-red-600 rounded shadow-md">
+                          BLACK FRIDAY
+                        </div>
+                        {(product.precioAnterior ?? 0) > 0 && (
+                          <div className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-white bg-black rounded shadow-md">
+                            -{calcularDescuento(product)}%
+                          </div>
+                        )}
                       </div>
                     )}
-                </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold">{product.titulo}</h3>
-                  <div className="mt-2">
-                    <span className="font-bold text-gray-900">
+                    {/* Badge de descuento (solo si no es Black Friday) */}
+                    {(product.precioAnterior ?? 0) > 0 &&
+                      !product.categorias?.some(
+                        (cat) =>
+                          cat?.toLowerCase() === "black_friday" ||
+                          cat?.toLowerCase() === "black-friday"
+                      ) && (
+                        <div className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded-md top-2 right-2">
+                          -{calcularDescuento(product)}%
+                        </div>
+                      )}
+                  </div>
+                  <p className="mb-2 text-sm font-light text-black line-clamp-2">
+                    {product.titulo}
+                  </p>
+
+                  <div className="flex items-center gap-2">
+                    <p className="text-base font-light text-black">
                       {product.precio.toLocaleString("es-ES", {
                         style: "currency",
                         currency: "EUR",
                       })}
-                    </span>
+                    </p>
                     {(product.precioAnterior ?? 0) > 0 && (
-                      <span className="ml-2 text-sm text-gray-500 line-through">
+                      <p className="text-xs font-light text-gray-400 line-through">
                         {product.precioAnterior.toLocaleString("es-ES", {
                           style: "currency",
                           currency: "EUR",
                         })}
-                      </span>
+                      </p>
                     )}
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        {/* Flechas de navegación */}
-        {products.length > slidesToShow && (
-          <>
-            <button
-              onClick={prevSlide}
-              className="absolute left-0 z-10 hidden p-2 ml-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+          {/* Flechas de navegación */}
+          {products.length > slidesToShow && (
+            <>
+              <button
+                onClick={prevSlide}
+                className="absolute left-0 z-10 hidden p-2 ml-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-            </button>
-            <button
-              onClick={nextSlide}
-              className="absolute right-0 z-10 hidden p-2 mr-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <button
+                onClick={nextSlide}
+                className="absolute right-0 z-10 hidden p-2 mr-2 text-gray-800 -translate-y-1/2 rounded-full shadow-md md:block top-1/2 bg-white/80 hover:bg-white"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
-          </>
-        )}
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </>
+          )}
+        </div>
 
         {/* Indicadores para móvil */}
         {slidesToShow === 1 && products.length > 1 && (
-          <div className="flex justify-center mt-4 space-x-2 md:hidden">
+          <div
+            className="flex justify-center items-center gap-3 md:hidden"
+            style={{ minHeight: "20px" }}
+          >
             {products.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  currentIndex === index ? "bg-gray-800 w-6" : "bg-gray-300"
-                }`}
+                className="rounded-full transition-all"
+                style={{
+                  width: currentIndex === index ? "32px" : "8px",
+                  height: "8px",
+                  backgroundColor:
+                    currentIndex === index ? "#000000" : "#d1d5db",
+                  flexShrink: 0,
+                }}
                 aria-label={`Ver producto ${index + 1}`}
               />
             ))}

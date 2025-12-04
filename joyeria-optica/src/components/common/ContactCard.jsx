@@ -5,15 +5,17 @@ import { useState } from "react";
 
 const ContactItem = ({ icon, title, children }) => {
   return (
-    <div className="flex items-start p-3 space-x-3 transition-all duration-300 border border-gray-100 rounded-lg sm:p-4 sm:space-x-4 hover:border-gray-200 hover:shadow-sm">
-      <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-black rounded-full sm:w-10 sm:h-10">
+    <div className="flex items-start p-3 space-x-3 transition-all duration-300 border-2 border-gray-200 sm:p-4 sm:space-x-4 hover:border-black">
+      <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 bg-black sm:w-10 sm:h-10">
         {icon}
       </div>
       <div className="min-w-0">
-        <p className="text-sm font-medium text-gray-900 sm:text-base">
+        <p className="text-sm font-light tracking-wide text-black uppercase sm:text-base">
           {title}
         </p>
-        <div className="text-xs text-gray-600 sm:text-sm">{children}</div>
+        <div className="text-xs font-light text-gray-600 sm:text-sm">
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -63,7 +65,7 @@ const AccordionImage = ({ image, isOpen, onToggle }) => {
         flex: isOpen ? "1 1 60%" : "1 1 0%",
       }}
       transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-      className="relative overflow-hidden rounded-lg cursor-pointer group min-h-[200px] sm:min-h-[300px] lg:min-h-[400px]"
+      className="relative overflow-hidden border-2 border-gray-200 cursor-pointer group min-h-[200px] sm:min-h-[300px] lg:min-h-[400px] hover:border-black transition-colors duration-300"
       onClick={onToggle}
       style={{ willChange: isOpen ? "flex" : "auto" }}
     >
@@ -97,7 +99,7 @@ const AccordionImage = ({ image, isOpen, onToggle }) => {
             transform: isOpen ? "translateY(0)" : "translateY(10px)",
           }}
         >
-          <h3 className="mb-2 text-lg font-bold text-white sm:text-xl lg:text-2xl">
+          <h3 className="mb-2 text-lg font-light tracking-wide text-white uppercase sm:text-xl lg:text-2xl">
             {image.title}
           </h3>
 
@@ -108,7 +110,7 @@ const AccordionImage = ({ image, isOpen, onToggle }) => {
               opacity: isOpen ? 1 : 0,
             }}
           >
-            <p className="mb-3 text-sm text-gray-200 sm:text-base">
+            <p className="mb-3 text-sm font-light text-white/90 sm:text-base">
               {image.description}
             </p>
           </div>
@@ -154,9 +156,15 @@ const ContactoOptica = () => {
       className="px-4 py-12 bg-white border-t sm:px-6 md:px-10 lg:px-20 sm:py-16"
     >
       <div className="max-w-6xl mx-auto">
-        <h2 className="mb-6 text-2xl font-bold text-center sm:mb-8 md:mb-12 sm:text-3xl md:text-4xl">
-          ¡Visita nuestra óptica!
-        </h2>
+        <div className="mb-12 text-center">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div className="w-12 h-px bg-gray-300"></div>
+            <h2 className="text-2xl font-light tracking-widest text-black uppercase sm:text-3xl">
+              Visita Nuestra Óptica
+            </h2>
+            <div className="w-12 h-px bg-gray-300"></div>
+          </div>
+        </div>
 
         <div className="space-y-6 sm:space-y-8">
           {/* Sección superior: Contactos + Mapa */}
@@ -199,7 +207,7 @@ const ContactoOptica = () => {
             </div>
 
             {/* Mapa */}
-            <div className="order-2 h-64 overflow-hidden transition-shadow duration-300 rounded-lg shadow-sm hover:shadow-md aspect-video lg:order-2 lg:col-span-2 sm:h-80 lg:h-auto">
+            <div className="order-2 h-64 overflow-hidden transition-all duration-300 border-2 border-gray-200 hover:border-black aspect-video lg:order-2 lg:col-span-2 sm:h-80 lg:h-auto">
               <iframe
                 title="Ubicación Óptica"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235.6113726772949!2d-4.768496991523713!3d37.3899235866001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6d4319432b634b%3A0x792105c6755a790f!2sOptica%20Del%20Val%20Joyeros!5e0!3m2!1ses!2ses!4v1753627847584!5m2!1ses!2ses"
@@ -224,7 +232,7 @@ const ContactoOptica = () => {
             </div>
 
             {/* Indicador de interacción */}
-            <p className="mt-4 text-xs text-center text-gray-500 sm:text-sm">
+            <p className="mt-4 text-xs font-light text-center text-gray-500 sm:text-sm">
               Haz clic en las imágenes para explorar nuestra galería
             </p>
           </div>

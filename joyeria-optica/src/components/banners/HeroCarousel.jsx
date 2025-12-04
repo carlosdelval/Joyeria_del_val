@@ -59,28 +59,26 @@ export default function HeroCarousel({
       overlayOpacity: 45,
     },
     {
-      tipo: "video",
-      videoSrc: "/tous-video.mp4",
-      videoSrcWebm: "/tous-video.webm",
-      poster: "/tous-miniatura.jpg",
+      tipo: "imagen",
+      imagenSrc: "/tous-amaia.jpg", // Imagen para desktop
+      imagenSrcMobile: "/amaia-tous.jpg", // Imagen para móvil (cambiar por tu imagen)
       titulo: "TOUS",
       subtitulo: "Relojería y accesorios de lujo",
       cta: {
         text: "Explorar TOUS",
         link: "/catalogo/tous",
       },
-      overlayOpacity: 45,
+      objectPosition: "object-top md:object-center",
     },
     {
       tipo: "video",
       videoSrc: "/rayban-video.mp4",
-      videoSrcWebm: "/rayban-video.webm",
       poster: "/rayban-miniatura.jpg",
       titulo: "RAY-BAN",
       subtitulo: "Gafas de sol icónicas",
-      cta: { text: "Ver Ray-Ban", link: "/catalogo/gafas?marca=ray-ban" },
+      cta: { text: "Ir a Ray-Ban", link: "/catalogo/gafas?marca=ray-ban" },
       overlayOpacity: 40,
-    }
+    },
   ];
 
   const slidesAMostrar = slides.length > 0 ? slides : slidesDefault;
@@ -126,17 +124,14 @@ export default function HeroCarousel({
     enter: (direction) => ({
       x: direction > 0 ? "100%" : "-100%",
       opacity: 1,
-      scale: 1,
     }),
     center: {
       x: 0,
       opacity: 1,
-      scale: 1,
     },
     exit: (direction) => ({
       x: direction > 0 ? "-100%" : "100%",
       opacity: 1,
-      scale: 1,
     }),
   };
 
@@ -147,7 +142,7 @@ export default function HeroCarousel({
       onMouseLeave={() => setIsPaused(false)}
     >
       {/* Slides */}
-      <AnimatePresence initial={false} custom={direccion}>
+      <AnimatePresence initial={false} custom={direccion} mode="sync">
         <motion.div
           key={slideActual}
           custom={direccion}
@@ -157,8 +152,9 @@ export default function HeroCarousel({
           exit="exit"
           transition={{
             x: { type: "tween", duration: 0.6, ease: "easeInOut" },
+            opacity: { duration: 0 },
           }}
-          className="absolute inset-0"
+          className="absolute inset-0 w-full h-full"
         >
           <SlideContent slide={slidesAMostrar[slideActual]} />
         </motion.div>
@@ -332,12 +328,15 @@ function VideoBackground({ slide }) {
         muted
         playsInline
         poster={slide.poster}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover [&::-webkit-media-controls]:hidden [&::-webkit-media-controls-start-playback-button]:hidden"
         preload="metadata"
         disablePictureInPicture
         disableRemotePlayback
         controlsList="nodownload nofullscreen noremoteplayback"
-        style={{ pointerEvents: "none" }}
+        style={{
+          pointerEvents: "none",
+          WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+        }}
       >
         {slide.videoSrc && <source src={slide.videoSrc} type="video/mp4" />}
         {slide.videoSrcWebm && (
@@ -350,11 +349,39 @@ function VideoBackground({ slide }) {
 
 // Componente de imagen background
 function ImageBackground({ slide }) {
+  // Si no hay imagen móvil, mostrar la misma en todos los tamaños
+  if (!slide.imagenSrcMobile) {
+    return (
+      <OptimizedImage
+        src={slide.imagenSrc}
+        alt={slide.titulo}
+        className={`w-full h-full object-cover ${
+          slide.objectPosition || "object-center"
+        }`}
+      />
+    );
+  }
+
+  // Si hay imagen móvil, mostrar versiones diferentes
   return (
-    <OptimizedImage
-      src={slide.imagenSrc}
-      alt={slide.titulo}
-      className="w-full h-full object-cover"
-    />
+    <>
+      {/* Imagen para móvil */}
+      <OptimizedImage
+        src={slide.imagenSrcMobile}
+        alt={slide.titulo}
+        className={`w-full h-full object-cover md:hidden ${
+          slide.objectPosition || "object-center"
+        }`}
+      />
+
+      {/* Imagen para desktop */}
+      <OptimizedImage
+        src={slide.imagenSrc}
+        alt={slide.titulo}
+        className={`w-full h-full object-cover hidden md:block ${
+          slide.objectPosition || "object-center"
+        }`}
+      />
+    </>
   );
 }

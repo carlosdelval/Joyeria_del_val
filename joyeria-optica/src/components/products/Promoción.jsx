@@ -139,102 +139,116 @@ const Promocion = () => {
   if (productos.length === 0) return null;
 
   return (
-    <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-8">
-      {/* Banner principal */}
-      <div className="relative w-full h-full min-h-[400px] lg:min-h-[500px] overflow-hidden rounded-lg shadow-lg group">
-        <img
-          src="/promoRelojTous.jpg"
-          alt="Promoción Relojes TOUS"
-          className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white bg-black/40">
-          <p className="mb-2 text-lg font-light tracking-widest uppercase sm:text-xl">
-            Relojes TOUS
-          </p>
-          <h2 className="mb-2 text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-            10% DTO
+    <div className="px-4 sm:px-6 lg:px-8">
+      {/* Título de sección */}
+      <div className="mb-12 text-center">
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="w-12 h-px bg-gray-300"></div>
+          <h2 className="text-2xl font-light tracking-widest text-black uppercase sm:text-3xl">
+            Relojería TOUS
           </h2>
-          <p className="mb-6 text-xs tracking-widest uppercase sm:text-sm">
-            Calidad Certificada
-          </p>
-          <button
-            onClick={goToCatalog}
-            className="px-6 py-3 text-sm font-medium tracking-wide uppercase transition-all duration-300 bg-white border-2 border-white cursor-pointer sm:px-8 sm:py-3 text-black hover:bg-transparent hover:text-white"
-          >
-            Ver Colección
-          </button>
+          <div className="w-12 h-px bg-gray-300"></div>
         </div>
+        <p className="max-w-2xl mx-auto text-base font-light text-gray-600">
+          Descubre nuestra selección especial de relojes TOUS con descuentos
+          exclusivos
+        </p>
       </div>
 
-      {/* Grid de productos en oferta */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4">
-        {productos.map((prod) => (
-          <div
-            key={prod.id}
-            className="relative overflow-hidden transition-all duration-300 bg-white border border-gray-100 rounded-lg cursor-pointer group hover:shadow-lg hover:-translate-y-1"
-            onClick={() => goToProduct(prod.slug)}
-          >
-            <div className="relative overflow-hidden aspect-square bg-gray-50">
-              <img
-                src={prod.imagenes[0]}
-                alt={prod.titulo}
-                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
-              {/* Badge de Black Friday (prioridad) */}
-              {prod.categorias?.some(
-                (cat) =>
-                  cat?.toLowerCase() === "black_friday" ||
-                  cat?.toLowerCase() === "black-friday"
-              ) && (
-                <div className="absolute top-2 right-2 z-10 flex flex-col gap-1.5 items-end">
-                  <div className="px-2 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-red-600 rounded shadow-md">
-                    BLACK FRIDAY
-                  </div>
-                  {prod.precioAnterior && (
-                    <div className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-white bg-black rounded shadow-md">
-                      -{calcularDescuento(prod)}%
-                    </div>
-                  )}
-                </div>
-              )}
-              {/* Badge de descuento (solo si no es Black Friday) */}
-              {prod.precioAnterior &&
-                !prod.categorias?.some(
+      <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-8">
+        {/* Banner principal */}
+        <div className="relative w-full h-full min-h-[400px] lg:min-h-[500px] overflow-hidden group">
+          <img
+            src="/promoRelojTous.jpg"
+            alt="Promoción Relojes TOUS"
+            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-white bg-black/40">
+            <p className="mb-2 text-lg font-light tracking-widest uppercase sm:text-xl">
+              Relojes TOUS
+            </p>
+            <h2 className="mb-2 text-5xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+              10% DTO
+            </h2>
+            <p className="mb-6 text-xs tracking-widest uppercase sm:text-sm">
+              Calidad Certificada
+            </p>
+            <button
+              onClick={goToCatalog}
+              className="px-8 py-4 text-base font-light tracking-wide uppercase transition-all duration-300 bg-white border-2 border-white cursor-pointer text-black hover:bg-transparent hover:text-white"
+            >
+              Ver Colección
+            </button>
+          </div>
+        </div>
+
+        {/* Grid de productos en oferta */}
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
+          {productos.map((prod) => (
+            <div
+              key={prod.id}
+              className="relative p-3 transition-all duration-300 bg-white border-2 border-gray-200 cursor-pointer group hover:border-black"
+              onClick={() => goToProduct(prod.slug)}
+            >
+              <div className="relative mb-3 overflow-hidden">
+                <img
+                  src={prod.imagenes[0]}
+                  alt={prod.titulo}
+                  className="object-contain w-full transition-transform duration-300 aspect-square group-hover:scale-105"
+                  loading="lazy"
+                />
+                {/* Badge de Black Friday (prioridad) */}
+                {prod.categorias?.some(
                   (cat) =>
                     cat?.toLowerCase() === "black_friday" ||
                     cat?.toLowerCase() === "black-friday"
                 ) && (
-                  <span className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded top-2 right-2">
-                    -{calcularDescuento(prod)}%
-                  </span>
+                  <div className="absolute top-2 right-2 z-10 flex flex-col gap-1.5 items-end">
+                    <div className="px-2 py-1 text-[10px] font-bold tracking-wider text-white uppercase bg-red-600 rounded shadow-md">
+                      BLACK FRIDAY
+                    </div>
+                    {prod.precioAnterior && (
+                      <div className="inline-block px-1.5 py-0.5 text-[10px] font-bold text-white bg-black rounded shadow-md">
+                        -{calcularDescuento(prod)}%
+                      </div>
+                    )}
+                  </div>
                 )}
-            </div>
-            <div className="p-3 sm:p-4">
-              <h3 className="mb-2 text-xs font-light tracking-wide text-gray-700 sm:text-sm line-clamp-2">
+                {/* Badge de descuento (solo si no es Black Friday) */}
+                {prod.precioAnterior &&
+                  !prod.categorias?.some(
+                    (cat) =>
+                      cat?.toLowerCase() === "black_friday" ||
+                      cat?.toLowerCase() === "black-friday"
+                  ) && (
+                    <span className="absolute px-2 py-1 text-xs font-bold text-white bg-red-600 rounded top-2 right-2">
+                      -{calcularDescuento(prod)}%
+                    </span>
+                  )}
+              </div>
+              <p className="mb-2 text-sm font-light text-black line-clamp-2">
                 {sanitizeProductTitle(prod.titulo)}
-              </h3>
-              <div className="flex items-baseline gap-2">
-                <p className="text-sm font-medium text-black sm:text-base">
+              </p>
+
+              <div className="flex items-center gap-2">
+                <p className="text-base font-light text-black">
                   {prod.precio.toLocaleString("es-ES", {
                     style: "currency",
                     currency: "EUR",
-                    minimumFractionDigits: 0,
                   })}
                 </p>
                 {(prod.precioAnterior ?? 0) > 0 && (
-                  <p className="text-xs text-gray-400 line-through sm:text-sm">
+                  <p className="text-xs font-light text-gray-400 line-through">
                     {prod.precioAnterior.toLocaleString("es-ES", {
                       style: "currency",
                       currency: "EUR",
-                      minimumFractionDigits: 0,
                     })}
                   </p>
                 )}
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
