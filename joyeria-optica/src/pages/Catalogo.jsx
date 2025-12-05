@@ -87,24 +87,6 @@ const Catalogo = () => {
     }
   }, [filtros.ordenarPor]);
 
-  // Scroll al inicio al cargar la página
-  useEffect(() => {
-    // Prevenir el scroll automático del navegador
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-
-    // Forzar scroll al inicio inmediatamente
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
-    return () => {
-      // Restaurar comportamiento por defecto al desmontar
-      if ("scrollRestoration" in window.history) {
-        window.history.scrollRestoration = "auto";
-      }
-    };
-  }, []);
-
   // Loader inicial de la página
   useEffect(() => {
     const timer = setTimeout(() => {

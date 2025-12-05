@@ -132,7 +132,7 @@ export default function BannerMarcas({
               />
 
               {/* Overlay */}
-              <div className="absolute inset-0 bg-black/30 group-hover/marca:bg-black/10 transition-colors duration-300" />
+              <div className="absolute inset-0 md:bg-black/30 md:group-hover/marca:bg-black/10 transition-colors duration-300" />
 
               {/* Contenido */}
               <div className="relative z-10 h-full flex flex-col items-center justify-end p-4 sm:p-6 pb-6 sm:pb-8 text-center pointer-events-none md:pointer-events-auto">

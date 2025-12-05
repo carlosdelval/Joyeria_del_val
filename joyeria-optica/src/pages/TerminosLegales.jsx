@@ -1,23 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { Mail, Phone, Clock, ChevronRight } from "lucide-react";
 
 const TerminosLegales = () => {
-  // Scroll al inicio al cargar la página
-  useEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
-    return () => {
-      if ("scrollRestoration" in window.history) {
-        window.history.scrollRestoration = "auto";
-      }
-    };
-  }, []);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}

@@ -1,21 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { ChevronRight, MapPin, Mail, Phone } from "lucide-react";
 
 const AvisoLegal = () => {
-  useEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
-    return () => {
-      if ("scrollRestoration" in window.history) {
-        window.history.scrollRestoration = "auto";
-      }
-    };
-  }, []);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -109,8 +96,9 @@ const AvisoLegal = () => {
             <div className="space-y-4 text-sm text-gray-700">
               <p>
                 El presente aviso legal regula el uso y utilización del sitio
-                web <strong>https://opticadelvaljoyeros.es</strong>, del que es titular{" "}
-                <strong>Óptica Del Val Joyeros S.L.</strong> (CIF: B14629406).
+                web <strong>https://opticadelvaljoyeros.es</strong>, del que es
+                titular <strong>Óptica Del Val Joyeros S.L.</strong> (CIF:
+                B14629406).
               </p>
               <p>
                 La navegación por el sitio web atribuye la condición de usuario

@@ -41,24 +41,6 @@ const AnimatedSection = ({ children, className = "" }) => {
 };
 
 export default function Home() {
-  // Scroll al inicio DESPUÉS de que el contenido cargue
-  useEffect(() => {
-    // Usar requestAnimationFrame para que ocurra después del primer paint
-    requestAnimationFrame(() => {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    });
-
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-
-    return () => {
-      if ("scrollRestoration" in window.history) {
-        window.history.scrollRestoration = "auto";
-      }
-    };
-  }, []);
-
   // Datos de marcas de óptica
   const marcasOptica = [
     {

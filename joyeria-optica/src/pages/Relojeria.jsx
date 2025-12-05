@@ -557,26 +557,12 @@ export default function Relojes() {
   const [showWhatsAppModal, setShowWhatsAppModal] = useState(false);
 
   useEffect(() => {
-    // Prevenir el scroll automático del navegador
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-
-    // Forzar scroll al inicio inmediatamente
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // Asegurar scroll al inicio después de cargar
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, 500);
 
     return () => {
       clearTimeout(timer);
-      // Restaurar comportamiento por defecto al desmontar
-      if ("scrollRestoration" in window.history) {
-        window.history.scrollRestoration = "auto";
-      }
     };
   }, []);
 

@@ -142,7 +142,10 @@ const Promocion = () => {
     <div className="w-full">
       <div className="grid items-stretch lg:grid-cols-2">
         {/* Banner principal - Lado izquierdo */}
-        <div className="relative w-full h-full min-h-[500px] lg:min-h-[600px] overflow-hidden group">
+        <div
+          onClick={goToCatalog}
+          className="relative w-full h-full min-h-[500px] lg:min-h-[600px] overflow-hidden group cursor-pointer"
+        >
           <img
             src="/promoRelojTous.jpg"
             alt="Promoción Relojes TOUS"
@@ -173,7 +176,7 @@ const Promocion = () => {
             <div className="flex items-center justify-center gap-4 mb-4">
               <div className="w-12 h-px bg-gray-300"></div>
               <h2 className="text-2xl font-light tracking-widest text-black uppercase sm:text-3xl">
-                Relojería TOUS
+                TOUS Relojería
               </h2>
               <div className="w-12 h-px bg-gray-300"></div>
             </div>

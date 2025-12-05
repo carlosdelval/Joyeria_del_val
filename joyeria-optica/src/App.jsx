@@ -5,6 +5,7 @@ import Navbar from "./components/layout/Navbar";
 import CookieBanner from "./components/modals/CookieBanner";
 import PromoModal from "./components/modals/PromoModal";
 import ErrorBoundary from "./components/common/ErrorBoundary";
+import ScrollToTop from "./components/common/ScrollToTop";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { WishlistProvider } from "./context/WishlistContext";
@@ -38,6 +39,7 @@ function App() {
             <ToastProvider>
               <FlyAnimationProvider>
                 <Router>
+                  <ScrollToTop />
                   <div className="min-h-screen text-black bg-white">
                     <Navbar />
                     <CookieBanner />

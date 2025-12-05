@@ -18,25 +18,12 @@ export default function NotFound() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Prevenir scroll automático del navegador
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-
-    // Scroll al inicio inmediatamente
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
     const timer = setTimeout(() => {
       setIsLoading(false);
-      // Asegurar scroll después de cargar
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }, 500);
 
     return () => {
       clearTimeout(timer);
-      if ("scrollRestoration" in window.history) {
-        window.history.scrollRestoration = "auto";
-      }
     };
   }, []);
 
