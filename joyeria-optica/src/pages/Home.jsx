@@ -121,11 +121,6 @@ export default function Home() {
         <Promocion />
       </AnimatedSection>
 
-      {/* Banner Ray-Ban Meta */}
-      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-        <BannerRaybanMeta />
-      </AnimatedSection>
-
       {/* Banner Marcas Relojes */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
         <BannerMarcasRelojes />
@@ -134,10 +129,16 @@ export default function Home() {
       {/* Banner Marcas Óptica */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
         <BannerMarcas
-          titulo="Tus marcas favoritas en gafas de sol"
+          titulo="Gafas de sol"
+          subtitulo="Tus marcas favoritas de gafas de sol. Diseño y elegancia."
           marcas={marcasOptica}
           categoriaBase="gafas"
         />
+      </AnimatedSection>
+
+      {/* Banner Ray-Ban Meta */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <BannerRaybanMeta />
       </AnimatedSection>
 
       {/* Banner Instagram && Colecciones Destacadas */}

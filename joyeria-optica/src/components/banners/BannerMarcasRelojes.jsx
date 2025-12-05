@@ -26,11 +26,36 @@ export default function BannerMarcasRelojes() {
       slug: "orient",
       objectPosition: "object-right",
     },
+    {
+      nombre: "Lacoste",
+      imagen: "/lacoste-promo.jpg",
+      slug: "lacoste",
+      objectPosition: "object-center",
+    },
+    {
+      nombre: "TOUS",
+      imagen: "/tous-relojeria.jpg",
+      slug: "tous",
+      objectPosition: "object-right",
+    },
+    {
+      nombre: "Viceroy",
+      imagen: "/viceroy-promo.jpg",
+      slug: "viceroy",
+      objectPosition: "object-center",
+    },
+    {
+      nombre: "Maserati",
+      imagen: "/maserati-promo.jpg",
+      slug: "maserati",
+      objectPosition: "object-center",
+    },
   ];
 
   return (
     <BannerMarcas
-      titulo="Nuestras Marcas en Relojería"
+      titulo="Relojería"
+      subtitulo="Nuestras marcas en relojería. Calidad y precisión."
       marcas={marcas}
       categoriaBase="relojes"
     />

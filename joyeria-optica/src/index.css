@@ -75,3 +75,13 @@ button,
 [class*="precio"] {
   font-weight: 300; /* font-light */
 }
+
+/* Ocultar scrollbar en carruseles */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
