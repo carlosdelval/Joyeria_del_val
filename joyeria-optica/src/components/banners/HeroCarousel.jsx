@@ -205,7 +205,7 @@ export default function HeroCarousel({
               anteriorSlide();
               setLastInteraction(Date.now());
             }}
-            className="hidden md:flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 md:p-4 rounded-full transition-all duration-300 group items-center justify-center"
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 md:p-4 rounded-full transition-all duration-300 group items-center justify-center"
             aria-label="Slide anterior"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 transform group-hover:-translate-x-1 transition-transform" />
@@ -216,7 +216,7 @@ export default function HeroCarousel({
               siguienteSlide();
               setLastInteraction(Date.now());
             }}
-            className="hidden md:flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 md:p-4 rounded-full transition-all duration-300 group items-center justify-center"
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white p-3 md:p-4 rounded-full transition-all duration-300 group items-center justify-center"
             aria-label="Siguiente slide"
           >
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6 transform group-hover:translate-x-1 transition-transform" />

@@ -153,7 +153,7 @@ const ContactoOptica = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="px-4 py-12 bg-white border-t sm:px-6 md:px-10 lg:px-20 sm:py-16"
+      className="px-4 pb-12 bg-white sm:px-6 md:px-10 lg:px-20 sm:pb-16"
     >
       <div className="max-w-6xl mx-auto">
         <div className="mb-12 text-center">

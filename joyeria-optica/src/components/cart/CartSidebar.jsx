@@ -186,6 +186,11 @@ const CartSidebar = ({ isOpen, onClose }) => {
                             {item.variant.titulo}
                           </p>
                         )}
+                        {item.tallaSeleccionada && (
+                          <p className="mt-1 text-xs text-gray-600 font-medium">
+                            Talla: {item.tallaSeleccionada}
+                          </p>
+                        )}
                         <div className="flex items-center justify-between mt-2">
                           <div className="flex items-center gap-2">
                             <button

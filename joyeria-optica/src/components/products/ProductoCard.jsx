@@ -184,79 +184,66 @@ const ProductoCard = ({ producto }) => {
           </div>
         )}
 
-        {/* Badge de descuento (solo si no es Black Friday) */}
-        {descuento && !isBlackFriday && (
+        {/* Badge de descuento - */}
+        {descuento && (
           <motion.div
-            initial={{ scale: 1.2 }}
-            animate={{ scale: 1 }}
-            className="absolute px-3 py-1 text-xs font-light tracking-wider text-white bg-red-600 rounded top-4 left-4"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+            className="absolute top-4 left-2 md:bottom-auto md:right-auto md:top-4 md:left-4 z-10 px-2 py-1 text-xs font-bold text-white bg-red-600 rounded shadow-lg"
             role="status"
             aria-label={`Descuento del ${descuento}%`}
           >
             -{descuento}%
           </motion.div>
         )}
-
-        {/* Botón de wishlist */}
-        <div className="absolute top-4 right-4 z-10">
-          <WishlistButton product={producto} size="sm" />
-        </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 flex flex-col">
         <motion.h3
-          className="text-sm font-light tracking-wide text-gray-700 line-clamp-2"
+          className="text-sm font-light tracking-wide text-gray-700 line-clamp-2 min-h-[2.5rem]"
           whileHover={{ color: "#000000" }}
         >
           {sanitizeProductTitle(nombre)}
         </motion.h3>
 
-        <div className="flex items-center justify-between mt-3">
-          <div className="flex items-center">
-            <motion.span
-              className="text-sm font-light text-black"
-              whileHover={{ scale: 1.05 }}
-            >
-              {precio.toLocaleString("es-ES", {
-                style: "currency",
-                currency: "EUR",
-                minimumFractionDigits: 0,
-              })}
-            </motion.span>
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex items-center mt-2">
+            {stock !== undefined && stock !== null && stock <= 0 ? (
+              <span className="text-sm text-red-600 font-medium">Agotado</span>
+            ) : (
+              <>
+                <motion.span
+                  className="text-sm font-medium text-black"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {precio.toLocaleString("es-ES", {
+                    style: "currency",
+                    currency: "EUR",
+                    minimumFractionDigits: 0,
+                  })}
+                </motion.span>
 
-            {(precioAnterior ?? 0) > 0 && (
-              <motion.span
-                className="ml-2 text-xs font-light text-gray-400 line-through"
-                initial={{ opacity: 0.8 }}
-                whileHover={{ opacity: 1 }}
-              >
-                {precioAnterior.toLocaleString("es-ES", {
-                  style: "currency",
-                  currency: "EUR",
-                  minimumFractionDigits: 0,
-                })}
-              </motion.span>
+                {(precioAnterior ?? 0) > 0 && (
+                  <motion.span
+                    className="ml-2 text-xs font-light text-gray-400 line-through"
+                    initial={{ opacity: 0.8 }}
+                    whileHover={{ opacity: 1 }}
+                  >
+                    {precioAnterior.toLocaleString("es-ES", {
+                      style: "currency",
+                      currency: "EUR",
+                      minimumFractionDigits: 0,
+                    })}
+                  </motion.span>
+                )}
+              </>
             )}
           </div>
-
-          {/* Indicador de stock */}
-          {stock !== undefined && stock !== null && (
-            <div className="flex items-center gap-1.5">
-              {stock > 5 ? (
-                <span className="text-xs text-green-600 font-light">
-                  Disponible
-                </span>
-              ) : stock > 0 ? (
-                <span className="text-xs text-amber-600 font-light">
-                  Últimas {stock}
-                </span>
-              ) : (
-                <span className="text-xs text-red-600 font-medium">
-                  Agotado
-                </span>
-              )}
-            </div>
-          )}
+          {/* Botón de wishlist */}
+          <div className="mt-2">
+            <WishlistButton product={producto} size="sm" />
+          </div>
         </div>
       </div>
     </motion.a>

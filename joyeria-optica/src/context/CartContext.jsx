@@ -22,7 +22,10 @@ function cartReducer(state, action) {
   switch (action.type) {
     case CART_ACTIONS.ADD_ITEM: {
       const { product, quantity = 1, variant = null } = action.payload;
-      const itemId = variant ? `${product.id}-${variant.id}` : product.id;
+      const tallaKey = product.tallaSeleccionada ? `-${product.tallaSeleccionada}` : '';
+      const itemId = variant 
+        ? `${product.id}-${variant.id}${tallaKey}` 
+        : `${product.id}${tallaKey}`;
 
       const existingItem = state.items.find((item) => item.id === itemId);
 
@@ -58,6 +61,8 @@ function cartReducer(state, action) {
             quantity,
             variant: variant || null,
             maxStock: variant ? variant.stock : product.stock || 0,
+            tallaSeleccionada: product.tallaSeleccionada || null,
+            customAttributes: product.customAttributes || [],
           },
         ],
       };

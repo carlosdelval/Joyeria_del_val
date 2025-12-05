@@ -263,12 +263,12 @@ export default function ColeccionTous() {
       </div>
 
       <div className="flex flex-col w-full gap-6 md:flex-row">
-        {/* Sección de texto */}
-        <div className="w-full md:w-1/5">
-          <h3 className="mb-3 text-2xl font-light tracking-wide text-black uppercase hidden sm:block">
+        {/* Sección de texto - Desktop */}
+        <div className="hidden md:block md:w-1/5">
+          <h3 className="mb-3 text-2xl font-light tracking-wide text-black uppercase">
             Hasta 10% Descuento
           </h3>
-          <p className="mb-6 text-sm font-light text-gray-600 hidden sm:block">
+          <p className="mb-6 text-sm font-light text-gray-600">
             Diseño exclusivo que combina elegancia y funcionalidad
           </p>
           <button
@@ -432,6 +432,16 @@ export default function ColeccionTous() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Botón móvil - Debajo del carrusel */}
+      <div className="mt-8 md:hidden">
+        <button
+          onClick={goToCatalog}
+          className="w-full px-6 py-4 text-base font-light tracking-wide text-white transition-all duration-300 bg-black border-2 border-black cursor-pointer hover:bg-gray-900"
+        >
+          Ver Colección
+        </button>
       </div>
     </div>
   );

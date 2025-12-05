@@ -12,7 +12,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { sanitizeProductTitle } from "../utils/helpers";
 
 const PRODUCTOS_POR_PAGINA_DESKTOP = 24;
-const PRODUCTOS_POR_PAGINA_MOBILE = 24;
+const PRODUCTOS_POR_PAGINA_MOBILE = 36;
 
 const Catalogo = () => {
   const { categoria } = useParams();
@@ -583,7 +583,7 @@ const Catalogo = () => {
                     animate={{ opacity: loadingOrdenacion ? 0.3 : 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.15 }}
-                    className="grid grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                    className="grid gap-4 sm:gap-6 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                   >
                     {productosVisibles.map((producto, index) => {
                       // Detectar si es un producto recién cargado

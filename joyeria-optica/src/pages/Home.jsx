@@ -41,12 +41,16 @@ const AnimatedSection = ({ children, className = "" }) => {
 };
 
 export default function Home() {
-  // Scroll al inicio al cargar la página
+  // Scroll al inicio DESPUÉS de que el contenido cargue
   useEffect(() => {
+    // Usar requestAnimationFrame para que ocurra después del primer paint
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    });
+
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
 
     return () => {
       if ("scrollRestoration" in window.history) {
@@ -58,26 +62,22 @@ export default function Home() {
   // Datos de marcas de óptica
   const marcasOptica = [
     {
-      nombre: "Ray-Ban",
       imagen: "/rayban.jpg",
       slug: "ray-ban",
-      objectPosition: "object-right md:object-left",
+      objectPosition: "object-right",
     },
     {
-      nombre: "Persol",
       imagen: "/persol.jpg",
       slug: "persol",
       objectPosition: "object-center",
     },
     {
-      nombre: "Dolce & Gabbana",
       imagen: "/dolce-gabbana.jpg",
       slug: "dolce-gabbana",
-      objectPosition: "object-right md:object-center",
+      objectPosition: "object-right",
     },
     {
-      nombre: "TOUS",
-      imagen: "/tous.jpg",
+      imagen: "/tous-promo.jpg",
       slug: "tous",
       objectPosition: "object-center",
     },
@@ -116,6 +116,11 @@ export default function Home() {
         <ColeccionSalvatorePlata />
       </AnimatedSection>
 
+      {/* Banner Ray-Ban Meta */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <BannerRaybanMeta />
+      </AnimatedSection>
+
       {/* Promoción */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
         <Promocion />
@@ -124,11 +129,6 @@ export default function Home() {
       {/* Banner Marcas Relojes */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
         <BannerMarcasRelojes />
-      </AnimatedSection>
-
-      {/* Banner Ray-Ban Meta */}
-      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-        <BannerRaybanMeta />
       </AnimatedSection>
 
       {/* Banner Marcas Óptica */}
@@ -142,8 +142,18 @@ export default function Home() {
 
       {/* Banner Instagram && Colecciones Destacadas */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-        <BannerInstagram />
+        {/* Título de sección */}
+        <div className="px-4 sm:px-6 lg:px-8 mb-12 text-center">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <div className="w-12 h-px bg-gray-300"></div>
+            <h2 className="text-2xl font-light tracking-widest text-black uppercase sm:text-3xl">
+              Descubre nuestra colección en joyería
+            </h2>
+            <div className="w-12 h-px bg-gray-300"></div>
+          </div>
+        </div>
         <ColeccionesDestacadas />
+        <BannerInstagram />
       </AnimatedSection>
 
       {/* Contacto */}
