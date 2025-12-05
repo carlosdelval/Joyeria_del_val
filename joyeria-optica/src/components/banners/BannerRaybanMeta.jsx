@@ -12,7 +12,6 @@ export default function BannerRaybanMeta() {
 
   // Array de imágenes del carrusel
   const carouselImages = [
-    "/raybanmeta1.jpg",
     "/raybanmeta3.avif",
     "/raybanmeta2.avif",
     "/raybanmeta1.avif",
@@ -259,7 +258,7 @@ export default function BannerRaybanMeta() {
           >
             <button
               onClick={handleContacto}
-              className="group relative px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wider text-black uppercase transition-all duration-300 bg-white overflow-hidden hover:scale-105"
+              className="group cursor-pointer relative px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm font-medium tracking-wider text-black uppercase transition-all duration-300 bg-white overflow-hidden hover:scale-105"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
                 Visítanos en tienda

@@ -22,9 +22,11 @@ function cartReducer(state, action) {
   switch (action.type) {
     case CART_ACTIONS.ADD_ITEM: {
       const { product, quantity = 1, variant = null } = action.payload;
-      const tallaKey = product.tallaSeleccionada ? `-${product.tallaSeleccionada}` : '';
-      const itemId = variant 
-        ? `${product.id}-${variant.id}${tallaKey}` 
+      const tallaKey = product.tallaSeleccionada
+        ? `-${product.tallaSeleccionada}`
+        : "";
+      const itemId = variant
+        ? `${product.id}-${variant.id}${tallaKey}`
         : `${product.id}${tallaKey}`;
 
       const existingItem = state.items.find((item) => item.id === itemId);

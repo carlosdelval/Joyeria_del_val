@@ -116,14 +116,14 @@ export default function Home() {
         <ColeccionSalvatorePlata />
       </AnimatedSection>
 
-      {/* Banner Ray-Ban Meta */}
-      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
-        <BannerRaybanMeta />
-      </AnimatedSection>
-
       {/* Promoción */}
       <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
         <Promocion />
+      </AnimatedSection>
+
+      {/* Banner Ray-Ban Meta */}
+      <AnimatedSection className="mt-16 sm:mt-20 md:mt-24 lg:mt-28">
+        <BannerRaybanMeta />
       </AnimatedSection>
 
       {/* Banner Marcas Relojes */}

@@ -258,7 +258,8 @@ export default function ColeccionTous() {
           <div className="w-12 h-px bg-gray-300"></div>
         </div>
         <p className="max-w-2xl mx-auto text-base font-light text-gray-600">
-          Descubre nuestra exclusiva selección de bolsos TOUS
+          Explora nuestra colección de bolsos TOUS con diseños únicos y
+          descuentos especiales
         </p>
       </div>
 

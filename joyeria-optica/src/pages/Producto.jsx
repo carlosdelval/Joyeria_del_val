@@ -173,6 +173,19 @@ const ProductoPage = () => {
     cargarProducto();
   }, [slug]);
 
+  // Bloquear scroll cuando el modal de tallas está abierto
+  useEffect(() => {
+    if (showTallaModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showTallaModal]);
+
   // Funciones para el efecto zoom con movimiento
   const handleMouseMove = (e) => {
     if (!isZoomed) return;
@@ -666,7 +679,9 @@ const ProductoPage = () => {
                     <span>SELECCIONE SU TALLA</span>
                   ) : (isGafa || isAnillo) && tallaSeleccionada ? (
                     <div className="flex flex-col items-center">
-                      <span className="text-xs opacity-80">Talla: {tallaSeleccionada}</span>
+                      <span className="text-xs opacity-80">
+                        Talla: {tallaSeleccionada}
+                      </span>
                       <span>CAMBIAR TALLA / AÑADIR</span>
                     </div>
                   ) : isAddingToCart ? (
@@ -827,7 +842,9 @@ const ProductoPage = () => {
                           aria-label="Guía de tallas"
                         >
                           <Info className="w-4 h-4" />
-                          <span className="hidden sm:inline">Guía de tallas</span>
+                          <span className="hidden sm:inline">
+                            Guía de tallas
+                          </span>
                         </button>
                       </div>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -849,7 +866,9 @@ const ProductoPage = () => {
                               `}
                             >
                               <div className="flex flex-col items-center">
-                                <span className="font-medium">{talla.label}</span>
+                                <span className="font-medium">
+                                  {talla.label}
+                                </span>
                                 <span className="text-xs text-gray-500">
                                   {talla.tipo}
                                 </span>
@@ -878,7 +897,8 @@ const ProductoPage = () => {
                       <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
                         {producto.tallas.map((talla) => {
                           const isSelected = tallaSeleccionada === talla.valor;
-                          const isAvailable = talla.disponible && talla.stock > 0;
+                          const isAvailable =
+                            talla.disponible && talla.stock > 0;
 
                           return (
                             <button
@@ -1111,7 +1131,9 @@ const ProductoPage = () => {
         isOpen={showGuiaTallas}
         onClose={() => setShowGuiaTallas(false)}
         onConfirm={() => setShowGuiaTallas(false)}
-        title={isAnillo ? "Guía de Tallas de Anillos" : "Guía de Tallas de Gafas"}
+        title={
+          isAnillo ? "Guía de Tallas de Anillos" : "Guía de Tallas de Gafas"
+        }
         message={
           isAnillo ? (
             // Guía para anillos
@@ -1126,7 +1148,10 @@ const ProductoPage = () => {
                   { talla: "16", diametro: "18.1 mm" },
                   { talla: "18", diametro: "18.9 mm" },
                 ].map((item) => (
-                  <div key={item.talla} className="flex justify-between p-2 bg-gray-50 rounded">
+                  <div
+                    key={item.talla}
+                    className="flex justify-between p-2 bg-gray-50 rounded"
+                  >
                     <span>Talla {item.talla}</span>
                     <span className="font-medium">{item.diametro}</span>
                   </div>
@@ -1191,49 +1216,65 @@ const ProductoPage = () => {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="w-full max-w-lg bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl max-h-[85vh] flex flex-col"
             >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-medium text-gray-900">Selecciona tu talla</h3>
-              <button
-                onClick={() => setShowTallaModal(false)}
-                className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-                aria-label="Cerrar"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="flex-1 overflow-y-auto p-4">
-              <div className="space-y-3">
-                {/* Guía de tallas */}
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b">
+                <h3 className="text-lg font-medium text-gray-900">
+                  Selecciona tu talla
+                </h3>
                 <button
-                  type="button"
-                  onClick={() => {
-                    setShowTallaModal(false);
-                    setShowGuiaTallas(true);
-                  }}
-                  className="w-full flex items-center justify-center gap-2 p-3 text-sm text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  onClick={() => setShowTallaModal(false)}
+                  className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label="Cerrar"
                 >
-                  <Info className="w-4 h-4" />
-                  <span>Ver guía de tallas</span>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
                 </button>
+              </div>
 
-                {/* Grid de tallas */}
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  {(isGafa ? tallasGafas : producto.tallas || []).map((talla) => {
-                    const isSelected = tallaSeleccionada === talla.valor;
-                    const isAvailable = isGafa || (talla.disponible && talla.stock > 0);
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto p-4">
+                <div className="space-y-3">
+                  {/* Guía de tallas */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowTallaModal(false);
+                      setShowGuiaTallas(true);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 p-3 text-sm text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <Info className="w-4 h-4" />
+                    <span>Ver guía de tallas</span>
+                  </button>
 
-                    return (
-                      <button
-                        type="button"
-                        key={talla.valor}
-                        onClick={() => isAvailable && setTallaSeleccionada(talla.valor)}
-                        disabled={!isAvailable}
-                        className={`
+                  {/* Grid de tallas */}
+                  <div className="grid grid-cols-2 gap-3 pt-2">
+                    {(isGafa ? tallasGafas : producto.tallas || []).map(
+                      (talla) => {
+                        const isSelected = tallaSeleccionada === talla.valor;
+                        const isAvailable =
+                          isGafa || (talla.disponible && talla.stock > 0);
+
+                        return (
+                          <button
+                            type="button"
+                            key={talla.valor}
+                            onClick={() =>
+                              isAvailable && setTallaSeleccionada(talla.valor)
+                            }
+                            disabled={!isAvailable}
+                            className={`
                           p-4 rounded-lg transition-all font-medium border-2
                           ${
                             !isAvailable
@@ -1243,43 +1284,52 @@ const ProductoPage = () => {
                               : "bg-white text-gray-900 border-gray-300 hover:border-gray-900"
                           }
                         `}
-                      >
-                        <div className="flex flex-col items-center gap-1">
-                          <span className="text-base">{talla.label}</span>
-                          {talla.tipo && (
-                            <span className={`text-xs ${isSelected ? "text-gray-300" : "text-gray-500"}`}>
-                              {talla.tipo}
-                            </span>
-                          )}
-                        </div>
-                      </button>
-                    );
-                  })}
+                          >
+                            <div className="flex flex-col items-center gap-1">
+                              <span className="text-base">{talla.label}</span>
+                              {talla.tipo && (
+                                <span
+                                  className={`text-xs ${
+                                    isSelected
+                                      ? "text-gray-300"
+                                      : "text-gray-500"
+                                  }`}
+                                >
+                                  {talla.tipo}
+                                </span>
+                              )}
+                            </div>
+                          </button>
+                        );
+                      }
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Footer con botón */}
-            <div className="p-4 border-t bg-gray-50">
-              <button
-                onClick={() => {
-                  if (tallaSeleccionada) {
-                    setShowTallaModal(false);
-                    handleAddToCart();
-                  }
-                }}
-                disabled={!tallaSeleccionada}
-                className={`w-full py-4 rounded-lg font-medium text-white transition-all ${
-                  tallaSeleccionada
-                    ? "bg-black hover:bg-gray-800"
-                    : "bg-gray-300 cursor-not-allowed"
-                }`}
-              >
-                {tallaSeleccionada ? "Añadir al carrito" : "Selecciona una talla"}
-              </button>
-            </div>
+              {/* Footer con botón */}
+              <div className="p-4 border-t bg-gray-50">
+                <button
+                  onClick={() => {
+                    if (tallaSeleccionada) {
+                      setShowTallaModal(false);
+                      handleAddToCart();
+                    }
+                  }}
+                  disabled={!tallaSeleccionada}
+                  className={`w-full py-4 rounded-lg font-medium text-white transition-all ${
+                    tallaSeleccionada
+                      ? "bg-black hover:bg-gray-800"
+                      : "bg-gray-300 cursor-not-allowed"
+                  }`}
+                >
+                  {tallaSeleccionada
+                    ? "Añadir al carrito"
+                    : "Selecciona una talla"}
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
         )}
       </AnimatePresence>
     </>
