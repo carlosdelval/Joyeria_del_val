@@ -84,10 +84,11 @@ const Spinner = ({
 
 /**
  * PageSpinner - Spinner para carga de páginas completas
+ * Sin animación de entrada para transición instantánea
  */
 export const PageSpinner = ({ label = "Cargando..." }) => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex items-center justify-center min-h-screen bg-white">
       <Spinner size="lg" label={label} />
     </div>
   );

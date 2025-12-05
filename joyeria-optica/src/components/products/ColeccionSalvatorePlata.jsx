@@ -125,9 +125,11 @@ export default function ColeccionSalvatorePlata() {
     const loadSalvatorePlataProducts = async () => {
       try {
         const allProducts = await fetchProductos({ categoria: ["joyeria"] });
-        // Filtrar solo joyería de la marca Salvatore Plata
+        // Filtrar solo joyería de la marca Salvatore Plata con stock disponible
         let salvatoreProducts = allProducts.filter(
-          (product) => product.marca?.toLowerCase() === "salvatore plata"
+          (product) =>
+            product.marca?.toLowerCase() === "salvatore plata" &&
+            (product.stock ?? 0) > 0
         );
 
         // Aplicar priorización inteligente

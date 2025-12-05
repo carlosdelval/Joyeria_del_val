@@ -101,9 +101,10 @@ const Promocion = () => {
           categoria: ["relojes"],
         });
 
-        // Filtrar solo relojes TOUS
+        // Filtrar solo relojes TOUS con stock disponible
         let tousWatches = data.filter(
-          (product) => product.marca?.toLowerCase() === "tous"
+          (product) =>
+            product.marca?.toLowerCase() === "tous" && (product.stock ?? 0) > 0
         );
 
         // Aplicar priorización inteligente

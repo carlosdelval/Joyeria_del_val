@@ -125,9 +125,10 @@ export default function ColeccionTous() {
     const loadTousProducts = async () => {
       try {
         const allProducts = await fetchProductos({ categoria: ["bolsos"] });
-        // Filtrar solo bolsos de la marca TOUS
+        // Filtrar solo bolsos de la marca TOUS con stock disponible
         let tousBags = allProducts.filter(
-          (product) => product.marca?.toLowerCase() === "tous"
+          (product) =>
+            product.marca?.toLowerCase() === "tous" && (product.stock ?? 0) > 0
         );
 
         // Aplicar priorización inteligente
